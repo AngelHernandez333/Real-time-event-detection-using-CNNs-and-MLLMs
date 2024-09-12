@@ -15,6 +15,13 @@ from PIL import Image
 from transformers import AutoProcessor, AutoModelForCausalLM 
 
 
+
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
+torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+
+model = AutoModelForCausalLM.from_pretrained("microsoft/Florence-2-large-ft", torch_dtype=torch_dtype, trust_remote_code=True).to(device)
+processor = AutoProcessor.from_pretrained("microsoft/Florence-2-large-ft", trust_remote_code=True)
+
 detection_labels = {
     0: "person",
     1: "bicycle",
@@ -97,45 +104,6 @@ detection_labels = {
     78: "hair drier",
     79: "toothbrush",
 }
-
-ov_qmodel=YOLOv10('/home/ubuntu/yolov10/int8/yolov10x_openvino_model/') 
-
-start_time = time.time()
-img=cv2.imread("/home/ubuntu/Descargas/car.jpg")
-#results=model(img, stream=True)
-#results=ov_model(img)
-results=ov_qmodel(img)
-elapsed_time = time.time() - start_time
-for r in results:
-    boxes= r.boxes
-    for box in boxes:
-        x1,y1,x2,y2=box.xyxy[0]
-        x1,y1,x2,y2=int(x1), int(y1), int(x2), int(y2)
-        cv2.rectangle(img, (x1,y1), (x2,y2), (255,0,255),3)
-        # Obtener la clase y la confianza
-        class_label = int(box.cls[0])  # Convertir a entero si es necesario
-        confidence = float(box.conf[0])  # Convertir a flotante si es necesario
-        
-        # Muestra la clase y el grado de confianza en el cuadro
-        text = f"Class: {detection_labels[class_label] }, Confidence: {confidence:.2f}"
-        cv2.putText(img, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
-        confidence=math.ceil((box.conf[0]*100))/100
-        print("Confidence -->", confidence)
-timetext=f"Time {elapsed_time*1000} ms" 
-cv2.putText(img, f"Time {elapsed_time*1000} ms" , (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
-cv2.imshow("webcam", img)
-cv2.waitKey(0)
-
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
-torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-
-model = AutoModelForCausalLM.from_pretrained("microsoft/Florence-2-large-ft", torch_dtype=torch_dtype, trust_remote_code=True).to(device)
-processor = AutoProcessor.from_pretrained("microsoft/Florence-2-large-ft", trust_remote_code=True)
-
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-# Convertir el array NumPy a una imagen PIL
-image = Image.fromarray(img_rgb)
-
 def run_example(task_prompt, text_input=None):
     start_time = time.time() 
     if text_input is None:
@@ -153,12 +121,57 @@ def run_example(task_prompt, text_input=None):
 
     parsed_answer = processor.post_process_generation(generated_text, task=task_prompt, image_size=(image.width, image.height))
     elapsed_time = time.time() - start_time
-    print(parsed_answer, " ", elapsed_time,"(sg)")   
-prompt = "<MORE_DETAILED_CAPTION>"
-run_example(prompt)
-print("\n\n")
-
+    print(parsed_answer, " Tiempo de procesmiento", elapsed_time,"(sg)")   
+    return parsed_answer
+#Cargar el modelo de Yolov10-x
+ov_qmodel=YOLOv10('/home/ubuntu/yolov10/int8/yolov10x_openvino_model/') 
+#Establecer el tiempo y la imagen a usar
+start_time = time.time()
+img=cv2.imread("/home/ubuntu/Descargas/car.jpg")
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# Convertir el array NumPy a una imagen PIL para el MLLM
+image = Image.fromarray(img_rgb)
+#Realizar la deteccion con el model
+results=ov_qmodel(img)
+#DIbujar las detecciones 
+for r in results:
+    boxes= r.boxes
+    for box in boxes:
+        x1,y1,x2,y2=box.xyxy[0]
+        x1,y1,x2,y2=int(x1), int(y1), int(x2), int(y2)
+        cv2.rectangle(img, (x1,y1), (x2,y2), (255,0,255),3)
+        # Obtener la clase y la confianza
+        class_label = int(box.cls[0])  # Convertir a entero si es necesario
+        confidence = float(box.conf[0])  # Convertir a flotante si es necesario
+        # Muestra la clase y el grado de confianza en el cuadro
+        text = f"Class: {detection_labels[class_label] }, Confidence: {confidence:.2f}"
+        cv2.putText(img, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+        confidence=math.ceil((box.conf[0]*100))/100
+        print("Confidence -->", confidence)
+elapsed_time = time.time() - start_time
+timetext=f"Time {elapsed_time*1000} ms" 
+print(elapsed_time,"\n\n")
+cv2.putText(img, f"Time {elapsed_time*1000} ms" , (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+#Mostrar la imagen de las detecciones
+cv2.imshow("Detections", img)
+cv2.waitKey(3000)
+#Validacion con MLLM
+#Prompt
 task_prompt = "<CAPTION_TO_PHRASE_GROUNDING>"
+#Llamar a la funcion correspondiente
 results = run_example(task_prompt, text_input="A green car parked in front of a yellow building.")
-print("Finished")
+#Observar las detecciones del MLLM
+img=cv2.imread("/home/ubuntu/Descargas/car.jpg")
+for i in range(len(results['<CAPTION_TO_PHRASE_GROUNDING>']["bboxes"])):
+    x1,y1,x2,y2=results['<CAPTION_TO_PHRASE_GROUNDING>']["bboxes"][i]
+    x1,y1,x2,y2=int(x1), int(y1), int(x2), int(y2)
+    cv2.rectangle(img, (x1,y1), (x2,y2), (255,0,255),3)
+    # Obtener la clase y la confianza
+    # Muestra la clase y el grado de confianza en el cuadro
+    label =results['<CAPTION_TO_PHRASE_GROUNDING>']["labels"][i]
+    text = f"Class: {label }"
+    cv2.putText(img, text, (x1, y1 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+print("Finished.")
+cv2.imshow("MLLM", img)
+cv2.waitKey(0)
 cv2.destroyAllWindows()
