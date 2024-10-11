@@ -251,7 +251,9 @@ def convert_coco(
 
     # Import json
     for json_file in sorted(Path(labels_dir).resolve().glob("*.json")):
-        fn = Path(save_dir) / "labels" / json_file.stem.replace("instances_", "")  # folder name
+        fn = (
+            Path(save_dir) / "labels" / json_file.stem.replace("instances_", "")
+        )  # folder name
         fn.mkdir(parents=True, exist_ok=True)
         with open(json_file) as f:
             data = json.load(f)
@@ -282,7 +284,11 @@ def convert_coco(
                 if box[2] <= 0 or box[3] <= 0:  # if w <= 0 and h <= 0
                     continue
 
-                cls = coco80[ann["category_id"] - 1] if cls91to80 else ann["category_id"] - 1  # class
+                cls = (
+                    coco80[ann["category_id"] - 1]
+                    if cls91to80
+                    else ann["category_id"] - 1
+                )  # class
                 box = [cls] + box.tolist()
                 if box not in bboxes:
                     bboxes.append(box)
@@ -292,15 +298,31 @@ def convert_coco(
                             continue
                         elif len(ann["segmentation"]) > 1:
                             s = merge_multi_segment(ann["segmentation"])
-                            s = (np.concatenate(s, axis=0) / np.array([w, h])).reshape(-1).tolist()
+                            s = (
+                                (np.concatenate(s, axis=0) / np.array([w, h]))
+                                .reshape(-1)
+                                .tolist()
+                            )
                         else:
-                            s = [j for i in ann["segmentation"] for j in i]  # all segments concatenated
-                            s = (np.array(s).reshape(-1, 2) / np.array([w, h])).reshape(-1).tolist()
+                            s = [
+                                j for i in ann["segmentation"] for j in i
+                            ]  # all segments concatenated
+                            s = (
+                                (np.array(s).reshape(-1, 2) / np.array([w, h]))
+                                .reshape(-1)
+                                .tolist()
+                            )
                         s = [cls] + s
                         segments.append(s)
                     if use_keypoints and ann.get("keypoints") is not None:
                         keypoints.append(
-                            box + (np.array(ann["keypoints"]).reshape(-1, 3) / np.array([w, h, 1])).reshape(-1).tolist()
+                            box
+                            + (
+                                np.array(ann["keypoints"]).reshape(-1, 3)
+                                / np.array([w, h, 1])
+                            )
+                            .reshape(-1)
+                            .tolist()
                         )
 
             # Write
@@ -310,11 +332,17 @@ def convert_coco(
                         line = (*(keypoints[i]),)  # cls, box, keypoints
                     else:
                         line = (
-                            *(segments[i] if use_segments and len(segments[i]) > 0 else bboxes[i]),
+                            *(
+                                segments[i]
+                                if use_segments and len(segments[i]) > 0
+                                else bboxes[i]
+                            ),
                         )  # cls, box or segments
                     file.write(("%g " * len(line)).rstrip() % line + "\n")
 
-    LOGGER.info(f"COCO data converted successfully.\nResults saved to {save_dir.resolve()}")
+    LOGGER.info(
+        f"COCO data converted successfully.\nResults saved to {save_dir.resolve()}"
+    )
 
 
 def convert_dota_to_yolo_obb(dota_root_path: str):
@@ -391,9 +419,12 @@ def convert_dota_to_yolo_obb(dota_root_path: str):
                 class_idx = class_mapping[class_name]
                 coords = [float(p) for p in parts[:8]]
                 normalized_coords = [
-                    coords[i] / image_width if i % 2 == 0 else coords[i] / image_height for i in range(8)
+                    coords[i] / image_width if i % 2 == 0 else coords[i] / image_height
+                    for i in range(8)
                 ]
-                formatted_coords = ["{:.6g}".format(coord) for coord in normalized_coords]
+                formatted_coords = [
+                    "{:.6g}".format(coord) for coord in normalized_coords
+                ]
                 g.write(f"{class_idx} {' '.join(formatted_coords)}\n")
 
     for phase in ["train", "val"]:
@@ -515,7 +546,9 @@ def yolo_bbox2segment(im_dir, save_dir=None, sam_model="sam_b.pt"):
 
     LOGGER.info("Detection labels detected, generating segment labels by SAM model!")
     sam_model = SAM(sam_model)
-    for l in tqdm(dataset.labels, total=len(dataset.labels), desc="Generating segment labels"):
+    for l in tqdm(
+        dataset.labels, total=len(dataset.labels), desc="Generating segment labels"
+    ):
         h, w = l["shape"]
         boxes = l["bboxes"]
         if len(boxes) == 0:  # skip empty labels

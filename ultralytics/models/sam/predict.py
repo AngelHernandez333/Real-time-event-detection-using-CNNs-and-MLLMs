@@ -119,7 +119,17 @@ class Predictor(BasePredictor):
         letterbox = LetterBox(self.args.imgsz, auto=False, center=False)
         return [letterbox(image=x) for x in im]
 
-    def inference(self, im, bboxes=None, points=None, labels=None, masks=None, multimask_output=False, *args, **kwargs):
+    def inference(
+        self,
+        im,
+        bboxes=None,
+        points=None,
+        labels=None,
+        masks=None,
+        multimask_output=False,
+        *args,
+        **kwargs
+    ):
         """
         Perform image segmentation inference based on the given input cues, using the currently loaded image. This
         method leverages SAM's (Segment Anything Model) architecture consisting of image encoder, prompt encoder, and
@@ -147,9 +157,19 @@ class Predictor(BasePredictor):
         if all(i is None for i in [bboxes, points, masks]):
             return self.generate(im, *args, **kwargs)
 
-        return self.prompt_inference(im, bboxes, points, labels, masks, multimask_output)
+        return self.prompt_inference(
+            im, bboxes, points, labels, masks, multimask_output
+        )
 
-    def prompt_inference(self, im, bboxes=None, points=None, labels=None, masks=None, multimask_output=False):
+    def prompt_inference(
+        self,
+        im,
+        bboxes=None,
+        points=None,
+        labels=None,
+        masks=None,
+        multimask_output=False,
+    ):
         """
         Internal function for image segmentation inference based on cues like bounding boxes, points, and masks.
         Leverages SAM's specialized architecture for prompt-based, real-time segmentation.
@@ -168,10 +188,16 @@ class Predictor(BasePredictor):
                 - np.ndarray: An array of length C containing quality scores predicted by the model for each mask.
                 - np.ndarray: Low-resolution logits of shape CxHxW for subsequent inference, where H=W=256.
         """
-        features = self.model.image_encoder(im) if self.features is None else self.features
+        features = (
+            self.model.image_encoder(im) if self.features is None else self.features
+        )
 
         src_shape, dst_shape = self.batch[1][0].shape[:2], im.shape[2:]
-        r = 1.0 if self.segment_all else min(dst_shape[0] / src_shape[0], dst_shape[1] / src_shape[1])
+        r = (
+            1.0
+            if self.segment_all
+            else min(dst_shape[0] / src_shape[0], dst_shape[1] / src_shape[1])
+        )
         # Transform input prompts
         if points is not None:
             points = torch.as_tensor(points, dtype=torch.float32, device=self.device)
@@ -188,11 +214,15 @@ class Predictor(BasePredictor):
             bboxes = bboxes[None] if bboxes.ndim == 1 else bboxes
             bboxes *= r
         if masks is not None:
-            masks = torch.as_tensor(masks, dtype=torch.float32, device=self.device).unsqueeze(1)
+            masks = torch.as_tensor(
+                masks, dtype=torch.float32, device=self.device
+            ).unsqueeze(1)
 
         points = (points, labels) if points is not None else None
         # Embed prompts
-        sparse_embeddings, dense_embeddings = self.model.prompt_encoder(points=points, boxes=bboxes, masks=masks)
+        sparse_embeddings, dense_embeddings = self.model.prompt_encoder(
+            points=points, boxes=bboxes, masks=masks
+        )
 
         # Predict masks
         pred_masks, pred_scores = self.model.mask_decoder(
@@ -248,9 +278,13 @@ class Predictor(BasePredictor):
         """
         self.segment_all = True
         ih, iw = im.shape[2:]
-        crop_regions, layer_idxs = generate_crop_boxes((ih, iw), crop_n_layers, crop_overlap_ratio)
+        crop_regions, layer_idxs = generate_crop_boxes(
+            (ih, iw), crop_n_layers, crop_overlap_ratio
+        )
         if point_grids is None:
-            point_grids = build_all_layer_point_grids(points_stride, crop_n_layers, crop_downscale_factor)
+            point_grids = build_all_layer_point_grids(
+                points_stride, crop_n_layers, crop_downscale_factor
+            )
         pred_masks, pred_scores, pred_bboxes, region_areas = [], [], [], []
         for crop_region, layer_idx in zip(crop_regions, layer_idxs):
             x1, y1, x2, y2 = crop_region
@@ -258,14 +292,20 @@ class Predictor(BasePredictor):
             area = torch.tensor(w * h, device=im.device)
             points_scale = np.array([[w, h]])  # w, h
             # Crop image and interpolate to input size
-            crop_im = F.interpolate(im[..., y1:y2, x1:x2], (ih, iw), mode="bilinear", align_corners=False)
+            crop_im = F.interpolate(
+                im[..., y1:y2, x1:x2], (ih, iw), mode="bilinear", align_corners=False
+            )
             # (num_points, 2)
             points_for_image = point_grids[layer_idx] * points_scale
             crop_masks, crop_scores, crop_bboxes = [], [], []
             for (points,) in batch_iterator(points_batch_size, points_for_image):
-                pred_mask, pred_score = self.prompt_inference(crop_im, points=points, multimask_output=True)
+                pred_mask, pred_score = self.prompt_inference(
+                    crop_im, points=points, multimask_output=True
+                )
                 # Interpolate predicted masks to input size
-                pred_mask = F.interpolate(pred_mask[None], (h, w), mode="bilinear", align_corners=False)[0]
+                pred_mask = F.interpolate(
+                    pred_mask[None], (h, w), mode="bilinear", align_corners=False
+                )[0]
                 idx = pred_score > conf_thres
                 pred_mask, pred_score = pred_mask[idx], pred_score[idx]
 
@@ -278,9 +318,15 @@ class Predictor(BasePredictor):
                 pred_mask = pred_mask > self.model.mask_threshold
                 # (N, 4)
                 pred_bbox = batched_mask_to_box(pred_mask).float()
-                keep_mask = ~is_box_near_crop_edge(pred_bbox, crop_region, [0, 0, iw, ih])
+                keep_mask = ~is_box_near_crop_edge(
+                    pred_bbox, crop_region, [0, 0, iw, ih]
+                )
                 if not torch.all(keep_mask):
-                    pred_bbox, pred_mask, pred_score = pred_bbox[keep_mask], pred_mask[keep_mask], pred_score[keep_mask]
+                    pred_bbox, pred_mask, pred_score = (
+                        pred_bbox[keep_mask],
+                        pred_mask[keep_mask],
+                        pred_score[keep_mask],
+                    )
 
                 crop_masks.append(pred_mask)
                 crop_bboxes.append(pred_bbox)
@@ -309,7 +355,11 @@ class Predictor(BasePredictor):
         if len(crop_regions) > 1:
             scores = 1 / region_areas
             keep = torchvision.ops.nms(pred_bboxes, scores, crop_nms_thresh)
-            pred_masks, pred_bboxes, pred_scores = pred_masks[keep], pred_bboxes[keep], pred_scores[keep]
+            pred_masks, pred_bboxes, pred_scores = (
+                pred_masks[keep],
+                pred_bboxes[keep],
+                pred_scores[keep],
+            )
 
         return pred_masks, pred_scores, pred_bboxes
 
@@ -366,21 +416,35 @@ class Predictor(BasePredictor):
         pred_bboxes = preds[2] if self.segment_all else None
         names = dict(enumerate(str(i) for i in range(len(pred_masks))))
 
-        if not isinstance(orig_imgs, list):  # input images are a torch.Tensor, not a list
+        if not isinstance(
+            orig_imgs, list
+        ):  # input images are a torch.Tensor, not a list
             orig_imgs = ops.convert_torch2numpy_batch(orig_imgs)
 
         results = []
         for i, masks in enumerate([pred_masks]):
             orig_img = orig_imgs[i]
             if pred_bboxes is not None:
-                pred_bboxes = ops.scale_boxes(img.shape[2:], pred_bboxes.float(), orig_img.shape, padding=False)
-                cls = torch.arange(len(pred_masks), dtype=torch.int32, device=pred_masks.device)
-                pred_bboxes = torch.cat([pred_bboxes, pred_scores[:, None], cls[:, None]], dim=-1)
+                pred_bboxes = ops.scale_boxes(
+                    img.shape[2:], pred_bboxes.float(), orig_img.shape, padding=False
+                )
+                cls = torch.arange(
+                    len(pred_masks), dtype=torch.int32, device=pred_masks.device
+                )
+                pred_bboxes = torch.cat(
+                    [pred_bboxes, pred_scores[:, None], cls[:, None]], dim=-1
+                )
 
-            masks = ops.scale_masks(masks[None].float(), orig_img.shape[:2], padding=False)[0]
+            masks = ops.scale_masks(
+                masks[None].float(), orig_img.shape[:2], padding=False
+            )[0]
             masks = masks > self.model.mask_threshold  # to bool
             img_path = self.batch[0][i]
-            results.append(Results(orig_img, path=img_path, names=names, masks=masks, boxes=pred_bboxes))
+            results.append(
+                Results(
+                    orig_img, path=img_path, names=names, masks=masks, boxes=pred_bboxes
+                )
+            )
         # Reset segment-all mode.
         self.segment_all = False
         return results

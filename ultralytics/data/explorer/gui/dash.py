@@ -17,9 +17,12 @@ from streamlit_select import image_select
 
 def _get_explorer():
     """Initializes and returns an instance of the Explorer class."""
-    exp = Explorer(data=st.session_state.get("dataset"), model=st.session_state.get("model"))
+    exp = Explorer(
+        data=st.session_state.get("dataset"), model=st.session_state.get("model")
+    )
     thread = Thread(
-        target=exp.create_embeddings_table, kwargs={"force": st.session_state.get("force_recreate_embeddings")}
+        target=exp.create_embeddings_table,
+        kwargs={"force": st.session_state.get("force_recreate_embeddings")},
     )
     thread.start()
     progress_bar = st.progress(0, text="Creating embeddings table...")
@@ -55,7 +58,9 @@ def init_explorer_form():
     with st.form(key="explorer_init_form"):
         col1, col2 = st.columns(2)
         with col1:
-            st.selectbox("Select dataset", ds, key="dataset", index=ds.index("coco128.yaml"))
+            st.selectbox(
+                "Select dataset", ds, key="dataset", index=ds.index("coco128.yaml")
+            )
         with col2:
             st.selectbox("Select model", models, key="model")
         st.checkbox("Force recreate embeddings", key="force_recreate_embeddings")
@@ -83,7 +88,12 @@ def ai_query_form():
     with st.form("ai_query_form"):
         col1, col2 = st.columns([0.8, 0.2])
         with col1:
-            st.text_input("Query", "Show images with 1 person and 1 dog", label_visibility="collapsed", key="ai_query")
+            st.text_input(
+                "Query",
+                "Show images with 1 person and 1 dog",
+                label_visibility="collapsed",
+                key="ai_query",
+            )
         with col2:
             st.form_submit_button("Ask AI", on_click=run_ai_query)
 
@@ -91,7 +101,9 @@ def ai_query_form():
 def find_similar_imgs(imgs):
     """Initializes a Streamlit form for AI-based image querying with custom input."""
     exp = st.session_state["explorer"]
-    similar = exp.get_similar(img=imgs, limit=st.session_state.get("limit"), return_type="arrow")
+    similar = exp.get_similar(
+        img=imgs, limit=st.session_state.get("limit"), return_type="arrow"
+    )
     paths = similar.to_pydict()["im_file"]
     st.session_state["imgs"] = paths
     st.session_state["res"] = similar
@@ -104,7 +116,12 @@ def similarity_form(selected_imgs):
         subcol1, subcol2 = st.columns([1, 1])
         with subcol1:
             st.number_input(
-                "limit", min_value=None, max_value=None, value=25, label_visibility="collapsed", key="limit"
+                "limit",
+                min_value=None,
+                max_value=None,
+                value=25,
+                label_visibility="collapsed",
+                key="limit",
             )
 
         with subcol2:
@@ -154,7 +171,9 @@ def run_ai_query():
         exp = st.session_state["explorer"]
         res = exp.ask_ai(query)
         if not isinstance(res, pd.DataFrame) or res.empty:
-            st.session_state["error"] = "No results found using AI generated query. Try another query or rerun it."
+            st.session_state["error"] = (
+                "No results found using AI generated query. Try another query or rerun it."
+            )
             return
         st.session_state["imgs"] = res["im_file"].to_list()
         st.session_state["res"] = res
@@ -179,13 +198,19 @@ def utralytics_explorer_docs_callback():
             unsafe_allow_html=True,
             help=None,
         )
-        st.link_button("Ultrlaytics Explorer API", "https://docs.ultralytics.com/datasets/explorer/")
+        st.link_button(
+            "Ultrlaytics Explorer API",
+            "https://docs.ultralytics.com/datasets/explorer/",
+        )
 
 
 def layout():
     """Resets explorer session variables and provides documentation with a link to API docs."""
     st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
-    st.markdown("<h1 style='text-align: center;'>Ultralytics Explorer Demo</h1>", unsafe_allow_html=True)
+    st.markdown(
+        "<h1 style='text-align: center;'>Ultralytics Explorer Demo</h1>",
+        unsafe_allow_html=True,
+    )
 
     if st.session_state.get("explorer") is None:
         init_explorer_form()
@@ -201,7 +226,11 @@ def layout():
         if st.session_state.get("imgs"):
             imgs = st.session_state.get("imgs")
         else:
-            imgs = exp.table.to_lance().to_table(columns=["im_file"]).to_pydict()["im_file"]
+            imgs = (
+                exp.table.to_lance()
+                .to_table(columns=["im_file"])
+                .to_pydict()["im_file"]
+            )
             st.session_state["res"] = exp.table.to_arrow()
     total_imgs, selected_imgs = len(imgs), []
     with col1:
@@ -240,11 +269,21 @@ def layout():
             labels, boxes, masks, kpts, classes = None, None, None, None, None
             task = exp.model.task
             if st.session_state.get("display_labels"):
-                labels = st.session_state.get("res").to_pydict()["labels"][start_idx : start_idx + num]
-                boxes = st.session_state.get("res").to_pydict()["bboxes"][start_idx : start_idx + num]
-                masks = st.session_state.get("res").to_pydict()["masks"][start_idx : start_idx + num]
-                kpts = st.session_state.get("res").to_pydict()["keypoints"][start_idx : start_idx + num]
-                classes = st.session_state.get("res").to_pydict()["cls"][start_idx : start_idx + num]
+                labels = st.session_state.get("res").to_pydict()["labels"][
+                    start_idx : start_idx + num
+                ]
+                boxes = st.session_state.get("res").to_pydict()["bboxes"][
+                    start_idx : start_idx + num
+                ]
+                masks = st.session_state.get("res").to_pydict()["masks"][
+                    start_idx : start_idx + num
+                ]
+                kpts = st.session_state.get("res").to_pydict()["keypoints"][
+                    start_idx : start_idx + num
+                ]
+                classes = st.session_state.get("res").to_pydict()["cls"][
+                    start_idx : start_idx + num
+                ]
             imgs_displayed = imgs[start_idx : start_idx + num]
             selected_imgs = image_select(
                 f"Total samples: {total_imgs}",

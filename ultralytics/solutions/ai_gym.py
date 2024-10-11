@@ -87,7 +87,9 @@ class AIGym:
                     k[int(self.kpts_to_check[1])].cpu(),
                     k[int(self.kpts_to_check[2])].cpu(),
                 )
-                self.im0 = self.annotator.draw_specific_points(k, self.kpts_to_check, shape=(640, 640), radius=10)
+                self.im0 = self.annotator.draw_specific_points(
+                    k, self.kpts_to_check, shape=(640, 640), radius=10
+                )
 
             if self.pose_type == "abworkout":
                 self.angle[ind] = self.annotator.estimate_pose_angle(
@@ -95,7 +97,9 @@ class AIGym:
                     k[int(self.kpts_to_check[1])].cpu(),
                     k[int(self.kpts_to_check[2])].cpu(),
                 )
-                self.im0 = self.annotator.draw_specific_points(k, self.kpts_to_check, shape=(640, 640), radius=10)
+                self.im0 = self.annotator.draw_specific_points(
+                    k, self.kpts_to_check, shape=(640, 640), radius=10
+                )
                 if self.angle[ind] > self.poseup_angle:
                     self.stage[ind] = "down"
                 if self.angle[ind] < self.posedown_angle and self.stage[ind] == "down":

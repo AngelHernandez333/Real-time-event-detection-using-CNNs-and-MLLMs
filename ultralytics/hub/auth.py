@@ -2,7 +2,12 @@
 
 import requests
 
-from ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX, request_with_credentials
+from ultralytics.hub.utils import (
+    HUB_API_ROOT,
+    HUB_WEB_ROOT,
+    PREFIX,
+    request_with_credentials,
+)
 from ultralytics.utils import LOGGER, SETTINGS, emojis, is_colab
 
 API_KEY_URL = f"{HUB_WEB_ROOT}/settings?tab=api+keys"
@@ -64,7 +69,9 @@ class Auth:
             if verbose:
                 LOGGER.info(f"{PREFIX}New authentication successful ✅")
         elif verbose:
-            LOGGER.info(f"{PREFIX}Get API key from {API_KEY_URL} and then run 'yolo hub login API_KEY'")
+            LOGGER.info(
+                f"{PREFIX}Get API key from {API_KEY_URL} and then run 'yolo hub login API_KEY'"
+            )
 
     def request_api_key(self, max_attempts=3):
         """

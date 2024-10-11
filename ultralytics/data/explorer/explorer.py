@@ -17,14 +17,24 @@ from ultralytics.data.dataset import YOLODataset
 from ultralytics.data.utils import check_det_dataset
 from ultralytics.models.yolo.model import YOLO
 from ultralytics.utils import LOGGER, IterableSimpleNamespace, checks, USER_CONFIG_DIR
-from .utils import get_sim_index_schema, get_table_schema, plot_query_result, prompt_sql_query, sanitize_batch
+from .utils import (
+    get_sim_index_schema,
+    get_table_schema,
+    plot_query_result,
+    prompt_sql_query,
+    sanitize_batch,
+)
 
 
 class ExplorerDataset(YOLODataset):
     def __init__(self, *args, data: dict = None, **kwargs) -> None:
         super().__init__(*args, data=data, **kwargs)
 
-    def load_image(self, i: int) -> Union[Tuple[np.ndarray, Tuple[int, int], Tuple[int, int]], Tuple[None, None, None]]:
+    def load_image(
+        self, i: int
+    ) -> Union[
+        Tuple[np.ndarray, Tuple[int, int], Tuple[int, int]], Tuple[None, None, None]
+    ]:
         """Loads 1 image from dataset index 'i' without any resize ops."""
         im, f, fn = self.ims[i], self.im_files[i], self.npy_files[i]
         if im is None:  # not cached in RAM
@@ -75,7 +85,9 @@ class Explorer:
         self.table = None
         self.progress = 0
 
-    def create_embeddings_table(self, force: bool = False, split: str = "train") -> None:
+    def create_embeddings_table(
+        self, force: bool = False, split: str = "train"
+    ) -> None:
         """
         Create LanceDB table containing the embeddings of the images in the dataset. The table will be reused if it
         already exists. Pass force=True to overwrite the existing table.
@@ -91,10 +103,14 @@ class Explorer:
             ```
         """
         if self.table is not None and not force:
-            LOGGER.info("Table already exists. Reusing it. Pass force=True to overwrite it.")
+            LOGGER.info(
+                "Table already exists. Reusing it. Pass force=True to overwrite it."
+            )
             return
         if self.table_name in self.connection.table_names() and not force:
-            LOGGER.info(f"Table {self.table_name} already exists. Reusing it. Pass force=True to overwrite it.")
+            LOGGER.info(
+                f"Table {self.table_name} already exists. Reusing it. Pass force=True to overwrite it."
+            )
             self.table = self.connection.open_table(self.table_name)
             self.progress = 1
             return
@@ -110,24 +126,44 @@ class Explorer:
         choice_set = data_info[split]
         choice_set = choice_set if isinstance(choice_set, list) else [choice_set]
         self.choice_set = choice_set
-        dataset = ExplorerDataset(img_path=choice_set, data=data_info, augment=False, cache=False, task=self.model.task)
+        dataset = ExplorerDataset(
+            img_path=choice_set,
+            data=data_info,
+            augment=False,
+            cache=False,
+            task=self.model.task,
+        )
 
         # Create the table schema
         batch = dataset[0]
         vector_size = self.model.embed(batch["im_file"], verbose=False)[0].shape[0]
-        table = self.connection.create_table(self.table_name, schema=get_table_schema(vector_size), mode="overwrite")
+        table = self.connection.create_table(
+            self.table_name, schema=get_table_schema(vector_size), mode="overwrite"
+        )
         table.add(
             self._yield_batches(
                 dataset,
                 data_info,
                 self.model,
-                exclude_keys=["img", "ratio_pad", "resized_shape", "ori_shape", "batch_idx"],
+                exclude_keys=[
+                    "img",
+                    "ratio_pad",
+                    "resized_shape",
+                    "ori_shape",
+                    "batch_idx",
+                ],
             )
         )
 
         self.table = table
 
-    def _yield_batches(self, dataset: ExplorerDataset, data_info: dict, model: YOLO, exclude_keys: List[str]):
+    def _yield_batches(
+        self,
+        dataset: ExplorerDataset,
+        data_info: dict,
+        model: YOLO,
+        exclude_keys: List[str],
+    ):
         """Generates batches of data for embedding, excluding specified keys."""
         for i in tqdm(range(len(dataset))):
             self.progress = float(i + 1) / len(dataset)
@@ -135,11 +171,15 @@ class Explorer:
             for k in exclude_keys:
                 batch.pop(k, None)
             batch = sanitize_batch(batch, data_info)
-            batch["vector"] = model.embed(batch["im_file"], verbose=False)[0].detach().tolist()
+            batch["vector"] = (
+                model.embed(batch["im_file"], verbose=False)[0].detach().tolist()
+            )
             yield [batch]
 
     def query(
-        self, imgs: Union[str, np.ndarray, List[str], List[np.ndarray]] = None, limit: int = 25
+        self,
+        imgs: Union[str, np.ndarray, List[str], List[np.ndarray]] = None,
+        limit: int = 25,
     ) -> Any:  # pyarrow.Table
         """
         Query the table for similar images. Accepts a single image or a list of images.
@@ -164,10 +204,16 @@ class Explorer:
             raise ValueError("Table is not created. Please create the table first.")
         if isinstance(imgs, str):
             imgs = [imgs]
-        assert isinstance(imgs, list), f"img must be a string or a list of strings. Got {type(imgs)}"
+        assert isinstance(
+            imgs, list
+        ), f"img must be a string or a list of strings. Got {type(imgs)}"
         embeds = self.model.embed(imgs)
         # Get avg if multiple images are passed (len > 1)
-        embeds = torch.mean(torch.stack(embeds), 0).cpu().numpy() if len(embeds) > 1 else embeds[0].cpu().numpy()
+        embeds = (
+            torch.mean(torch.stack(embeds), 0).cpu().numpy()
+            if len(embeds) > 1
+            else embeds[0].cpu().numpy()
+        )
         return self.table.search(embeds).limit(limit).to_arrow()
 
     def sql_query(
@@ -201,7 +247,9 @@ class Explorer:
             raise ValueError("Table is not created. Please create the table first.")
 
         # Note: using filter pushdown would be a better long term solution. Temporarily using duckdb for this.
-        table = self.table.to_arrow()  # noqa NOTE: Don't comment this. This line is used by DuckDB
+        table = (
+            self.table.to_arrow()
+        )  # noqa NOTE: Don't comment this. This line is used by DuckDB
         if not query.startswith("SELECT") and not query.startswith("WHERE"):
             raise ValueError(
                 f"Query must start with SELECT or WHERE. You can either pass the entire query or just the WHERE clause. found {query}"
@@ -312,7 +360,9 @@ class Explorer:
         img = plot_query_result(similar, plot_labels=labels)
         return Image.fromarray(img)
 
-    def similarity_index(self, max_dist: float = 0.2, top_k: float = None, force: bool = False) -> DataFrame:
+    def similarity_index(
+        self, max_dist: float = 0.2, top_k: float = None, force: bool = False
+    ) -> DataFrame:
         """
         Calculate the similarity index of all the images in the table. Here, the index will contain the data points that
         are max_dist or closer to the image in the embedding space at a given index.
@@ -336,9 +386,13 @@ class Explorer:
         """
         if self.table is None:
             raise ValueError("Table is not created. Please create the table first.")
-        sim_idx_table_name = f"{self.sim_idx_base_name}_thres_{max_dist}_top_{top_k}".lower()
+        sim_idx_table_name = (
+            f"{self.sim_idx_base_name}_thres_{max_dist}_top_{top_k}".lower()
+        )
         if sim_idx_table_name in self.connection.table_names() and not force:
-            LOGGER.info("Similarity matrix already exists. Reusing it. Pass force=True to overwrite it.")
+            LOGGER.info(
+                "Similarity matrix already exists. Reusing it. Pass force=True to overwrite it."
+            )
             return self.connection.open_table(sim_idx_table_name).to_pandas()
 
         if top_k and not (1.0 >= top_k >= 0.0):
@@ -348,16 +402,25 @@ class Explorer:
 
         top_k = int(top_k * len(self.table)) if top_k else len(self.table)
         top_k = max(top_k, 1)
-        features = self.table.to_lance().to_table(columns=["vector", "im_file"]).to_pydict()
+        features = (
+            self.table.to_lance().to_table(columns=["vector", "im_file"]).to_pydict()
+        )
         im_files = features["im_file"]
         embeddings = features["vector"]
 
-        sim_table = self.connection.create_table(sim_idx_table_name, schema=get_sim_index_schema(), mode="overwrite")
+        sim_table = self.connection.create_table(
+            sim_idx_table_name, schema=get_sim_index_schema(), mode="overwrite"
+        )
 
         def _yield_sim_idx():
             """Generates a dataframe with similarity indices and distances for images."""
             for i in tqdm(range(len(embeddings))):
-                sim_idx = self.table.search(embeddings[i]).limit(top_k).to_pandas().query(f"_distance <= {max_dist}")
+                sim_idx = (
+                    self.table.search(embeddings[i])
+                    .limit(top_k)
+                    .to_pandas()
+                    .query(f"_distance <= {max_dist}")
+                )
                 yield [
                     {
                         "idx": i,
@@ -371,7 +434,9 @@ class Explorer:
         self.sim_index = sim_table
         return sim_table.to_pandas()
 
-    def plot_similarity_index(self, max_dist: float = 0.2, top_k: float = None, force: bool = False) -> Image:
+    def plot_similarity_index(
+        self, max_dist: float = 0.2, top_k: float = None, force: bool = False
+    ) -> Image:
         """
         Plot the similarity index of all the images in the table. Here, the index will contain the data points that are
         max_dist or closer to the image in the embedding space at a given index.
@@ -416,7 +481,9 @@ class Explorer:
         return Image.fromarray(np.array(Image.open(buffer)))
 
     def _check_imgs_or_idxs(
-        self, img: Union[str, np.ndarray, List[str], List[np.ndarray], None], idx: Union[None, int, List[int]]
+        self,
+        img: Union[str, np.ndarray, List[str], List[np.ndarray], None],
+        idx: Union[None, int, List[int]],
     ) -> List[np.ndarray]:
         if img is None and idx is None:
             raise ValueError("Either img or idx must be provided.")
@@ -424,7 +491,11 @@ class Explorer:
             raise ValueError("Only one of img or idx must be provided.")
         if idx is not None:
             idx = idx if isinstance(idx, list) else [idx]
-            img = self.table.to_lance().take(idx, columns=["im_file"]).to_pydict()["im_file"]
+            img = (
+                self.table.to_lance()
+                .take(idx, columns=["im_file"])
+                .to_pydict()["im_file"]
+            )
 
         return img if isinstance(img, list) else [img]
 
@@ -449,7 +520,9 @@ class Explorer:
         try:
             df = self.sql_query(result)
         except Exception as e:
-            LOGGER.error("AI generated query is not valid. Please try again with a different prompt")
+            LOGGER.error(
+                "AI generated query is not valid. Please try again with a different prompt"
+            )
             LOGGER.error(e)
             return None
         return df

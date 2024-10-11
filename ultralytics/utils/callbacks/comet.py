@@ -16,7 +16,13 @@ try:
     COMET_SUPPORTED_TASKS = ["detect"]
 
     # Names of plots created by YOLOv8 that are logged to Comet
-    EVALUATION_PLOT_NAMES = "F1_curve", "P_curve", "R_curve", "PR_curve", "confusion_matrix"
+    EVALUATION_PLOT_NAMES = (
+        "F1_curve",
+        "P_curve",
+        "R_curve",
+        "PR_curve",
+        "confusion_matrix",
+    )
     LABEL_PLOT_NAMES = "labels", "labels_correlogram"
 
     _comet_image_prediction_count = 0
@@ -89,7 +95,9 @@ def _create_experiment(args):
         experiment.log_other("Created from", "yolov8")
 
     except Exception as e:
-        LOGGER.warning(f"WARNING ⚠️ Comet installed but not initialized correctly, not logging this run. {e}")
+        LOGGER.warning(
+            f"WARNING ⚠️ Comet installed but not initialized correctly, not logging this run. {e}"
+        )
 
 
 def _fetch_trainer_metadata(trainer):
@@ -105,10 +113,17 @@ def _fetch_trainer_metadata(trainer):
     save_interval = curr_epoch % save_period == 0
     save_assets = save and save_period > 0 and save_interval and not final_epoch
 
-    return dict(curr_epoch=curr_epoch, curr_step=curr_step, save_assets=save_assets, final_epoch=final_epoch)
+    return dict(
+        curr_epoch=curr_epoch,
+        curr_step=curr_step,
+        save_assets=save_assets,
+        final_epoch=final_epoch,
+    )
 
 
-def _scale_bounding_box_to_original_image_shape(box, resized_image_shape, original_image_shape, ratio_pad):
+def _scale_bounding_box_to_original_image_shape(
+    box, resized_image_shape, original_image_shape, ratio_pad
+):
     """
     YOLOv8 resizes images during training and the label values are normalized based on this resized shape.
 
@@ -130,7 +145,9 @@ def _scale_bounding_box_to_original_image_shape(box, resized_image_shape, origin
     return box
 
 
-def _format_ground_truth_annotations_for_detection(img_idx, image_path, batch, class_name_map=None):
+def _format_ground_truth_annotations_for_detection(
+    img_idx, image_path, batch, class_name_map=None
+):
     """Format ground truth annotations for detection."""
     indices = batch["batch_idx"] == img_idx
     bboxes = batch["bboxes"][indices]
@@ -148,7 +165,9 @@ def _format_ground_truth_annotations_for_detection(img_idx, image_path, batch, c
 
     data = []
     for box, label in zip(bboxes, cls_labels):
-        box = _scale_bounding_box_to_original_image_shape(box, resized_image_shape, original_image_shape, ratio_pad)
+        box = _scale_bounding_box_to_original_image_shape(
+            box, resized_image_shape, original_image_shape, ratio_pad
+        )
         data.append(
             {
                 "boxes": [box],
@@ -160,14 +179,18 @@ def _format_ground_truth_annotations_for_detection(img_idx, image_path, batch, c
     return {"name": "ground_truth", "data": data}
 
 
-def _format_prediction_annotations_for_detection(image_path, metadata, class_label_map=None):
+def _format_prediction_annotations_for_detection(
+    image_path, metadata, class_label_map=None
+):
     """Format YOLO predictions for object detection visualization."""
     stem = image_path.stem
     image_id = int(stem) if stem.isnumeric() else stem
 
     predictions = metadata.get(image_id)
     if not predictions:
-        LOGGER.debug(f"COMET WARNING: Image: {image_path} has no bounding boxes predictions")
+        LOGGER.debug(
+            f"COMET WARNING: Image: {image_path} has no bounding boxes predictions"
+        )
         return None
 
     data = []
@@ -183,7 +206,9 @@ def _format_prediction_annotations_for_detection(image_path, metadata, class_lab
     return {"name": "prediction", "data": data}
 
 
-def _fetch_annotations(img_idx, image_path, batch, prediction_metadata_map, class_label_map):
+def _fetch_annotations(
+    img_idx, image_path, batch, prediction_metadata_map, class_label_map
+):
     """Join the ground truth and prediction annotations if they exist."""
     ground_truth_annotations = _format_ground_truth_annotations_for_detection(
         img_idx, image_path, batch, class_label_map
@@ -193,7 +218,9 @@ def _fetch_annotations(img_idx, image_path, batch, prediction_metadata_map, clas
     )
 
     annotations = [
-        annotation for annotation in [ground_truth_annotations, prediction_annotations] if annotation is not None
+        annotation
+        for annotation in [ground_truth_annotations, prediction_annotations]
+        if annotation is not None
     ]
     return [annotations] if annotations else None
 
@@ -213,7 +240,11 @@ def _log_confusion_matrix(experiment, trainer, curr_step, curr_epoch):
     conf_mat = trainer.validator.confusion_matrix.matrix
     names = list(trainer.data["names"].values()) + ["background"]
     experiment.log_confusion_matrix(
-        matrix=conf_mat, labels=names, max_categories=len(names), epoch=curr_epoch, step=curr_step
+        matrix=conf_mat,
+        labels=names,
+        max_categories=len(names),
+        epoch=curr_epoch,
+        step=curr_step,
     )
 
 
@@ -221,7 +252,9 @@ def _log_images(experiment, image_paths, curr_step, annotations=None):
     """Logs images to the experiment with optional annotations."""
     if annotations:
         for image_path, annotation in zip(image_paths, annotations):
-            experiment.log_image(image_path, name=image_path.stem, step=curr_step, annotations=annotation)
+            experiment.log_image(
+                image_path, name=image_path.stem, step=curr_step, annotations=annotation
+            )
 
     else:
         for image_path in image_paths:
@@ -275,17 +308,26 @@ def _log_image_predictions(experiment, validator, curr_step):
 
 def _log_plots(experiment, trainer):
     """Logs evaluation plots and label plots for the experiment."""
-    plot_filenames = [trainer.save_dir / f"{plots}.png" for plots in EVALUATION_PLOT_NAMES]
+    plot_filenames = [
+        trainer.save_dir / f"{plots}.png" for plots in EVALUATION_PLOT_NAMES
+    ]
     _log_images(experiment, plot_filenames, None)
 
-    label_plot_filenames = [trainer.save_dir / f"{labels}.jpg" for labels in LABEL_PLOT_NAMES]
+    label_plot_filenames = [
+        trainer.save_dir / f"{labels}.jpg" for labels in LABEL_PLOT_NAMES
+    ]
     _log_images(experiment, label_plot_filenames, None)
 
 
 def _log_model(experiment, trainer):
     """Log the best-trained model to Comet.ml."""
     model_name = _get_comet_model_name()
-    experiment.log_model(model_name, file_or_folder=str(trainer.best), file_name="best.pt", overwrite=True)
+    experiment.log_model(
+        model_name,
+        file_or_folder=str(trainer.best),
+        file_name="best.pt",
+        overwrite=True,
+    )
 
 
 def on_pretrain_routine_start(trainer):
@@ -306,7 +348,11 @@ def on_train_epoch_end(trainer):
     curr_epoch = metadata["curr_epoch"]
     curr_step = metadata["curr_step"]
 
-    experiment.log_metrics(trainer.label_loss_items(trainer.tloss, prefix="train"), step=curr_step, epoch=curr_epoch)
+    experiment.log_metrics(
+        trainer.label_loss_items(trainer.tloss, prefix="train"),
+        step=curr_step,
+        epoch=curr_epoch,
+    )
 
     if curr_epoch == 1:
         _log_images(experiment, trainer.save_dir.glob("train_batch*.jpg"), curr_step)
@@ -328,7 +374,9 @@ def on_fit_epoch_end(trainer):
     if curr_epoch == 1:
         from ultralytics.utils.torch_utils import model_info_for_loggers
 
-        experiment.log_metrics(model_info_for_loggers(trainer), step=curr_step, epoch=curr_epoch)
+        experiment.log_metrics(
+            model_info_for_loggers(trainer), step=curr_step, epoch=curr_epoch
+        )
 
     if not save_assets:
         return

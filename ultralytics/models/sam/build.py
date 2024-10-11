@@ -64,7 +64,12 @@ def build_mobile_sam(checkpoint=None):
 
 
 def _build_sam(
-    encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_global_attn_indexes, checkpoint=None, mobile_sam=False
+    encoder_embed_dim,
+    encoder_depth,
+    encoder_num_heads,
+    encoder_global_attn_indexes,
+    checkpoint=None,
+    mobile_sam=False,
 ):
     """Builds the selected SAM model architecture."""
     prompt_embed_dim = 256
@@ -155,6 +160,8 @@ def build_sam(ckpt="sam_b.pt"):
             model_builder = sam_model_map.get(k)
 
     if not model_builder:
-        raise FileNotFoundError(f"{ckpt} is not a supported SAM model. Available models are: \n {sam_model_map.keys()}")
+        raise FileNotFoundError(
+            f"{ckpt} is not a supported SAM model. Available models are: \n {sam_model_map.keys()}"
+        )
 
     return model_builder(ckpt)

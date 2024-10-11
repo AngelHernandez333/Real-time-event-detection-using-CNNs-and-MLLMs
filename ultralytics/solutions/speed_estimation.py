@@ -114,12 +114,20 @@ class SpeedEstimator:
             cls (str): object class name
             track (list): tracking history for tracks path drawing
         """
-        speed_label = f"{int(self.dist_data[track_id])}km/ph" if track_id in self.dist_data else self.names[int(cls)]
-        bbox_color = colors(int(track_id)) if track_id in self.dist_data else (255, 0, 255)
+        speed_label = (
+            f"{int(self.dist_data[track_id])}km/ph"
+            if track_id in self.dist_data
+            else self.names[int(cls)]
+        )
+        bbox_color = (
+            colors(int(track_id)) if track_id in self.dist_data else (255, 0, 255)
+        )
 
         self.annotator.box_label(box, speed_label, bbox_color)
 
-        cv2.polylines(self.im0, [self.trk_pts], isClosed=False, color=(0, 255, 0), thickness=1)
+        cv2.polylines(
+            self.im0, [self.trk_pts], isClosed=False, color=(0, 255, 0), thickness=1
+        )
         cv2.circle(self.im0, (int(track[-1][0]), int(track[-1][1])), 5, bbox_color, -1)
 
     def calculate_speed(self, trk_id, track):
@@ -133,21 +141,35 @@ class SpeedEstimator:
 
         if not self.reg_pts[0][0] < track[-1][0] < self.reg_pts[1][0]:
             return
-        if self.reg_pts[1][1] - self.spdl_dist_thresh < track[-1][1] < self.reg_pts[1][1] + self.spdl_dist_thresh:
+        if (
+            self.reg_pts[1][1] - self.spdl_dist_thresh
+            < track[-1][1]
+            < self.reg_pts[1][1] + self.spdl_dist_thresh
+        ):
             direction = "known"
 
-        elif self.reg_pts[0][1] - self.spdl_dist_thresh < track[-1][1] < self.reg_pts[0][1] + self.spdl_dist_thresh:
+        elif (
+            self.reg_pts[0][1] - self.spdl_dist_thresh
+            < track[-1][1]
+            < self.reg_pts[0][1] + self.spdl_dist_thresh
+        ):
             direction = "known"
 
         else:
             direction = "unknown"
 
-        if self.trk_previous_times[trk_id] != 0 and direction != "unknown" and trk_id not in self.trk_idslist:
+        if (
+            self.trk_previous_times[trk_id] != 0
+            and direction != "unknown"
+            and trk_id not in self.trk_idslist
+        ):
             self.trk_idslist.append(trk_id)
 
             time_difference = time() - self.trk_previous_times[trk_id]
             if time_difference > 0:
-                dist_difference = np.abs(track[-1][1] - self.trk_previous_points[trk_id][1])
+                dist_difference = np.abs(
+                    track[-1][1] - self.trk_previous_points[trk_id][1]
+                )
                 speed = dist_difference / time_difference
                 self.dist_data[trk_id] = speed
 
@@ -171,7 +193,9 @@ class SpeedEstimator:
         self.extract_tracks(tracks)
 
         self.annotator = Annotator(self.im0, line_width=2)
-        self.annotator.draw_region(reg_pts=self.reg_pts, color=region_color, thickness=self.region_thickness)
+        self.annotator.draw_region(
+            reg_pts=self.reg_pts, color=region_color, thickness=self.region_thickness
+        )
 
         for box, trk_id, cls in zip(self.boxes, self.trk_ids, self.clss):
             track = self.store_track_info(trk_id, box)

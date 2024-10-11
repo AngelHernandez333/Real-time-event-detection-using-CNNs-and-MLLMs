@@ -108,7 +108,9 @@ def build_dataloader(dataset, batch, workers, shuffle=True, rank=-1):
     batch = min(batch, len(dataset))
     nd = torch.cuda.device_count()  # number of CUDA devices
     nw = min([os.cpu_count() // max(nd, 1), workers])  # number of workers
-    sampler = None if rank == -1 else distributed.DistributedSampler(dataset, shuffle=shuffle)
+    sampler = (
+        None if rank == -1 else distributed.DistributedSampler(dataset, shuffle=shuffle)
+    )
     generator = torch.Generator()
     generator.manual_seed(6148914691236517205 + RANK)
     return InfiniteDataLoader(
@@ -130,8 +132,14 @@ def check_source(source):
     if isinstance(source, (str, int, Path)):  # int for local usb camera
         source = str(source)
         is_file = Path(source).suffix[1:] in (IMG_FORMATS | VID_FORMATS)
-        is_url = source.lower().startswith(("https://", "http://", "rtsp://", "rtmp://", "tcp://"))
-        webcam = source.isnumeric() or source.endswith(".streams") or (is_url and not is_file)
+        is_url = source.lower().startswith(
+            ("https://", "http://", "rtsp://", "rtmp://", "tcp://")
+        )
+        webcam = (
+            source.isnumeric()
+            or source.endswith(".streams")
+            or (is_url and not is_file)
+        )
         screenshot = source.lower() == "screen"
         if is_url and is_file:
             source = check_file(source)  # download
@@ -145,7 +153,9 @@ def check_source(source):
     elif isinstance(source, torch.Tensor):
         tensor = True
     else:
-        raise TypeError("Unsupported image type. For supported types see https://docs.ultralytics.com/modes/predict")
+        raise TypeError(
+            "Unsupported image type. For supported types see https://docs.ultralytics.com/modes/predict"
+        )
 
     return source, webcam, screenshot, from_img, in_memory, tensor
 
@@ -164,7 +174,11 @@ def load_inference_source(source=None, batch=1, vid_stride=1, buffer=False):
         dataset (Dataset): A dataset object for the specified input source.
     """
     source, stream, screenshot, from_img, in_memory, tensor = check_source(source)
-    source_type = source.source_type if in_memory else SourceTypes(stream, screenshot, from_img, tensor)
+    source_type = (
+        source.source_type
+        if in_memory
+        else SourceTypes(stream, screenshot, from_img, tensor)
+    )
 
     # Dataloader
     if tensor:

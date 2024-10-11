@@ -11,7 +11,9 @@ from ultralytics.hub.utils import HUB_WEB_ROOT, HELP_MSG, PREFIX, TQDM
 from ultralytics.utils import LOGGER, SETTINGS, __version__, checks, emojis, is_colab
 from ultralytics.utils.errors import HUBModelError
 
-AGENT_NAME = f"python-{__version__}-colab" if is_colab() else f"python-{__version__}-local"
+AGENT_NAME = (
+    f"python-{__version__}-colab" if is_colab() else f"python-{__version__}-local"
+)
 
 
 class HUBTrainingSession:
@@ -52,7 +54,9 @@ class HUBTrainingSession:
             "heartbeat": 300.0,
         }  # rate limits (seconds)
         self.metrics_queue = {}  # holds metrics for each epoch until upload
-        self.metrics_upload_failed_queue = {}  # holds metrics for each epoch if upload failed
+        self.metrics_upload_failed_queue = (
+            {}
+        )  # holds metrics for each epoch if upload failed
         self.timers = {}  # holds timers in ultralytics/utils/callbacks/hub.py
 
         # Parse input
@@ -74,7 +78,9 @@ class HUBTrainingSession:
         """Loads an existing model from Ultralytics HUB using the provided model identifier."""
         self.model = self.client.model(model_id)
         if not self.model.data:  # then model does not exist
-            raise ValueError(emojis("❌ The specified HUB model does not exist"))  # TODO: improve error handling
+            raise ValueError(
+                emojis("❌ The specified HUB model does not exist")
+            )  # TODO: improve error handling
 
         self.model_url = f"{HUB_WEB_ROOT}/models/{self.model.id}"
 
@@ -183,7 +189,9 @@ class HUBTrainingSession:
                 issues with the provided training arguments.
         """
         if self.model.is_trained():
-            raise ValueError(emojis(f"Model is already trained and uploaded to {self.model_url} 🚀"))
+            raise ValueError(
+                emojis(f"Model is already trained and uploaded to {self.model_url} 🚀")
+            )
 
         if self.model.is_resumable():
             # Model has saved weights
@@ -195,14 +203,20 @@ class HUBTrainingSession:
 
             # Set the model file as either a *.pt or *.yaml file
             self.model_file = (
-                self.model.get_weights_url("parent") if self.model.is_pretrained() else self.model.get_architecture()
+                self.model.get_weights_url("parent")
+                if self.model.is_pretrained()
+                else self.model.get_architecture()
             )
 
         if "data" not in self.train_args:
             # RF bug - datasets are sometimes not exported
-            raise ValueError("Dataset may still be processing. Please wait a minute and try again.")
+            raise ValueError(
+                "Dataset may still be processing. Please wait a minute and try again."
+            )
 
-        self.model_file = checks.check_yolov5u_filename(self.model_file, verbose=False)  # YOLOv5->YOLOv5u
+        self.model_file = checks.check_yolov5u_filename(
+            self.model_file, verbose=False
+        )  # YOLOv5->YOLOv5u
         self.model_id = self.model.id
 
     def request_queue(
@@ -226,7 +240,9 @@ class HUBTrainingSession:
 
                 response = request_func(*args, **kwargs)
                 if response is None:
-                    LOGGER.warning(f"{PREFIX}Received no response from the request. {HELP_MSG}")
+                    LOGGER.warning(
+                        f"{PREFIX}Received no response from the request. {HELP_MSG}"
+                    )
                     time.sleep(2**i)  # Exponential backoff before retrying
                     continue  # Skip further processing and retry
 
@@ -244,10 +260,14 @@ class HUBTrainingSession:
                     message = self._get_failure_message(response, retry, timeout)
 
                     if verbose:
-                        LOGGER.warning(f"{PREFIX}{message} {HELP_MSG} ({response.status_code})")
+                        LOGGER.warning(
+                            f"{PREFIX}{message} {HELP_MSG} ({response.status_code})"
+                        )
 
                 if not self._should_retry(response.status_code):
-                    LOGGER.warning(f"{PREFIX}Request failed. {HELP_MSG} ({response.status_code}")
+                    LOGGER.warning(
+                        f"{PREFIX}Request failed. {HELP_MSG} ({response.status_code}"
+                    )
                     break  # Not an error that should be retried, exit loop
 
                 time.sleep(2**i)  # Exponential backoff for retries
@@ -274,7 +294,9 @@ class HUBTrainingSession:
         }
         return status_code in retry_codes
 
-    def _get_failure_message(self, response: requests.Response, retry: int, timeout: int):
+    def _get_failure_message(
+        self, response: requests.Response, retry: int, timeout: int
+    ):
         """
         Generate a retry message based on the response status code.
 
@@ -302,7 +324,9 @@ class HUBTrainingSession:
 
     def upload_metrics(self):
         """Upload model metrics to Ultralytics HUB."""
-        return self.request_queue(self.model.upload_metrics, metrics=self.metrics_queue.copy(), thread=True)
+        return self.request_queue(
+            self.model.upload_metrics, metrics=self.metrics_queue.copy(), thread=True
+        )
 
     def upload_model(
         self,
@@ -323,7 +347,9 @@ class HUBTrainingSession:
             final (bool): Indicates if the model is the final model after training.
         """
         if Path(weights).is_file():
-            progress_total = Path(weights).stat().st_size if final else None  # Only show progress if final
+            progress_total = (
+                Path(weights).stat().st_size if final else None
+            )  # Only show progress if final
             self.request_queue(
                 self.model.upload_model,
                 epoch=epoch,
@@ -337,9 +363,13 @@ class HUBTrainingSession:
                 progress_total=progress_total,
             )
         else:
-            LOGGER.warning(f"{PREFIX}WARNING ⚠️ Model upload issue. Missing model {weights}.")
+            LOGGER.warning(
+                f"{PREFIX}WARNING ⚠️ Model upload issue. Missing model {weights}."
+            )
 
-    def _show_upload_progress(self, content_length: int, response: requests.Response) -> None:
+    def _show_upload_progress(
+        self, content_length: int, response: requests.Response
+    ) -> None:
         """
         Display a progress bar to track the upload progress of a file download.
 
@@ -350,6 +380,8 @@ class HUBTrainingSession:
         Returns:
             None
         """
-        with TQDM(total=content_length, unit="B", unit_scale=True, unit_divisor=1024) as pbar:
+        with TQDM(
+            total=content_length, unit="B", unit_scale=True, unit_divisor=1024
+        ) as pbar:
             for data in response.iter_content(chunk_size=1024):
                 pbar.update(len(data))

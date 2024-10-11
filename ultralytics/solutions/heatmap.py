@@ -179,33 +179,48 @@ class Heatmap:
             # Draw counting region
             if self.view_in_counts or self.view_out_counts:
                 self.annotator.draw_region(
-                    reg_pts=self.count_reg_pts, color=self.region_color, thickness=self.region_thickness
+                    reg_pts=self.count_reg_pts,
+                    color=self.region_color,
+                    thickness=self.region_thickness,
                 )
 
             for box, cls, track_id in zip(self.boxes, self.clss, self.track_ids):
                 if self.shape == "circle":
                     center = (int((box[0] + box[2]) // 2), int((box[1] + box[3]) // 2))
-                    radius = min(int(box[2]) - int(box[0]), int(box[3]) - int(box[1])) // 2
+                    radius = (
+                        min(int(box[2]) - int(box[0]), int(box[3]) - int(box[1])) // 2
+                    )
 
-                    y, x = np.ogrid[0 : self.heatmap.shape[0], 0 : self.heatmap.shape[1]]
+                    y, x = np.ogrid[
+                        0 : self.heatmap.shape[0], 0 : self.heatmap.shape[1]
+                    ]
                     mask = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= radius**2
 
-                    self.heatmap[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])] += (
+                    self.heatmap[
+                        int(box[1]) : int(box[3]), int(box[0]) : int(box[2])
+                    ] += (
                         2 * mask[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])]
                     )
 
                 else:
-                    self.heatmap[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])] += 2
+                    self.heatmap[
+                        int(box[1]) : int(box[3]), int(box[0]) : int(box[2])
+                    ] += 2
 
                 # Store tracking hist
                 track_line = self.track_history[track_id]
-                track_line.append((float((box[0] + box[2]) / 2), float((box[1] + box[3]) / 2)))
+                track_line.append(
+                    (float((box[0] + box[2]) / 2), float((box[1] + box[3]) / 2))
+                )
                 if len(track_line) > 30:
                     track_line.pop(0)
 
                 # Count objects
                 if len(self.count_reg_pts) == 4:
-                    if self.counting_region.contains(Point(track_line[-1])) and track_id not in self.counting_list:
+                    if (
+                        self.counting_region.contains(Point(track_line[-1]))
+                        and track_id not in self.counting_list
+                    ):
                         self.counting_list.append(track_id)
                         if box[0] < self.counting_region.centroid.x:
                             self.out_counts += 1
@@ -214,7 +229,10 @@ class Heatmap:
 
                 elif len(self.count_reg_pts) == 2:
                     distance = Point(track_line[-1]).distance(self.counting_region)
-                    if distance < self.line_dist_thresh and track_id not in self.counting_list:
+                    if (
+                        distance < self.line_dist_thresh
+                        and track_id not in self.counting_list
+                    ):
                         self.counting_list.append(track_id)
                         if box[0] < self.counting_region.centroid.x:
                             self.out_counts += 1
@@ -224,21 +242,31 @@ class Heatmap:
             for box, cls in zip(self.boxes, self.clss):
                 if self.shape == "circle":
                     center = (int((box[0] + box[2]) // 2), int((box[1] + box[3]) // 2))
-                    radius = min(int(box[2]) - int(box[0]), int(box[3]) - int(box[1])) // 2
+                    radius = (
+                        min(int(box[2]) - int(box[0]), int(box[3]) - int(box[1])) // 2
+                    )
 
-                    y, x = np.ogrid[0 : self.heatmap.shape[0], 0 : self.heatmap.shape[1]]
+                    y, x = np.ogrid[
+                        0 : self.heatmap.shape[0], 0 : self.heatmap.shape[1]
+                    ]
                     mask = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= radius**2
 
-                    self.heatmap[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])] += (
+                    self.heatmap[
+                        int(box[1]) : int(box[3]), int(box[0]) : int(box[2])
+                    ] += (
                         2 * mask[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])]
                     )
 
                 else:
-                    self.heatmap[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])] += 2
+                    self.heatmap[
+                        int(box[1]) : int(box[3]), int(box[0]) : int(box[2])
+                    ] += 2
 
         # Normalize, apply colormap to heatmap and combine with original image
         heatmap_normalized = cv2.normalize(self.heatmap, None, 0, 255, cv2.NORM_MINMAX)
-        heatmap_colored = cv2.applyColorMap(heatmap_normalized.astype(np.uint8), self.colormap)
+        heatmap_colored = cv2.applyColorMap(
+            heatmap_normalized.astype(np.uint8), self.colormap
+        )
 
         incount_label = f"In Count : {self.in_counts}"
         outcount_label = f"OutCount : {self.out_counts}"
@@ -262,7 +290,9 @@ class Heatmap:
                 color=self.count_color,
             )
 
-        self.im0 = cv2.addWeighted(self.im0, 1 - self.heatmap_alpha, heatmap_colored, self.heatmap_alpha, 0)
+        self.im0 = cv2.addWeighted(
+            self.im0, 1 - self.heatmap_alpha, heatmap_colored, self.heatmap_alpha, 0
+        )
 
         if self.env_check and self.view_img:
             self.display_frames()

@@ -45,7 +45,10 @@ class NAS(Model):
 
     def __init__(self, model="yolo_nas_s.pt") -> None:
         """Initializes the NAS model with the provided or default 'yolo_nas_s.pt' model."""
-        assert Path(model).suffix not in (".yaml", ".yml"), "YOLO-NAS models only support pre-trained models."
+        assert Path(model).suffix not in (
+            ".yaml",
+            ".yml",
+        ), "YOLO-NAS models only support pre-trained models."
         super().__init__(model, task="detect")
 
     @smart_inference_mode()
@@ -57,7 +60,9 @@ class NAS(Model):
         if suffix == ".pt":
             self.model = torch.load(weights)
         elif suffix == "":
-            self.model = super_gradients.training.models.get(weights, pretrained_weights="coco")
+            self.model = super_gradients.training.models.get(
+                weights, pretrained_weights="coco"
+            )
         # Standardize model
         self.model.fuse = lambda verbose=True: self.model
         self.model.stride = torch.tensor([32])

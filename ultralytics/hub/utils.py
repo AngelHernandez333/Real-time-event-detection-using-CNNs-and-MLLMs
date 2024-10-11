@@ -98,18 +98,34 @@ def requests_with_progress(method, url, **kwargs):
     if not progress:
         return requests.request(method, url, **kwargs)
     response = requests.request(method, url, stream=True, **kwargs)
-    total = int(response.headers.get("content-length", 0) if isinstance(progress, bool) else progress)  # total size
+    total = int(
+        response.headers.get("content-length", 0)
+        if isinstance(progress, bool)
+        else progress
+    )  # total size
     try:
         pbar = TQDM(total=total, unit="B", unit_scale=True, unit_divisor=1024)
         for data in response.iter_content(chunk_size=1024):
             pbar.update(len(data))
         pbar.close()
-    except requests.exceptions.ChunkedEncodingError:  # avoid 'Connection broken: IncompleteRead' warnings
+    except (
+        requests.exceptions.ChunkedEncodingError
+    ):  # avoid 'Connection broken: IncompleteRead' warnings
         response.close()
     return response
 
 
-def smart_request(method, url, retry=3, timeout=30, thread=True, code=-1, verbose=True, progress=False, **kwargs):
+def smart_request(
+    method,
+    url,
+    retry=3,
+    timeout=30,
+    thread=True,
+    code=-1,
+    verbose=True,
+    progress=False,
+    **kwargs,
+):
     """
     Makes an HTTP request using the 'requests' library, with exponential backoff retries up to a specified timeout.
 
@@ -137,8 +153,12 @@ def smart_request(method, url, retry=3, timeout=30, thread=True, code=-1, verbos
         for i in range(retry + 1):
             if (time.time() - t0) > timeout:
                 break
-            r = requests_with_progress(func_method, func_url, **func_kwargs)  # i.e. get(url, data, json, files)
-            if r.status_code < 300:  # return codes in the 2xx range are generally considered "good" or "successful"
+            r = requests_with_progress(
+                func_method, func_url, **func_kwargs
+            )  # i.e. get(url, data, json, files)
+            if (
+                r.status_code < 300
+            ):  # return codes in the 2xx range are generally considered "good" or "successful"
                 break
             try:
                 m = r.json().get("message", "No JSON message.")
@@ -189,7 +209,9 @@ class Events:
         self.t = 0.0  # rate limit timer (seconds)
         self.metadata = {
             "cli": Path(sys.argv[0]).name == "yolo",
-            "install": "git" if is_git_dir() else "pip" if is_pip_package() else "other",
+            "install": (
+                "git" if is_git_dir() else "pip" if is_pip_package() else "other"
+            ),
             "python": ".".join(platform.python_version_tuple()[:2]),  # i.e. 3.10
             "version": __version__,
             "env": ENVIRONMENT,
@@ -201,7 +223,11 @@ class Events:
             and RANK in (-1, 0)
             and not TESTS_RUNNING
             and ONLINE
-            and (is_pip_package() or get_git_origin_url() == "https://github.com/ultralytics/ultralytics.git")
+            and (
+                is_pip_package()
+                or get_git_origin_url()
+                == "https://github.com/ultralytics/ultralytics.git"
+            )
         )
 
     def __call__(self, cfg):
@@ -216,7 +242,9 @@ class Events:
             return
 
         # Attempt to add to events
-        if len(self.events) < 25:  # Events list limited to 25 events (drop any events past this)
+        if (
+            len(self.events) < 25
+        ):  # Events list limited to 25 events (drop any events past this)
             params = {
                 **self.metadata,
                 "task": cfg.task,
@@ -233,7 +261,10 @@ class Events:
             return
 
         # Time is over rate limiter, send now
-        data = {"client_id": SETTINGS["uuid"], "events": self.events}  # SHA-256 anonymized UUID hash and events list
+        data = {
+            "client_id": SETTINGS["uuid"],
+            "events": self.events,
+        }  # SHA-256 anonymized UUID hash and events list
 
         # POST equivalent to requests.post(self.url, json=data)
         smart_request("post", self.url, json=data, retry=0, verbose=False)

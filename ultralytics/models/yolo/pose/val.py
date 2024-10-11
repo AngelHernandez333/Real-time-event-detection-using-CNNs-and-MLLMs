@@ -26,7 +26,9 @@ class PoseValidator(DetectionValidator):
         ```
     """
 
-    def __init__(self, dataloader=None, save_dir=None, pbar=None, args=None, _callbacks=None):
+    def __init__(
+        self, dataloader=None, save_dir=None, pbar=None, args=None, _callbacks=None
+    ):
         """Initialize a 'PoseValidator' object with custom parameters and assigned attributes."""
         super().__init__(dataloader, save_dir, pbar, args, _callbacks)
         self.sigma = None
@@ -91,7 +93,9 @@ class PoseValidator(DetectionValidator):
         kpts = kpts.clone()
         kpts[..., 0] *= w
         kpts[..., 1] *= h
-        kpts = ops.scale_coords(pbatch["imgsz"], kpts, pbatch["ori_shape"], ratio_pad=pbatch["ratio_pad"])
+        kpts = ops.scale_coords(
+            pbatch["imgsz"], kpts, pbatch["ori_shape"], ratio_pad=pbatch["ratio_pad"]
+        )
         pbatch["kpts"] = kpts
         return pbatch
 
@@ -100,7 +104,12 @@ class PoseValidator(DetectionValidator):
         predn = super()._prepare_pred(pred, pbatch)
         nk = pbatch["kpts"].shape[1]
         pred_kpts = predn[:, 6:].view(len(predn), nk, -1)
-        ops.scale_coords(pbatch["imgsz"], pred_kpts, pbatch["ori_shape"], ratio_pad=pbatch["ratio_pad"])
+        ops.scale_coords(
+            pbatch["imgsz"],
+            pred_kpts,
+            pbatch["ori_shape"],
+            ratio_pad=pbatch["ratio_pad"],
+        )
         return predn, pred_kpts
 
     def update_metrics(self, preds, batch):
@@ -123,7 +132,9 @@ class PoseValidator(DetectionValidator):
                     for k in self.stats.keys():
                         self.stats[k].append(stat[k])
                     if self.args.plots:
-                        self.confusion_matrix.process_batch(detections=None, gt_bboxes=bbox, gt_cls=cls)
+                        self.confusion_matrix.process_batch(
+                            detections=None, gt_bboxes=bbox, gt_cls=cls
+                        )
                 continue
 
             # Predictions
@@ -136,7 +147,9 @@ class PoseValidator(DetectionValidator):
             # Evaluate
             if nl:
                 stat["tp"] = self._process_batch(predn, bbox, cls)
-                stat["tp_p"] = self._process_batch(predn, bbox, cls, pred_kpts, pbatch["kpts"])
+                stat["tp_p"] = self._process_batch(
+                    predn, bbox, cls, pred_kpts, pbatch["kpts"]
+                )
                 if self.args.plots:
                     self.confusion_matrix.process_batch(predn, bbox, cls)
 
@@ -149,7 +162,9 @@ class PoseValidator(DetectionValidator):
             # if self.args.save_txt:
             #    save_one_txt(predn, save_conf, shape, file=save_dir / 'labels' / f'{path.stem}.txt')
 
-    def _process_batch(self, detections, gt_bboxes, gt_cls, pred_kpts=None, gt_kpts=None):
+    def _process_batch(
+        self, detections, gt_bboxes, gt_cls, pred_kpts=None, gt_kpts=None
+    ):
         """
         Return correct prediction matrix.
 
@@ -221,9 +236,13 @@ class PoseValidator(DetectionValidator):
     def eval_json(self, stats):
         """Evaluates object detection model using COCO JSON format."""
         if self.args.save_json and self.is_coco and len(self.jdict):
-            anno_json = self.data["path"] / "annotations/person_keypoints_val2017.json"  # annotations
+            anno_json = (
+                self.data["path"] / "annotations/person_keypoints_val2017.json"
+            )  # annotations
             pred_json = self.save_dir / "predictions.json"  # predictions
-            LOGGER.info(f"\nEvaluating pycocotools mAP using {pred_json} and {anno_json}...")
+            LOGGER.info(
+                f"\nEvaluating pycocotools mAP using {pred_json} and {anno_json}..."
+            )
             try:  # https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoEvalDemo.ipynb
                 check_requirements("pycocotools>=2.0.6")
                 from pycocotools.coco import COCO  # noqa
@@ -232,17 +251,23 @@ class PoseValidator(DetectionValidator):
                 for x in anno_json, pred_json:
                     assert x.is_file(), f"{x} file not found"
                 anno = COCO(str(anno_json))  # init annotations api
-                pred = anno.loadRes(str(pred_json))  # init predictions api (must pass string, not Path)
-                for i, eval in enumerate([COCOeval(anno, pred, "bbox"), COCOeval(anno, pred, "keypoints")]):
+                pred = anno.loadRes(
+                    str(pred_json)
+                )  # init predictions api (must pass string, not Path)
+                for i, eval in enumerate(
+                    [COCOeval(anno, pred, "bbox"), COCOeval(anno, pred, "keypoints")]
+                ):
                     if self.is_coco:
-                        eval.params.imgIds = [int(Path(x).stem) for x in self.dataloader.dataset.im_files]  # im to eval
+                        eval.params.imgIds = [
+                            int(Path(x).stem) for x in self.dataloader.dataset.im_files
+                        ]  # im to eval
                     eval.evaluate()
                     eval.accumulate()
                     eval.summarize()
                     idx = i * 4 + 2
-                    stats[self.metrics.keys[idx + 1]], stats[self.metrics.keys[idx]] = eval.stats[
-                        :2
-                    ]  # update mAP50-95 and mAP50
+                    stats[self.metrics.keys[idx + 1]], stats[self.metrics.keys[idx]] = (
+                        eval.stats[:2]
+                    )  # update mAP50-95 and mAP50
             except Exception as e:
                 LOGGER.warning(f"pycocotools unable to run: {e}")
         return stats

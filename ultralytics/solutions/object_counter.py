@@ -112,7 +112,9 @@ class ObjectCounter:
             self.reg_pts = reg_pts
             self.counting_region = Polygon(self.reg_pts)
         else:
-            print("Invalid Region points provided, region_points must be 2 for lines or >= 3 for polygons.")
+            print(
+                "Invalid Region points provided, region_points must be 2 for lines or >= 3 for polygons."
+            )
             print("Using Line Counter Now")
             self.counting_region = LineString(self.reg_pts)
 
@@ -171,21 +173,33 @@ class ObjectCounter:
             # Extract tracks
             for box, track_id, cls in zip(boxes, track_ids, clss):
                 # Draw bounding box
-                self.annotator.box_label(box, label=f"{track_id}:{self.names[cls]}", color=colors(int(track_id), True))
+                self.annotator.box_label(
+                    box,
+                    label=f"{track_id}:{self.names[cls]}",
+                    color=colors(int(track_id), True),
+                )
 
                 # Draw Tracks
                 track_line = self.track_history[track_id]
-                track_line.append((float((box[0] + box[2]) / 2), float((box[1] + box[3]) / 2)))
+                track_line.append(
+                    (float((box[0] + box[2]) / 2), float((box[1] + box[3]) / 2))
+                )
                 if len(track_line) > 30:
                     track_line.pop(0)
 
                 # Draw track trails
                 if self.draw_tracks:
                     self.annotator.draw_centroid_and_tracks(
-                        track_line, color=self.track_color, track_thickness=self.track_thickness
+                        track_line,
+                        color=self.track_color,
+                        track_thickness=self.track_thickness,
                     )
 
-                prev_position = self.track_history[track_id][-2] if len(self.track_history[track_id]) > 1 else None
+                prev_position = (
+                    self.track_history[track_id][-2]
+                    if len(self.track_history[track_id]) > 1
+                    else None
+                )
                 centroid = Point((box[:2] + box[2:]) / 2)
 
                 # Count objects
@@ -194,10 +208,16 @@ class ObjectCounter:
                     current_position = "in" if is_inside else "out"
 
                     if prev_position is not None:
-                        if self.counting_dict[track_id] != current_position and is_inside:
+                        if (
+                            self.counting_dict[track_id] != current_position
+                            and is_inside
+                        ):
                             self.in_counts += 1
                             self.counting_dict[track_id] = "in"
-                        elif self.counting_dict[track_id] != current_position and not is_inside:
+                        elif (
+                            self.counting_dict[track_id] != current_position
+                            and not is_inside
+                        ):
                             self.out_counts += 1
                             self.counting_dict[track_id] = "out"
                         else:
@@ -213,10 +233,16 @@ class ObjectCounter:
                         ) > 0
                         current_position = "in" if is_inside else "out"
 
-                        if self.counting_dict[track_id] != current_position and is_inside:
+                        if (
+                            self.counting_dict[track_id] != current_position
+                            and is_inside
+                        ):
                             self.in_counts += 1
                             self.counting_dict[track_id] = "in"
-                        elif self.counting_dict[track_id] != current_position and not is_inside:
+                        elif (
+                            self.counting_dict[track_id] != current_position
+                            and not is_inside
+                        ):
                             self.out_counts += 1
                             self.counting_dict[track_id] = "out"
                         else:
@@ -249,10 +275,18 @@ class ObjectCounter:
     def display_frames(self):
         """Display frame."""
         if self.env_check:
-            self.annotator.draw_region(reg_pts=self.reg_pts, color=self.region_color, thickness=self.region_thickness)
+            self.annotator.draw_region(
+                reg_pts=self.reg_pts,
+                color=self.region_color,
+                thickness=self.region_thickness,
+            )
             cv2.namedWindow(self.window_name)
             if len(self.reg_pts) == 4:  # only add mouse event If user drawn region
-                cv2.setMouseCallback(self.window_name, self.mouse_event_for_region, {"region_points": self.reg_pts})
+                cv2.setMouseCallback(
+                    self.window_name,
+                    self.mouse_event_for_region,
+                    {"region_points": self.reg_pts},
+                )
             cv2.imshow(self.window_name, self.im0)
             # Break Window
             if cv2.waitKey(1) & 0xFF == ord("q"):

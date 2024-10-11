@@ -49,7 +49,9 @@ class FastSAMPrompt:
         segmented_image = Image.fromarray(segmented_image_array)
         black_image = Image.new("RGB", image.size, (255, 255, 255))
         # transparency_mask = np.zeros_like((), dtype=np.uint8)
-        transparency_mask = np.zeros((image_array.shape[0], image_array.shape[1]), dtype=np.uint8)
+        transparency_mask = np.zeros(
+            (image_array.shape[0], image_array.shape[1]), dtype=np.uint8
+        )
         transparency_mask[y1:y2, x1:x2] = 255
         transparency_mask_image = Image.fromarray(transparency_mask, mode="L")
         black_image.paste(segmented_image, mask=transparency_mask_image)
@@ -81,7 +83,9 @@ class FastSAMPrompt:
         contours.
         """
         mask = mask.astype(np.uint8)
-        contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(
+            mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        )
         x1, y1, w, h = cv2.boundingRect(contours[0])
         x2, y2 = x1 + w, y1 + h
         if len(contours) > 1:
@@ -140,8 +144,16 @@ class FastSAMPrompt:
                     if isinstance(masks[0], torch.Tensor):
                         masks = np.array(masks.cpu())
                     for i, mask in enumerate(masks):
-                        mask = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
-                        masks[i] = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((8, 8), np.uint8))
+                        mask = cv2.morphologyEx(
+                            mask.astype(np.uint8),
+                            cv2.MORPH_CLOSE,
+                            np.ones((3, 3), np.uint8),
+                        )
+                        masks[i] = cv2.morphologyEx(
+                            mask.astype(np.uint8),
+                            cv2.MORPH_OPEN,
+                            np.ones((8, 8), np.uint8),
+                        )
 
                 self.fast_show_mask(
                     masks,
@@ -161,8 +173,14 @@ class FastSAMPrompt:
                     for i, mask in enumerate(masks):
                         mask = mask.astype(np.uint8)
                         if not retina:
-                            mask = cv2.resize(mask, (original_w, original_h), interpolation=cv2.INTER_NEAREST)
-                        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                            mask = cv2.resize(
+                                mask,
+                                (original_w, original_h),
+                                interpolation=cv2.INTER_NEAREST,
+                            )
+                        contours, _ = cv2.findContours(
+                            mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
+                        )
                         contour_all.extend(iter(contours))
                     cv2.drawContours(temp, contour_all, -1, (255, 255, 255), 2)
                     color = np.array([0 / 255, 0 / 255, 1.0, 0.8])
@@ -224,7 +242,11 @@ class FastSAMPrompt:
         show[h_indices, w_indices, :] = mask_image[indices]
         if bbox is not None:
             x1, y1, x2, y2 = bbox
-            ax.add_patch(plt.Rectangle((x1, y1), x2 - x1, y2 - y1, fill=False, edgecolor="b", linewidth=1))
+            ax.add_patch(
+                plt.Rectangle(
+                    (x1, y1), x2 - x1, y2 - y1, fill=False, edgecolor="b", linewidth=1
+                )
+            )
         # Draw point
         if points is not None:
             plt.scatter(
@@ -241,7 +263,9 @@ class FastSAMPrompt:
             )
 
         if not retinamask:
-            show = cv2.resize(show, (target_width, target_height), interpolation=cv2.INTER_NEAREST)
+            show = cv2.resize(
+                show, (target_width, target_height), interpolation=cv2.INTER_NEAREST
+            )
         ax.imshow(show)
 
     @torch.no_grad()
@@ -260,8 +284,12 @@ class FastSAMPrompt:
     def _crop_image(self, format_results):
         """Crops an image based on provided annotation format and returns cropped images and related data."""
         if os.path.isdir(self.source):
-            raise ValueError(f"'{self.source}' is a directory, not a valid source for this function.")
-        image = Image.fromarray(cv2.cvtColor(self.results[0].orig_img, cv2.COLOR_BGR2RGB))
+            raise ValueError(
+                f"'{self.source}' is a directory, not a valid source for this function."
+            )
+        image = Image.fromarray(
+            cv2.cvtColor(self.results[0].orig_img, cv2.COLOR_BGR2RGB)
+        )
         ori_w, ori_h = image.size
         annotations = format_results
         mask_h, mask_w = annotations[0]["segmentation"].shape
@@ -286,7 +314,9 @@ class FastSAMPrompt:
         if self.results[0].masks is not None:
             assert bbox[2] != 0 and bbox[3] != 0
             if os.path.isdir(self.source):
-                raise ValueError(f"'{self.source}' is a directory, not a valid source for this function.")
+                raise ValueError(
+                    f"'{self.source}' is a directory, not a valid source for this function."
+                )
             masks = self.results[0].masks.data
             target_height, target_width = self.results[0].orig_shape
             h = masks.shape[1]
@@ -306,30 +336,46 @@ class FastSAMPrompt:
             # IoUs = torch.zeros(len(masks), dtype=torch.float32)
             bbox_area = (bbox[3] - bbox[1]) * (bbox[2] - bbox[0])
 
-            masks_area = torch.sum(masks[:, bbox[1] : bbox[3], bbox[0] : bbox[2]], dim=(1, 2))
+            masks_area = torch.sum(
+                masks[:, bbox[1] : bbox[3], bbox[0] : bbox[2]], dim=(1, 2)
+            )
             orig_masks_area = torch.sum(masks, dim=(1, 2))
 
             union = bbox_area + orig_masks_area - masks_area
             iou = masks_area / union
             max_iou_index = torch.argmax(iou)
 
-            self.results[0].masks.data = torch.tensor(np.array([masks[max_iou_index].cpu().numpy()]))
+            self.results[0].masks.data = torch.tensor(
+                np.array([masks[max_iou_index].cpu().numpy()])
+            )
         return self.results
 
     def point_prompt(self, points, pointlabel):  # numpy
         """Adjusts points on detected masks based on user input and returns the modified results."""
         if self.results[0].masks is not None:
             if os.path.isdir(self.source):
-                raise ValueError(f"'{self.source}' is a directory, not a valid source for this function.")
+                raise ValueError(
+                    f"'{self.source}' is a directory, not a valid source for this function."
+                )
             masks = self._format_results(self.results[0], 0)
             target_height, target_width = self.results[0].orig_shape
             h = masks[0]["segmentation"].shape[0]
             w = masks[0]["segmentation"].shape[1]
             if h != target_height or w != target_width:
-                points = [[int(point[0] * w / target_width), int(point[1] * h / target_height)] for point in points]
+                points = [
+                    [
+                        int(point[0] * w / target_width),
+                        int(point[1] * h / target_height),
+                    ]
+                    for point in points
+                ]
             onemask = np.zeros((h, w))
             for annotation in masks:
-                mask = annotation["segmentation"] if isinstance(annotation, dict) else annotation
+                mask = (
+                    annotation["segmentation"]
+                    if isinstance(annotation, dict)
+                    else annotation
+                )
                 for i, point in enumerate(points):
                     if mask[point[1], point[0]] == 1 and pointlabel[i] == 1:
                         onemask += mask
@@ -343,13 +389,19 @@ class FastSAMPrompt:
         """Processes a text prompt, applies it to existing results and returns the updated results."""
         if self.results[0].masks is not None:
             format_results = self._format_results(self.results[0], 0)
-            cropped_boxes, cropped_images, not_crop, filter_id, annotations = self._crop_image(format_results)
+            cropped_boxes, cropped_images, not_crop, filter_id, annotations = (
+                self._crop_image(format_results)
+            )
             clip_model, preprocess = self.clip.load("ViT-B/32", device=self.device)
-            scores = self.retrieve(clip_model, preprocess, cropped_boxes, text, device=self.device)
+            scores = self.retrieve(
+                clip_model, preprocess, cropped_boxes, text, device=self.device
+            )
             max_idx = scores.argsort()
             max_idx = max_idx[-1]
             max_idx += sum(np.array(filter_id) <= int(max_idx))
-            self.results[0].masks.data = torch.tensor(np.array([annotations[max_idx]["segmentation"]]))
+            self.results[0].masks.data = torch.tensor(
+                np.array([annotations[max_idx]["segmentation"]])
+            )
         return self.results
 
     def everything_prompt(self):

@@ -120,7 +120,9 @@ def get_windows(im_size, crop_sizes=[1024], gaps=[200], im_rate_thr=0.6, eps=0.0
     im_in_wins = windows.copy()
     im_in_wins[:, 0::2] = np.clip(im_in_wins[:, 0::2], 0, w)
     im_in_wins[:, 1::2] = np.clip(im_in_wins[:, 1::2], 0, h)
-    im_areas = (im_in_wins[:, 2] - im_in_wins[:, 0]) * (im_in_wins[:, 3] - im_in_wins[:, 1])
+    im_areas = (im_in_wins[:, 2] - im_in_wins[:, 0]) * (
+        im_in_wins[:, 3] - im_in_wins[:, 1]
+    )
     win_areas = (windows[:, 2] - windows[:, 0]) * (windows[:, 3] - windows[:, 1])
     im_rates = im_areas / win_areas
     if not (im_rates > im_rate_thr).any():
@@ -138,9 +140,13 @@ def get_window_obj(anno, windows, iof_thr=0.7):
         label[:, 2::2] *= h
         iofs = bbox_iof(label[:, 1:], windows)
         # Unnormalized and misaligned coordinates
-        return [(label[iofs[:, i] >= iof_thr]) for i in range(len(windows))]  # window_anns
+        return [
+            (label[iofs[:, i] >= iof_thr]) for i in range(len(windows))
+        ]  # window_anns
     else:
-        return [np.zeros((0, 9), dtype=np.float32) for _ in range(len(windows))]  # window_anns
+        return [
+            np.zeros((0, 9), dtype=np.float32) for _ in range(len(windows))
+        ]  # window_anns
 
 
 def crop_and_save(anno, windows, window_objs, im_dir, lb_dir):
@@ -187,7 +193,9 @@ def crop_and_save(anno, windows, window_objs, im_dir, lb_dir):
                 f.write(f"{int(lb[0])} {' '.join(formatted_coords)}\n")
 
 
-def split_images_and_labels(data_root, save_dir, split="train", crop_sizes=[1024], gaps=[200]):
+def split_images_and_labels(
+    data_root, save_dir, split="train", crop_sizes=[1024], gaps=[200]
+):
     """
     Split both images and labels.
 

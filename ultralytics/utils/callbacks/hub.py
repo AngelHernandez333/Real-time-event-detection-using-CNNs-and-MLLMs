@@ -51,7 +51,9 @@ def on_model_save(trainer):
         # Upload checkpoints with rate limiting
         is_best = trainer.best_fitness == trainer.fitness
         if time() - session.timers["ckpt"] > session.rate_limits["ckpt"]:
-            LOGGER.info(f"{PREFIX}Uploading checkpoint {HUB_WEB_ROOT}/models/{session.model.id}")
+            LOGGER.info(
+                f"{PREFIX}Uploading checkpoint {HUB_WEB_ROOT}/models/{session.model.id}"
+            )
             session.upload_model(trainer.epoch, trainer.last, is_best)
             session.timers["ckpt"] = time()  # reset timer
 
@@ -69,7 +71,9 @@ def on_train_end(trainer):
             final=True,
         )
         session.alive = False  # stop heartbeats
-        LOGGER.info(f"{PREFIX}Done ✅\n" f"{PREFIX}View model at {session.model_url} 🚀")
+        LOGGER.info(
+            f"{PREFIX}Done ✅\n" f"{PREFIX}View model at {session.model_url} 🚀"
+        )
 
 
 def on_train_start(trainer):

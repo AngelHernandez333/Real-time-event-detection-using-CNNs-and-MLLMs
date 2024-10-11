@@ -47,7 +47,9 @@ def get_sim_index_schema():
 def sanitize_batch(batch, dataset_info):
     """Sanitizes input batch for inference, ensuring correct format and dimensions."""
     batch["cls"] = batch["cls"].flatten().int().tolist()
-    box_cls_pair = sorted(zip(batch["bboxes"].tolist(), batch["cls"]), key=lambda x: x[1])
+    box_cls_pair = sorted(
+        zip(batch["bboxes"].tolist(), batch["cls"]), key=lambda x: x[1]
+    )
     batch["bboxes"] = [box for box, _ in box_cls_pair]
     batch["cls"] = [cls for _, cls in box_cls_pair]
     batch["labels"] = [dataset_info["names"][i] for i in batch["cls"]]
@@ -65,14 +67,26 @@ def plot_query_result(similar_set, plot_labels=True):
         plot_labels (bool): Whether to plot labels or not
     """
     similar_set = (
-        similar_set.to_dict(orient="list") if isinstance(similar_set, pd.DataFrame) else similar_set.to_pydict()
+        similar_set.to_dict(orient="list")
+        if isinstance(similar_set, pd.DataFrame)
+        else similar_set.to_pydict()
     )
     empty_masks = [[[]]]
     empty_boxes = [[]]
     images = similar_set.get("im_file", [])
-    bboxes = similar_set.get("bboxes", []) if similar_set.get("bboxes") is not empty_boxes else []
-    masks = similar_set.get("masks") if similar_set.get("masks")[0] != empty_masks else []
-    kpts = similar_set.get("keypoints") if similar_set.get("keypoints")[0] != empty_masks else []
+    bboxes = (
+        similar_set.get("bboxes", [])
+        if similar_set.get("bboxes") is not empty_boxes
+        else []
+    )
+    masks = (
+        similar_set.get("masks") if similar_set.get("masks")[0] != empty_masks else []
+    )
+    kpts = (
+        similar_set.get("keypoints")
+        if similar_set.get("keypoints")[0] != empty_masks
+        else []
+    )
     cls = similar_set.get("cls", [])
 
     plot_size = 640
@@ -99,13 +113,29 @@ def plot_query_result(similar_set, plot_labels=True):
         batch_idx.append(np.ones(len(np.array(bboxes[i], dtype=np.float32))) * i)
     imgs = np.stack(imgs, axis=0)
     masks = np.stack(plot_masks, axis=0) if plot_masks else np.zeros(0, dtype=np.uint8)
-    kpts = np.concatenate(plot_kpts, axis=0) if plot_kpts else np.zeros((0, 51), dtype=np.float32)
-    boxes = xyxy2xywh(np.concatenate(plot_boxes, axis=0)) if plot_boxes else np.zeros(0, dtype=np.float32)
+    kpts = (
+        np.concatenate(plot_kpts, axis=0)
+        if plot_kpts
+        else np.zeros((0, 51), dtype=np.float32)
+    )
+    boxes = (
+        xyxy2xywh(np.concatenate(plot_boxes, axis=0))
+        if plot_boxes
+        else np.zeros(0, dtype=np.float32)
+    )
     batch_idx = np.concatenate(batch_idx, axis=0)
     cls = np.concatenate([np.array(c, dtype=np.int32) for c in cls], axis=0)
 
     return plot_images(
-        imgs, batch_idx, cls, bboxes=boxes, masks=masks, kpts=kpts, max_subplots=len(images), save=False, threaded=False
+        imgs,
+        batch_idx,
+        cls,
+        bboxes=boxes,
+        masks=masks,
+        kpts=kpts,
+        max_subplots=len(images),
+        save=False,
+        threaded=False,
     )
 
 
@@ -115,7 +145,9 @@ def prompt_sql_query(query):
     from openai import OpenAI
 
     if not SETTINGS["openai_api_key"]:
-        logger.warning("OpenAI API key not found in settings. Please enter your API key below.")
+        logger.warning(
+            "OpenAI API key not found in settings. Please enter your API key below."
+        )
         openai_api_key = getpass.getpass("OpenAI API key: ")
         SETTINGS.update({"openai_api_key": openai_api_key})
     openai = OpenAI(api_key=SETTINGS["openai_api_key"])

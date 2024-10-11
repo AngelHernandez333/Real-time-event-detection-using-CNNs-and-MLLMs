@@ -1,0 +1,11 @@
+ID,Detector  use,Precision,Recall,Event,Camera type,Width,Height,FPS
+0,True,0.75,0.8333333333333334,a motocycle accident,surveillance camera,1288,672,15.0
+0,False,1.0,0.2777777777777778,a motocycle accident,surveillance camera,1288,672,15.0
+1,True,0.7777777777777778,0.9032258064516128,an arrest,surveillance camera,320,240,30.0
+1,False,1.0,0.9032258064516128,an arrest,surveillance camera,320,240,30.0
+2,True,0.5144927536231884,0.9726027397260274,an car accident,HD action cameras,1920,1080,30.0
+2,False,0.5333333333333333,0.9863013698630136,an car accident,HD action cameras,1920,1080,30.0
+3,True,1.0,0.925925925925926,a fight,surveillance camera,1280,720,29.97
+3,False,1.0,0.6481481481481481,a fight,surveillance camera,1280,720,29.97
+4,True,0.815068493150685,0.9834710743801652,a person running,TV camera,1920,1080,25.0
+4,False,0.8382352941176471,0.9421487603305784,a person running,TV camera,1920,1080,25.0

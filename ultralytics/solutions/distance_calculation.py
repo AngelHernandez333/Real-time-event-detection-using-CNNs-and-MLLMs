@@ -86,7 +86,11 @@ class DistanceCalculation:
             self.left_mouse_count += 1
             if self.left_mouse_count <= 2:
                 for box, track_id in zip(self.boxes, self.trk_ids):
-                    if box[0] < x < box[2] and box[1] < y < box[3] and track_id not in self.selected_boxes:
+                    if (
+                        box[0] < x < box[2]
+                        and box[1] < y < box[3]
+                        and track_id not in self.selected_boxes
+                    ):
                         self.selected_boxes[track_id] = []
                         self.selected_boxes[track_id] = box
 
@@ -122,8 +126,13 @@ class DistanceCalculation:
             centroid1 (point): First bounding box data
             centroid2 (point): Second bounding box data
         """
-        pixel_distance = math.sqrt((centroid1[0] - centroid2[0]) ** 2 + (centroid1[1] - centroid2[1]) ** 2)
-        return pixel_distance / self.pixel_per_meter, (pixel_distance / self.pixel_per_meter) * 1000
+        pixel_distance = math.sqrt(
+            (centroid1[0] - centroid2[0]) ** 2 + (centroid1[1] - centroid2[1]) ** 2
+        )
+        return (
+            pixel_distance / self.pixel_per_meter,
+            (pixel_distance / self.pixel_per_meter) * 1000,
+        )
 
     def start_process(self, im0, tracks):
         """
@@ -143,7 +152,9 @@ class DistanceCalculation:
         self.annotator = Annotator(self.im0, line_width=2)
 
         for box, cls, track_id in zip(self.boxes, self.clss, self.trk_ids):
-            self.annotator.box_label(box, color=colors(int(cls), True), label=self.names[int(cls)])
+            self.annotator.box_label(
+                box, color=colors(int(cls), True), label=self.names[int(cls)]
+            )
 
             if len(self.selected_boxes) == 2:
                 for trk_id, _ in self.selected_boxes.items():
@@ -155,9 +166,15 @@ class DistanceCalculation:
                 centroid = self.calculate_centroid(self.selected_boxes[trk_id])
                 self.centroids.append(centroid)
 
-            distance_m, distance_mm = self.calculate_distance(self.centroids[0], self.centroids[1])
+            distance_m, distance_mm = self.calculate_distance(
+                self.centroids[0], self.centroids[1]
+            )
             self.annotator.plot_distance_and_line(
-                distance_m, distance_mm, self.centroids, self.line_color, self.centroid_color
+                distance_m,
+                distance_mm,
+                self.centroids,
+                self.line_color,
+                self.centroid_color,
             )
 
         self.centroids = []
@@ -170,7 +187,9 @@ class DistanceCalculation:
     def display_frames(self):
         """Display frame."""
         cv2.namedWindow("Ultralytics Distance Estimation")
-        cv2.setMouseCallback("Ultralytics Distance Estimation", self.mouse_event_for_distance)
+        cv2.setMouseCallback(
+            "Ultralytics Distance Estimation", self.mouse_event_for_distance
+        )
         cv2.imshow("Ultralytics Distance Estimation", self.im0)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):

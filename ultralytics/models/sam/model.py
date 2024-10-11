@@ -42,7 +42,9 @@ class SAM(Model):
             NotImplementedError: If the model file extension is not .pt or .pth.
         """
         if model and Path(model).suffix not in (".pt", ".pth"):
-            raise NotImplementedError("SAM prediction requires pre-trained *.pt or *.pth model.")
+            raise NotImplementedError(
+                "SAM prediction requires pre-trained *.pt or *.pth model."
+            )
         super().__init__(model=model, task="segment")
 
     def _load(self, weights: str, task=None):
@@ -55,7 +57,9 @@ class SAM(Model):
         """
         self.model = build_sam(weights)
 
-    def predict(self, source, stream=False, bboxes=None, points=None, labels=None, **kwargs):
+    def predict(
+        self, source, stream=False, bboxes=None, points=None, labels=None, **kwargs
+    ):
         """
         Performs segmentation prediction on the given image or video source.
 
@@ -74,7 +78,9 @@ class SAM(Model):
         prompts = dict(bboxes=bboxes, points=points, labels=labels)
         return super().predict(source, stream, prompts=prompts, **kwargs)
 
-    def __call__(self, source=None, stream=False, bboxes=None, points=None, labels=None, **kwargs):
+    def __call__(
+        self, source=None, stream=False, bboxes=None, points=None, labels=None, **kwargs
+    ):
         """
         Alias for the 'predict' method.
 

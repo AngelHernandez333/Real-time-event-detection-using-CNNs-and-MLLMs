@@ -9,8 +9,9 @@ import cv2
 from ultralytics import YOLOv10
 import math
 import time
-cap=cv2.VideoCapture(0)
-cap.set(3,640)
+
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)
 cap.set(4, 480)
 
 detection_labels = {
@@ -96,37 +97,55 @@ detection_labels = {
     79: "toothbrush",
 }
 
-model = YOLOv10('yolov10x.pt') # load an official model
+model = YOLOv10("yolov10x.pt")  # load an official model
 model.export(format="openvino")
-ov_model=YOLOv10('yolov10x_openvino_model/') 
-ov_qmodel=YOLOv10('int8/yolov10x_openvino_model/') 
+ov_model = YOLOv10("yolov10x_openvino_model/")
+ov_qmodel = YOLOv10("int8/yolov10x_openvino_model/")
 while True:
     start_time = time.time()
-    success, img=cap.read()
-    #results=model(img, stream=True)
-    #results=ov_model(img)
-    results=ov_qmodel(img)
+    success, img = cap.read()
+    # results=model(img, stream=True)
+    # results=ov_model(img)
+    results = ov_qmodel(img)
     elapsed_time = time.time() - start_time
     for r in results:
-        boxes= r.boxes
+        boxes = r.boxes
         for box in boxes:
-            x1,y1,x2,y2=box.xyxy[0]
-            x1,y1,x2,y2=int(x1), int(y1), int(x2), int(y2)
-            cv2.rectangle(img, (x1,y1), (x2,y2), (255,0,255),3)
+            x1, y1, x2, y2 = box.xyxy[0]
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
             # Obtener la clase y la confianza
             class_label = int(box.cls[0])  # Convertir a entero si es necesario
             confidence = float(box.conf[0])  # Convertir a flotante si es necesario
-            
+
             # Muestra la clase y el grado de confianza en el cuadro
-            text = f"Class: {detection_labels[class_label] }, Confidence: {confidence:.2f}"
-            cv2.putText(img, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
-            confidence=math.ceil((box.conf[0]*100))/100
+            text = (
+                f"Class: {detection_labels[class_label] }, Confidence: {confidence:.2f}"
+            )
+            cv2.putText(
+                img,
+                text,
+                (x1, y1 - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (255, 0, 255),
+                2,
+            )
+            confidence = math.ceil((box.conf[0] * 100)) / 100
             print("Confidence -->", confidence)
-    timetext=f"Time {elapsed_time*1000} ms" 
-    cv2.putText(img, f"Time {elapsed_time*1000} ms" , (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+    timetext = f"Time {elapsed_time*1000} ms"
+    cv2.putText(
+        img,
+        f"Time {elapsed_time*1000} ms",
+        (10, 10),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.5,
+        (255, 0, 255),
+        2,
+    )
     cv2.imshow("webcam", img)
-    
-    if cv2.waitKey(1)==ord('q'):
+
+    if cv2.waitKey(1) == ord("q"):
         break
 cap.release()
 cv2.destroyAllWindows()
