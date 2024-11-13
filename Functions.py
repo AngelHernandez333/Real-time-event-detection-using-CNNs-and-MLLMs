@@ -111,3 +111,16 @@ def take_frame(frame, frame_number, frames, gap):
     if frame_number % gap == 0:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frames.append(frame)
+
+def decision_maker(frame, frame_number, frames, gap,classes, rules):
+    if frame_number % gap == 0:
+        status = True
+        for i in range(len(rules)):
+            if classes[rules[i]]>0:
+                continue
+            else:
+                status = False
+                break
+        if status:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(frame)

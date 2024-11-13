@@ -1,0 +1,46 @@
+Name,Mode,Precision,Recall,Event,Validations Number
+2_096_1.mp4,0,1.0,1.0,a person riding a bicycle,33
+2_096_1.mp4,1,1.0,0.9743589743589743,a person riding a bicycle,84
+2_096_1.mp4,2,0.975,1.0,a person riding a bicycle,84
+3_105_1.mp4,0,1.0,1.0,a person riding a bicycle,45
+3_105_1.mp4,1,0.92,0.8679245283018868,a person riding a bicycle,114
+3_105_1.mp4,2,0.9107142857142857,0.9622641509433962,a person riding a bicycle,114
+4_076_1.mp4,0,1.0,1.0,a person riding a bicycle,16
+4_076_1.mp4,1,0.88,0.4583333333333333,a person riding a bicycle,77
+4_076_1.mp4,2,0.8518518518518519,0.4791666666666667,a person riding a bicycle,77
+1_069_1.mp4,0,1.0,0.9514563106796117,a certain number of persons fighting,103
+1_069_1.mp4,1,0.9893617021276596,0.5314285714285715,a certain number of persons fighting,233
+1_069_1.mp4,2,0.8578947368421053,0.9314285714285714,a certain number of persons fighting,233
+2_065_1.mp4,0,1.0,0.4,a certain number of persons fighting,54
+2_065_1.mp4,1,0.4962121212121212,1.0,a certain number of persons fighting,264
+2_065_1.mp4,2,0.45161290322580644,0.32061068702290074,a certain number of persons fighting,264
+2_079_1.mp4,0,0.9743589743589743,0.8636363636363636,a certain number of persons fighting,48
+2_079_1.mp4,1,0.5729166666666666,0.7638888888888888,a certain number of persons fighting,114
+2_079_1.mp4,2,0.9122807017543859,0.7222222222222222,a certain number of persons fighting,114
+1_093_1.mp4,0,0.8263888888888888,1.0,a group of persons playing,149
+1_093_1.mp4,1,0.6683608640406608,0.9924528301886792,a group of persons playing,893
+1_093_1.mp4,2,0.6793193717277487,0.9792452830188679,a group of persons playing,893
+1_094_1.mp4,0,0.7486033519553073,1.0,a group of persons playing,179
+1_094_1.mp4,1,0.6575342465753424,1.0,a group of persons playing,383
+1_094_1.mp4,2,0.7082066869300911,0.9708333333333333,a group of persons playing,383
+3_102_1.mp4,0,0.7046263345195729,0.9949748743718593,a group of persons playing,284
+3_102_1.mp4,1,0.7016574585635359,0.9694656488549618,a group of persons playing,473
+3_102_1.mp4,2,0.6463104325699746,0.9694656488549618,a group of persons playing,473
+3_093_1.mp4,0,0.8484848484848485,0.8235294117647058,a person running,42
+3_093_1.mp4,1,0.46153846153846156,0.26865671641791045,a person running,203
+3_093_1.mp4,2,0.33076923076923076,0.6417910447761194,a person running,203
+3_087_1.mp4,0,1.0,0.4375,a person running,21
+3_087_1.mp4,1,1.0,0.13513513513513514,a person running,113
+3_087_1.mp4,2,0.8333333333333334,0.2702702702702703,a person running,113
+3_077_1.mp4,0,1.0,0.4117647058823529,a person running,79
+3_077_1.mp4,1,0.84375,0.38028169014084506,a person running,173
+3_077_1.mp4,2,0.8787878787878788,0.4084507042253521,a person running,173
+1_078_1.mp4,0,1.0,0.7954545454545454,a person lying in the floor,64
+1_078_1.mp4,1,1.0,0.6384615384615384,a person lying in the floor,233
+1_078_1.mp4,2,1.0,0.7692307692307693,a person lying in the floor,233
+1_084_1.mp4,0,1.0,1.0,a person lying in the floor,7
+1_084_1.mp4,1,1.0,0.6845238095238095,a person lying in the floor,233
+1_084_1.mp4,2,1.0,0.6726190476190477,a person lying in the floor,233
+1_091_1.mp4,0,1.0,0.9746835443037974,a person lying in the floor,79
+1_091_1.mp4,1,1.0,0.7880184331797235,a person lying in the floor,263
+1_091_1.mp4,2,1.0,0.880184331797235,a person lying in the floor,263

@@ -6,7 +6,7 @@ import numpy as np
 from huggingface_hub import hf_hub_download
 import torch
 from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration
-from Functions import prompt_text, take_frame, detection_labels
+from Functions import prompt_text, take_frame, decision_maker,detection_labels
 import pandas as pd
 
 def detection(image, activation, classes, ov_qmodel, prompts):
@@ -16,7 +16,7 @@ def detection(image, activation, classes, ov_qmodel, prompts):
     """
     start_time = time.time()
     if activation:
-        results = ov_qmodel(image)
+        results = ov_qmodel(image, stream=False)
         for i in detection_labels.values():
             classes[i] = 0
         for r in results:
@@ -44,17 +44,6 @@ def detection(image, activation, classes, ov_qmodel, prompts):
                 cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 255), 1)"""
                 confidence = math.ceil((box.conf[0] * 100)) / 100
     elapsed_time = (time.time() - start_time)*1000
-    #print(elapsed_time * 1000, " ms\n")
-    cv2.putText(
-        image,
-        f"Time {elapsed_time:.2f} ms {prompts[-1]}-{len(prompts)-1}",
-        (20, 20),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.5,
-        (255, 0, 255),
-        1,
-    )
-
 
 # Validacion de la deteccion
 def validation(frames,classes, processor, model, prompts, event):    
@@ -95,7 +84,82 @@ def testing(video_path, event ,end,  starting_frame, detector_usage=False):
 
     # Inicializacion de los modelos
     start_time = time.time()
-    ov_qmodel = YOLOv10("/home/ubuntu/yolov10/int8/yolov10x_openvino_model/")
+    #ov_qmodel = YOLOv10("/home/ubuntu/yolov10/int8/yolov10x_openvino_model/")
+    ov_qmodel = YOLOv10('/home/ubuntu/yolov10/yolov10x.pt')
+    # MLLM Llava
+    model = LlavaOnevisionForConditionalGeneration.from_pretrained(
+        "llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
+        torch_dtype=torch.float16,
+        device_map="auto",
+        low_cpu_mem_usage=True,
+        attn_implementation="sdpa",
+    )
+    processor = AutoProcessor.from_pretrained("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+    model.to(dtype=torch.float16, device="cuda")
+    cap = cv2.VideoCapture(video_path)
+    # cap.set(cv2.CAP_PROP_POS_MSEC, 370000)
+    cap.set(cv2.CAP_PROP_POS_MSEC, starting_frame)
+    #Almacenamiento de los frames, prompts y resultados
+    frames = []
+    #Resultados
+    frames_number = [starting_frame]
+    fps_list = []
+    prompts = ["Loading..."]
+    #Charge time
+    elapsed_time = time.time() - start_time
+    i=0
+    while True:
+        # Leer el siguiente frame
+        prev_frame_time = time.time()
+        ret, frame = cap.read()
+        if not ret:
+            print("No se pudo obtener el frame. Fin del video o error.")
+            break
+        #frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_LINEAR)
+        detection(frame, detector_usage, classes, ov_qmodel, prompts )
+        take_frame(frame, int(cap.get(cv2.CAP_PROP_POS_FRAMES)), frames,20)
+        if len(frames) > 6:
+            frames.pop(0)
+            frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES))+starting_frame)
+            validation(frames, classes, processor, model, prompts, event)
+        # -------------------------------------
+        frame_time = time.time()
+        time_per_frame = (frame_time - prev_frame_time)*1000
+        fps = 1 / (frame_time - prev_frame_time)
+        cv2.putText(frame, f"Time {time_per_frame:.2f} ms {prompts[-1]}-{len(prompts)-1}",
+        (50, 50),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        2.0,
+        (172, 182, 77),
+        2,)
+        cv2.imshow("Video", frame)
+        if i==0:
+            i=1
+            cv2.waitKey(0)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+        if end==0:
+            pass
+        elif end <= int(cap.get(cv2.CAP_PROP_POS_FRAMES)):
+            break
+        print("Los FPS son", fps)
+        fps_list.append(fps)
+    cap.release()
+    cv2.destroyAllWindows()
+    print("Charging time:", elapsed_time, "sg \n\n")
+    return frames_number, fps_list, prompts
+def testing2(video_path, event ,end,  starting_frame, rules, detector_usage=False):
+    # Clases de detección
+    # Contador de las detecciones
+    classes = dict()
+    # Inicializadas en cero
+    for i in detection_labels.values():
+        classes[i] = 0
+
+    # Inicializacion de los modelos
+    start_time = time.time()
+    #ov_qmodel = YOLOv10("/home/ubuntu/yolov10/int8/yolov10x_openvino_model/")
+    ov_qmodel = YOLOv10('/home/ubuntu/yolov10/yolov10x.pt')
     # MLLM Llava
     model = LlavaOnevisionForConditionalGeneration.from_pretrained(
         "llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
@@ -119,21 +183,24 @@ def testing(video_path, event ,end,  starting_frame, detector_usage=False):
     prompts = ["Loading..."]
     #Charge time
     elapsed_time = time.time() - start_time
+    i=0
     while True:
         # Leer el siguiente frame
         ret, frame = cap.read()
         if not ret:
             print("No se pudo obtener el frame. Fin del video o error.")
             break
-        #frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_LINEAR)
         detection(frame, detector_usage, classes, ov_qmodel, prompts )
-        take_frame(frame, int(cap.get(cv2.CAP_PROP_POS_FRAMES)), frames,20)
+        decision_maker(frame, int(cap.get(cv2.CAP_PROP_POS_FRAMES)), frames,20, classes, rules)
         if len(frames) > 6:
             frames.pop(0)
             frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES))+starting_frame)
             validation(frames, classes, processor, model, prompts, event)
         # -------------------------------------
         cv2.imshow("Video", frame)
+        if i==0:
+            i+=1
+            cv2.waitKey(0)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
         if end==0:
@@ -149,6 +216,8 @@ def testing(video_path, event ,end,  starting_frame, detector_usage=False):
     cv2.destroyAllWindows()
     print("Charging time:", elapsed_time, "sg \n\n")
     return frames_number, fps_list, prompts
+
+
 
 def check_precision( prompts, frames_number, event_interval):
     #True positive Prediction and Reality are true
@@ -176,13 +245,50 @@ if __name__ == "__main__":
     # Create an empty DataFrame with the specified columns
     df = pd.DataFrame(columns=columns)
     #Information of the videos
-    videos = ["../Database/0.mp4", "../Database/1.mp4", "../Database/2.mp4", "../Database/3.mp4", "../Database/4.mp4"]
-    events = ['a motocycle accident', 'an arrest', 'an car accident', 'a fight', 'a person running']
-    finishings = [1*60*15, 4*60*15,110*30 ,100*30, 0]
-    intervals=[[12*15, 35*15], [100*30, 225*30], [6*30, 54*30], [17*30, 53*30], [1*30, 85*30 ]]
+    videos = ["../Database/0.mp4", "../Database/1.mp4", "../Database/2.mp4", "../Database/3.mp4", "../Database/4.mp4", '../Database/10.mp4']
+    events = ['a motorcycle accident', 'an arrest', 'an car accident', 'a fight', 'a person running', 'not a car accident']
+    finishings = [1*60*15, 4*60*15,110*30 ,100*30, 0, 30*30]
+    intervals=[[12*15, 35*15], [100*30, 225*30], [6*30, 54*30], [17*30, 53*30], [1*30, 85*30 ], [0*30, 60*30 ]]
     detections = [True, False]
+    rules=[['person',"motorcycle"], ['person'], ['person', 'car'], ['person'], ['person'], ['car','truck']]
+    #Start   
+    # .
+    frames_number, fps_list, prompts =testing(videos[5], events[5], finishings[5],0 ,True)   
+    frames_number, fps_list, prompts =testing(videos[5], events[5], finishings[5],0 ,False)   
+'''    numbers=[3]
+    for number in numbers:
+        for detector_status in detections:
+            frames_number, fps_list, prompts =testing(videos[number], events[number], finishings[number],0 ,detector_status)
+            frames_number=frames_number[1::]
+            prompts=prompts[1::]
+            #print( prompts, frames_number,'\n')
+            precision, recall =check_precision( prompts,frames_number ,intervals[number])
+            #print("Precision:", precision, "Recall:", recall)
+            #Save the results
+            row = {
+            'ID': number, 'Detector  use': detector_status,'Precision':precision, 'Recall':recall, 'Event':events[number]}
+            # Append the row to the DataFrame
+            df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
+            fps_list = np.array(fps_list)
+            np.save(f'{number}_{detector_status}2.npy', fps_list)
+        frames_number, fps_list, prompts = testing2(videos[number], events[number], finishings[number], 0,rules[number],  True)
+        frames_number=frames_number[1::]
+        prompts=prompts[1::]
+        precision, recall =check_precision( prompts,frames_number ,intervals[number])
+        row = {
+            'ID': number, 'Detector  use': 'Decision Maker','Precision':precision, 'Recall':recall, 'Event':events[number]}
+            # Append the row to the DataFrame
+        df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
+        fps_list = np.array(fps_list)
+        np.save(f'{number}_dm2.npy', fps_list)
+        print("Precision:", precision, "Recall:", recall)
+        print('\n', df)
+    # Save the DataFrame to a CSV file
+    df.to_csv('resultsV3.csv', index=False) 
+    print('\n', df)
+'''
     #Start
-    number=0
+'''    number=0
     for number in range(len(videos)):
         for detector_status in detections:
             frames_number, fps_list, prompts =testing(videos[number], events[number], finishings[number],0 ,detector_status)
@@ -201,4 +307,4 @@ if __name__ == "__main__":
         print('\n', df)
     # Save the DataFrame to a CSV file
     df.to_csv('results1.csv', index=False)
-#Load an dataframe and save again
+#Load an dataframe and save again'''
