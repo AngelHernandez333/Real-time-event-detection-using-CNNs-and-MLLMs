@@ -48,21 +48,23 @@ def person_lying(loaded_data):
 print(person_lying(loaded_data))
 
 '''
+
 import cv2
 import numpy as np
+
 # Create a white image
 height, width = 1600, 2000  # You can adjust the dimensions as needed
 image = np.ones((height, width, 3), np.uint8) * 255
 
 # Define the rectangles
-rect1 = ['person', 0.8695207238197327, 1240, 244, 1315, 299]
-rect2 = ['person', 0.8561849594116211,  1303, 251, 1377, 308]
+rect1 = ["person", 0.8695207238197327, 1240, 244, 1315, 299]
+rect2 = ["person", 0.8561849594116211, 1303, 251, 1377, 308]
 
 # Draw the rectangles on the image
 cv2.rectangle(image, (rect1[2], rect1[3]), (rect1[4], rect1[5]), (0, 255, 0), 2)
 cv2.rectangle(image, (rect2[2], rect2[3]), (rect2[4], rect2[5]), (0, 0, 255), 2)
 
 # Display the image
-cv2.imshow('Image with Rectangles', image)
+cv2.imshow("Image with Rectangles", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

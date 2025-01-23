@@ -1,6 +1,7 @@
-'''
+"""
 Functions used in the main script
-'''
+"""
+
 import cv2
 import numpy as np
 
@@ -86,6 +87,8 @@ detection_labels = {
     78: "hair drier",
     79: "toothbrush",
 }
+
+
 # Elaboracion del prompt para el modelo
 def prompt_text(classes):
     initial = "There are"
@@ -106,17 +109,19 @@ def prompt_text(classes):
         text = f"{initial}{objects} in the video,"
     return text
 
+
 # Funcion para tomar los frames y realizar la validacion
 def take_frame(frame, frame_number, frames, gap):
     if frame_number % gap == 0:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frames.append(frame)
 
-def decision_maker(frame, frame_number, frames, gap,classes, rules):
+
+def decision_maker(frame, frame_number, frames, gap, classes, rules):
     if frame_number % gap == 0:
         status = True
         for i in range(len(rules)):
-            if classes[rules[i]]>0:
+            if classes[rules[i]] > 0:
                 continue
             else:
                 status = False

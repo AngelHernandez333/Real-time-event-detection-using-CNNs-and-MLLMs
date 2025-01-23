@@ -1,1 +1,0 @@
-# Real-time-event-detection-using-CNNs-and-MLLMs
