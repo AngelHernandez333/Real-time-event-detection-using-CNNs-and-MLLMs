@@ -1,0 +1,71 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+2_031_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,43.0,44.54930233955383
+2_031_0.mp4,0,0,20,0,11,a person riding a bicycle,a certain number of persons fighting,31,43.0,55.25613975524902
+2_031_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,43.0,43.80682349205017
+2_031_0.mp4,0,0,5,0,5,a person riding a bicycle,a person running,10,43.0,47.61365365982056
+2_031_0.mp4,0,0,0,0,250,a person riding a bicycle,a person lying in the floor,250,43.0,135.4281849861145
+2_031_0.mp4,0,0,34,0,24,a person riding a bicycle,a person chasing other person,58,43.0,65.01956987380981
+2_031_0.mp4,0,0,252,0,0,a person riding a bicycle,everything is normal,252,43.0,135.64181756973267
+1_052_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,45.011633333333336,46.10717177391052
+1_052_0.mp4,0,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0,45.011633333333336,45.42581057548523
+1_052_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,45.011633333333336,45.36201071739197
+1_052_0.mp4,0,0,0,0,19,a person riding a bicycle,a person running,19,45.011633333333336,52.39761471748352
+1_052_0.mp4,0,0,0,0,41,a person riding a bicycle,a person lying in the floor,41,45.011633333333336,60.39151048660278
+1_052_0.mp4,0,0,0,0,0,a person riding a bicycle,a person chasing other person,0,45.011633333333336,45.42886209487915
+1_052_0.mp4,0,0,43,0,0,a person riding a bicycle,everything is normal,43,45.011633333333336,61.11355996131897
+2_028_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,43.0,43.69888877868652
+2_028_0.mp4,0,0,26,0,27,a person riding a bicycle,a certain number of persons fighting,53,43.0,62.2764790058136
+2_028_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,43.0,43.07684016227722
+2_028_0.mp4,0,0,1,0,36,a person riding a bicycle,a person running,37,43.0,56.582669734954834
+2_028_0.mp4,0,0,0,0,250,a person riding a bicycle,a person lying in the floor,250,43.0,132.9875500202179
+2_028_0.mp4,0,0,44,0,60,a person riding a bicycle,a person chasing other person,104,43.0,80.73258805274963
+2_028_0.mp4,0,0,251,0,0,a person riding a bicycle,everything is normal,251,43.0,133.6767213344574
+4_068_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,107.96666666666667,104.7149109840393
+4_068_0.mp4,0,0,16,0,275,a person riding a bicycle,a certain number of persons fighting,291,107.96666666666667,198.54848623275757
+4_068_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,107.96666666666667,103.73651480674744
+4_068_0.mp4,0,0,0,0,97,a person riding a bicycle,a person running,97,107.96666666666667,135.31301426887512
+4_068_0.mp4,0,0,0,0,639,a person riding a bicycle,a person lying in the floor,639,107.96666666666667,312.4564917087555
+4_068_0.mp4,0,0,27,0,322,a person riding a bicycle,a person chasing other person,349,107.96666666666667,217.58294534683228
+4_068_0.mp4,0,0,641,0,0,a person riding a bicycle,everything is normal,641,107.96666666666667,313.83968138694763
+2_054_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,40.0,40.122451305389404
+2_054_0.mp4,0,0,16,0,17,a person riding a bicycle,a certain number of persons fighting,33,40.0,51.90561819076538
+2_054_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,40.0,40.03902506828308
+2_054_0.mp4,0,0,0,0,66,a person riding a bicycle,a person running,66,40.0,64.04092526435852
+2_054_0.mp4,0,0,0,0,232,a person riding a bicycle,a person lying in the floor,232,40.0,123.62147212028503
+2_054_0.mp4,0,0,38,0,60,a person riding a bicycle,a person chasing other person,98,40.0,75.4318687915802
+2_054_0.mp4,0,0,232,0,0,a person riding a bicycle,everything is normal,232,40.0,123.55470585823059
+3_035_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,45.1451,45.21500277519226
+3_035_0.mp4,0,0,12,0,1,a person riding a bicycle,a certain number of persons fighting,13,45.1451,49.65600776672363
+3_035_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,45.1451,45.252803325653076
+3_035_0.mp4,0,0,0,0,24,a person riding a bicycle,a person running,24,45.1451,53.70276474952698
+3_035_0.mp4,0,0,0,0,262,a person riding a bicycle,a person lying in the floor,262,45.1451,139.3604428768158
+3_035_0.mp4,0,0,15,0,7,a person riding a bicycle,a person chasing other person,22,45.1451,53.637471437454224
+3_035_0.mp4,0,0,262,0,2,a person riding a bicycle,everything is normal,264,45.1451,142.40856552124023
+4_040_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,64.96666666666667,62.733850955963135
+4_040_0.mp4,0,0,26,0,9,a person riding a bicycle,a certain number of persons fighting,35,64.96666666666667,74.30083107948303
+4_040_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,64.96666666666667,62.84335970878601
+4_040_0.mp4,0,0,2,0,69,a person riding a bicycle,a person running,71,64.96666666666667,86.28162693977356
+4_040_0.mp4,0,0,0,0,353,a person riding a bicycle,a person lying in the floor,353,64.96666666666667,179.27742409706116
+4_040_0.mp4,0,0,1,0,60,a person riding a bicycle,a person chasing other person,61,64.96666666666667,82.87826895713806
+4_040_0.mp4,0,0,355,0,0,a person riding a bicycle,everything is normal,355,64.96666666666667,180.18107724189758
+4_046_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,74.96666666666667,72.01884841918945
+4_046_0.mp4,0,0,35,0,221,a person riding a bicycle,a certain number of persons fighting,256,74.96666666666667,156.89656138420105
+4_046_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,74.96666666666667,72.62043166160583
+4_046_0.mp4,0,0,0,0,39,a person riding a bicycle,a person running,39,74.96666666666667,85.86171293258667
+4_046_0.mp4,0,0,0,0,441,a person riding a bicycle,a person lying in the floor,441,74.96666666666667,217.97123670578003
+4_046_0.mp4,0,0,8,0,248,a person riding a bicycle,a person chasing other person,256,74.96666666666667,157.45233535766602
+4_046_0.mp4,0,0,443,0,0,a person riding a bicycle,everything is normal,443,74.96666666666667,219.5604908466339
+2_055_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,45.0,46.23792600631714
+2_055_0.mp4,0,0,1,0,178,a person riding a bicycle,a certain number of persons fighting,179,45.0,110.28871011734009
+2_055_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,45.0,46.48000478744507
+2_055_0.mp4,0,0,7,0,157,a person riding a bicycle,a person running,164,45.0,106.62415957450867
+2_055_0.mp4,0,0,0,0,262,a person riding a bicycle,a person lying in the floor,262,45.0,142.51743483543396
+2_055_0.mp4,0,0,78,0,146,a person riding a bicycle,a person chasing other person,224,45.0,128.69535660743713
+2_055_0.mp4,0,0,263,0,0,a person riding a bicycle,everything is normal,263,45.0,144.78489089012146
+1_037_0.mp4,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,45.011633333333336,45.948845624923706
+1_037_0.mp4,0,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0,45.011633333333336,45.989778995513916
+1_037_0.mp4,0,0,0,0,0,a person riding a bicycle,a group of persons playing,0,45.011633333333336,45.94089865684509
+1_037_0.mp4,0,0,0,0,55,a person riding a bicycle,a person running,55,45.011633333333336,66.17453455924988
+1_037_0.mp4,0,0,0,0,113,a person riding a bicycle,a person lying in the floor,113,45.011633333333336,89.27191472053528
+1_037_0.mp4,0,0,21,0,13,a person riding a bicycle,a person chasing other person,34,45.011633333333336,59.10579299926758
+1_037_0.mp4,0,0,114,0,0,a person riding a bicycle,everything is normal,114,45.011633333333336,88.5634298324585

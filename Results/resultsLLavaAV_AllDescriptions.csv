@@ -1,0 +1,519 @@
+Name,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number
+4_076_1.mp4,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16
+4_076_1.mp4,5,4,23,1,a person riding a bicycle,a certain number of persons fighting,33
+4_076_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+4_076_1.mp4,7,0,5,6,a person riding a bicycle,a person running,18
+4_076_1.mp4,0,0,48,27,a person riding a bicycle,a person lying in the floor,75
+4_076_1.mp4,3,0,39,16,a person riding a bicycle,a person chasing other person,58
+3_106_1.mp4,19,0,0,0,a person riding a bicycle,a person riding a bicycle,19
+3_106_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+3_106_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+3_106_1.mp4,0,0,0,0,a person riding a bicycle,a person running,0
+3_106_1.mp4,0,0,51,27,a person riding a bicycle,a person lying in the floor,78
+3_106_1.mp4,0,0,0,0,a person riding a bicycle,a person chasing other person,0
+1_067_1.mp4,15,0,0,0,a person riding a bicycle,a person riding a bicycle,15
+1_067_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+1_067_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+1_067_1.mp4,0,0,0,0,a person riding a bicycle,a person running,0
+1_067_1.mp4,0,0,13,0,a person riding a bicycle,a person lying in the floor,13
+1_067_1.mp4,0,0,0,0,a person riding a bicycle,a person chasing other person,0
+1_066_1.mp4,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16
+1_066_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+1_066_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+1_066_1.mp4,21,3,4,1,a person riding a bicycle,a person running,29
+1_066_1.mp4,0,0,25,22,a person riding a bicycle,a person lying in the floor,47
+1_066_1.mp4,9,1,0,3,a person riding a bicycle,a person chasing other person,13
+2_096_1.mp4,29,0,0,0,a person riding a bicycle,a person riding a bicycle,29
+2_096_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+2_096_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+2_096_1.mp4,0,0,0,0,a person riding a bicycle,a person running,0
+2_096_1.mp4,0,0,39,43,a person riding a bicycle,a person lying in the floor,82
+2_096_1.mp4,0,0,0,0,a person riding a bicycle,a person chasing other person,0
+4_077_1.mp4,20,0,0,0,a person riding a bicycle,a person riding a bicycle,20
+4_077_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+4_077_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+4_077_1.mp4,0,0,0,0,a person riding a bicycle,a person running,0
+4_077_1.mp4,0,0,43,14,a person riding a bicycle,a person lying in the floor,57
+4_077_1.mp4,0,0,1,0,a person riding a bicycle,a person chasing other person,1
+3_105_1.mp4,18,0,0,0,a person riding a bicycle,a person riding a bicycle,18
+3_105_1.mp4,0,0,0,0,a person riding a bicycle,a certain number of persons fighting,0
+3_105_1.mp4,0,0,0,0,a person riding a bicycle,a group of persons playing,0
+3_105_1.mp4,2,2,7,5,a person riding a bicycle,a person running,16
+3_105_1.mp4,0,0,53,47,a person riding a bicycle,a person lying in the floor,100
+3_105_1.mp4,0,4,11,1,a person riding a bicycle,a person chasing other person,16
+2_065_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+2_065_1.mp4,27,1,23,3,a certain number of persons fighting,a certain number of persons fighting,54
+2_065_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+2_065_1.mp4,17,1,63,37,a certain number of persons fighting,a person running,118
+2_065_1.mp4,0,0,131,131,a certain number of persons fighting,a person lying in the floor,262
+2_065_1.mp4,28,7,64,45,a certain number of persons fighting,a person chasing other person,144
+1_071_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+1_071_1.mp4,28,14,0,0,a certain number of persons fighting,a certain number of persons fighting,42
+1_071_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+1_071_1.mp4,8,15,29,20,a certain number of persons fighting,a person running,72
+1_071_1.mp4,0,0,65,46,a certain number of persons fighting,a person lying in the floor,111
+1_071_1.mp4,35,32,4,12,a certain number of persons fighting,a person chasing other person,83
+4_079_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+4_079_1.mp4,2,21,60,26,a certain number of persons fighting,a certain number of persons fighting,109
+4_079_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+4_079_1.mp4,13,3,48,9,a certain number of persons fighting,a person running,73
+4_079_1.mp4,0,0,123,78,a certain number of persons fighting,a person lying in the floor,201
+4_079_1.mp4,5,0,59,25,a certain number of persons fighting,a person chasing other person,89
+1_072_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+1_072_1.mp4,83,12,14,0,a certain number of persons fighting,a certain number of persons fighting,109
+1_072_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+1_072_1.mp4,11,0,89,11,a certain number of persons fighting,a person running,111
+1_072_1.mp4,0,0,114,18,a certain number of persons fighting,a person lying in the floor,132
+1_072_1.mp4,68,6,19,4,a certain number of persons fighting,a person chasing other person,97
+2_077_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+2_077_1.mp4,22,22,0,1,a certain number of persons fighting,a certain number of persons fighting,45
+2_077_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+2_077_1.mp4,16,1,0,15,a certain number of persons fighting,a person running,32
+2_077_1.mp4,0,0,26,38,a certain number of persons fighting,a person lying in the floor,64
+2_077_1.mp4,8,26,0,0,a certain number of persons fighting,a person chasing other person,34
+1_069_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+1_069_1.mp4,103,0,0,0,a certain number of persons fighting,a certain number of persons fighting,103
+1_069_1.mp4,3,0,0,0,a certain number of persons fighting,a group of persons playing,3
+1_069_1.mp4,48,2,75,11,a certain number of persons fighting,a person running,136
+1_069_1.mp4,0,0,175,56,a certain number of persons fighting,a person lying in the floor,231
+1_069_1.mp4,121,11,9,29,a certain number of persons fighting,a person chasing other person,170
+2_079_1.mp4,0,0,0,0,a certain number of persons fighting,a person riding a bicycle,0
+2_079_1.mp4,41,2,3,2,a certain number of persons fighting,a certain number of persons fighting,48
+2_079_1.mp4,0,0,0,0,a certain number of persons fighting,a group of persons playing,0
+2_079_1.mp4,39,3,7,23,a certain number of persons fighting,a person running,72
+2_079_1.mp4,0,0,72,40,a certain number of persons fighting,a person lying in the floor,112
+2_079_1.mp4,13,10,28,20,a certain number of persons fighting,a person chasing other person,71
+1_094_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+1_094_1.mp4,220,65,2,41,a group of persons playing,a certain number of persons fighting,328
+1_094_1.mp4,134,45,0,0,a group of persons playing,a group of persons playing,179
+1_094_1.mp4,149,26,55,105,a group of persons playing,a person running,335
+1_094_1.mp4,0,0,238,143,a group of persons playing,a person lying in the floor,381
+1_094_1.mp4,126,55,23,45,a group of persons playing,a person chasing other person,249
+3_101_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+3_101_1.mp4,211,55,22,40,a group of persons playing,a certain number of persons fighting,328
+3_101_1.mp4,30,0,0,0,a group of persons playing,a group of persons playing,30
+3_101_1.mp4,217,38,51,137,a group of persons playing,a person running,443
+3_101_1.mp4,0,0,590,271,a group of persons playing,a person lying in the floor,861
+3_101_1.mp4,406,114,27,120,a group of persons playing,a person chasing other person,667
+4_111_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+4_111_1.mp4,2,0,113,32,a group of persons playing,a certain number of persons fighting,147
+4_111_1.mp4,19,3,0,0,a group of persons playing,a group of persons playing,22
+4_111_1.mp4,3,14,127,59,a group of persons playing,a person running,203
+4_111_1.mp4,0,0,251,130,a group of persons playing,a person lying in the floor,381
+4_111_1.mp4,0,0,190,99,a group of persons playing,a person chasing other person,289
+3_102_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+3_102_1.mp4,209,66,15,94,a group of persons playing,a certain number of persons fighting,384
+3_102_1.mp4,199,85,0,0,a group of persons playing,a group of persons playing,284
+3_102_1.mp4,153,39,35,114,a group of persons playing,a person running,341
+3_102_1.mp4,0,0,262,209,a group of persons playing,a person lying in the floor,471
+3_102_1.mp4,224,144,1,32,a group of persons playing,a person chasing other person,401
+2_090_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+2_090_1.mp4,45,58,144,171,a group of persons playing,a certain number of persons fighting,418
+2_090_1.mp4,0,0,0,0,a group of persons playing,a group of persons playing,0
+2_090_1.mp4,34,0,199,191,a group of persons playing,a person running,424
+2_090_1.mp4,0,0,526,546,a group of persons playing,a person lying in the floor,1072
+2_090_1.mp4,271,185,134,122,a group of persons playing,a person chasing other person,712
+1_093_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+1_093_1.mp4,27,72,0,0,a group of persons playing,a certain number of persons fighting,99
+1_093_1.mp4,119,28,0,2,a group of persons playing,a group of persons playing,149
+1_093_1.mp4,240,63,37,165,a group of persons playing,a person running,505
+1_093_1.mp4,0,0,528,363,a group of persons playing,a person lying in the floor,891
+1_093_1.mp4,406,172,7,84,a group of persons playing,a person chasing other person,669
+2_093_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+2_093_1.mp4,6,7,115,25,a group of persons playing,a certain number of persons fighting,153
+2_093_1.mp4,15,4,0,0,a group of persons playing,a group of persons playing,19
+2_093_1.mp4,1,19,100,54,a group of persons playing,a person running,174
+2_093_1.mp4,0,0,258,124,a group of persons playing,a person lying in the floor,382
+2_093_1.mp4,122,79,62,29,a group of persons playing,a person chasing other person,292
+4_109_1.mp4,0,0,0,0,a group of persons playing,a person riding a bicycle,0
+4_109_1.mp4,24,0,128,56,a group of persons playing,a certain number of persons fighting,208
+4_109_1.mp4,0,0,0,0,a group of persons playing,a group of persons playing,0
+4_109_1.mp4,8,0,197,92,a group of persons playing,a person running,297
+4_109_1.mp4,0,0,449,244,a group of persons playing,a person lying in the floor,693
+4_109_1.mp4,24,0,326,130,a group of persons playing,a person chasing other person,480
+3_093_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_093_1.mp4,18,38,15,3,a person running,a certain number of persons fighting,74
+3_093_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_093_1.mp4,16,2,18,6,a person running,a person running,42
+3_093_1.mp4,0,0,67,134,a person running,a person lying in the floor,201
+3_093_1.mp4,38,35,12,7,a person running,a person chasing other person,92
+4_092_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_092_1.mp4,0,0,22,2,a person running,a certain number of persons fighting,24
+4_092_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_092_1.mp4,0,0,11,0,a person running,a person running,11
+4_092_1.mp4,0,0,34,17,a person running,a person lying in the floor,51
+4_092_1.mp4,11,1,12,14,a person running,a person chasing other person,38
+2_066_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+2_066_1.mp4,7,0,19,0,a person running,a certain number of persons fighting,26
+2_066_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+2_066_1.mp4,3,0,21,8,a person running,a person running,32
+2_066_1.mp4,0,0,79,33,a person running,a person lying in the floor,112
+2_066_1.mp4,18,15,53,6,a person running,a person chasing other person,92
+4_101_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_101_1.mp4,0,0,16,22,a person running,a certain number of persons fighting,38
+4_101_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_101_1.mp4,0,0,21,22,a person running,a person running,43
+4_101_1.mp4,0,0,76,59,a person running,a person lying in the floor,135
+4_101_1.mp4,0,0,54,41,a person running,a person chasing other person,95
+3_104_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_104_1.mp4,0,1,0,0,a person running,a certain number of persons fighting,1
+3_104_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_104_1.mp4,5,0,34,13,a person running,a person running,52
+3_104_1.mp4,0,0,68,73,a person running,a person lying in the floor,141
+3_104_1.mp4,13,14,29,22,a person running,a person chasing other person,78
+1_077_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+1_077_1.mp4,0,0,0,0,a person running,a certain number of persons fighting,0
+1_077_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+1_077_1.mp4,1,2,1,22,a person running,a person running,26
+1_077_1.mp4,0,0,24,56,a person running,a person lying in the floor,80
+1_077_1.mp4,7,4,2,7,a person running,a person chasing other person,20
+4_087_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_087_1.mp4,2,0,4,0,a person running,a certain number of persons fighting,6
+4_087_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_087_1.mp4,9,0,6,11,a person running,a person running,26
+4_087_1.mp4,0,0,53,34,a person running,a person lying in the floor,87
+4_087_1.mp4,14,0,15,17,a person running,a person chasing other person,46
+2_075_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+2_075_1.mp4,0,0,0,0,a person running,a certain number of persons fighting,0
+2_075_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+2_075_1.mp4,0,0,0,0,a person running,a person running,0
+2_075_1.mp4,0,0,32,50,a person running,a person lying in the floor,82
+2_075_1.mp4,3,0,0,0,a person running,a person chasing other person,3
+4_090_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_090_1.mp4,0,2,3,0,a person running,a certain number of persons fighting,5
+4_090_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_090_1.mp4,0,0,1,2,a person running,a person running,3
+4_090_1.mp4,0,0,21,30,a person running,a person lying in the floor,51
+4_090_1.mp4,0,1,11,10,a person running,a person chasing other person,22
+4_080_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_080_1.mp4,9,0,17,3,a person running,a certain number of persons fighting,29
+4_080_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_080_1.mp4,33,0,25,17,a person running,a person running,75
+4_080_1.mp4,0,0,74,49,a person running,a person lying in the floor,123
+4_080_1.mp4,23,3,41,44,a person running,a person chasing other person,111
+1_070_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+1_070_1.mp4,2,0,2,0,a person running,a certain number of persons fighting,4
+1_070_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+1_070_1.mp4,18,0,0,11,a person running,a person running,29
+1_070_1.mp4,0,0,32,29,a person running,a person lying in the floor,61
+1_070_1.mp4,20,0,3,0,a person running,a person chasing other person,23
+4_078_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_078_1.mp4,1,1,2,11,a person running,a certain number of persons fighting,15
+4_078_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_078_1.mp4,1,3,0,4,a person running,a person running,8
+4_078_1.mp4,0,0,27,24,a person running,a person lying in the floor,51
+4_078_1.mp4,20,7,5,13,a person running,a person chasing other person,45
+4_104_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_104_1.mp4,0,0,0,0,a person running,a certain number of persons fighting,0
+4_104_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_104_1.mp4,0,0,5,12,a person running,a person running,17
+4_104_1.mp4,0,0,16,11,a person running,a person lying in the floor,27
+4_104_1.mp4,0,0,16,11,a person running,a person chasing other person,27
+4_112_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_112_1.mp4,0,1,9,8,a person running,a certain number of persons fighting,18
+4_112_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_112_1.mp4,0,0,19,10,a person running,a person running,29
+4_112_1.mp4,0,0,27,36,a person running,a person lying in the floor,63
+4_112_1.mp4,0,2,21,16,a person running,a person chasing other person,39
+2_095_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+2_095_1.mp4,2,0,16,0,a person running,a certain number of persons fighting,18
+2_095_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+2_095_1.mp4,0,0,0,1,a person running,a person running,1
+2_095_1.mp4,0,0,47,35,a person running,a person lying in the floor,82
+2_095_1.mp4,1,4,23,3,a person running,a person chasing other person,31
+3_077_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_077_1.mp4,4,0,0,0,a person running,a certain number of persons fighting,4
+3_077_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_077_1.mp4,20,3,31,25,a person running,a person running,79
+3_077_1.mp4,0,0,71,100,a person running,a person lying in the floor,171
+3_077_1.mp4,15,12,38,17,a person running,a person chasing other person,82
+2_064_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+2_064_1.mp4,7,19,8,21,a person running,a certain number of persons fighting,55
+2_064_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+2_064_1.mp4,4,11,26,23,a person running,a person running,64
+2_064_1.mp4,0,0,38,44,a person running,a person lying in the floor,82
+2_064_1.mp4,5,12,13,18,a person running,a person chasing other person,48
+1_079_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+1_079_1.mp4,0,0,0,0,a person running,a certain number of persons fighting,0
+1_079_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+1_079_1.mp4,11,0,16,0,a person running,a person running,27
+1_079_1.mp4,0,0,25,0,a person running,a person lying in the floor,25
+1_079_1.mp4,0,0,0,0,a person running,a person chasing other person,0
+4_102_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_102_1.mp4,0,4,6,12,a person running,a certain number of persons fighting,22
+4_102_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_102_1.mp4,0,0,0,0,a person running,a person running,0
+4_102_1.mp4,0,0,22,29,a person running,a person lying in the floor,51
+4_102_1.mp4,0,0,15,11,a person running,a person chasing other person,26
+3_103_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_103_1.mp4,0,0,0,0,a person running,a certain number of persons fighting,0
+3_103_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_103_1.mp4,4,0,1,0,a person running,a person running,5
+3_103_1.mp4,0,0,22,59,a person running,a person lying in the floor,81
+3_103_1.mp4,1,4,9,2,a person running,a person chasing other person,16
+3_087_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_087_1.mp4,0,11,1,14,a person running,a certain number of persons fighting,26
+3_087_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_087_1.mp4,7,0,9,5,a person running,a person running,21
+3_087_1.mp4,0,0,37,74,a person running,a person lying in the floor,111
+3_087_1.mp4,3,12,2,16,a person running,a person chasing other person,33
+3_075_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+3_075_1.mp4,5,17,13,22,a person running,a certain number of persons fighting,57
+3_075_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+3_075_1.mp4,17,0,20,88,a person running,a person running,125
+3_075_1.mp4,0,0,37,136,a person running,a person lying in the floor,173
+3_075_1.mp4,13,15,11,46,a person running,a person chasing other person,85
+4_100_1.mp4,0,0,0,0,a person running,a person riding a bicycle,0
+4_100_1.mp4,1,0,8,1,a person running,a certain number of persons fighting,10
+4_100_1.mp4,0,0,0,0,a person running,a group of persons playing,0
+4_100_1.mp4,0,0,16,3,a person running,a person running,19
+4_100_1.mp4,0,0,23,22,a person running,a person lying in the floor,45
+4_100_1.mp4,0,0,21,10,a person running,a person chasing other person,31
+4_089_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+4_089_1.mp4,42,16,33,203,a person lying in the floor,a certain number of persons fighting,294
+4_089_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+4_089_1.mp4,9,6,55,125,a person lying in the floor,a person running,195
+4_089_1.mp4,86,0,61,294,a person lying in the floor,a person lying in the floor,441
+4_089_1.mp4,59,7,23,241,a person lying in the floor,a person chasing other person,330
+2_080_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+2_080_1.mp4,6,10,0,5,a person lying in the floor,a certain number of persons fighting,21
+2_080_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+2_080_1.mp4,0,0,28,8,a person lying in the floor,a person running,36
+2_080_1.mp4,0,0,212,140,a person lying in the floor,a person lying in the floor,352
+2_080_1.mp4,34,19,21,27,a person lying in the floor,a person chasing other person,101
+3_092_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+3_092_1.mp4,11,39,6,7,a person lying in the floor,a certain number of persons fighting,63
+3_092_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+3_092_1.mp4,20,0,8,17,a person lying in the floor,a person running,45
+3_092_1.mp4,115,0,77,219,a person lying in the floor,a person lying in the floor,411
+3_092_1.mp4,15,5,9,8,a person lying in the floor,a person chasing other person,37
+1_091_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+1_091_1.mp4,54,13,0,0,a person lying in the floor,a certain number of persons fighting,67
+1_091_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+1_091_1.mp4,0,0,37,16,a person lying in the floor,a person running,53
+1_091_1.mp4,195,0,22,40,a person lying in the floor,a person lying in the floor,257
+1_091_1.mp4,20,6,5,7,a person lying in the floor,a person chasing other person,38
+3_099_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+3_099_1.mp4,46,8,23,12,a person lying in the floor,a certain number of persons fighting,89
+3_099_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+3_099_1.mp4,0,0,43,20,a person lying in the floor,a person running,63
+3_099_1.mp4,40,0,220,61,a person lying in the floor,a person lying in the floor,321
+3_099_1.mp4,24,3,65,20,a person lying in the floor,a person chasing other person,112
+1_078_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+1_078_1.mp4,53,7,0,21,a person lying in the floor,a certain number of persons fighting,81
+1_078_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+1_078_1.mp4,5,0,36,52,a person lying in the floor,a person running,93
+1_078_1.mp4,93,0,37,101,a person lying in the floor,a person lying in the floor,231
+1_078_1.mp4,69,13,1,61,a person lying in the floor,a person chasing other person,144
+4_094_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+4_094_1.mp4,0,1,210,26,a person lying in the floor,a certain number of persons fighting,237
+4_094_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+4_094_1.mp4,0,0,45,3,a person lying in the floor,a person running,48
+4_094_1.mp4,5,0,267,43,a person lying in the floor,a person lying in the floor,315
+4_094_1.mp4,26,2,138,37,a person lying in the floor,a person chasing other person,203
+3_086_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+3_086_1.mp4,55,52,20,65,a person lying in the floor,a certain number of persons fighting,192
+3_086_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+3_086_1.mp4,18,0,34,100,a person lying in the floor,a person running,152
+3_086_1.mp4,87,0,53,391,a person lying in the floor,a person lying in the floor,531
+3_086_1.mp4,98,188,16,77,a person lying in the floor,a person chasing other person,379
+1_084_1.mp4,0,0,0,0,a person lying in the floor,a person riding a bicycle,0
+1_084_1.mp4,35,0,0,0,a person lying in the floor,a certain number of persons fighting,35
+1_084_1.mp4,0,0,0,0,a person lying in the floor,a group of persons playing,0
+1_084_1.mp4,2,0,13,5,a person lying in the floor,a person running,20
+1_084_1.mp4,120,0,47,34,a person lying in the floor,a person lying in the floor,201
+1_084_1.mp4,37,0,3,0,a person lying in the floor,a person chasing other person,40
+2_069_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+2_069_1.mp4,2,3,6,2,a person chasing other person,a certain number of persons fighting,13
+2_069_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+2_069_1.mp4,18,37,35,10,a person chasing other person,a person running,100
+2_069_1.mp4,0,0,78,64,a person chasing other person,a person lying in the floor,142
+2_069_1.mp4,25,4,9,45,a person chasing other person,a person chasing other person,83
+1_082_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+1_082_1.mp4,3,0,0,0,a person chasing other person,a certain number of persons fighting,3
+1_082_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+1_082_1.mp4,28,2,3,13,a person chasing other person,a person running,46
+1_082_1.mp4,1,0,30,50,a person chasing other person,a person lying in the floor,81
+1_082_1.mp4,20,16,9,6,a person chasing other person,a person chasing other person,51
+4_108_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+4_108_1.mp4,8,17,20,2,a person chasing other person,a certain number of persons fighting,47
+4_108_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+4_108_1.mp4,15,1,9,8,a person chasing other person,a person running,33
+4_108_1.mp4,0,0,34,29,a person chasing other person,a person lying in the floor,63
+4_108_1.mp4,1,1,13,15,a person chasing other person,a person chasing other person,30
+4_107_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+4_107_1.mp4,5,13,36,31,a person chasing other person,a certain number of persons fighting,85
+4_107_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+4_107_1.mp4,18,0,9,31,a person chasing other person,a person running,58
+4_107_1.mp4,0,0,45,96,a person chasing other person,a person lying in the floor,141
+4_107_1.mp4,5,0,24,44,a person chasing other person,a person chasing other person,73
+4_114_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+4_114_1.mp4,0,0,30,0,a person chasing other person,a certain number of persons fighting,30
+4_114_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+4_114_1.mp4,0,0,28,4,a person chasing other person,a person running,32
+4_114_1.mp4,0,0,55,8,a person chasing other person,a person lying in the floor,63
+4_114_1.mp4,0,0,25,8,a person chasing other person,a person chasing other person,33
+3_096_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+3_096_1.mp4,20,17,1,16,a person chasing other person,a certain number of persons fighting,54
+3_096_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+3_096_1.mp4,24,0,13,32,a person chasing other person,a person running,69
+3_096_1.mp4,0,0,35,46,a person chasing other person,a person lying in the floor,81
+3_096_1.mp4,23,27,8,15,a person chasing other person,a person chasing other person,73
+1_073_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+1_073_1.mp4,0,0,0,0,a person chasing other person,a certain number of persons fighting,0
+1_073_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+1_073_1.mp4,12,0,9,8,a person chasing other person,a person running,29
+1_073_1.mp4,0,0,30,21,a person chasing other person,a person lying in the floor,51
+1_073_1.mp4,6,0,0,0,a person chasing other person,a person chasing other person,6
+3_091_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+3_091_1.mp4,13,2,10,36,a person chasing other person,a certain number of persons fighting,61
+3_091_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+3_091_1.mp4,16,3,12,43,a person chasing other person,a person running,74
+3_091_1.mp4,0,0,34,77,a person chasing other person,a person lying in the floor,111
+3_091_1.mp4,28,14,6,47,a person chasing other person,a person chasing other person,95
+2_078_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+2_078_1.mp4,5,26,16,14,a person chasing other person,a certain number of persons fighting,61
+2_078_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+2_078_1.mp4,0,2,9,3,a person chasing other person,a person running,14
+2_078_1.mp4,0,0,28,54,a person chasing other person,a person lying in the floor,82
+2_078_1.mp4,11,14,3,8,a person chasing other person,a person chasing other person,36
+2_088_1.mp4,0,0,0,0,a person chasing other person,a person riding a bicycle,0
+2_088_1.mp4,0,0,0,0,a person chasing other person,a certain number of persons fighting,0
+2_088_1.mp4,0,0,0,0,a person chasing other person,a group of persons playing,0
+2_088_1.mp4,0,0,0,0,a person chasing other person,a person running,0
+2_088_1.mp4,0,0,50,74,a person chasing other person,a person lying in the floor,124
+2_088_1.mp4,7,0,1,12,a person chasing other person,a person chasing other person,20
+4_076_1.mp4,26,29,0,0,a person riding a bicycle,everything is normal,55
+3_106_1.mp4,0,18,2,11,a person riding a bicycle,everything is normal,31
+1_067_1.mp4,0,0,0,0,a person riding a bicycle,everything is normal,0
+1_066_1.mp4,0,24,0,0,a person riding a bicycle,everything is normal,24
+2_096_1.mp4,0,45,0,0,a person riding a bicycle,everything is normal,45
+4_077_1.mp4,14,16,0,0,a person riding a bicycle,everything is normal,30
+3_105_1.mp4,2,49,0,0,a person riding a bicycle,everything is normal,51
+2_065_1.mp4,131,133,0,0,a certain number of persons fighting,everything is normal,264
+1_071_1.mp4,65,48,0,0,a certain number of persons fighting,everything is normal,113
+4_079_1.mp4,123,80,0,0,a certain number of persons fighting,everything is normal,203
+1_072_1.mp4,115,18,0,0,a certain number of persons fighting,everything is normal,133
+2_077_1.mp4,28,38,0,0,a certain number of persons fighting,everything is normal,66
+1_069_1.mp4,166,58,0,0,a certain number of persons fighting,everything is normal,224
+2_079_1.mp4,72,42,0,0,a certain number of persons fighting,everything is normal,114
+1_094_1.mp4,101,97,0,0,a group of persons playing,everything is normal,198
+3_101_1.mp4,554,273,0,0,a group of persons playing,everything is normal,827
+4_111_1.mp4,234,121,0,0,a group of persons playing,everything is normal,355
+3_102_1.mp4,63,120,0,0,a group of persons playing,everything is normal,183
+2_090_1.mp4,524,548,0,0,a group of persons playing,everything is normal,1072
+1_093_1.mp4,407,331,0,0,a group of persons playing,everything is normal,738
+2_093_1.mp4,239,120,0,0,a group of persons playing,everything is normal,359
+4_109_1.mp4,445,246,0,0,a group of persons playing,everything is normal,691
+3_093_1.mp4,67,136,0,0,a person running,everything is normal,203
+4_092_1.mp4,34,19,0,0,a person running,everything is normal,53
+2_066_1.mp4,81,33,0,0,a person running,everything is normal,114
+4_101_1.mp4,76,60,0,0,a person running,everything is normal,136
+3_104_1.mp4,68,75,0,0,a person running,everything is normal,143
+1_077_1.mp4,24,58,0,0,a person running,everything is normal,82
+4_087_1.mp4,53,36,0,0,a person running,everything is normal,89
+2_075_1.mp4,32,52,0,0,a person running,everything is normal,84
+4_090_1.mp4,23,30,0,0,a person running,everything is normal,53
+4_080_1.mp4,72,51,0,0,a person running,everything is normal,123
+1_070_1.mp4,33,25,0,3,a person running,everything is normal,61
+4_078_1.mp4,27,26,0,0,a person running,everything is normal,53
+4_104_1.mp4,16,13,0,0,a person running,everything is normal,29
+4_112_1.mp4,27,38,0,0,a person running,everything is normal,65
+2_095_1.mp4,47,37,0,0,a person running,everything is normal,84
+3_077_1.mp4,69,102,0,0,a person running,everything is normal,171
+2_064_1.mp4,37,46,0,0,a person running,everything is normal,83
+1_079_1.mp4,27,0,0,0,a person running,everything is normal,27
+4_102_1.mp4,22,31,0,0,a person running,everything is normal,53
+3_103_1.mp4,24,59,0,0,a person running,everything is normal,83
+3_087_1.mp4,37,76,0,0,a person running,everything is normal,113
+3_075_1.mp4,37,138,0,0,a person running,everything is normal,175
+4_100_1.mp4,25,22,0,0,a person running,everything is normal,47
+4_089_1.mp4,148,294,1,0,a person lying in the floor,everything is normal,443
+2_080_1.mp4,212,142,0,0,a person lying in the floor,everything is normal,354
+3_092_1.mp4,192,221,0,0,a person lying in the floor,everything is normal,413
+1_091_1.mp4,217,42,0,0,a person lying in the floor,everything is normal,259
+3_099_1.mp4,259,63,0,0,a person lying in the floor,everything is normal,322
+1_078_1.mp4,127,99,3,0,a person lying in the floor,everything is normal,229
+4_094_1.mp4,272,45,0,0,a person lying in the floor,everything is normal,317
+3_086_1.mp4,139,393,0,0,a person lying in the floor,everything is normal,532
+1_084_1.mp4,167,36,0,0,a person lying in the floor,everything is normal,203
+2_069_1.mp4,78,66,0,0,a person chasing other person,everything is normal,144
+1_082_1.mp4,30,52,0,0,a person chasing other person,everything is normal,82
+4_108_1.mp4,34,31,0,0,a person chasing other person,everything is normal,65
+4_107_1.mp4,45,98,0,0,a person chasing other person,everything is normal,143
+4_114_1.mp4,55,10,0,0,a person chasing other person,everything is normal,65
+3_096_1.mp4,36,46,0,0,a person chasing other person,everything is normal,82
+1_073_1.mp4,30,23,0,0,a person chasing other person,everything is normal,53
+3_091_1.mp4,34,79,0,0,a person chasing other person,everything is normal,113
+2_078_1.mp4,30,54,0,0,a person chasing other person,everything is normal,84
+2_088_1.mp4,50,76,0,0,a person chasing other person,everything is normal,126
+2_031_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+2_031_0.mp4,0,20,0,11,everything is normal,a certain number of persons fighting,31
+2_031_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+2_031_0.mp4,0,5,0,5,everything is normal,a person running,10
+2_031_0.mp4,0,0,0,250,everything is normal,a person lying in the floor,250
+2_031_0.mp4,0,34,0,24,everything is normal,a person chasing other person,58
+2_031_0.mp4,0,252,0,0,everything is normal,everything is normal,252
+1_052_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+1_052_0.mp4,0,0,0,0,everything is normal,a certain number of persons fighting,0
+1_052_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+1_052_0.mp4,0,0,0,19,everything is normal,a person running,19
+1_052_0.mp4,0,0,0,41,everything is normal,a person lying in the floor,41
+1_052_0.mp4,0,0,0,0,everything is normal,a person chasing other person,0
+1_052_0.mp4,0,43,0,0,everything is normal,everything is normal,43
+2_028_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+2_028_0.mp4,0,26,0,27,everything is normal,a certain number of persons fighting,53
+2_028_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+2_028_0.mp4,0,1,0,36,everything is normal,a person running,37
+2_028_0.mp4,0,0,0,250,everything is normal,a person lying in the floor,250
+2_028_0.mp4,0,44,0,60,everything is normal,a person chasing other person,104
+2_028_0.mp4,0,251,0,0,everything is normal,everything is normal,251
+4_068_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+4_068_0.mp4,0,16,0,275,everything is normal,a certain number of persons fighting,291
+4_068_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+4_068_0.mp4,0,0,0,97,everything is normal,a person running,97
+4_068_0.mp4,0,0,0,639,everything is normal,a person lying in the floor,639
+4_068_0.mp4,0,27,0,322,everything is normal,a person chasing other person,349
+4_068_0.mp4,0,641,0,0,everything is normal,everything is normal,641
+2_054_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+2_054_0.mp4,0,16,0,17,everything is normal,a certain number of persons fighting,33
+2_054_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+2_054_0.mp4,0,0,0,66,everything is normal,a person running,66
+2_054_0.mp4,0,0,0,232,everything is normal,a person lying in the floor,232
+2_054_0.mp4,0,38,0,60,everything is normal,a person chasing other person,98
+2_054_0.mp4,0,232,0,0,everything is normal,everything is normal,232
+3_035_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+3_035_0.mp4,0,12,0,1,everything is normal,a certain number of persons fighting,13
+3_035_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+3_035_0.mp4,0,0,0,24,everything is normal,a person running,24
+3_035_0.mp4,0,0,0,262,everything is normal,a person lying in the floor,262
+3_035_0.mp4,0,15,0,7,everything is normal,a person chasing other person,22
+3_035_0.mp4,0,262,0,2,everything is normal,everything is normal,264
+4_040_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+4_040_0.mp4,0,26,0,9,everything is normal,a certain number of persons fighting,35
+4_040_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+4_040_0.mp4,0,2,0,69,everything is normal,a person running,71
+4_040_0.mp4,0,0,0,353,everything is normal,a person lying in the floor,353
+4_040_0.mp4,0,1,0,60,everything is normal,a person chasing other person,61
+4_040_0.mp4,0,355,0,0,everything is normal,everything is normal,355
+4_046_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+4_046_0.mp4,0,35,0,221,everything is normal,a certain number of persons fighting,256
+4_046_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+4_046_0.mp4,0,0,0,39,everything is normal,a person running,39
+4_046_0.mp4,0,0,0,441,everything is normal,a person lying in the floor,441
+4_046_0.mp4,0,8,0,248,everything is normal,a person chasing other person,256
+4_046_0.mp4,0,443,0,0,everything is normal,everything is normal,443
+2_055_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+2_055_0.mp4,0,1,0,178,everything is normal,a certain number of persons fighting,179
+2_055_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+2_055_0.mp4,0,7,0,157,everything is normal,a person running,164
+2_055_0.mp4,0,0,0,262,everything is normal,a person lying in the floor,262
+2_055_0.mp4,0,78,0,146,everything is normal,a person chasing other person,224
+2_055_0.mp4,0,263,0,0,everything is normal,everything is normal,263
+1_037_0.mp4,0,0,0,0,everything is normal,a person riding a bicycle,0
+1_037_0.mp4,0,0,0,0,everything is normal,a certain number of persons fighting,0
+1_037_0.mp4,0,0,0,0,everything is normal,a group of persons playing,0
+1_037_0.mp4,0,0,0,55,everything is normal,a person running,55
+1_037_0.mp4,0,0,0,113,everything is normal,a person lying in the floor,113
+1_037_0.mp4,0,21,0,13,everything is normal,a person chasing other person,34
+1_037_0.mp4,0,114,0,0,everything is normal,everything is normal,114
