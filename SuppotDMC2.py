@@ -109,30 +109,34 @@ def person_jumping(loaded_data, frame_number):
             for i in range(len(person)):
                 print(i,'-', person[i][3], person[i][5], "\n")
                 diferences = np.append(diferences, person[i][5])
-            intervals = abs(np.diff(diferences))
+            intervals = diferences - diferences[0]
             height = person[0][5] - person[0][3]
             print(
                 "Intervals:",
                 intervals, 'Height:', height,
                 "Mean:",
-                intervals.mean(),
+                intervals.sum(),
                 "\n",
             )
-        annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/1_092_1.npy")
+            '''annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/1_092_1.npy")
         if annotations[frame_number - 1] == 1:
             try:
                 df = pd.read_csv("/home/ubuntu/Tesis/Results/Jumping2video.csv")
             except:
                 columns = ['Frame',"Height","Mean"]
                 df = pd.DataFrame(columns=columns)
-            row = {'Frame':frame_number,"Height":height,"Mean":intervals.mean()}
+            row = {'Frame':frame_number,"Height":height,"Mean":abs(intervals.sum())}
             df=pd.concat([df, pd.DataFrame([row])], ignore_index=True)
             df.to_csv("/home/ubuntu/Tesis/Results/Jumping2video.csv", index=False)
-            print(df)
-        if (abs(intervals.mean()) < height*0.198
-                and abs(intervals.mean()) > height*0.0015
+            print(df) '''
+            if (abs(intervals.sum()) < height*4.65
+                and abs(intervals.sum()) > height*0.0015
             ):
                 return True
+            '''        if (abs(intervals.mean()) < height*0.198
+                and abs(intervals.mean()) > height*0.0015
+            ):
+                return True'''
     return False
 
 
