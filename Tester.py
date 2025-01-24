@@ -25,7 +25,14 @@ class VideoTester(ABC):
     @abstractmethod
     def set_dataframe(self, df):
         pass
+    
+    @abstractmethod
+    def set_detector(self, detector):
+        pass
 
+    @abstractmethod
+    def set_MLLM(self, MLLM):
+        pass
     @abstractmethod
     def append_dataframe(self, row):
         pass
@@ -59,6 +66,14 @@ class EventTester(VideoTester):
         self.__df = None
         self.__dfname = None
         self.__showdet = False
+        self.__detector = None
+        self.__MLLM = None
+            
+    def set_detector(self, detector):
+        self.__detector = detector
+
+    def set_MLLM(self, MLLM):
+        self.__MLLM = MLLM
 
     def set_event(self, event):
         self.__event = event
@@ -141,14 +156,14 @@ class EventTester(VideoTester):
         # Inicializacion de los modelos
         start_time = time.time()
         # ov_qmodel = YOLOv10("/home/ubuntu/yolov10/int8/yolov10x_openvino_model/")
-        if self.__mode != 1:
+        '''        if self.__mode != 1:
             ov_qmodel = YOLOv10Detector()
             ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
             ov_qmodel.set_labels(detection_labels)
         if self.__mode < 4:
             llava = LLaVA_OneVision()
             llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-            llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+            llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")'''
         cap = cv2.VideoCapture(video_path)
         fps = cap.get(cv2.CAP_PROP_FPS)
         duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
@@ -174,7 +189,7 @@ class EventTester(VideoTester):
                 break
             if self.__mode == 0:
                 # Detector with rules and MLLM with all information
-                detections, classes = ov_qmodel.detection(frame, classes)
+                detections, classes = self.__detector.detection(frame, classes)
                 decision_makerComplex(
                     frame,
                     int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -198,7 +213,7 @@ class EventTester(VideoTester):
                 )
             elif self.__mode == 2:
                 # Detector with MLLM but not rules
-                detections, classes = ov_qmodel.detection(frame, classes)
+                detections, classes = self.__detector.detection(frame, classes)
                 take_frame(
                     frame,
                     int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -209,7 +224,7 @@ class EventTester(VideoTester):
                 )
             elif self.__mode == 3:
                 # Detector with rules and MLLM with no information
-                detections, classes = ov_qmodel.detection(frame, classes)
+                detections, classes = self.__detector.detection(frame, classes)
                 decision_makerComplex(
                     frame,
                     int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -222,7 +237,7 @@ class EventTester(VideoTester):
                 )
             elif self.__mode == 4:
                 # Detector with rules only
-                detections, classes = ov_qmodel.detection(frame, classes)
+                detections, classes = self.__detector.detection(frame, classes)
                 decision_makerComplex(
                     frame,
                     int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -243,7 +258,7 @@ class EventTester(VideoTester):
                 frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 text = prompt_text(classes, self.__event, self.__mode)
                 print(text)
-                prompt = llava.event_validation(
+                prompt = self.__MLLM.event_validation(
                     frames, self.__event, text, verbose=True
                 )
                 prompts.append(prompt)
@@ -267,7 +282,7 @@ class EventTester(VideoTester):
                 2,
             )
             if self.__showdet:
-                ov_qmodel.put_detections(detections, frame)
+                self.__detector.put_detections(detections, frame)
             cv2.imshow("Video", frame)
         cap.release()
         time_video = time.time() - start_video
@@ -348,6 +363,8 @@ if __name__ == "__main__":
         "4-Running away",
         "5-Person lying in the floor",
         "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
         "99-Normal",
     ]
     description = [
@@ -357,6 +374,8 @@ if __name__ == "__main__":
         "a person running",
         "a person lying in the floor",
         "a person chasing other person",
+        "a person jumping",
+        "a person falling",
         "everything is normal",
     ]
     tester = EventTester()
@@ -364,16 +383,29 @@ if __name__ == "__main__":
     tester.set_rute("../Database/CHAD DATABASE")
     tester.show_detections(False)
     tester.autotesting(events, description, [0])"""
+    #Define the folder of the videos and the descriptions of the events
     events = [
-        "7-Jumping",
-        "99-Normal",
+    '9-guide'
     ]
     description = [
-        "a person jumping",
+        "a person guiding someone",
         "everything is normal",
     ]
+    #Set the Detector and the MLLM
+    ov_qmodel = YOLOv10Detector()
+    ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
+    ov_qmodel.set_labels(detection_labels)
+    llava = LLaVA_OneVision()
+    llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+    llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+    #Prepare the tester
     tester = EventTester()
+
     tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP2.csv")
     tester.set_rute("../Database/CHAD DATABASE")
+    tester.set_detector(ov_qmodel)
+    tester.set_MLLM(llava)
     tester.show_detections(True)
-    tester.autotesting(events, description, [4])
+    #Start the autotesting
+    tester.autotesting(events, description, [0])
+

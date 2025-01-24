@@ -48,8 +48,8 @@ class Visualizer:
 
 if __name__ == "__main__":
     visualizer = Visualizer()
-    visualizer.set_video("1_092_1")
-    visualizer.set_video_rute("../Database/CHAD DATABASE/7-Jumping")
+    visualizer.set_video("4_106_1")
+    visualizer.set_video_rute("../Database/CHAD DATABASE/9-guide")
     visualizer.set_annotations_rute(
         "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
     )

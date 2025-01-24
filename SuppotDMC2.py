@@ -23,6 +23,8 @@ classes_focus = {
         "tennis racket",
     ],
     "a person jumping": ["person"],
+    "a person falling": ["person"],
+    "a person guiding someone": ["person"],
 }
 
 
@@ -45,10 +47,16 @@ def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number,
             condition, prompt = Check_Chasing(
                 classes, detections, results, frames, MLLM
             )
-        case "everything is normal":
-            condition, prompt = Check_Normal(classes, detections, results, frames, MLLM)
         case "a person jumping":
             condition, prompt = Check_Jumping(
+                classes, detections, results, frames, MLLM, frame_number
+            )
+        case "a person falling":
+            condition, prompt = Check_Falling(
+                classes, detections, results, frames, MLLM, frame_number
+            )
+        case "a person guiding someone":
+            condition, prompt = Check_Guiding(
                 classes, detections, results, frames, MLLM, frame_number
             )
         case _:
@@ -56,15 +64,164 @@ def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number,
             return True, ""
     return condition, prompt
 
+def Check_Guiding(classes, detections, results, frames, MLLM, frame_number):
+    classes_of_interest = ["person"]
+    if all([classes[class_] > 0 for class_ in classes_of_interest]):
+        if len(results) < 6:
+            return True, ""
+        correct = []
+        corrects = []
+        for detections in results:
+            for detection in detections:
+                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
+                    correct.append(detection)
+            corrects.append(correct)
+            correct = []
+        for detection in detections:
+            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
+                correct.append(detection)
+        corrects.append(correct)
+        # Save the list to a file
+        condition = person_guiding(corrects, frame_number)
+        print(
+            condition,
+            "\n---------------------------------------------------------------------\n",
+        )
+        if condition == False and MLLM:
+            frames.pop(0)
+            results.pop(0)
+        if condition:
+            text = "yes"
+        else:
+            text = "no"
+        return condition, text
+    else:
+        return False, ""
+    
+
+def person_guiding(loaded_data, frame_number, verbose=False):
+    persons = organize_persons(loaded_data)
+    # Evaluate the persons
+    if len(persons) < 2:
+        return False
+    else:
+        check=[]
+        for i in range(len(persons) - 1):
+            if verbose:
+                print(
+                    f"Person {i}",
+                    "\n---------------------------------------------------------------------\n",
+                )
+            for j in range(i + 1, len(persons)):
+                touching = np.array([])
+                for k in range(len(persons[i])):
+                    print(i, j, k, persons[i][k], persons[j][k], "\n")
+                    touch= boxes_touching([persons[i][k], persons[j][k]])
+                    if touch:
+                        touching = np.append(touching , 1)
+                    else:
+                        touching = np.append(touching , 0)
+                if touching.sum() > (len(touching)-1):
+                    #return True
+                    check.append([persons[i], persons[j]])
+        for duo in check:
+            for i in range(len(duo[0])):
+                print('Duo',[duo[0][i][2]-duo[0][i][4],duo[0][i][3]-duo[0][i][5]],
+                    'Duo',[duo[1][i][2]-duo[1][i][4],duo[1][i][3]-duo[1][i][5]], '\n')
+    return False
+
+
+def Check_Falling(classes, detections, results, frames, MLLM, frame_number):
+    classes_of_interest = ["person"]
+    if all([classes[class_] > 0 for class_ in classes_of_interest]):
+        if len(results) < 6:
+            return True, ""
+        correct = []
+        corrects = []
+        for detections in results:
+            for detection in detections:
+                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
+                    correct.append(detection)
+            corrects.append(correct)
+            correct = []
+        for detection in detections:
+            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
+                correct.append(detection)
+        corrects.append(correct)
+        # Save the list to a file
+        condition = person_falling(corrects, frame_number)
+        print(
+            condition,
+            "\n---------------------------------------------------------------------\n",
+        )
+        if condition == False and MLLM:
+            frames.pop(0)
+            results.pop(0)
+        if condition:
+            text = "yes"
+        else:
+            text = "no"
+        return condition, text
+    else:
+        return False, ""
+
+
+def person_falling(loaded_data, frame_number):
+    persons = organize_persons(loaded_data)
+    # Evaluate the persons
+    if len(persons) < 1:
+        return False
+    else:
+        for person in persons:
+            width_per_height_ratio = np.array([])
+            diferences = np.array([])
+            for i in range(len(person)):
+                print(  i,
+                    "-",
+                    person[i][2],
+                    person[i][3],
+                    person[i][4],
+                    person[i][5],
+                    "\n",)
+                diferences = np.append(diferences, person[i][3])
+                height = person[i][5] - person[i][3]
+                width = person[i][4] - person[i][2]
+                width_per_height_ratio = np.append(
+                    width_per_height_ratio, width / height
+                )
+            print(                "Differences:",
+                diferences,)
+            intervals = diferences - diferences[0]
+            width_per_height_ratio = width_per_height_ratio - width_per_height_ratio[0]
+            print(
+                "Intervals:",
+                intervals,
+                "Width per height ratio:",
+                width_per_height_ratio,
+                "Sum difference:",
+                intervals.sum(),
+                'Sum ratio:',width_per_height_ratio.sum(),
+                "\n",
+            )
+            '''annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/4_089_1.npy")
+            if annotations[frame_number - 1] == 1:
+                try:
+                    df = pd.read_csv("/home/ubuntu/Tesis/Results/Falling12video.csv")
+                except:
+                    columns = ['Frame','Ratio sum',"Y sum"]
+                    df = pd.DataFrame(columns=columns)
+                row = {'Frame':frame_number,'Ratio sum':abs(width_per_height_ratio.sum()),"Y sum":abs(intervals.sum())}
+                df=pd.concat([df, pd.DataFrame([row])], ignore_index=True)
+                df.to_csv("/home/ubuntu/Tesis/Results/Falling12video.csv", index=False)
+                print(df)'''
+            if (
+                abs(intervals.sum()) > 100 and abs(width_per_height_ratio.sum()) > 0.5
+            ):
+                return True
+    return False
 
 def Check_Jumping(classes, detections, results, frames, MLLM, frame_number):
     classes_of_interest = ["person"]
-    print(
-        len(results),
-        "-",
-        len(frames),
-        "\n---------------------------------------------------------------------\n",
-    )
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
@@ -107,18 +264,20 @@ def person_jumping(loaded_data, frame_number):
         for person in persons:
             diferences = np.array([])
             for i in range(len(person)):
-                print(i,'-', person[i][3], person[i][5], "\n")
+                print(i, "-", person[i][3], person[i][5], "\n")
                 diferences = np.append(diferences, person[i][5])
             intervals = diferences - diferences[0]
             height = person[0][5] - person[0][3]
             print(
                 "Intervals:",
-                intervals, 'Height:', height,
+                intervals,
+                "Height:",
+                height,
                 "Mean:",
                 intervals.sum(),
                 "\n",
             )
-            '''annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/1_092_1.npy")
+            """annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/1_092_1.npy")
         if annotations[frame_number - 1] == 1:
             try:
                 df = pd.read_csv("/home/ubuntu/Tesis/Results/Jumping2video.csv")
@@ -128,32 +287,35 @@ def person_jumping(loaded_data, frame_number):
             row = {'Frame':frame_number,"Height":height,"Mean":abs(intervals.sum())}
             df=pd.concat([df, pd.DataFrame([row])], ignore_index=True)
             df.to_csv("/home/ubuntu/Tesis/Results/Jumping2video.csv", index=False)
-            print(df) '''
-            if (abs(intervals.sum()) < height*4.65
-                and abs(intervals.sum()) > height*0.0015
+            print(df) """
+            if (
+                abs(intervals.sum()) < height * 4.65
+                and abs(intervals.sum()) > height * 0.0015
             ):
                 return True
-            '''        if (abs(intervals.mean()) < height*0.198
+            """        if (abs(intervals.mean()) < height*0.198
                 and abs(intervals.mean()) > height*0.0015
             ):
-                return True'''
+                return True"""
     return False
 
 
-def organize_persons(loaded_data):
-    print(
-        "Informacion cargada:",
-        loaded_data[0],
-        "\n---------------------------------------------------------------------\n",
-    )
+def organize_persons(loaded_data, verbose=False):
+    if verbose:
+        print(
+            "Informacion cargada:",
+            loaded_data[0],
+            "\n---------------------------------------------------------------------\n",
+        )
     # Evaluate the detections and find all the persons
     persons = []
     for i in range(len(loaded_data[0])):
-        print(
-            "To evalute:",
-            loaded_data[0][i],
-            "\n---------------------------------------------------------------------\n",
-        )
+        if verbose:
+            print(
+                "To evalute:",
+                loaded_data[0][i],
+                "\n---------------------------------------------------------------------\n",
+            )
         person = [loaded_data[0][i]]
         for j in range(1, len(loaded_data)):
             stored_data_person = []
@@ -163,17 +325,18 @@ def organize_persons(loaded_data):
                 distance, same_person = distance_between(
                     loaded_data[0][i], loaded_data[j][k]
                 )
-                print(
-                    j,
-                    "-",
-                    k,
-                    "-",
-                    loaded_data[0][i],
-                    loaded_data[j][k],
-                    distance,
-                    same_person,
-                    "\n",
-                )
+                if verbose:
+                    print(
+                        j,
+                        "-",
+                        k,
+                        "-",
+                        loaded_data[0][i],
+                        loaded_data[j][k],
+                        distance,
+                        same_person,
+                        "\n",
+                    )
                 if same_person:
                     stored_data_person.append([loaded_data[j][k], distance])
             if len(stored_data_person) == 1:
@@ -187,67 +350,6 @@ def organize_persons(loaded_data):
             person.append(loaded_data[0][i])
         persons.append(person)
     return persons
-
-
-def Check_Normal(classes, detections, results, frames, MLLM):
-    classes_of_interest = [
-        "bicycle",
-        "frisbee",
-        "sports ball",
-        "baseball glove",
-        "tennis racket",
-    ]
-    print(
-        len(results),
-        "-",
-        len(frames),
-        "\n---------------------------------------------------------------------\n",
-    )
-    if any([classes[class_] > 0 for class_ in classes_of_interest]):
-        return False, ""
-    classes_of_interest = ["person"]
-
-    if any([classes[class_] > 0 for class_ in classes_of_interest]):
-        if len(results) < 6:
-            return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                correct.append(detection)
-        corrects.append(correct)
-        # Save the list to a file
-        condition_c = person_chasing(corrects)
-        condition_l = person_lying2(corrects)
-        condition_r = person_running(corrects)
-        if all([classes[class_] > 1 for class_ in classes_of_interest]):
-            correct = []
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.5:
-                    correct.append(detection)
-            decision = boxes_touching(correct)
-        try:
-            condition = not (condition_c or condition_l or condition_r or decision)
-        except:
-            condition = not (condition_c or condition_l or condition_r)
-        print("\n\nCondicion ", condition)
-        condition = True
-        if condition == False and MLLM:
-            frames.pop(0)
-            results.pop(0)
-        if condition:
-            text = "yes"
-        else:
-            text = "no"
-        return condition, text
-    else:
-        return False, ""
 
 
 def Check_RidingBicycle(classes, detections):
@@ -636,7 +738,7 @@ def person_chasing(loaded_data):
     return False
 
 
-def distance_between(reference, evaluate):
+def distance_between(reference, evaluate, verbose=False):
     x1_1, y1_1, x2_1, y2_1 = reference[2], reference[3], reference[4], reference[5]
     x1_2, y1_2, x2_2, y2_2 = evaluate[2], evaluate[3], evaluate[4], evaluate[5]
 
@@ -651,7 +753,8 @@ def distance_between(reference, evaluate):
     ) ** 0.5
     width = x2_1 - x1_1
     height = y2_1 - y1_1
-    print("Reference size:", width, "Evaluate size:", height, "Distance:", distance)
+    if verbose:
+        print("Reference size:", width, "Evaluate size:", height, "Distance:", distance)
     if distance < min(width, height):
         return distance, True
     else:

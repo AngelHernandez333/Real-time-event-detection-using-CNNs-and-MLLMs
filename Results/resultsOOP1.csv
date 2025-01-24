@@ -1,0 +1,4 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+1_092_1.mp4,4,33,27,0,9,a person jumping,a person jumping,69,14.981633333333333,16.4222571849823
+2_089_1.mp4,4,91,72,20,21,a person jumping,a person jumping,204,35.0,37.16652250289917
+3_100_1.mp4,4,71,33,5,4,a person jumping,a person jumping,113,19.986633333333334,21.08857822418213

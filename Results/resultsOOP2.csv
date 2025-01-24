@@ -1,4 +1,13 @@
 Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
-1_092_1.mp4,4,32,0,1,36,a person jumping,a person jumping,69,14.981633333333331,16.794888019561768
-2_089_1.mp4,4,109,92,2,1,a person jumping,a person jumping,204,35.0,38.30605983734131
-3_100_1.mp4,4,76,36,0,1,a person jumping,a person jumping,113,19.986633333333334,21.032911777496338
+4_089_1.mp4,4,49,37,100,257,a person falling,a person falling,443,74.96666666666667,75.29020690917969
+4_087_1.mp4,4,11,0,42,36,a person falling,a person falling,89,15.966666666666669,15.75142765045166
+1_090_1.mp4,4,12,0,21,35,a person falling,a person falling,68,14.981633333333331,15.360665559768677
+3_086_1.mp4,4,57,12,83,381,a person falling,a person falling,533,90.05663333333334,94.05525851249696
+2_074_1.mp4,4,28,1,104,71,a person falling,a person falling,204,35.0,36.49812436103821
+4_089_1.mp4,0,14,0,25,26,a person falling,a person falling,65,74.96666666666667,97.0410726070404
+4_087_1.mp4,0,0,0,8,0,a person falling,a person falling,8,15.966666666666669,18.459410190582275
+1_090_1.mp4,0,0,0,6,0,a person falling,a person falling,6,14.981633333333331,17.600481271743774
+3_086_1.mp4,0,23,0,21,5,a person falling,a person falling,49,90.05663333333334,112.43035221099854
+2_074_1.mp4,0,0,0,22,3,a person falling,a person falling,25,35.0,46.10234808921814
+4_106_1.mp4,0,35,7,0,0,a person guiding someone,a person guiding someone,42,23.966666666666665,40.06574773788452
+3_098_1.mp4,0,18,11,0,0,a person guiding someone,a person guiding someone,29,50.01663333333333,64.20751023292542
