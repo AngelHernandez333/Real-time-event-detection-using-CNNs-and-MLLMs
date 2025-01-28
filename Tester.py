@@ -5,7 +5,7 @@ import os
 from MLLMs import LLaVA_OneVision
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import take_frame, prompt_text, decision_makerComplex, detection_labels
+from Functions3 import decision_makerComplex, classes_focus, detection_labels
 import numpy as np
 
 
@@ -25,7 +25,7 @@ class VideoTester(ABC):
     @abstractmethod
     def set_dataframe(self, df):
         pass
-    
+
     @abstractmethod
     def set_detector(self, detector):
         pass
@@ -33,6 +33,7 @@ class VideoTester(ABC):
     @abstractmethod
     def set_MLLM(self, MLLM):
         pass
+
     @abstractmethod
     def append_dataframe(self, row):
         pass
@@ -57,6 +58,49 @@ class VideoTester(ABC):
     def autotesting(self):
         pass
 
+    @staticmethod
+    def prompt_text(classes, event, detector_usage, classes_focus):
+        if detector_usage > 2:
+            return "Watch the video,"
+        initial = "There are"
+        objects = ""
+        corrects = []
+        for entity in classes_focus[event]:
+            if classes[entity] > 0:
+                corrects.append(entity)
+        if len(corrects) == 1:
+            if classes[corrects[0]] == 1:
+                objects += (
+                    f"There is {classes[corrects[0]]} {corrects[0]} in the video,"
+                )
+            else:
+                objects += (
+                    f"There are {classes[corrects[0]]} {corrects[0]}s in the video,"
+                )
+            return objects
+        elif len(corrects) > 1:
+            for x in corrects:
+                if x == corrects[-1]:
+                    print(",".join(objects.split(",")[:-1]))
+                    objects = ",".join(objects.split(",")[:-1])
+                    objects += f" and"
+                objects += f" {classes[x]} {x},"
+                if classes[x] > 1:
+                    objects = objects[:-1] + "s,"
+        if objects == "":
+            text = "Watch the video,"
+        else:
+            objects = objects[:-1]
+            text = f"{initial}{objects} in the video,"
+        return text
+
+    @staticmethod
+    def take_frame(frame, frame_number, frames, gap, detections, results):
+        if frame_number % gap == 0:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(frame)
+            results.append(detections)
+
 
 class EventTester(VideoTester):
     def __init__(self):
@@ -68,7 +112,7 @@ class EventTester(VideoTester):
         self.__showdet = False
         self.__detector = None
         self.__MLLM = None
-            
+
     def set_detector(self, detector):
         self.__detector = detector
 
@@ -178,77 +222,78 @@ class EventTester(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            if self.__mode == 0:
-                # Detector with rules and MLLM with all information
-                detections, classes = self.__detector.detection(frame, classes)
-                decision_makerComplex(
-                    frame,
-                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                    frames,
-                    5,
-                    classes,
-                    detections,
-                    self.__event,
-                    results,
-                )
-            elif self.__mode == 1:
-                # Only MLLM
-                detections = []
-                take_frame(
-                    frame,
-                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                    frames,
-                    5,
-                    detections,
-                    results,
-                )
-            elif self.__mode == 2:
-                # Detector with MLLM but not rules
-                detections, classes = self.__detector.detection(frame, classes)
-                take_frame(
-                    frame,
-                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                    frames,
-                    5,
-                    detections,
-                    results,
-                )
-            elif self.__mode == 3:
-                # Detector with rules and MLLM with no information
-                detections, classes = self.__detector.detection(frame, classes)
-                decision_makerComplex(
-                    frame,
-                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                    frames,
-                    5,
-                    classes,
-                    detections,
-                    self.__event,
-                    results,
-                )
-            elif self.__mode == 4:
-                # Detector with rules only
-                detections, classes = self.__detector.detection(frame, classes)
-                decision_makerComplex(
-                    frame,
-                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                    frames,
-                    5,
-                    classes,
-                    detections,
-                    self.__event,
-                    results,
-                    False,
-                    frames_number,
-                    prompts,
-                    file,
-                )
+            match self.__mode:
+                case 0:
+                    # Detector with rules and MLLM with all information
+                    detections, classes = self.__detector.detection(frame, classes)
+                    decision_makerComplex(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        classes,
+                        detections,
+                        self.__event,
+                        results,
+                    )
+                case 1:
+                    # Only MLLM
+                    detections = []
+                    VideoTester.take_frame(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        detections,
+                        results,
+                    )
+                case 2:
+                    # Detector with MLLM but not rules
+                    detections, classes = self.__detector.detection(frame, classes)
+                    VideoTester.take_frame(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        detections,
+                        results,
+                    )
+                case 3:
+                    # Detector with rules and MLLM with no information
+                    detections, classes = self.__detector.detection(frame, classes)
+                    decision_makerComplex(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        classes,
+                        detections,
+                        self.__event,
+                        results,
+                    )
+                case 4:
+                    # Detector with rules only
+                    detections, classes = self.__detector.detection(frame, classes)
+                    decision_makerComplex(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        classes,
+                        detections,
+                        self.__event,
+                        results,
+                        False,
+                        frames_number,
+                        prompts,
+                    )
             if len(frames) > 6 and self.__mode < 4:
                 frames.pop(0)
                 results.pop(0)
                 frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-                text = prompt_text(classes, self.__event, self.__mode)
-                print(text)
+                text = VideoTester.prompt_text(
+                    classes, self.__event, self.__mode, classes_focus
+                )
                 prompt = self.__MLLM.event_validation(
                     frames, self.__event, text, verbose=True
                 )
@@ -347,7 +392,7 @@ class EventTester(VideoTester):
 
 
 if __name__ == "__main__":
-    """    events = [
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -378,21 +423,26 @@ if __name__ == "__main__":
     tester.set_rute("../Database/CHAD DATABASE")
     tester.show_detections(False)
     tester.autotesting(events, description, [0])"""
-    #Define the folder of the videos and the descriptions of the events
-    events = ['11-Littering'
+    # Define the folder of the videos and the descriptions of the events
+    """events = ['11-Littering'
     ]
     description = [
         "a person discarding garbage",
         "everything is normal",
+    ]"""
+    events = ["1-Riding a bicycle"]
+    description = [
+        "a person riding a bicycle",
+        "everything is normal",
     ]
-    #Set the Detector and the MLLM
+    # Set the Detector and the MLLM
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
     llava = LLaVA_OneVision()
     llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
     llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-    #Prepare the tester
+    # Prepare the tester
     tester = EventTester()
 
     tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP2.csv")
@@ -400,6 +450,5 @@ if __name__ == "__main__":
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(llava)
     tester.show_detections(False)
-    #Start the autotesting
+    # Start the autotesting
     tester.autotesting(events, description, [4])
-

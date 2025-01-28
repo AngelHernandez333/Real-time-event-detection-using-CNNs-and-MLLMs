@@ -1,8 +1,8 @@
 import pandas as pd
-import os 
+import os
 
-if __name__== "__main__":
-    rute="../Database/CHAD DATABASE/"
+if __name__ == "__main__":
+    rute = "../Database/CHAD DATABASE/"
     events = [
         "1-Riding a bicycle",
         "2-Fight",
@@ -12,10 +12,11 @@ if __name__== "__main__":
         "6-Chasing",
         "7-Jumping",
         "8-Falling",
-        '9-guide',
-        '10-thief',
-        '11-Littering',
-        '12-Tripping', '13-Pickpockering',
+        "9-guide",
+        "10-thief",
+        "11-Littering",
+        "12-Tripping",
+        "13-Pickpockering",
         "99-Normal",
     ]
     description = [
@@ -35,27 +36,38 @@ if __name__== "__main__":
         "everything is normal",
     ]
     columns = [
-                "Name",
-                "Event",
-            ]
+        "Name",
+        "Event",
+    ]
     df = pd.DataFrame(columns=columns)
     for video_kind in range(len(events)):
-                actual_rute = f"{rute}/{events[video_kind]}/"
-                files = os.listdir(actual_rute)
-                print(files)
-                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
-                    df=pd.concat([df, pd.DataFrame([[files[j], description[video_kind]]], columns=columns)], ignore_index=True)
+        actual_rute = f"{rute}/{events[video_kind]}/"
+        files = os.listdir(actual_rute)
+        print(files)
+        for j in range(len(files)):  # Pasar por todos los videos de la carpeta
+            df = pd.concat(
+                [
+                    df,
+                    pd.DataFrame(
+                        [[files[j], description[video_kind]]], columns=columns
+                    ),
+                ],
+                ignore_index=True,
+            )
     print(df)
-    videos=df['Name'].unique()
+    videos = df["Name"].unique()
     print(len(videos))
     for video in videos:
-        df_video = df[df['Name']==video]
+        df_video = df[df["Name"] == video]
         if df_video.shape[0] > 1:
-            combined_events = "; ".join(df_video['Event'].tolist())
-            df = df[df['Name'] != video]  # Remove the duplicate rows
-            df = pd.concat([df, pd.DataFrame([[video, combined_events]], columns=columns)], ignore_index=True)
+            combined_events = "; ".join(df_video["Event"].tolist())
+            df = df[df["Name"] != video]  # Remove the duplicate rows
+            df = pd.concat(
+                [df, pd.DataFrame([[video, combined_events]], columns=columns)],
+                ignore_index=True,
+            )
             print(video, combined_events)
     print(df)
-    videos=df['Name'].unique()
+    videos = df["Name"].unique()
     print(len(videos))
-    #df.to_csv("VideosEventAll.csv", index=False)
+    # df.to_csv("VideosEventAll.csv", index=False)

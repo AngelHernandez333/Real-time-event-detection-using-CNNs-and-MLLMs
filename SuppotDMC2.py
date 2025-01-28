@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number, file):
+
+def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number):
     match event:
         case "a person riding a bicycle":
             # Handle event1
@@ -41,6 +42,7 @@ def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number,
             return True, ""
     return condition, prompt
 
+
 def check_detections(classes_of_interest, detections, results):
     correct = []
     corrects = []
@@ -56,13 +58,14 @@ def check_detections(classes_of_interest, detections, results):
             corrects.append(correct)
     return corrects
 
+
 def Check_Littering(classes, detections, results, frames, MLLM, frame_number):
     classes_of_interest = ["person"]
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
-        print('Correcs:', corrects)
+        corrects = check_detections(classes_of_interest, detections, results)
+        print("Correcs:", corrects)
         condition = person_littering(corrects, frame_number)
         print(
             condition,
@@ -78,7 +81,7 @@ def Check_Littering(classes, detections, results, frames, MLLM, frame_number):
         return condition, text
     else:
         return False, ""
-    
+
 
 def person_littering(loaded_data, frame_number, verbose=False):
     persons = organize_persons(loaded_data)
@@ -87,17 +90,18 @@ def person_littering(loaded_data, frame_number, verbose=False):
         return False
     else:
         for person in persons:
-            print('Lenght-',len(person))
+            print("Lenght-", len(person))
         return True
     return False
+
 
 def Check_Guiding(classes, detections, results, frames, MLLM, frame_number):
     classes_of_interest = ["person"]
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
-        print('Correcs:', len(corrects))
+        corrects = check_detections(classes_of_interest, detections, results)
+        print("Correcs:", len(corrects))
         # Save the list to a file
         condition = person_guiding(corrects, frame_number)
         print(
@@ -114,7 +118,7 @@ def Check_Guiding(classes, detections, results, frames, MLLM, frame_number):
         return condition, text
     else:
         return False, ""
-    
+
 
 def person_guiding(loaded_data, frame_number, verbose=False):
     persons = organize_persons(loaded_data)
@@ -122,7 +126,7 @@ def person_guiding(loaded_data, frame_number, verbose=False):
     if len(persons) < 2:
         return False
     else:
-        check=[]
+        check = []
         for i in range(len(persons) - 1):
             if verbose:
                 print(
@@ -133,29 +137,29 @@ def person_guiding(loaded_data, frame_number, verbose=False):
                 touching = np.array([])
                 for k in range(len(persons[i])):
                     print(i, j, k, persons[i][k], persons[j][k], "\n")
-                    touch= boxes_touching([persons[i][k], persons[j][k]])
+                    touch = boxes_touching([persons[i][k], persons[j][k]])
                     if touch:
-                        touching = np.append(touching , 1)
+                        touching = np.append(touching, 1)
                     else:
-                        touching = np.append(touching , 0)
-                if touching.sum() > (len(touching)-1):
-                    #return True
+                        touching = np.append(touching, 0)
+                if touching.sum() > (len(touching) - 1):
+                    # return True
                     check.append([persons[i], persons[j]])
-                    print('This one')
+                    print("This one")
         for duo in check:
-            widht=duo[0][0][4]-duo[0][0][2]
-            height=duo[0][0][5]-duo[0][0][3]
-            distancex=np.array([])
-            distancey=np.array([])
-            for i in range(len(duo[0])-1):
-                distance1x,distance1y=distance_direction(duo[0][i], duo[0][i+1])
-                distance2x,distance2y=distance_direction(duo[1][i], duo[1][i+1])
-                distancex=np.append(distancex,abs(distance1x-distance2x))
-                distancey=np.append(distancey,abs(distance1y-distance2y))
-                print(i, '-',distance1x,distance1y, distance2x,distance2y)
+            widht = duo[0][0][4] - duo[0][0][2]
+            height = duo[0][0][5] - duo[0][0][3]
+            distancex = np.array([])
+            distancey = np.array([])
+            for i in range(len(duo[0]) - 1):
+                distance1x, distance1y = distance_direction(duo[0][i], duo[0][i + 1])
+                distance2x, distance2y = distance_direction(duo[1][i], duo[1][i + 1])
+                distancex = np.append(distancex, abs(distance1x - distance2x))
+                distancey = np.append(distancey, abs(distance1y - distance2y))
+                print(i, "-", distance1x, distance1y, distance2x, distance2y)
             print(distancey.sum(), distancex.sum())
             print(min(widht, height))
-            if distancey.sum() < height*1 and distancex.sum() < widht*1:
+            if distancey.sum() < height * 1 and distancex.sum() < widht * 1:
                 return True
     return False
 
@@ -165,7 +169,7 @@ def Check_Falling(classes, detections, results, frames, MLLM, frame_number):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
+        corrects = check_detections(classes_of_interest, detections, results)
         condition = person_falling(corrects, frame_number)
         print(
             condition,
@@ -193,21 +197,25 @@ def person_falling(loaded_data, frame_number):
             width_per_height_ratio = np.array([])
             diferences = np.array([])
             for i in range(len(person)):
-                print(  i,
+                print(
+                    i,
                     "-",
                     person[i][2],
                     person[i][3],
                     person[i][4],
                     person[i][5],
-                    "\n",)
+                    "\n",
+                )
                 diferences = np.append(diferences, person[i][3])
                 height = person[i][5] - person[i][3]
                 width = person[i][4] - person[i][2]
                 width_per_height_ratio = np.append(
                     width_per_height_ratio, width / height
                 )
-            print(                "Differences:",
-                diferences,)
+            print(
+                "Differences:",
+                diferences,
+            )
             intervals = diferences - diferences[0]
             width_per_height_ratio = width_per_height_ratio - width_per_height_ratio[0]
             print(
@@ -217,10 +225,11 @@ def person_falling(loaded_data, frame_number):
                 width_per_height_ratio,
                 "Sum difference:",
                 intervals.sum(),
-                'Sum ratio:',width_per_height_ratio.sum(),
+                "Sum ratio:",
+                width_per_height_ratio.sum(),
                 "\n",
             )
-            '''annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/4_089_1.npy")
+            """annotations = np.load("../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/4_089_1.npy")
             if annotations[frame_number - 1] == 1:
                 try:
                     df = pd.read_csv("/home/ubuntu/Tesis/Results/Falling12video.csv")
@@ -230,19 +239,18 @@ def person_falling(loaded_data, frame_number):
                 row = {'Frame':frame_number,'Ratio sum':abs(width_per_height_ratio.sum()),"Y sum":abs(intervals.sum())}
                 df=pd.concat([df, pd.DataFrame([row])], ignore_index=True)
                 df.to_csv("/home/ubuntu/Tesis/Results/Falling12video.csv", index=False)
-                print(df)'''
-            if (
-                abs(intervals.sum()) > 100 and abs(width_per_height_ratio.sum()) > 0.5
-            ):
+                print(df)"""
+            if abs(intervals.sum()) > 100 and abs(width_per_height_ratio.sum()) > 0.5:
                 return True
     return False
+
 
 def Check_Jumping(classes, detections, results, frames, MLLM, frame_number):
     classes_of_interest = ["person"]
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
+        corrects = check_detections(classes_of_interest, detections, results)
         condition = person_jumping(corrects, frame_number)
         print(
             condition,
@@ -413,7 +421,7 @@ def Check_Lying(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
+        corrects = check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_lying2(corrects)
         print(
@@ -444,7 +452,7 @@ def Check_Running(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
+        corrects = check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_running(corrects)
         print(
@@ -474,7 +482,7 @@ def Check_Chasing(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 1 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        corrects=check_detections(classes_of_interest, detections, results)
+        corrects = check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_chasing(corrects)
         print(
@@ -709,6 +717,7 @@ def person_chasing(loaded_data):
                     return False
     return False
 
+
 def distance_direction(reference, evaluate, verbose=False):
     x1_1, y1_1, x2_1, y2_1 = reference[2], reference[3], reference[4], reference[5]
     x1_2, y1_2, x2_2, y2_2 = evaluate[2], evaluate[3], evaluate[4], evaluate[5]
@@ -717,7 +726,8 @@ def distance_direction(reference, evaluate, verbose=False):
     centroid_ref = ((x1_1 + x2_1) / 2, (y1_1 + y2_1) / 2)
     centroid_eval = ((x1_2 + x2_2) / 2, (y1_2 + y2_2) / 2)
 
-    return centroid_ref[0]-centroid_eval[0], centroid_ref[1]-centroid_eval[1]
+    return centroid_ref[0] - centroid_eval[0], centroid_ref[1] - centroid_eval[1]
+
 
 def distance_between(reference, evaluate, verbose=False):
     x1_1, y1_1, x2_1, y2_1 = reference[2], reference[3], reference[4], reference[5]
