@@ -4,34 +4,7 @@ Functions used in the main script
 
 import cv2
 import numpy as np
-from SuppotDMC2 import eventsCheck
-
-classes_focus = {
-    "a person riding a bicycle": ["person", "bicycle"],
-    "a certain number of persons fighting": ["person"],
-    "a group of persons playing": [
-        "person",
-        "frisbee",
-        "sports ball",
-        "baseball glove",
-        "tennis racket",
-    ],
-    "a person running": ["person"],
-    "a person lying in the floor": ["person"],
-    "a person chasing other person": ["person"],
-    "everything is normal": [
-        "person",
-        "bicycle",
-        "frisbee",
-        "sports ball",
-        "baseball glove",
-        "tennis racket",
-    ],
-    "a person jumping": ["person"],
-    "a person falling": ["person"],
-    "a person guiding other person": ["person"],
-    "a person discarding garbage": ["person"],
-}
+from SuppotDMC import eventsCheck, classes_focus
 
 detection_labels = {
     0: "person",
@@ -118,11 +91,10 @@ detection_labels = {
 
 
 # Elaboracion del prompt para el modelo
-def prompt_text(classes, event, detector_usage):
-    if detector_usage > 2:
-        return "Watch the video,"
+def prompt_text(classes, event):
     initial = "There are"
     objects = ""
+    classes_focus[event]
     corrects = []
     for x, y in classes.items():
         if y > 0 and x in classes_focus[event]:
@@ -183,33 +155,27 @@ def check_precision(prompts, frames_number, video_name):
 
 
 def decision_makerComplex(
-    frame,
-    frame_number,
-    frames,
-    gap,
-    classes,
-    detections,
-    event,
-    results,
-    MLLM=True,
-    frames_number=[],
-    prompts=[],
-    file="",
+    frame, frame_number, frames, gap, classes, detections, event, results
 ):
     if frame_number % gap == 0:
-        condition, prompt = eventsCheck(
-            event, classes, detections, results, frames, MLLM, frame_number, file
-        )
-        if condition and MLLM:
+        condition = eventsCheck(event, classes, detections, results, frames)
+        if condition:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame)
             results.append(detections)
-        if MLLM == False:
-            if prompt == "":
-                pass
+
+
+def decision_maker(frame, frame_number, frames, gap, classes, event):
+    print(classes_focus[event])
+    rules = classes_focus[event]
+    if frame_number % gap == 0:
+        status = True
+        for i in range(len(rules)):
+            if classes[rules[i]] > 0:
+                continue
             else:
-                frames_number.append(frame_number)
-                prompts.append(prompt)
-            results.append(detections)
-            if len(results) > 6:
-                results.pop(0)
+                status = False
+                break
+        if status:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(frame)

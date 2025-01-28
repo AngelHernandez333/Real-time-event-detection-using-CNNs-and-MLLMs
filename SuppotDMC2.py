@@ -1,34 +1,6 @@
 import numpy as np
 import pandas as pd
 
-classes_focus = {
-    "a person riding a bicycle": ["person", "bicycle"],
-    "a certain number of persons fighting": ["person"],
-    "a group of persons playing": [
-        "person",
-        "frisbee",
-        "sports ball",
-        "baseball glove",
-        "tennis racket",
-    ],
-    "a person running": ["person"],
-    "a person lying in the floor": ["person"],
-    "a person chasing other person": ["person"],
-    "everything is normal": [
-        "person",
-        "bicycle",
-        "frisbee",
-        "sports ball",
-        "baseball glove",
-        "tennis racket",
-    ],
-    "a person jumping": ["person"],
-    "a person falling": ["person"],
-    "a person guiding other person": ["person"],
-    "a person discarding garbage": ["person"],
-}
-
-
 def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number, file):
     match event:
         case "a person riding a bicycle":
@@ -81,7 +53,7 @@ def check_detections(classes_of_interest, detections, results):
     for detection in detections:
         if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
             correct.append(detection)
-        corrects.append(correct)
+            corrects.append(correct)
     return corrects
 
 def Check_Littering(classes, detections, results, frames, MLLM, frame_number):
@@ -90,6 +62,7 @@ def Check_Littering(classes, detections, results, frames, MLLM, frame_number):
         if len(results) < 6:
             return True, ""
         corrects=check_detections(classes_of_interest, detections, results)
+        print('Correcs:', corrects)
         condition = person_littering(corrects, frame_number)
         print(
             condition,
@@ -114,7 +87,7 @@ def person_littering(loaded_data, frame_number, verbose=False):
         return False
     else:
         for person in persons:
-            print(person)
+            print('Lenght-',len(person))
         return True
     return False
 
@@ -124,6 +97,7 @@ def Check_Guiding(classes, detections, results, frames, MLLM, frame_number):
         if len(results) < 6:
             return True, ""
         corrects=check_detections(classes_of_interest, detections, results)
+        print('Correcs:', len(corrects))
         # Save the list to a file
         condition = person_guiding(corrects, frame_number)
         print(

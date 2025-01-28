@@ -155,15 +155,6 @@ class EventTester(VideoTester):
             classes[i] = 0
         # Inicializacion de los modelos
         start_time = time.time()
-        # ov_qmodel = YOLOv10("/home/ubuntu/yolov10/int8/yolov10x_openvino_model/")
-        '''        if self.__mode != 1:
-            ov_qmodel = YOLOv10Detector()
-            ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
-            ov_qmodel.set_labels(detection_labels)
-        if self.__mode < 4:
-            llava = LLaVA_OneVision()
-            llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-            llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")'''
         cap = cv2.VideoCapture(video_path)
         fps = cap.get(cv2.CAP_PROP_FPS)
         duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
@@ -410,5 +401,5 @@ if __name__ == "__main__":
     tester.set_MLLM(llava)
     tester.show_detections(False)
     #Start the autotesting
-    tester.autotesting(events, description, [0])
+    tester.autotesting(events, description, [4])
 
