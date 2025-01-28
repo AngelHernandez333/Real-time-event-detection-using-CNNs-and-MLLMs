@@ -24,7 +24,8 @@ classes_focus = {
     ],
     "a person jumping": ["person"],
     "a person falling": ["person"],
-    "a person guiding someone": ["person"],
+    "a person guiding other person": ["person"],
+    "a person discarding garbage": ["person"],
 }
 
 
@@ -55,8 +56,12 @@ def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number,
             condition, prompt = Check_Falling(
                 classes, detections, results, frames, MLLM, frame_number
             )
-        case "a person guiding someone":
+        case "a person guiding other person":
             condition, prompt = Check_Guiding(
+                classes, detections, results, frames, MLLM, frame_number
+            )
+        case "a person discarding garbage":
+            condition, prompt = Check_Littering(
                 classes, detections, results, frames, MLLM, frame_number
             )
         case _:
@@ -64,23 +69,61 @@ def eventsCheck(event, classes, detections, results, frames, MLLM, frame_number,
             return True, ""
     return condition, prompt
 
+def check_detections(classes_of_interest, detections, results):
+    correct = []
+    corrects = []
+    for detections in results:
+        for detection in detections:
+            if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
+                correct.append(detection)
+        corrects.append(correct)
+        correct = []
+    for detection in detections:
+        if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
+            correct.append(detection)
+        corrects.append(correct)
+    return corrects
+
+def Check_Littering(classes, detections, results, frames, MLLM, frame_number):
+    classes_of_interest = ["person"]
+    if all([classes[class_] > 0 for class_ in classes_of_interest]):
+        if len(results) < 6:
+            return True, ""
+        corrects=check_detections(classes_of_interest, detections, results)
+        condition = person_littering(corrects, frame_number)
+        print(
+            condition,
+            "\n---------------------------------------------------------------------\n",
+        )
+        if condition == False and MLLM:
+            frames.pop(0)
+            results.pop(0)
+        if condition:
+            text = "yes"
+        else:
+            text = "no"
+        return condition, text
+    else:
+        return False, ""
+    
+
+def person_littering(loaded_data, frame_number, verbose=False):
+    persons = organize_persons(loaded_data)
+    # Evaluate the persons
+    if len(persons) < 1:
+        return False
+    else:
+        for person in persons:
+            print(person)
+        return True
+    return False
+
 def Check_Guiding(classes, detections, results, frames, MLLM, frame_number):
     classes_of_interest = ["person"]
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                correct.append(detection)
-        corrects.append(correct)
+        corrects=check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_guiding(corrects, frame_number)
         print(
@@ -124,10 +167,22 @@ def person_guiding(loaded_data, frame_number, verbose=False):
                 if touching.sum() > (len(touching)-1):
                     #return True
                     check.append([persons[i], persons[j]])
+                    print('This one')
         for duo in check:
-            for i in range(len(duo[0])):
-                print('Duo',[duo[0][i][2]-duo[0][i][4],duo[0][i][3]-duo[0][i][5]],
-                    'Duo',[duo[1][i][2]-duo[1][i][4],duo[1][i][3]-duo[1][i][5]], '\n')
+            widht=duo[0][0][4]-duo[0][0][2]
+            height=duo[0][0][5]-duo[0][0][3]
+            distancex=np.array([])
+            distancey=np.array([])
+            for i in range(len(duo[0])-1):
+                distance1x,distance1y=distance_direction(duo[0][i], duo[0][i+1])
+                distance2x,distance2y=distance_direction(duo[1][i], duo[1][i+1])
+                distancex=np.append(distancex,abs(distance1x-distance2x))
+                distancey=np.append(distancey,abs(distance1y-distance2y))
+                print(i, '-',distance1x,distance1y, distance2x,distance2y)
+            print(distancey.sum(), distancex.sum())
+            print(min(widht, height))
+            if distancey.sum() < height*1 and distancex.sum() < widht*1:
+                return True
     return False
 
 
@@ -136,19 +191,7 @@ def Check_Falling(classes, detections, results, frames, MLLM, frame_number):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                correct.append(detection)
-        corrects.append(correct)
-        # Save the list to a file
+        corrects=check_detections(classes_of_interest, detections, results)
         condition = person_falling(corrects, frame_number)
         print(
             condition,
@@ -225,19 +268,7 @@ def Check_Jumping(classes, detections, results, frames, MLLM, frame_number):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                correct.append(detection)
-        corrects.append(correct)
-        # Save the list to a file
+        corrects=check_detections(classes_of_interest, detections, results)
         condition = person_jumping(corrects, frame_number)
         print(
             condition,
@@ -408,18 +439,7 @@ def Check_Lying(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
-                correct.append(detection)
-        corrects.append(correct)
+        corrects=check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_lying2(corrects)
         print(
@@ -450,18 +470,7 @@ def Check_Running(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 0 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
-                correct.append(detection)
-        corrects.append(correct)
+        corrects=check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_running(corrects)
         print(
@@ -491,18 +500,7 @@ def Check_Chasing(classes, detections, results, frames, MLLM):
     if all([classes[class_] > 1 for class_ in classes_of_interest]):
         if len(results) < 6:
             return True, ""
-        correct = []
-        corrects = []
-        for detections in results:
-            for detection in detections:
-                if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                    correct.append(detection)
-            corrects.append(correct)
-            correct = []
-        for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.6:
-                correct.append(detection)
-        corrects.append(correct)
+        corrects=check_detections(classes_of_interest, detections, results)
         # Save the list to a file
         condition = person_chasing(corrects)
         print(
@@ -737,6 +735,15 @@ def person_chasing(loaded_data):
                     return False
     return False
 
+def distance_direction(reference, evaluate, verbose=False):
+    x1_1, y1_1, x2_1, y2_1 = reference[2], reference[3], reference[4], reference[5]
+    x1_2, y1_2, x2_2, y2_2 = evaluate[2], evaluate[3], evaluate[4], evaluate[5]
+
+    # Calculate the centroids of the bounding boxes
+    centroid_ref = ((x1_1 + x2_1) / 2, (y1_1 + y2_1) / 2)
+    centroid_eval = ((x1_2 + x2_2) / 2, (y1_2 + y2_2) / 2)
+
+    return centroid_ref[0]-centroid_eval[0], centroid_ref[1]-centroid_eval[1]
 
 def distance_between(reference, evaluate, verbose=False):
     x1_1, y1_1, x2_1, y2_1 = reference[2], reference[3], reference[4], reference[5]

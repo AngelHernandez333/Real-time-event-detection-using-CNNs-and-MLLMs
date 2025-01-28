@@ -3,7 +3,7 @@ from ultralytics import YOLOv10
 from Functions3 import detection_labels
 from Detectors import YOLOv10Detector
 import numpy as np
-
+import os
 
 class Visualizer:
     def __init__(self):
@@ -25,31 +25,53 @@ class Visualizer:
         self.__detector = detector
 
     def visualize(self):
-        annotations = np.load(f"{self.__annotations_rute}/{self.__video}.npy")
-        cap = cv2.VideoCapture(f"{self.__video_rute}/{self.__video}.mp4")
+        ratio= np.array([])
+        actual_rute = f"{self.__video_rute}/"
+        files = os.listdir(actual_rute)
+        annotations_name = files[self.__video].split(".")[0]
+        annotations = np.load(f"{self.__annotations_rute}/{annotations_name}.npy")
+        cap = cv2.VideoCapture(f"{self.__video_rute}/{files[self.__video]}")
         evaluate = []
+        print('Here')
         while True:
             ret, frame = cap.read()
             if ret:
+                cv2.putText(
+                frame,
+                f"Frame {int(cap.get(cv2.CAP_PROP_POS_FRAMES))}",
+                (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                2.0,
+                (172, 182, 77),
+                2,
+            )
                 if annotations[int(cap.get(cv2.CAP_PROP_POS_FRAMES)) - 1]:
-                    detections, _ = self.__detector.detection(frame)
-                    printed_detections = []
-                    for detection in detections:
-                        if detection[0] == "person" and detection[1] > 0.6:
-                            printed_detections.append(detection)
-                    self.__detector.put_detections(printed_detections, frame)
-                    evaluate.append(printed_detections)
-                cv2.imshow("Frame", frame)
+                    if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
+                        detections, _ = self.__detector.detection(frame)
+                        printed_detections = []
+                        for detection in detections:
+                            if detection[1] > 0.8 and detection[0] == 'person':
+                                printed_detections.append(detection)
+                                print('Frame',int(cap.get(cv2.CAP_PROP_POS_FRAMES)),' ',
+                                    detection[4]-detection[2], detection[5]-detection[3],'Ratio ', (detection[4]-detection[2])/(detection[5]-detection[3]))
+                                ratio = np.append(ratio, (detection[4]-detection[2])/(detection[5]-detection[3]))
+                        self.__detector.put_detections(printed_detections, frame)
+                    #evaluate.append(printed_detections)
+                cv2.imshow(f"{files[self.__video]}, Frame", frame)
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
             else:
                 break
+        cap.release()
+        print(ratio)
+        print(files[self.__video])
+
 
 
 if __name__ == "__main__":
     visualizer = Visualizer()
-    visualizer.set_video("4_106_1")
-    visualizer.set_video_rute("../Database/CHAD DATABASE/9-guide")
+    visualizer.set_video(0)
+    visualizer.set_video_rute("../Database/CHAD DATABASE/11-Littering")
     visualizer.set_annotations_rute(
         "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
     )

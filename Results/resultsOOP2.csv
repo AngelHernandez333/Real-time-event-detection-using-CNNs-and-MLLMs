@@ -11,3 +11,12 @@ Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,C
 2_074_1.mp4,0,0,0,22,3,a person falling,a person falling,25,35.0,46.10234808921814
 4_106_1.mp4,0,35,7,0,0,a person guiding someone,a person guiding someone,42,23.966666666666665,40.06574773788452
 3_098_1.mp4,0,18,11,0,0,a person guiding someone,a person guiding someone,29,50.01663333333333,64.20751023292542
+4_097_1.mp4,0,35,1,0,0,a person guiding someone,a person guiding someone,36,23.066666666666663,36.58753824234009
+4_106_1.mp4,0,17,1,0,0,a person guiding other person,a person guiding other person,18,23.966666666666665,31.3869047164917
+3_088_1.mp4,0,0,0,15,82,a person littering,a person littering,97,19.986633333333334,58.55299711227417
+1_080_1.mp4,0,0,0,10,34,a person littering,a person littering,44,14.981633333333331,31.988508462905884
+3_088_1.mp4,0,2,0,13,82,a person throwing garbage,a person throwing garbage,97,19.986633333333334,58.21119236946106
+1_080_1.mp4,0,0,0,10,34,a person throwing garbage,a person throwing garbage,44,14.981633333333331,31.806426763534542
+3_088_1.mp4,0,12,45,3,37,a person throwing trash,a person throwing trash,97,19.986633333333334,58.31158399581909
+3_088_1.mp4,0,5,26,10,56,a person discarding garbage,a person discarding garbage,97,19.986633333333334,58.33791613578797
+1_080_1.mp4,0,1,3,9,31,a person discarding garbage,a person discarding garbage,44,14.981633333333331,31.83894658088684

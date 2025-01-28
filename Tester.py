@@ -356,7 +356,7 @@ class EventTester(VideoTester):
 
 
 if __name__ == "__main__":
-    """events = [
+    """    events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -365,6 +365,8 @@ if __name__ == "__main__":
         "6-Chasing",
         "7-Jumping",
         "8-Falling",
+        '9-guide',
+        '10-thief',
         "99-Normal",
     ]
     description = [
@@ -376,6 +378,8 @@ if __name__ == "__main__":
         "a person chasing other person",
         "a person jumping",
         "a person falling",
+        "a person guiding other person",
+        "a person stealing other person",
         "everything is normal",
     ]
     tester = EventTester()
@@ -384,11 +388,10 @@ if __name__ == "__main__":
     tester.show_detections(False)
     tester.autotesting(events, description, [0])"""
     #Define the folder of the videos and the descriptions of the events
-    events = [
-    '9-guide'
+    events = ['11-Littering'
     ]
     description = [
-        "a person guiding someone",
+        "a person discarding garbage",
         "everything is normal",
     ]
     #Set the Detector and the MLLM
@@ -405,7 +408,7 @@ if __name__ == "__main__":
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(llava)
-    tester.show_detections(True)
+    tester.show_detections(False)
     #Start the autotesting
     tester.autotesting(events, description, [0])
 

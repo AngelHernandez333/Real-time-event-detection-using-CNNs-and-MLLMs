@@ -55,24 +55,23 @@ class YOLOv10Detector(Detectors):
 
     def put_detections(self, detections, image):
         for detection in detections:
-            if detection[1] > 0.6:
-                text = f"Class: {detection[0] }-{detection[1]:.2f}, {detection[2]}, {detection[3]}, {detection[4]}, {detection[5]}"
-                cv2.putText(
-                    image,
-                    text,
-                    (detection[2], detection[3] - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.4,
-                    (255, 0, 255),
-                    1,
-                )
-                cv2.rectangle(
-                    image,
-                    (detection[2], detection[3]),
-                    (detection[4], detection[5]),
-                    (255, 0, 255),
-                    1,
-                )
+            text = f"Class: {detection[0] }-{detection[1]:.2f}, {detection[2]}, {detection[3]}, {detection[4]}, {detection[5]}"
+            cv2.putText(
+                image,
+                text,
+                (detection[2], detection[3] - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.4,
+                (255, 0, 255),
+                1,
+            )
+            cv2.rectangle(
+                image,
+                (detection[2], detection[3]),
+                (detection[4], detection[5]),
+                (255, 0, 255),
+                1,
+            )
 
 
 if __name__ == "__main__":

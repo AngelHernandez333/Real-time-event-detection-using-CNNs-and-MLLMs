@@ -96,7 +96,6 @@ def prompt_text(classes, event, detector_usage):
         return "Watch the video,"
     initial = "There are"
     objects = ""
-    classes_focus[event]
     corrects = []
     for x, y in classes.items():
         if y > 0 and x in classes_focus[event]:
