@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import cv2
 import time
 import os
-from MLLMs import LLaVA_OneVision
+from MLLMs import LLaVA_OneVision, JanusPro
 from Detectors import YOLOv10Detector
 import pandas as pd
 from Functions3 import decision_maker,decision_makerComplex, classes_focus, detection_labels
@@ -433,20 +433,30 @@ if __name__ == "__main__":
         "a person lying in the floor",
         "everything is normal",
     ]
+    events=["1-Riding a bicycle"]
+    #events=["5-Person lying in the floor"]
+    description = [
+        "a person riding a bicycle",
+        "everything is normal",
+    ]
     # Set the Detector and the MLLM
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
-    llava = LLaVA_OneVision()
+
+    '''llava = LLaVA_OneVision()
     llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-    llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+    llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")'''
+    janus = JanusPro()
+    janus.set_model("deepseek-ai/Janus-Pro-1B")
+    janus.set_processor("deepseek-ai/Janus-Pro-1B")
     # Prepare the tester
     tester = EventTester()
 
     tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP2.csv")
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
-    tester.set_MLLM(llava)
+    tester.set_MLLM(janus)
     tester.show_detections(False)
     # Start the autotesting
-    tester.autotesting(events, description, [4])
+    tester.autotesting(events, description, [2])

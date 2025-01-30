@@ -2,7 +2,6 @@
 import torch
 from transformers import AutoModelForCausalLM
 from janus.models import MultiModalityCausalLM, VLChatProcessor
-from janus.utils.io import load_pil_images
 from PIL import Image
 import cv2
 import time
@@ -17,12 +16,17 @@ vl_gpt: MultiModalityCausalLM = AutoModelForCausalLM.from_pretrained(
 )
 vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
 
-question='Describe both images'
+question='Tell if it is a video or not, and if it is a video, what is the video about?'
+use_image=["1.png", "1.png"
+        ,"1.png", "1.png",
+        "1.png",]
+images_number=len(use_image)*'<image_placeholder>'
+assert len(use_image) > 4, "Please provide at least 4 images"
 conversation = [
     {
         "role": "<|User|>",
-        "content": f"<image_placeholder><image_placeholder>\n{question}",
-        "images": ["1.png", "demo.jpeg"],
+        "content": f"{images_number}  This is a video, \n{question}",
+        "images": [],
     },
     {"role": "<|Assistant|>", "content": ""},
 ]
@@ -33,8 +37,7 @@ def cv2_to_pil(cv_image):
     return pil_image
 
 # Load images with PIL and convert to RGB
-image_paths = ['1.png', 'demo.jpeg']
-images=[cv2.imread(image_path) for image_path in image_paths]
+images=[cv2.imread(image_path) for image_path in use_image]
 start_time=time.time()
 pil_images = [cv2_to_pil(image) for image in images]
 end_time=time.time()-start_time
@@ -63,5 +66,5 @@ outputs = vl_gpt.language_model.generate(
 )
 
 answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
-print(f"{prepare_inputs['sft_format'][0]}", answer)
+#rint(f"{prepare_inputs['sft_format'][0]}", answer)
 print('Here\n\n\n', answer)

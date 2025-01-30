@@ -48,6 +48,7 @@ class Visualizer:
                 )
                 if annotations[int(cap.get(cv2.CAP_PROP_POS_FRAMES)) - 1]:
                     if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
+                        cv2
                         detections, _ = self.__detector.detection(frame)
                         printed_detections = []
                         for detection in detections:

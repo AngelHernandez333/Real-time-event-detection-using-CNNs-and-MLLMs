@@ -25,20 +25,8 @@ recall_mean = df["Recall"].mean()
 print(precision_sum, recall_sum, precision_mean, recall_mean)
 print("Diference Precision:", precision_sum - precision_mean)
 print("Diference Recall:", recall_sum - recall_mean)"""
-import cv2
-import numpy as np
-from PIL import Image
-import timeit
-
-# Load an image using OpenCV
-cv_image = cv2.imread("1.png")
-
-# Function to convert OpenCV (BGR) to PIL (RGB)
-def cv2_to_pil():
-    cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
-    pil_image = Image.fromarray(cv_image_rgb)
-    return pil_image
-
-# Measure execution time
-time_taken = timeit.timeit(cv2_to_pil, number=100) / 100  # Average over 100 runs
-print(f"Average conversion time: {time_taken * 1000:.3f} ms")
+use_image=[x for x in range(10)]
+print(use_image)
+print(len(use_image))
+print(use_image[-6:-1])
+print(len(use_image[-6:-1]))
