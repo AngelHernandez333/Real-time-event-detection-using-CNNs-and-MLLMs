@@ -5,7 +5,7 @@ import os
 from MLLMs import LLaVA_OneVision
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import decision_makerComplex, classes_focus, detection_labels
+from Functions3 import decision_maker,decision_makerComplex, classes_focus, detection_labels
 import numpy as np
 
 
@@ -210,6 +210,8 @@ class EventTester(VideoTester):
         frames_number = [0]
         fps_list = []
         prompts = ["Loading..."]
+        if self.__mode in [0, 3,4]:
+            dmc=decision_maker(self.__event)
         # Charge time
         elapsed_time = time.time() - start_time
         prev_frame_time = time.time()
@@ -233,8 +235,7 @@ class EventTester(VideoTester):
                         5,
                         classes,
                         detections,
-                        self.__event,
-                        results,
+                        results,dmc
                     )
                 case 1:
                     # Only MLLM
@@ -268,21 +269,18 @@ class EventTester(VideoTester):
                         5,
                         classes,
                         detections,
-                        self.__event,
-                        results,
+                        results,dmc
                     )
                 case 4:
                     # Detector with rules only
                     detections, classes = self.__detector.detection(frame, classes)
-                    decision_makerComplex(
-                        frame,
+                    decision_makerComplex(frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
                         5,
                         classes,
                         detections,
-                        self.__event,
-                        results,
+                        results,dmc,
                         False,
                         frames_number,
                         prompts,
@@ -430,9 +428,9 @@ if __name__ == "__main__":
         "a person discarding garbage",
         "everything is normal",
     ]"""
-    events = ["1-Riding a bicycle"]
+    events = ["5-Person lying in the floor"]
     description = [
-        "a person riding a bicycle",
+        "a person lying in the floor",
         "everything is normal",
     ]
     # Set the Detector and the MLLM
