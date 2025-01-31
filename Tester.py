@@ -45,6 +45,9 @@ class VideoTester(ABC):
     @abstractmethod
     def show_detections(self):
         pass
+    @abstractmethod
+    def show_video(self):
+        pass
 
     @abstractmethod
     def check_precision():
@@ -57,6 +60,10 @@ class VideoTester(ABC):
     @abstractmethod
     def autotesting(self):
         pass
+    @abstractmethod
+    def simple_autotesting(self):
+        pass
+    
 
     @staticmethod
     def prompt_text(classes, event, detector_usage, classes_focus):
@@ -130,6 +137,9 @@ class EventTester(VideoTester):
 
     def show_detections(self, showdet):
         self.__showdet = showdet
+
+    def show_video(self, showvideo):
+        self.__showvideo = showvideo
 
     def check_precision(self, prompts, frames_number, video_name):
         # True positive Prediction and Reality are true
@@ -317,7 +327,8 @@ class EventTester(VideoTester):
             )
             if self.__showdet:
                 self.__detector.put_detections(detections, frame)
-            cv2.imshow("Video", frame)
+            if self.__showvideo:
+                cv2.imshow("Video", frame)
         cap.release()
         time_video = time.time() - start_video
         cv2.destroyAllWindows()
@@ -336,7 +347,6 @@ class EventTester(VideoTester):
                             (self.__df["Name"] == files[j])
                             & (self.__df["Check event"] == descriptions[i])
                             & (self.__df["Mode"] == k)
-                            & (self.__df["True Event"] == descriptions[video_kind])
                         ].shape[0]
                         if count == 0:
                             self.set_event(descriptions[i])
@@ -380,6 +390,67 @@ class EventTester(VideoTester):
                     else:
                         continue
                     break
+                else:
+                    continue
+                break
+            else:
+                continue
+            break
+        self.save_dataframe()
+    def simple_autotesting(self, folders, descriptions, modes):
+        for k in modes:
+            for video_kind in range(len(folders)):
+                rute = f"{self.__rute}/{folders[video_kind]}/"
+                files = os.listdir(rute)
+                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
+                    finished = False
+                    count = self.__df[
+                        (self.__df["Name"] == files[j])
+                        & (self.__df["Check event"] == descriptions[video_kind])
+                        & (self.__df["Mode"] == k)
+                    ].shape[0]
+                    check=self.__df[(self.__df["Check event"] == descriptions[video_kind])
+                        & (self.__df["Mode"] == k)
+                    ].shape[0]
+                    if count == 0 and check<7:
+                        self.set_event(descriptions[video_kind])
+                        self.set_mode(k)
+                        (
+                            frames_number,
+                            fps_list,
+                            prompts,
+                            duration,
+                            time_video,
+                            finished,
+                        ) = self.testing_video(
+                            f"../Database/CHAD DATABASE/{events[video_kind]}/{files[j]}",
+                            files[j],
+                        )
+                        if finished:
+                            frames_number = frames_number[1::]
+                            prompts = prompts[1::]
+                            print("Prompts:", prompts)
+                            tp, fp, fn, tn = self.check_precision(
+                                prompts, frames_number, files[j]
+                            )
+                            # Save the results
+                            row = {
+                                "Name": files[j],
+                                "Mode": k,
+                                "True Positive": tp,
+                                "False Positive": fp,
+                                "False Negative": fn,
+                                "True Negative": tn,
+                                "True Event": description[video_kind],
+                                "Check event": description[video_kind],
+                                "Validations Number": len(prompts),
+                                "Duration": duration,
+                                "Process time": time_video,
+                            }
+                            tester.append_dataframe(row)
+                            # Append the row to the DataFrame
+                        else:
+                            break
                 else:
                     continue
                 break
@@ -433,10 +504,17 @@ if __name__ == "__main__":
         "a person lying in the floor",
         "everything is normal",
     ]
-    events=["1-Riding a bicycle"]
-    #events=["5-Person lying in the floor"]
+    events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+    ]
     description = [
         "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
         "everything is normal",
     ]
     # Set the Detector and the MLLM
@@ -453,10 +531,12 @@ if __name__ == "__main__":
     # Prepare the tester
     tester = EventTester()
 
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP2.csv")
+    tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsJanusPro1.csv")
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(janus)
     tester.show_detections(False)
+    tester.show_video(True)
     # Start the autotesting
-    tester.autotesting(events, description, [2])
+    #tester.autotesting(events, description, [0,1,2,3])
+    tester.simple_autotesting(events, description, [0,1])

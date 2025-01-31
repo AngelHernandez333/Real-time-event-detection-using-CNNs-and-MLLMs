@@ -25,8 +25,9 @@ recall_mean = df["Recall"].mean()
 print(precision_sum, recall_sum, precision_mean, recall_mean)
 print("Diference Precision:", precision_sum - precision_mean)
 print("Diference Recall:", recall_sum - recall_mean)"""
-use_image=[x for x in range(10)]
-print(use_image)
-print(len(use_image))
-print(use_image[-6:-1])
-print(len(use_image[-6:-1]))
+
+import pandas as pd
+
+df = pd.read_csv("/home/ubuntu/Tesis/VideosEventAllDuration.csv")
+print(df)
+print(df['Duration'].sum()/(60*60)) 

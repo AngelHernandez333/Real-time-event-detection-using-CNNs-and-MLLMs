@@ -1,0 +1,24 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+4_076_1.mp4,0,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,13.966666666666669,28.60679340362549
+3_106_1.mp4,0,19,0,0,0,a person riding a bicycle,a person riding a bicycle,19,14.981633333333331,32.151265382766724
+1_067_1.mp4,0,15,0,0,0,a person riding a bicycle,a person riding a bicycle,15,9.976633333333334,25.303902864456177
+1_066_1.mp4,0,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,14.981633333333331,29.26876306533813
+2_096_1.mp4,0,29,0,0,0,a person riding a bicycle,a person riding a bicycle,29,15.0,40.47262477874756
+4_077_1.mp4,0,20,0,0,0,a person riding a bicycle,a person riding a bicycle,20,10.966666666666669,27.31476855278015
+3_105_1.mp4,0,18,0,0,0,a person riding a bicycle,a person riding a bicycle,18,20.053366666666665,36.51830196380615
+2_067_1.mp4,0,22,37,2,21,a certain number of persons fighting,a certain number of persons fighting,82,25.0,96.48471784591676
+4_082_1.mp4,0,74,0,1,0,a certain number of persons fighting,a certain number of persons fighting,75,30.966666666666665,92.53103876113892
+3_079_1.mp4,0,43,14,44,31,a certain number of persons fighting,a certain number of persons fighting,132,45.011633333333336,160.11762499809265
+2_065_1.mp4,0,43,3,7,1,a certain number of persons fighting,a certain number of persons fighting,54,45.0,93.36714243888856
+1_081_1.mp4,0,23,0,3,0,a certain number of persons fighting,a certain number of persons fighting,26,12.979633333333334,35.7392942905426
+3_089_1.mp4,0,0,0,51,0,a certain number of persons fighting,a certain number of persons fighting,51,29.99663333333333,75.23506045341492
+1_088_1.mp4,0,27,32,61,12,a certain number of persons fighting,a certain number of persons fighting,132,45.011633333333336,160.01888179779053
+1_094_1.mp4,0,134,45,0,0,a group of persons playing,a group of persons playing,179,65.03163333333333,224.9635775089264
+3_101_1.mp4,0,30,0,0,0,a group of persons playing,a group of persons playing,30,145.07826666666668,182.0555548667908
+4_111_1.mp4,0,19,3,0,0,a group of persons playing,a group of persons playing,22,64.96666666666667,85.15816807746887
+3_102_1.mp4,0,199,85,0,0,a group of persons playing,a group of persons playing,284,80.04663333333333,322.16731548309326
+2_090_1.mp4,0,0,0,0,0,a group of persons playing,a group of persons playing,0,180.0,190.49324226379395
+1_093_1.mp4,0,119,30,0,0,a group of persons playing,a group of persons playing,149,150.11663333333334,291.4888710975647
+2_093_1.mp4,0,15,4,0,0,a group of persons playing,a group of persons playing,19,65.0,85.69582343101501
+4_110_1.mp4,0,0,0,13,30,a person running,a person running,43,19.966666666666665,56.173489570617676
+3_090_1.mp4,0,0,0,0,33,a person running,a person running,33,19.986633333333334,50.662888288497925

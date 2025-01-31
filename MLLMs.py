@@ -101,14 +101,6 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        '''conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number}  This is a video, \n{text} there is {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]'''
         # Load images with PIL and convert to RGB
 
         pil_images = [MLLMs.cv2_to_pil(frame) for frame in frames[-(1+number_of_frames):-1]]
@@ -138,7 +130,8 @@ class JanusPro(MLLMs):
         #rint(f"{prepare_inputs['sft_format'][0]}", answer)
         if verbose:
             print(f"{prepare_inputs['sft_format'][0]}", answer)
-        return answer
+
+        return answer.split('.')[0]
 
 
 

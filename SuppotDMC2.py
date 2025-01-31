@@ -360,8 +360,6 @@ def Check_Lying(classes, detections, results, frames, MLLM):
         return False, ""
 
 
-
-
 def Check_Chasing(classes, detections, results, frames, MLLM):
     classes_of_interest = ["person"]
     print(

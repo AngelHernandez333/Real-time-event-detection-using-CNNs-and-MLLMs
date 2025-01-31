@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import cv2
 
 if __name__ == "__main__":
     rute = "../Database/CHAD DATABASE/"
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     ]
     columns = [
         "Name",
-        "Event",
+        "Event"
     ]
     df = pd.DataFrame(columns=columns)
     for video_kind in range(len(events)):
@@ -45,6 +46,8 @@ if __name__ == "__main__":
         files = os.listdir(actual_rute)
         print(files)
         for j in range(len(files)):  # Pasar por todos los videos de la carpeta
+            cap = cv2.VideoCapture(f"{actual_rute}/{files[j]}")
+            duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
             df = pd.concat(
                 [
                     df,
@@ -54,9 +57,12 @@ if __name__ == "__main__":
                 ],
                 ignore_index=True,
             )
+    #df.to_csv("VideosEventAllDuration.csv", index=False)
     print(df)
+    import time
     videos = df["Name"].unique()
     print(len(videos))
+    i=0
     for video in videos:
         df_video = df[df["Name"] == video]
         if df_video.shape[0] > 1:
@@ -67,7 +73,10 @@ if __name__ == "__main__":
                 ignore_index=True,
             )
             print(video, combined_events)
+            i+=1
     print(df)
     videos = df["Name"].unique()
     print(len(videos))
     # df.to_csv("VideosEventAll.csv", index=False)
+    df.to_csv("VideosEventAllDuration.csv", index=False)
+    print('\n\n\n\n\n', len(videos), 'Videos unicos', i, 'Videos duplicados')

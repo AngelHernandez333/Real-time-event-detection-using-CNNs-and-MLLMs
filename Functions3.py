@@ -124,6 +124,18 @@ def decision_maker(event):
             dmc=EventRunning()
         case 'a person lying in the floor':
             dmc=EventLying()
+        case 'a person chasing other person':
+            dmc=EventChasing()
+        case 'a person jumping':
+            dmc=EventJumping()
+        case 'a person falling':
+            dmc=EventFalling()
+        case 'a person guiding other person':
+            dmc=EventGuiding()
+        case 'a person discarding garbage':
+            dmc=EventGarbage()
+        case "a person stealing other person":
+            dmc=EventStealing()
     return dmc
 
 def decision_makerComplex(
