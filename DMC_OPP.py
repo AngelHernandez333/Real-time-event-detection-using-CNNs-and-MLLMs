@@ -157,8 +157,60 @@ class DecisionMakerPerEvent(ABC):
             text = "yes"
         else:
             text = "no"
-            results.pop(0)
         return condition, text
+    @staticmethod
+    def verify_running(loaded_data):
+        for i in range(len(loaded_data[0])):
+            print(
+                "To evalute:",
+                loaded_data[0][i],
+                "\n---------------------------------------------------------------------\n",
+            )
+            contador = 0
+            for j in range(1, len(loaded_data)):
+                stored_data = []
+                for k in range(len(loaded_data[j])):
+                    print(
+                        j,
+                        "-",
+                        k,
+                        "-",
+                        loaded_data[0][i],
+                        loaded_data[j][k],
+                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]),
+                        "\n",
+                    )
+                    if (
+                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]) > 0.2
+                        and DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k])
+                        < 0.9
+                    ):
+                        if stored_data == []:
+                            stored_data.append(
+                                [
+                                    loaded_data[j][k],
+                                    DecisionMakerPerEvent.calculate_shared_area(
+                                        loaded_data[0][i], loaded_data[j][k]
+                                    ),
+                                ]
+                            )
+                        else:
+                            if stored_data[0][1] < DecisionMakerPerEvent.calculate_shared_area(
+                                loaded_data[0][i], loaded_data[j][k]
+                            ):
+                                stored_data[0] = [
+                                    loaded_data[j][k],
+                                    DecisionMakerPerEvent.calculate_shared_area(
+                                        loaded_data[0][i], loaded_data[j][k]
+                                    ),
+                                ]
+                if len(stored_data) > 0:
+                    contador += 1
+                    loaded_data[0][i] = stored_data[0][0]
+            print(contador, "----")
+            if contador > 3:
+                return True
+        return False
 
 
 class EventBicycle(DecisionMakerPerEvent):
@@ -244,57 +296,12 @@ class EventRunning(DecisionMakerPerEvent):
     def get_classes_of_interest(self):
         return self.__classes_of_interest
     def process_detections(self, loaded_data):
-        for i in range(len(loaded_data[0])):
-            print(
-                "To evalute:",
-                loaded_data[0][i],
-                "\n---------------------------------------------------------------------\n",
-            )
-            contador = 0
-            for j in range(1, len(loaded_data)):
-                stored_data = []
-                for k in range(len(loaded_data[j])):
-                    print(
-                        j,
-                        "-",
-                        k,
-                        "-",
-                        loaded_data[0][i],
-                        loaded_data[j][k],
-                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]),
-                        "\n",
-                    )
-                    if (
-                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]) > 0.2
-                        and DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k])
-                        < 0.9
-                    ):
-                        if stored_data == []:
-                            stored_data.append(
-                                [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                            )
-                        else:
-                            if stored_data[0][1] < DecisionMakerPerEvent.calculate_shared_area(
-                                loaded_data[0][i], loaded_data[j][k]
-                            ):
-                                stored_data[0] = [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                if len(stored_data) > 0:
-                    contador += 1
-                    loaded_data[0][i] = stored_data[0][0]
-            print(contador, "----")
-            if contador > 3:
-                return True
-        return False
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        for person in persons:
+            print("Lenght-",len(person), person, "\n")
+        #condition=DecisionMakerPerEvent.verify_running(loaded_data)
+        condition=False
+        return condition
     
     def decision_maker(self, classes, detections,results, frames,MLLM, *args):
         print(
@@ -668,8 +675,13 @@ class EventGarbage(DecisionMakerPerEvent):
         pass
     def get_classes_of_interest(self):
         pass
-
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
+        print(
+            len(results),
+            "-",
+            len(frames),
+            "\n---------------------------------------------------------------------\n",
+        )
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
                 return True, ""
@@ -681,10 +693,27 @@ class EventGarbage(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
             condition, text = DecisionMakerPerEvent.output_decision(condition, results, frames, MLLM)
+            return condition, text
         else:
             return False, ""
     def process_detections(self, loaded_data):
-        pass
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        # Evaluate the persons
+        if len(persons) < 1:
+            return False
+        else:
+            for person in persons:
+                print("Lenght-", person)
+                temp=np.array([])
+                for time_frame in person:
+                    width = time_frame[4] - time_frame[2]
+                    height = time_frame[5] - time_frame[3]
+                    print(time_frame, width, height, width/height)
+                    temp = np.append(temp, width / height)
+                print(temp.mean(), np.abs(np.diff(temp)).mean(), temp[0]*0.15)
+                if np.abs(np.diff(temp)).mean() > temp[0]*0.15:
+                    return True
+        return False
 
 class EventStealing(DecisionMakerPerEvent):
     def __init__(self):

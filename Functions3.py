@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from SuppotDMC2 import eventsCheck
 from DMC_OPP import *
 
 classes_focus = {
@@ -27,7 +26,7 @@ classes_focus = {
     "a person jumping": ["person"],
     "a person falling": ["person"],
     "a person guiding other person": ["person"],
-    "a person discarding garbage": ["person"],
+    "a person throwing trash in the floor": ["person"],
 }
 
 detection_labels = {
@@ -132,7 +131,7 @@ def decision_maker(event):
             dmc=EventFalling()
         case 'a person guiding other person':
             dmc=EventGuiding()
-        case 'a person discarding garbage':
+        case "a person throwing trash in the floor":
             dmc=EventGarbage()
         case "a person stealing other person":
             dmc=EventStealing()

@@ -1,0 +1,10 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+3_088_1.mp4,0,4,7,2,0,a person polluting the area,a person polluting the area,13,19.986633333333334,26.991559505462646
+1_080_1.mp4,0,1,4,1,8,a person polluting the area,a person polluting the area,14,14.981633333333331,20.514344215393063
+1_076_1.mp4,0,13,8,10,15,a person polluting the area,a person polluting the area,46,14.981633333333331,32.31723070144653
+3_088_1.mp4,0,1,0,5,7,a person trashing the floor,a person trashing the floor,13,19.986633333333334,26.81120109558105
+3_088_1.mp4,0,6,2,0,5,a person throwing trash in the floor,a person throwing trash in the floor,13,19.986633333333334,26.820197105407715
+1_080_1.mp4,0,0,3,2,9,a person throwing trash in the floor,a person throwing trash in the floor,14,14.981633333333331,20.52165174484253
+1_076_1.mp4,0,21,15,2,8,a person throwing trash in the floor,a person throwing trash in the floor,46,14.981633333333331,32.26510977745056
+2_072_1.mp4,0,2,6,2,28,a person throwing trash in the floor,a person throwing trash in the floor,38,15.0,29.78593897819519
+2_067_1.mp4,0,24,53,0,5,a certain number of persons fighting,a certain number of persons fighting,82,25.0,57.57278299331665
