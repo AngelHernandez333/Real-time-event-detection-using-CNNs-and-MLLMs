@@ -1,6 +1,0 @@
-Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
-2_069_1.mp4,0,19,3,0,0,a person chasing other person,a person chasing other person,22,25.0,35.203805446624756
-1_082_1.mp4,0,4,0,0,0,a person chasing other person,a person chasing other person,4,14.981633333333333,16.818235874176025
-3_093_1.mp4,0,13,1,0,0,a person chasing other person,a person chasing other person,14,35.00163333333333,41.79626536369324
-2_071_1.mp4,0,5,2,0,0,a person chasing other person,a person chasing other person,7,30.0,33.73611044883728
-3_080_1.mp4,0,5,0,2,0,a person chasing other person,a person chasing other person,7,29.996633333333335,33.72401404380798

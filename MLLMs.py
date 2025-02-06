@@ -7,6 +7,7 @@ from janus.models import MultiModalityCausalLM, VLChatProcessor
 from PIL import Image
 import cv2
 
+
 class MLLMs(ABC):
     @abstractmethod
     def set_model(self, model):
@@ -72,6 +73,7 @@ class LLaVA_OneVision(MLLMs):
             print(text_outputs[0].split("\n")[-1])
         return text_outputs[0].split("\n")[-1]
 
+
 class JanusPro(MLLMs):
     def __init__(self):
         self.__model = None
@@ -86,13 +88,17 @@ class JanusPro(MLLMs):
 
     def set_processor(self, processor):
         self.__processor: VLChatProcessor = VLChatProcessor.from_pretrained(processor)
-        self.__tokenizer =self.__processor.tokenizer
+        self.__tokenizer = self.__processor.tokenizer
 
     def event_validation(self, frames, event, text="Watch the video,", verbose=False):
-        number_of_frames=4
-        assert len(frames) >= number_of_frames, f"Please provide at least {number_of_frames} frames."
-        #5
-        images_number=len(frames[-(1+number_of_frames):-1])*'<image_placeholder>'
+        number_of_frames = 4
+        assert (
+            len(frames) >= number_of_frames
+        ), f"Please provide at least {number_of_frames} frames."
+        # 5
+        images_number = (
+            len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
+        )
         conversation = [
             {
                 "role": "<|User|>",
@@ -103,10 +109,12 @@ class JanusPro(MLLMs):
         ]
         # Load images with PIL and convert to RGB
 
-        pil_images = [MLLMs.cv2_to_pil(frame) for frame in frames[-(1+number_of_frames):-1]]
+        pil_images = [
+            MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
+        ]
 
         # load images and prepare for inputs
-        #pil_images = load_pil_images(conversation)
+        # pil_images = load_pil_images(conversation)
         prepare_inputs = self.__processor(
             conversations=conversation, images=pil_images, force_batchify=True
         ).to(self.__model.device)
@@ -126,13 +134,14 @@ class JanusPro(MLLMs):
             use_cache=True,
         )
 
-        answer = self.__tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
-        #rint(f"{prepare_inputs['sft_format'][0]}", answer)
+        answer = self.__tokenizer.decode(
+            outputs[0].cpu().tolist(), skip_special_tokens=True
+        )
+        # rint(f"{prepare_inputs['sft_format'][0]}", answer)
         if verbose:
             print(f"{prepare_inputs['sft_format'][0]}", answer)
 
-        return answer.split('.')[0]
-
+        return answer.split(".")[0]
 
 
 if __name__ == "__main__":

@@ -24,14 +24,14 @@ def calculate_ap(precision, recall):
 # Load the CSV file into a DataFrame
 # Count the occurrences of each type of event
 df = pd.read_csv("/home/ubuntu/Tesis/Results/resultsTest.csv")
-df=pd.read_csv('/home/ubuntu/Tesis/Results/RunningLyingOld.csv')
+df = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
 # Get unique categories
 print(df)
 categories = df["True Event"].unique()
 
 # Separate rows by category
-df['Precision'] = df['True Positive'] / (df['True Positive'] + df['False Positive'])
-df['Recall'] = df['True Positive'] / (df['True Positive'] + df['False Negative'])
+df["Precision"] = df["True Positive"] / (df["True Positive"] + df["False Positive"])
+df["Recall"] = df["True Positive"] / (df["True Positive"] + df["False Negative"])
 df.fillna(0, inplace=True)
 category_dfs = {category: df[df["True Event"] == category] for category in categories}
 

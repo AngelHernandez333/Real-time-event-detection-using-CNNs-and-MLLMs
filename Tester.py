@@ -5,7 +5,12 @@ import os
 from MLLMs import LLaVA_OneVision, JanusPro
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import decision_maker,decision_makerComplex, classes_focus, detection_labels
+from Functions3 import (
+    decision_maker,
+    decision_makerComplex,
+    classes_focus,
+    detection_labels,
+)
 import numpy as np
 
 
@@ -45,6 +50,7 @@ class VideoTester(ABC):
     @abstractmethod
     def show_detections(self):
         pass
+
     @abstractmethod
     def show_video(self):
         pass
@@ -60,10 +66,10 @@ class VideoTester(ABC):
     @abstractmethod
     def autotesting(self):
         pass
+
     @abstractmethod
     def simple_autotesting(self):
         pass
-    
 
     @staticmethod
     def prompt_text(classes, event, detector_usage, classes_focus):
@@ -219,8 +225,8 @@ class EventTester(VideoTester):
         frames_number = [0]
         fps_list = []
         prompts = ["Loading..."]
-        if self.__mode in [0, 3,4]:
-            dmc=decision_maker(self.__event)
+        if self.__mode in [0, 3, 4]:
+            dmc = decision_maker(self.__event)
         # Charge time
         prev_frame_time = time.time()
         results = []
@@ -243,7 +249,8 @@ class EventTester(VideoTester):
                         5,
                         classes,
                         detections,
-                        results,dmc
+                        results,
+                        dmc,
                     )
                 case 1:
                     # Only MLLM
@@ -277,18 +284,21 @@ class EventTester(VideoTester):
                         5,
                         classes,
                         detections,
-                        results,dmc
+                        results,
+                        dmc,
                     )
                 case 4:
                     # Detector with rules only
                     detections, classes = self.__detector.detection(frame, classes)
-                    decision_makerComplex(frame,
+                    decision_makerComplex(
+                        frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
                         5,
                         classes,
                         detections,
-                        results,dmc,
+                        results,
+                        dmc,
                         False,
                         frames_number,
                         prompts,
@@ -394,6 +404,7 @@ class EventTester(VideoTester):
                 continue
             break
         self.save_dataframe()
+
     def simple_autotesting(self, folders, descriptions, modes):
         for k in modes:
             for video_kind in range(len(folders)):
@@ -406,7 +417,8 @@ class EventTester(VideoTester):
                         & (self.__df["Check event"] == descriptions[video_kind])
                         & (self.__df["Mode"] == k)
                     ].shape[0]
-                    check=self.__df[(self.__df["Check event"] == descriptions[video_kind])
+                    check = self.__df[
+                        (self.__df["Check event"] == descriptions[video_kind])
                         & (self.__df["Mode"] == k)
                     ].shape[0]
                     if count == 0:
@@ -459,7 +471,7 @@ class EventTester(VideoTester):
 
 
 if __name__ == "__main__":
-    """    events = [
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -493,31 +505,20 @@ if __name__ == "__main__":
     tester.show_detections(False)
     tester.autotesting(events, description, [0])"""
     # Define the folder of the videos and the descriptions of the events
-    #TODO: Verify the events and prompts
-    #Riding a bicycle ✅ 
-    #Fight ✅ 
-    #Playing ✅
-    #Running away✅
-    #Person lying in the floor✅
-    #Chasing
-    #Jumping
-    #Falling
-    #Guide
-    #Littering
-    #Thief
-    #Normal
-    '''TODO Test the modes with the events 
-    -Running away
-        events = [
-        "4-Running away",
-        "5-Person lying in the floor",
-    ]
-    description = [
-        "a person running",
-        "a person lying in the floor",
-    ]
-    '''
-    '''events = [
+    # TODO: Verify the events and prompts and test the events
+    # Riding a bicycle ✅
+    # Fight ✅
+    # Playing ✅
+    # Running away✅
+    # Person lying in the floor✅
+    # Chasing✅
+    # Jumping✅
+    # Falling
+    # Guide
+    # Littering
+    # Thief
+    # Normal
+    """events = [
         "6-Chasing",
         "7-Jumping",
         "8-Falling",
@@ -533,14 +534,21 @@ if __name__ == "__main__":
         "a person falling",
         "a person guiding other person",
         "a person stealing other person",
-        "a person throwing trash in the floor"
+        "a person throwing trash in the floor",
         "everything is normal",
-    ]'''
+    ]"""
+
     events = [
-        "6-Chasing",]
-    description = [
-        "a person chasing other person"
+        "6-Chasing","7-Jumping","8-Falling",'9-guide','11-Littering',]
+    description = [ "a person chasing other person",
+        "a person falling", "a person jumping",
+        "a person guiding other person", "a person throwing trash in the floor"
+    ]    
+    """
+    events = [
+        '11-Littering',
     ]
+    description = ["a person throwing trash in the floor"]"""
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
@@ -548,18 +556,18 @@ if __name__ == "__main__":
     llava = LLaVA_OneVision()
     llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
     llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-    '''janus = JanusPro()
+    """janus = JanusPro()
     janus.set_model("deepseek-ai/Janus-Pro-1B")
-    janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
+    janus.set_processor("deepseek-ai/Janus-Pro-1B")"""
     # Prepare the tester
     tester = EventTester()
 
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingChase.csv")
+    tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing6_8.csv")
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(llava)
     tester.show_detections(False)
     tester.show_video(True)
     # Start the autotesting
-    #tester.autotesting(events, description, [0,1,2,3])
+    # tester.autotesting(events, description, [0,1,2,3])
     tester.simple_autotesting(events, description, [0])

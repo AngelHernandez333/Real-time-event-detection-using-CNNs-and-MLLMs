@@ -111,31 +111,34 @@ detection_labels = {
     78: "hair drier",
     79: "toothbrush",
 }
+
+
 def decision_maker(event):
     match event:
         case "a person riding a bicycle":
-            dmc=EventBicycle()
-        case 'a certain number of persons fighting':
-            dmc=EventFight()
-        case 'a group of persons playing':
-            dmc=EventPlaying()
-        case 'a person running':
-            dmc=EventRunning()
-        case 'a person lying in the floor':
-            dmc=EventLying()
-        case 'a person chasing other person':
-            dmc=EventChasing()
-        case 'a person jumping':
-            dmc=EventJumping()
-        case 'a person falling':
-            dmc=EventFalling()
-        case 'a person guiding other person':
-            dmc=EventGuiding()
+            dmc = EventBicycle()
+        case "a certain number of persons fighting":
+            dmc = EventFight()
+        case "a group of persons playing":
+            dmc = EventPlaying()
+        case "a person running":
+            dmc = EventRunning()
+        case "a person lying in the floor":
+            dmc = EventLying()
+        case "a person chasing other person":
+            dmc = EventChasing()
+        case "a person jumping":
+            dmc = EventJumping()
+        case "a person falling":
+            dmc = EventFalling()
+        case "a person guiding other person":
+            dmc = EventGuiding()
         case "a person throwing trash in the floor":
-            dmc=EventGarbage()
+            dmc = EventGarbage()
         case "a person stealing other person":
-            dmc=EventStealing()
+            dmc = EventStealing()
     return dmc
+
 
 def decision_makerComplex(
     frame,
@@ -144,13 +147,16 @@ def decision_makerComplex(
     gap,
     classes,
     detections,
-    results,dcm,
+    results,
+    dcm,
     MLLM=True,
     frames_number=[],
     prompts=[],
 ):
     if frame_number % gap == 0:
-        condition, prompt = dcm.decision_maker(classes, detections,results, frames, MLLM)
+        condition, prompt = dcm.decision_maker(
+            classes, detections, results, frames, MLLM
+        )
         if condition and MLLM:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame)

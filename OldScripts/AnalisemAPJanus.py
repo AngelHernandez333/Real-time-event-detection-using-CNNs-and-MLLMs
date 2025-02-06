@@ -30,8 +30,8 @@ print(df)
 categories = df["True Event"].unique()
 
 # Separate rows by category
-df['Precision'] = df['True Positive'] / (df['True Positive'] + df['False Positive'])
-df['Recall'] = df['True Positive'] / (df['True Positive'] + df['False Negative'])
+df["Precision"] = df["True Positive"] / (df["True Positive"] + df["False Positive"])
+df["Recall"] = df["True Positive"] / (df["True Positive"] + df["False Negative"])
 category_dfs = {category: df[df["True Event"] == category] for category in categories}
 
 mAP_process = []
@@ -60,13 +60,13 @@ for i in range(len(categories)):
     mean_values = mean_values[["AP", "Process time"]]
     mAP_process.append(mean_values)
     # Plot the results
-    '''mode_names = {
+    """mode_names = {
         0: "Detector + Rules + MLLM +Info",
         1: "MLLM",
         2: "Detector + MLLM + Information ",
         3: "Detector + Rules + MLLM",
         4: "Detector + Rules",
-    }'''
+    }"""
     mode_names = {
         0: "Detector + Rules + MLLM +Info",
         1: "MLLM",

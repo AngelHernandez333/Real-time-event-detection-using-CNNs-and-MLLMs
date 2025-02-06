@@ -16,13 +16,16 @@ def eventsCheck(event, classes, detections, results, frames, MLLM):
             )
         case "a person falling":
             condition, prompt = Check_Falling(
-                classes, detections, results, frames, MLLM)
+                classes, detections, results, frames, MLLM
+            )
         case "a person guiding other person":
             condition, prompt = Check_Guiding(
-                classes, detections, results, frames, MLLM)
+                classes, detections, results, frames, MLLM
+            )
         case "a person discarding garbage":
             condition, prompt = Check_Littering(
-                classes, detections, results, frames, MLLM)
+                classes, detections, results, frames, MLLM
+            )
         case _:
             # Handle default case
             return True, ""
@@ -440,6 +443,7 @@ def person_lying2(loaded_data):
             return True
     return False
 
+
 def person_chasing(loaded_data):
     # print('Informacion cargada:',loaded_data[0],'\n---------------------------------------------------------------------\n')
     # Evaluate the detections and find all the persons
@@ -483,5 +487,3 @@ def person_chasing(loaded_data):
                 else:
                     return False
     return False
-
-

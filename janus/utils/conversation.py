@@ -304,7 +304,7 @@ register_conv_template(
         sep="\n\n",
         sep2="<｜end▁of▁sentence｜>",
         stop_token_ids=[100001],
-        stop_str=["<|User|>", "<｜end▁of▁sentence｜>"]
+        stop_str=["<|User|>", "<｜end▁of▁sentence｜>"],
     )
 )
 
