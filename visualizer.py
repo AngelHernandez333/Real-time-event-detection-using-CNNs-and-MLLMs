@@ -48,7 +48,7 @@ class Visualizer:
                     2,
                 )
                 if annotations[int(cap.get(cv2.CAP_PROP_POS_FRAMES)) - 1]:
-                    i=100
+                    i=50
                     if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
                         cv2
                         detections, _ = self.__detector.detection(frame)
@@ -73,20 +73,19 @@ class Visualizer:
                                 )
                         self.__detector.put_detections(printed_detections, frame)
                     # evaluate.append(printed_detections)
+                else:
+                    i=0
                 cv2.imshow(f"{files[self.__video]}, Frame", frame)
                 if cv2.waitKey(1+i) & 0xFF == ord("q"):
                     break
             else:
                 break
         cap.release()
-        print(ratio)
-        print(files[self.__video])
-
 
 if __name__ == "__main__":
     visualizer = Visualizer()
-    visualizer.set_video(1)
-    visualizer.set_video_rute("../Database/CHAD DATABASE/11-Littering")
+    visualizer.set_video(4)
+    visualizer.set_video_rute("../Database/CHAD DATABASE/6-Chasing")
     visualizer.set_annotations_rute(
         "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
     )

@@ -93,7 +93,7 @@ class DecisionMakerPerEvent(ABC):
         height = y2_1 - y1_1
         if verbose:
             print("Reference size:", width, "Evaluate size:", height, "Distance:", distance)
-        if distance < min(width, height):
+        if distance < max(width, height):
             return distance, True
         else:
             return distance, False
@@ -159,59 +159,37 @@ class DecisionMakerPerEvent(ABC):
             text = "no"
         return condition, text
     @staticmethod
-    def verify_running(loaded_data):
-        for i in range(len(loaded_data[0])):
-            print(
-                "To evalute:",
-                loaded_data[0][i],
-                "\n---------------------------------------------------------------------\n",
-            )
-            contador = 0
-            for j in range(1, len(loaded_data)):
-                stored_data = []
-                for k in range(len(loaded_data[j])):
-                    print(
-                        j,
-                        "-",
-                        k,
-                        "-",
-                        loaded_data[0][i],
-                        loaded_data[j][k],
-                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]),
-                        "\n",
-                    )
-                    if (
-                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]) > 0.2
-                        and DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k])
-                        < 0.9
-                    ):
-                        if stored_data == []:
-                            stored_data.append(
-                                [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                            )
-                        else:
-                            if stored_data[0][1] < DecisionMakerPerEvent.calculate_shared_area(
-                                loaded_data[0][i], loaded_data[j][k]
-                            ):
-                                stored_data[0] = [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                if len(stored_data) > 0:
-                    contador += 1
-                    loaded_data[0][i] = stored_data[0][0]
-            print(contador, "----")
-            if contador > 3:
-                return True
-        return False
-
+    def verify_running(loaded_data, verbose=False):
+        persons_index=[]
+        for i in range(len(loaded_data)):
+            area_array = np.array([])
+            for j in range(len(loaded_data[i])-1):
+                if verbose:
+                    print(i, loaded_data[i][j], loaded_data[i][j+1], "\n")
+                area =DecisionMakerPerEvent.calculate_shared_area(loaded_data[i][j], loaded_data[i][j+1])
+                area_array = np.append(area_array, area)
+            if verbose:
+                print(area_array, area_array.mean())
+            if area_array.mean() < 0.5:
+                persons_index.append(i)
+        return persons_index
+    @staticmethod
+    def verify_lying(loaded_data):
+        for person in loaded_data:
+            print("Lenght-",len(person), person, "\n")
+        persons_index=[]
+        for i in range(len(loaded_data)):
+            area_array = np.array([])
+            width=loaded_data[i][0][4]-loaded_data[i][0][2]
+            height=loaded_data[i][0][5]-loaded_data[i][0][3]
+            for j in range(len(loaded_data[i])-1):
+                print(i, loaded_data[i][j], loaded_data[i][j+1], "\n")
+                area =DecisionMakerPerEvent.calculate_shared_area(loaded_data[i][j], loaded_data[i][j+1])
+                area_array = np.append(area_array, area)
+            print(area_array, area_array.mean(), width/height)
+            if area_array.mean() > 0.93 and width/height > 1:
+                persons_index.append(i)
+        return persons_index
 
 class EventBicycle(DecisionMakerPerEvent):
     def __init__(self):
@@ -297,12 +275,9 @@ class EventRunning(DecisionMakerPerEvent):
         return self.__classes_of_interest
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        for person in persons:
-            print("Lenght-",len(person), person, "\n")
-        #condition=DecisionMakerPerEvent.verify_running(loaded_data)
-        condition=False
-        return condition
-    
+        persons=DecisionMakerPerEvent.verify_running(persons)
+        print(len(persons) > 0, "\n---------------------------------------------------------------------\n")
+        return len(persons) > 0
     def decision_maker(self, classes, detections,results, frames,MLLM, *args):
         print(
             len(results),
@@ -319,13 +294,7 @@ class EventRunning(DecisionMakerPerEvent):
                 condition,
                 "\n---------------------------------------------------------------------\n",
             )
-            if condition == False and MLLM:
-                frames.pop(0)
-                results.pop(0)
-            if condition:
-                text = "yes"
-            else:
-                text = "no"
+            condition, text =DecisionMakerPerEvent.output_decision(condition, results, frames, MLLM)
             return condition, text
         else:
             return False, ""
@@ -360,53 +329,10 @@ class EventLying(DecisionMakerPerEvent):
             else:
                 return False, ""
     def process_detections(self, loaded_data):
-        for i in range(len(loaded_data[0])):
-            print(
-                "To evalute:",
-                loaded_data[0][i],
-                "\n---------------------------------------------------------------------\n",
-            )
-            contador = 0
-            for j in range(1, len(loaded_data)):
-                stored_data = []
-                for k in range(len(loaded_data[j])):
-                    print(
-                        j,
-                        "-",
-                        k,
-                        "-",
-                        loaded_data[0][i],
-                        loaded_data[j][k],
-                        DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]),
-                        "\n",
-                    )
-                    if DecisionMakerPerEvent.calculate_shared_area(loaded_data[0][i], loaded_data[j][k]) > 0.93:
-                        if stored_data == []:
-                            stored_data.append(
-                                [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                            )
-                        else:
-                            if stored_data[0][1] < DecisionMakerPerEvent.calculate_shared_area(
-                                loaded_data[0][i], loaded_data[j][k]
-                            ):
-                                stored_data[0] = [
-                                    loaded_data[j][k],
-                                    DecisionMakerPerEvent.calculate_shared_area(
-                                        loaded_data[0][i], loaded_data[j][k]
-                                    ),
-                                ]
-                if len(stored_data) > 0:
-                    contador += 1
-                    loaded_data[0][i] = stored_data[0][0]
-            print(contador, "----")
-            if contador > 5:
-                return True
-        return False
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        persons=DecisionMakerPerEvent.verify_lying(persons)
+        print(persons,len(persons) > 0, "\n---------------------------------------------------------------------\n")
+        return len(persons) > 0 
 
 
 class EventChasing(DecisionMakerPerEvent):
@@ -440,8 +366,36 @@ class EventChasing(DecisionMakerPerEvent):
             return False, ""
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        persons_index=DecisionMakerPerEvent.verify_running(persons)
+        print(len(persons))
+        if len(persons_index) <1 or len(persons) < 2:
+            return False
+        print('Checking persons', persons_index)
+        for i in persons_index:
+            for j in [x for x in range(len(persons)) if x != i]:
+                print(f'Testing the person {i} with the person {j}\n')
+                distance_array = np.array([])
+                width = persons[i][0][4] - persons[i][0][2]
+                for k in range(len(persons[i])):
+                    distance, _ = DecisionMakerPerEvent.distance_between(persons[i][k],persons[j][k])
+                    print(f'At frame {k} {persons[i][k]}, {persons[j][k]} {distance}\n')
+                    distance_array = np.append(distance_array, distance)
+                print(distance_array)
+                decresing= np.all(np.diff(distance_array) < 0)
+                print(decresing, width, np.std(distance_array))
+                if decresing:
+                    return True
+                if np.std(distance_array)<width:
+                    return True
+        return False
+        if len(persons_index) >0:
+            return False
+        for i in persons_index:
+            print(persons[i])
+            for j in [x for x in range(len(persons)) if x != i]:
+                print(i, '-', j, '-',persons[j])
         # Evaluate the persons
-        if len(persons) < 2:
+        '''if len(persons) < 2:
             return False
         else:
             for i in range(len(persons) - 1):
@@ -472,7 +426,7 @@ class EventChasing(DecisionMakerPerEvent):
                         return True
                     else:
                         return False
-        return False
+        return False'''
 
 class EventJumping(DecisionMakerPerEvent):
     def __init__(self):

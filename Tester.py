@@ -409,7 +409,7 @@ class EventTester(VideoTester):
                     check=self.__df[(self.__df["Check event"] == descriptions[video_kind])
                         & (self.__df["Mode"] == k)
                     ].shape[0]
-                    if count == 0 and check<7:
+                    if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
                         (
@@ -445,6 +445,7 @@ class EventTester(VideoTester):
                                 "Process time": time_video,
                             }
                             tester.append_dataframe(row)
+                            self.save_dataframe()
                             # Append the row to the DataFrame
                         else:
                             break
@@ -492,12 +493,12 @@ if __name__ == "__main__":
     tester.show_detections(False)
     tester.autotesting(events, description, [0])"""
     # Define the folder of the videos and the descriptions of the events
-    #TODO: Verify the events and descriptions
+    #TODO: Verify the events and prompts
     #Riding a bicycle ✅ 
     #Fight ✅ 
     #Playing ✅
-    #Running away
-    #Person lying in the floor
+    #Running away✅
+    #Person lying in the floor✅
     #Chasing
     #Jumping
     #Falling
@@ -505,9 +506,18 @@ if __name__ == "__main__":
     #Littering
     #Thief
     #Normal
-    events = [
+    '''TODO Test the modes with the events 
+    -Running away
+        events = [
         "4-Running away",
         "5-Person lying in the floor",
+    ]
+    description = [
+        "a person running",
+        "a person lying in the floor",
+    ]
+    '''
+    '''events = [
         "6-Chasing",
         "7-Jumping",
         "8-Falling",
@@ -517,8 +527,7 @@ if __name__ == "__main__":
         "99-Normal",
     ]
     description = [
-        "a person running",
-        "a person lying in the floor",
+        
         "a person chasing other person",
         "a person jumping",
         "a person falling",
@@ -526,6 +535,11 @@ if __name__ == "__main__":
         "a person stealing other person",
         "a person throwing trash in the floor"
         "everything is normal",
+    ]'''
+    events = [
+        "6-Chasing",]
+    description = [
+        "a person chasing other person"
     ]
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
@@ -540,7 +554,7 @@ if __name__ == "__main__":
     # Prepare the tester
     tester = EventTester()
 
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsTest.csv")
+    tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingChase.csv")
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(llava)
