@@ -1,0 +1,321 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+4_076_1.mp4,1,22,3,26,26,a person riding a bicycle,a person riding a bicycle,77,13.966666666666669,29.098530054092407
+3_106_1.mp4,1,45,4,6,28,a person riding a bicycle,a person riding a bicycle,83,14.981633333333331,33.445307970047
+1_067_1.mp4,1,22,4,2,25,a person riding a bicycle,a person riding a bicycle,53,9.976633333333334,21.48318338394165
+1_066_1.mp4,1,23,4,2,54,a person riding a bicycle,a person riding a bicycle,83,14.981633333333331,33.54413056373596
+2_096_1.mp4,1,38,0,1,45,a person riding a bicycle,a person riding a bicycle,84,15.0,33.87912678718567
+4_077_1.mp4,1,30,4,13,12,a person riding a bicycle,a person riding a bicycle,59,10.966666666666669,20.82591485977173
+3_105_1.mp4,1,46,4,7,57,a person riding a bicycle,a person riding a bicycle,114,20.053366666666665,45.08373665809631
+2_065_1.mp4,1,131,133,0,0,a certain number of persons fighting,a certain number of persons fighting,264,45.0,102.37721967697144
+1_071_1.mp4,1,41,0,24,48,a certain number of persons fighting,a certain number of persons fighting,113,19.986633333333334,44.13726830482483
+4_079_1.mp4,1,33,72,90,8,a certain number of persons fighting,a certain number of persons fighting,203,34.96666666666667,70.33134126663208
+1_072_1.mp4,1,69,2,54,18,a certain number of persons fighting,a certain number of persons fighting,143,24.991633333333333,55.553927421569824
+2_077_1.mp4,1,28,38,0,0,a certain number of persons fighting,a certain number of persons fighting,66,12.0,25.87517762184143
+1_069_1.mp4,1,93,1,82,57,a certain number of persons fighting,a certain number of persons fighting,233,40.00663333333333,90.99606561660768
+2_079_1.mp4,1,55,41,17,1,a certain number of persons fighting,a certain number of persons fighting,114,20.0,44.47148418426514
+1_094_1.mp4,1,240,125,0,18,a group of persons playing,a group of persons playing,383,65.03163333333333,149.02344822883606
+3_101_1.mp4,1,534,86,56,187,a group of persons playing,a group of persons playing,863,145.07826666666668,336.8113782405853
+4_111_1.mp4,1,27,3,226,127,a group of persons playing,a group of persons playing,383,64.96666666666667,132.5003674030304
+3_102_1.mp4,1,254,108,8,103,a group of persons playing,a group of persons playing,473,80.04663333333333,184.3516399860382
+2_090_1.mp4,1,46,115,480,433,a group of persons playing,a group of persons playing,1074,180.0,417.5505952835083
+1_093_1.mp4,1,526,261,4,102,a group of persons playing,a group of persons playing,893,150.11663333333334,354.9034767150879
+2_093_1.mp4,1,18,0,242,124,a group of persons playing,a group of persons playing,384,65.0,151.99384236335754
+4_109_1.mp4,1,141,15,308,231,a group of persons playing,a group of persons playing,695,116.96666666666668,240.18629932403564
+3_093_1.mp4,1,18,21,49,115,a person running,a person running,203,35.00163333333333,78.98173069953918
+4_092_1.mp4,1,17,0,17,19,a person running,a person running,53,9.966666666666669,18.57073450088501
+2_066_1.mp4,1,17,0,64,33,a person running,a person running,114,20.0,44.52264094352722
+4_101_1.mp4,1,0,0,76,61,a person running,a person running,137,23.966666666666665,47.68317413330078
+3_104_1.mp4,1,1,0,67,75,a person running,a person running,143,24.991633333333333,55.72126865386963
+1_077_1.mp4,1,3,0,21,71,a person running,a person running,95,16.983633333333334,37.25626182556152
+4_087_1.mp4,1,14,0,39,36,a person running,a person running,89,15.966666666666669,30.914605140686035
+2_075_1.mp4,1,0,0,32,52,a person running,a person running,84,15.0,33.34749913215637
+4_090_1.mp4,1,6,0,17,30,a person running,a person running,53,9.966666666666669,18.732588291168213
+4_080_1.mp4,1,34,5,40,46,a person running,a person running,125,21.966666666666665,43.99725556373596
+1_070_1.mp4,1,35,4,5,39,a person running,a person running,83,14.981633333333331,33.18664836883545
+4_078_1.mp4,1,22,5,5,21,a person running,a person running,53,9.966666666666669,18.699715852737427
+4_104_1.mp4,1,0,0,16,13,a person running,a person running,29,5.966666666666667,10.381671667099
+4_112_1.mp4,1,0,0,27,38,a person running,a person running,65,11.966666666666669,22.96448945999145
+2_095_1.mp4,1,29,0,18,37,a person running,a person running,84,15.0,33.49478459358215
+3_077_1.mp4,1,27,5,44,97,a person running,a person running,173,29.99663333333333,67.25450325012207
+2_064_1.mp4,1,0,1,38,45,a person running,a person running,84,15.0,32.95731711387634
+1_079_1.mp4,1,14,0,21,48,a person running,a person running,83,14.981633333333331,32.584721326828
+4_102_1.mp4,1,0,0,22,31,a person running,a person running,53,9.966666666666669,18.51862001419068
+3_103_1.mp4,1,19,0,5,59,a person running,a person running,83,14.981633333333331,32.41102433204651
+3_087_1.mp4,1,5,0,32,76,a person running,a person running,113,19.986633333333334,44.1038122177124
+3_075_1.mp4,1,17,0,20,138,a person running,a person running,175,30.2302,69.05960774421692
+4_100_1.mp4,1,0,0,25,22,a person running,a person running,47,8.966666666666667,16.60502862930298
+4_089_1.mp4,1,68,0,81,294,a person lying in the floor,a person lying in the floor,443,74.96666666666667,157.56888437271118
+2_080_1.mp4,1,0,0,212,142,a person lying in the floor,a person lying in the floor,354,60.0,138.3963599205017
+3_092_1.mp4,1,30,0,162,221,a person lying in the floor,a person lying in the floor,413,70.03663333333334,161.2760021686554
+1_091_1.mp4,1,171,0,46,46,a person lying in the floor,a person lying in the floor,263,45.011633333333336,102.98772263526917
+3_099_1.mp4,1,2,0,258,63,a person lying in the floor,a person lying in the floor,323,55.02163333333333,126.66287899017334
+1_078_1.mp4,1,83,0,47,103,a person lying in the floor,a person lying in the floor,233,40.00663333333333,90.87592768669128
+4_094_1.mp4,1,0,0,272,45,a person lying in the floor,a person lying in the floor,317,53.96666666666667,110.55050683021544
+3_086_1.mp4,1,82,0,58,393,a person lying in the floor,a person lying in the floor,533,90.05663333333334,207.8883275985717
+1_084_1.mp4,1,115,0,53,65,a person lying in the floor,a person lying in the floor,233,40.00663333333333,91.29884767532349
+2_069_1.mp4,1,0,0,78,66,a person chasing other person,a person chasing other person,144,25.0,56.28280663490296
+1_082_1.mp4,1,8,2,23,50,a person chasing other person,a person chasing other person,83,14.981633333333331,32.60333275794983
+4_108_1.mp4,1,0,0,34,31,a person chasing other person,a person chasing other person,65,11.966666666666669,22.82751750946045
+4_107_1.mp4,1,0,0,45,98,a person chasing other person,a person chasing other person,143,24.966666666666665,49.92840600013733
+4_114_1.mp4,1,0,0,55,10,a person chasing other person,a person chasing other person,65,11.933333333333334,23.03828191757202
+3_096_1.mp4,1,8,0,29,46,a person chasing other person,a person chasing other person,83,14.981633333333331,33.306371450424194
+1_073_1.mp4,1,5,2,25,51,a person chasing other person,a person chasing other person,83,14.981633333333331,33.28010010719299
+3_091_1.mp4,1,9,0,25,79,a person chasing other person,a person chasing other person,113,19.986633333333334,46.50186085700989
+2_078_1.mp4,1,0,0,30,54,a person chasing other person,a person chasing other person,84,15.0,34.37770199775696
+2_088_1.mp4,1,0,0,50,76,a person chasing other person,a person chasing other person,126,22.0,51.623891830444336
+4_076_1.mp4,2,23,3,25,26,a person riding a bicycle,a person riding a bicycle,77,13.966666666666669,40.25294542312622
+3_106_1.mp4,2,50,4,1,28,a person riding a bicycle,a person riding a bicycle,83,14.981633333333331,45.61376118659973
+1_067_1.mp4,2,23,4,1,25,a person riding a bicycle,a person riding a bicycle,53,9.976633333333334,29.66582655906677
+1_066_1.mp4,2,25,4,0,54,a person riding a bicycle,a person riding a bicycle,83,14.981633333333331,45.44448399543762
+2_096_1.mp4,2,39,1,0,44,a person riding a bicycle,a person riding a bicycle,84,15.0,46.05101680755615
+4_077_1.mp4,2,30,4,13,12,a person riding a bicycle,a person riding a bicycle,59,10.966666666666669,30.36906170845032
+3_105_1.mp4,2,52,4,1,57,a person riding a bicycle,a person riding a bicycle,114,20.053366666666665,61.93966627120972
+2_065_1.mp4,2,59,76,72,57,a certain number of persons fighting,a certain number of persons fighting,264,45.0,141.05382132530212
+1_071_1.mp4,2,65,45,0,3,a certain number of persons fighting,a certain number of persons fighting,113,19.986633333333334,60.83750748634338
+4_079_1.mp4,2,12,47,111,33,a certain number of persons fighting,a certain number of persons fighting,203,34.96666666666667,100.89618968963624
+1_072_1.mp4,2,109,19,14,1,a certain number of persons fighting,a certain number of persons fighting,143,24.991633333333333,76.9786491394043
+2_077_1.mp4,2,27,35,1,3,a certain number of persons fighting,a certain number of persons fighting,66,12.0,36.26992106437683
+1_069_1.mp4,2,174,38,1,20,a certain number of persons fighting,a certain number of persons fighting,233,40.00663333333333,124.2270052433014
+2_079_1.mp4,2,65,27,7,15,a certain number of persons fighting,a certain number of persons fighting,114,20.0,61.71878409385681
+1_094_1.mp4,2,240,132,0,11,a group of persons playing,a group of persons playing,383,65.03163333333333,211.56211400032043
+3_101_1.mp4,2,576,168,14,105,a group of persons playing,a group of persons playing,863,145.07826666666668,460.8452138900757
+4_111_1.mp4,2,50,20,203,110,a group of persons playing,a group of persons playing,383,64.96666666666667,187.6295228004456
+3_102_1.mp4,2,262,161,0,50,a group of persons playing,a group of persons playing,473,80.04663333333333,249.7736320495605
+2_090_1.mp4,2,345,433,181,115,a group of persons playing,a group of persons playing,1074,180.0,564.7312235832214
+1_093_1.mp4,2,529,312,1,51,a group of persons playing,a group of persons playing,893,150.11663333333334,474.9556736946106
+2_093_1.mp4,2,144,95,116,29,a group of persons playing,a group of persons playing,384,65.0,205.5513083934784
+4_109_1.mp4,2,179,13,270,233,a group of persons playing,a group of persons playing,695,116.96666666666668,337.0498216152191
+3_093_1.mp4,2,27,26,40,110,a person running,a person running,203,35.00163333333333,107.5847954750061
+4_092_1.mp4,2,19,0,15,19,a person running,a person running,53,9.966666666666669,26.968658447265625
+2_066_1.mp4,2,25,8,56,25,a person running,a person running,114,20.0,60.96523761749268
+4_101_1.mp4,2,0,0,76,61,a person running,a person running,137,23.966666666666665,67.54457020759583
+3_104_1.mp4,2,8,0,60,75,a person running,a person running,143,24.991633333333333,76.4345121383667
+1_077_1.mp4,2,9,1,15,70,a person running,a person running,95,16.983633333333334,50.87585854530335
+4_087_1.mp4,2,15,0,38,36,a person running,a person running,89,15.966666666666669,44.50306820869446
+2_075_1.mp4,2,0,0,32,52,a person running,a person running,84,15.0,45.28624200820923
+4_090_1.mp4,2,6,0,17,30,a person running,a person running,53,9.966666666666669,27.00721836090088
+4_080_1.mp4,2,35,5,39,46,a person running,a person running,125,21.966666666666665,61.810975551605225
+1_070_1.mp4,2,35,4,5,39,a person running,a person running,83,14.981633333333331,44.67080497741699
+4_078_1.mp4,2,24,6,3,20,a person running,a person running,53,9.966666666666669,27.018712520599365
+4_104_1.mp4,2,2,0,14,13,a person running,a person running,29,5.966666666666667,15.411983966827393
+4_112_1.mp4,2,0,0,27,38,a person running,a person running,65,11.966666666666669,32.91679048538208
+2_095_1.mp4,2,33,0,14,37,a person running,a person running,84,15.0,45.24359440803528
+3_077_1.mp4,2,28,12,43,90,a person running,a person running,173,29.99663333333333,92.67221450805664
+2_064_1.mp4,2,5,12,33,34,a person running,a person running,84,15.0,45.33782958984375
+1_079_1.mp4,2,13,0,22,48,a person running,a person running,83,14.981633333333331,44.78271985054016
+4_102_1.mp4,2,0,0,22,31,a person running,a person running,53,9.966666666666669,27.07051682472229
+3_103_1.mp4,2,22,0,2,59,a person running,a person running,83,14.981633333333331,45.71527934074402
+3_087_1.mp4,2,8,0,29,76,a person running,a person running,113,19.986633333333334,61.814311504364014
+3_075_1.mp4,2,17,0,20,138,a person running,a person running,175,30.2302,93.43621015548706
+4_100_1.mp4,2,0,0,25,22,a person running,a person running,47,8.966666666666667,24.194148063659668
+4_089_1.mp4,2,88,0,61,294,a person lying in the floor,a person lying in the floor,443,74.96666666666667,218.20882272720337
+2_080_1.mp4,2,0,0,212,142,a person lying in the floor,a person lying in the floor,354,60.0,191.5738241672516
+3_092_1.mp4,2,115,0,77,221,a person lying in the floor,a person lying in the floor,413,70.03663333333334,224.99153232574463
+1_091_1.mp4,2,195,0,22,46,a person lying in the floor,a person lying in the floor,263,45.011633333333336,144.2514374256134
+3_099_1.mp4,2,40,0,220,63,a person lying in the floor,a person lying in the floor,323,55.02163333333333,174.77316546440125
+1_078_1.mp4,2,93,0,37,103,a person lying in the floor,a person lying in the floor,233,40.00663333333333,126.126384973526
+4_094_1.mp4,2,5,0,267,45,a person lying in the floor,a person lying in the floor,317,53.96666666666667,157.56465125083923
+3_086_1.mp4,2,87,0,53,393,a person lying in the floor,a person lying in the floor,533,90.05663333333334,291.67194652557373
+1_084_1.mp4,2,121,0,47,65,a person lying in the floor,a person lying in the floor,233,40.00663333333333,126.54474544525146
+2_069_1.mp4,2,37,4,41,62,a person chasing other person,a person chasing other person,144,25.0,78.40538024902344
+1_082_1.mp4,2,20,44,11,8,a person chasing other person,a person chasing other person,83,14.981633333333331,45.60058355331421
+4_108_1.mp4,2,1,8,33,23,a person chasing other person,a person chasing other person,65,11.966666666666669,33.41291046142578
+4_107_1.mp4,2,5,0,40,98,a person chasing other person,a person chasing other person,143,24.966666666666665,71.61953401565552
+4_114_1.mp4,2,1,0,54,10,a person chasing other person,a person chasing other person,65,11.933333333333334,33.39569020271301
+3_096_1.mp4,2,29,32,8,14,a person chasing other person,a person chasing other person,83,14.981633333333331,46.01153326034546
+1_073_1.mp4,2,27,28,3,25,a person chasing other person,a person chasing other person,83,14.981633333333331,45.691338777542114
+3_091_1.mp4,2,28,18,6,61,a person chasing other person,a person chasing other person,113,19.986633333333334,62.02887892723084
+2_078_1.mp4,2,24,33,6,21,a person chasing other person,a person chasing other person,84,15.0,46.53864789009094
+2_088_1.mp4,2,31,13,19,63,a person chasing other person,a person chasing other person,126,22.0,69.06366038322449
+4_076_1.mp4,3,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,13.966666666666669,19.26485919952393
+3_106_1.mp4,3,19,0,0,0,a person riding a bicycle,a person riding a bicycle,19,14.981633333333331,22.793843269348145
+1_067_1.mp4,3,15,0,0,0,a person riding a bicycle,a person riding a bicycle,15,9.976633333333334,16.018413543701172
+1_066_1.mp4,3,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,14.981633333333331,21.31518077850341
+2_096_1.mp4,3,29,0,0,0,a person riding a bicycle,a person riding a bicycle,29,15.0,26.11105442047119
+4_077_1.mp4,3,20,0,0,0,a person riding a bicycle,a person riding a bicycle,20,10.966666666666669,17.568968057632446
+3_105_1.mp4,3,18,0,0,0,a person riding a bicycle,a person riding a bicycle,18,20.053366666666665,27.408640384674072
+2_065_1.mp4,3,50,4,0,0,a certain number of persons fighting,a certain number of persons fighting,54,45.0,66.04526329040527
+1_071_1.mp4,3,22,4,6,10,a certain number of persons fighting,a certain number of persons fighting,42,19.986633333333334,35.74349665641785
+4_079_1.mp4,3,21,41,41,6,a certain number of persons fighting,a certain number of persons fighting,109,34.96666666666667,70.05800819396973
+1_072_1.mp4,3,58,0,39,12,a certain number of persons fighting,a certain number of persons fighting,109,24.991633333333333,65.14241552352905
+2_077_1.mp4,3,22,23,0,0,a certain number of persons fighting,a certain number of persons fighting,45,12.0,28.985689878463745
+1_069_1.mp4,3,63,0,40,0,a certain number of persons fighting,a certain number of persons fighting,103,40.00663333333333,76.5878484249115
+2_079_1.mp4,3,38,4,6,0,a certain number of persons fighting,a certain number of persons fighting,48,20.0,37.37646651268005
+1_094_1.mp4,3,134,45,0,0,a group of persons playing,a group of persons playing,179,65.03163333333333,128.92541646957395
+3_101_1.mp4,3,30,0,0,0,a group of persons playing,a group of persons playing,30,145.07826666666668,155.93101811408997
+4_111_1.mp4,3,9,1,10,2,a group of persons playing,a group of persons playing,22,64.96666666666667,69.47192692756653
+3_102_1.mp4,3,195,79,4,6,a group of persons playing,a group of persons playing,284,80.04663333333333,182.17731881141663
+2_090_1.mp4,3,0,0,0,0,a group of persons playing,a group of persons playing,0,180.0,180.6687526702881
+1_093_1.mp4,3,119,30,0,0,a group of persons playing,a group of persons playing,149,150.11663333333334,203.16631197929385
+2_093_1.mp4,3,4,0,11,4,a group of persons playing,a group of persons playing,19,65.0,72.52529907226562
+4_109_1.mp4,3,0,0,0,0,a group of persons playing,a group of persons playing,0,116.96666666666668,112.9862129688263
+3_093_1.mp4,3,13,2,21,6,a person running,a person running,42,35.00163333333333,50.68497037887573
+4_092_1.mp4,3,0,0,11,0,a person running,a person running,11,9.966666666666669,13.464760780334473
+2_066_1.mp4,3,3,0,21,8,a person running,a person running,32,20.0,31.90534734725952
+4_101_1.mp4,3,0,0,21,22,a person running,a person running,43,23.966666666666665,37.24105310440064
+3_104_1.mp4,3,1,0,38,13,a person running,a person running,52,24.991633333333333,44.13794159889221
+1_077_1.mp4,3,1,0,1,24,a person running,a person running,26,16.983633333333334,26.60087847709656
+4_087_1.mp4,3,9,0,6,11,a person running,a person running,26,15.966666666666669,24.07357144355774
+2_075_1.mp4,3,0,0,0,0,a person running,a person running,0,15.0,15.385611057281494
+4_090_1.mp4,3,0,0,1,2,a person running,a person running,3,9.966666666666669,10.852998733520508
+4_080_1.mp4,3,33,0,25,17,a person running,a person running,75,21.966666666666665,45.83087706565857
+1_070_1.mp4,3,18,0,0,11,a person running,a person running,29,14.981633333333331,25.6575300693512
+4_078_1.mp4,3,1,2,0,5,a person running,a person running,8,9.966666666666669,12.47042727470398
+4_104_1.mp4,3,0,0,5,12,a person running,a person running,17,5.966666666666667,11.59136128425598
+4_112_1.mp4,3,0,0,19,10,a person running,a person running,29,11.966666666666669,21.31060194969177
+2_095_1.mp4,3,0,0,0,1,a person running,a person running,1,15.0,15.781827688217165
+3_077_1.mp4,3,19,0,32,28,a person running,a person running,79,29.99663333333333,58.85983061790466
+2_064_1.mp4,3,0,1,30,33,a person running,a person running,64,15.0,38.3026065826416
+1_079_1.mp4,3,12,0,15,0,a person running,a person running,27,14.981633333333331,24.82295680046081
+4_102_1.mp4,3,0,0,0,0,a person running,a person running,0,9.966666666666669,9.934565782546995
+3_103_1.mp4,3,2,0,3,0,a person running,a person running,5,14.981633333333331,17.21013355255127
+3_087_1.mp4,3,5,0,11,5,a person running,a person running,21,19.986633333333334,28.06612229347229
+3_075_1.mp4,3,17,0,20,88,a person running,a person running,125,30.2302,75.45066022872925
+4_100_1.mp4,3,0,0,16,3,a person running,a person running,19,8.966666666666667,15.124463319778442
+4_089_1.mp4,3,66,0,81,294,a person lying in the floor,a person lying in the floor,441,74.96666666666667,215.72554469108584
+2_080_1.mp4,3,0,0,212,140,a person lying in the floor,a person lying in the floor,352,60.0,186.6807017326355
+3_092_1.mp4,3,30,0,162,219,a person lying in the floor,a person lying in the floor,411,70.03663333333334,218.1455192565918
+1_091_1.mp4,3,171,0,46,40,a person lying in the floor,a person lying in the floor,257,45.011633333333336,137.23022961616516
+3_099_1.mp4,3,2,0,258,61,a person lying in the floor,a person lying in the floor,321,55.02163333333333,170.52073431015015
+1_078_1.mp4,3,83,0,47,101,a person lying in the floor,a person lying in the floor,231,40.00663333333333,123.05549550056458
+4_094_1.mp4,3,0,0,272,43,a person lying in the floor,a person lying in the floor,315,53.96666666666667,154.7180197238922
+3_086_1.mp4,3,82,0,58,391,a person lying in the floor,a person lying in the floor,531,90.05663333333334,281.35507583618164
+1_084_1.mp4,3,114,0,53,34,a person lying in the floor,a person lying in the floor,201,40.00663333333333,112.25645399093628
+2_069_1.mp4,3,0,0,34,49,a person chasing other person,a person chasing other person,83,25.0,55.29298400878906
+1_082_1.mp4,3,8,0,21,22,a person chasing other person,a person chasing other person,51,14.981633333333331,33.652260303497314
+4_108_1.mp4,3,0,0,14,16,a person chasing other person,a person chasing other person,30,11.966666666666669,21.56093645095825
+4_107_1.mp4,3,0,0,29,44,a person chasing other person,a person chasing other person,73,24.966666666666665,48.1706178188324
+4_114_1.mp4,3,0,0,25,8,a person chasing other person,a person chasing other person,33,11.933333333333334,22.67614912986756
+3_096_1.mp4,3,8,0,23,42,a person chasing other person,a person chasing other person,73,14.981633333333331,41.86719512939453
+1_073_1.mp4,3,2,0,4,0,a person chasing other person,a person chasing other person,6,14.981633333333331,17.371636390686035
+3_091_1.mp4,3,9,0,25,61,a person chasing other person,a person chasing other person,95,19.986633333333334,54.91853189468384
+2_078_1.mp4,3,0,0,14,22,a person chasing other person,a person chasing other person,36,15.0,28.52146339416504
+2_088_1.mp4,3,0,0,8,12,a person chasing other person,a person chasing other person,20,22.0,29.73030972480774
+4_076_1.mp4,4,22,0,0,0,a person riding a bicycle,a person riding a bicycle,22,13.966666666666669,13.667681217193604
+3_106_1.mp4,4,25,0,24,0,a person riding a bicycle,a person riding a bicycle,49,14.981633333333331,15.28647518157959
+1_067_1.mp4,4,21,0,0,0,a person riding a bicycle,a person riding a bicycle,21,9.976633333333334,10.215805768966677
+1_066_1.mp4,4,22,0,3,0,a person riding a bicycle,a person riding a bicycle,25,14.981633333333331,15.161609411239624
+2_096_1.mp4,4,35,0,4,0,a person riding a bicycle,a person riding a bicycle,39,15.0,15.339012861251833
+4_077_1.mp4,4,26,0,3,0,a person riding a bicycle,a person riding a bicycle,29,10.966666666666669,10.758455514907835
+3_105_1.mp4,4,24,0,27,0,a person riding a bicycle,a person riding a bicycle,51,20.053366666666665,20.38782262802124
+2_065_1.mp4,4,50,10,81,129,a certain number of persons fighting,a certain number of persons fighting,270,45.0,45.318188190460205
+1_071_1.mp4,4,28,20,37,34,a certain number of persons fighting,a certain number of persons fighting,119,19.986633333333334,20.147145986557007
+4_079_1.mp4,4,63,52,60,34,a certain number of persons fighting,a certain number of persons fighting,209,34.96666666666667,33.84303593635559
+1_072_1.mp4,4,103,12,14,3,a certain number of persons fighting,a certain number of persons fighting,132,24.991633333333333,25.03336906433105
+2_077_1.mp4,4,28,23,6,15,a certain number of persons fighting,a certain number of persons fighting,72,12.0,12.354977369308472
+1_069_1.mp4,4,109,0,61,58,a certain number of persons fighting,a certain number of persons fighting,228,40.00663333333333,39.90439510345459
+2_079_1.mp4,4,50,4,22,44,a certain number of persons fighting,a certain number of persons fighting,120,20.0,20.45314192771912
+1_094_1.mp4,4,134,51,106,98,a group of persons playing,a group of persons playing,389,65.03163333333333,65.40867590904236
+3_101_1.mp4,4,36,0,554,279,a group of persons playing,a group of persons playing,869,145.07826666666668,146.7062590122223
+4_111_1.mp4,4,19,9,234,127,a group of persons playing,a group of persons playing,389,64.96666666666667,62.99327278137207
+3_102_1.mp4,4,199,91,63,126,a group of persons playing,a group of persons playing,479,80.04663333333333,80.86763978004456
+2_090_1.mp4,4,2,0,524,554,a group of persons playing,a group of persons playing,1080,180.0,181.38077783584595
+1_093_1.mp4,4,123,32,408,336,a group of persons playing,a group of persons playing,899,150.11663333333334,149.96311044692993
+2_093_1.mp4,4,21,4,239,126,a group of persons playing,a group of persons playing,390,65.0,65.87661266326904
+4_109_1.mp4,4,4,0,445,252,a group of persons playing,a group of persons playing,701,116.96666666666668,113.13578605651855
+3_093_1.mp4,4,46,16,21,120,a person running,a person running,203,35.00163333333333,36.44804549217224
+4_092_1.mp4,4,24,1,10,18,a person running,a person running,53,9.966666666666669,9.975374460220335
+2_066_1.mp4,4,64,11,17,22,a person running,a person running,114,20.0,20.83597731590271
+4_101_1.mp4,4,38,21,38,40,a person running,a person running,137,23.966666666666665,23.58467173576355
+3_104_1.mp4,4,49,21,19,54,a person running,a person running,143,24.991633333333333,26.19929051399231
+1_077_1.mp4,4,12,43,12,15,a person running,a person running,82,16.983633333333334,17.60486388206482
+4_087_1.mp4,4,31,14,22,22,a person running,a person running,89,15.966666666666669,15.474741458892822
+2_075_1.mp4,4,6,0,26,52,a person running,a person running,84,15.0,15.27475905418396
+4_090_1.mp4,4,9,9,14,21,a person running,a person running,53,9.966666666666669,9.793673515319824
+4_080_1.mp4,4,69,14,5,37,a person running,a person running,125,21.966666666666665,21.27493047714233
+1_070_1.mp4,4,23,12,17,17,a person running,a person running,69,14.981633333333331,15.1693217754364
+4_078_1.mp4,4,17,5,10,21,a person running,a person running,53,9.966666666666669,9.751559972763062
+4_104_1.mp4,4,7,12,9,1,a person running,a person running,29,5.966666666666667,5.944098711013794
+4_112_1.mp4,4,26,11,1,27,a person running,a person running,65,11.966666666666669,11.74337673187256
+2_095_1.mp4,4,32,0,15,37,a person running,a person running,84,15.0,15.281944513320925
+3_077_1.mp4,4,55,30,16,72,a person running,a person running,173,29.99663333333333,30.26670336723328
+2_064_1.mp4,4,31,40,7,6,a person running,a person running,84,15.0,15.287600994110107
+1_079_1.mp4,4,27,0,5,1,a person running,a person running,33,14.981633333333331,15.02406120300293
+4_102_1.mp4,4,20,16,2,15,a person running,a person running,53,9.966666666666669,9.79510760307312
+3_103_1.mp4,4,19,0,5,59,a person running,a person running,83,14.981633333333331,15.27993941307068
+3_087_1.mp4,4,19,5,18,71,a person running,a person running,113,19.986633333333334,20.25303840637207
+3_075_1.mp4,4,37,95,0,43,a person running,a person running,175,30.2302,30.48925304412841
+4_100_1.mp4,4,16,9,9,13,a person running,a person running,47,8.966666666666667,8.853348731994629
+4_089_1.mp4,4,60,165,89,129,a person lying in the floor,a person lying in the floor,443,74.96666666666667,72.02061605453491
+2_080_1.mp4,4,128,89,84,53,a person lying in the floor,a person lying in the floor,354,60.0,60.371461391448975
+3_092_1.mp4,4,39,1,153,220,a person lying in the floor,a person lying in the floor,413,70.03663333333334,70.3599944114685
+1_091_1.mp4,4,108,0,109,42,a person lying in the floor,a person lying in the floor,259,45.011633333333336,44.76681685447693
+3_099_1.mp4,4,40,10,220,53,a person lying in the floor,a person lying in the floor,323,55.02163333333333,55.29394197463989
+1_078_1.mp4,4,55,45,75,58,a person lying in the floor,a person lying in the floor,233,40.00663333333333,40.06485724449158
+4_094_1.mp4,4,186,5,86,40,a person lying in the floor,a person lying in the floor,317,53.96666666666667,51.877593755722046
+3_086_1.mp4,4,57,85,83,308,a person lying in the floor,a person lying in the floor,533,90.05663333333334,93.36894154548644
+1_084_1.mp4,4,24,0,143,36,a person lying in the floor,a person lying in the floor,203,40.00663333333333,41.00209307670593
+2_069_1.mp4,4,48,55,30,11,a person chasing other person,a person chasing other person,144,25.0,26.06779170036316
+1_082_1.mp4,4,30,18,1,6,a person chasing other person,a person chasing other person,55,14.981633333333331,15.583773136138916
+4_108_1.mp4,4,26,18,8,13,a person chasing other person,a person chasing other person,65,11.966666666666669,11.900568008422852
+4_107_1.mp4,4,35,57,10,41,a person chasing other person,a person chasing other person,143,24.966666666666665,24.18482446670532
+4_114_1.mp4,4,39,9,16,1,a person chasing other person,a person chasing other person,65,11.933333333333334,11.763186931610107
+3_096_1.mp4,4,32,42,5,4,a person chasing other person,a person chasing other person,83,14.981633333333331,15.32603120803833
+1_073_1.mp4,4,10,0,12,0,a person chasing other person,a person chasing other person,22,14.981633333333331,15.068855285644531
+3_091_1.mp4,4,34,66,0,13,a person chasing other person,a person chasing other person,113,19.986633333333334,20.49750804901123
+2_078_1.mp4,4,21,32,9,22,a person chasing other person,a person chasing other person,84,15.0,15.32866382598877
+2_088_1.mp4,4,18,15,32,61,a person chasing other person,a person chasing other person,126,22.0,22.255260467529297
+4_076_1.mp4,0,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,13.966666666666669,21.08987617492676
+3_106_1.mp4,0,19,0,0,0,a person riding a bicycle,a person riding a bicycle,19,14.981633333333331,22.61779284477234
+1_067_1.mp4,0,15,0,0,0,a person riding a bicycle,a person riding a bicycle,15,9.976633333333334,15.89971113204956
+1_066_1.mp4,0,16,0,0,0,a person riding a bicycle,a person riding a bicycle,16,14.981633333333331,21.30281639099121
+2_096_1.mp4,0,29,0,0,0,a person riding a bicycle,a person riding a bicycle,29,15.0,26.26365852355957
+4_077_1.mp4,0,20,0,0,0,a person riding a bicycle,a person riding a bicycle,20,10.966666666666669,17.596561908721924
+3_105_1.mp4,0,18,0,0,0,a person riding a bicycle,a person riding a bicycle,18,20.053366666666665,27.58565664291382
+2_065_1.mp4,0,27,1,23,3,a certain number of persons fighting,a certain number of persons fighting,54,45.0,65.76965188980103
+1_071_1.mp4,0,28,14,0,0,a certain number of persons fighting,a certain number of persons fighting,42,19.986633333333334,35.791202783584595
+4_079_1.mp4,0,2,21,60,26,a certain number of persons fighting,a certain number of persons fighting,109,34.96666666666667,70.11501741409302
+1_072_1.mp4,0,83,12,14,0,a certain number of persons fighting,a certain number of persons fighting,109,24.991633333333333,65.08065271377563
+2_077_1.mp4,0,22,22,0,1,a certain number of persons fighting,a certain number of persons fighting,45,12.0,29.419922590255737
+1_069_1.mp4,0,103,0,0,0,a certain number of persons fighting,a certain number of persons fighting,103,40.00663333333333,78.46820664405823
+2_079_1.mp4,0,41,2,3,2,a certain number of persons fighting,a certain number of persons fighting,48,20.0,38.52331161499024
+1_094_1.mp4,0,134,45,0,0,a group of persons playing,a group of persons playing,179,65.03163333333333,131.30392813682556
+3_101_1.mp4,0,30,0,0,0,a group of persons playing,a group of persons playing,30,145.07826666666668,160.3997826576233
+4_111_1.mp4,0,19,3,0,0,a group of persons playing,a group of persons playing,22,64.96666666666667,69.69590306282043
+3_102_1.mp4,0,199,85,0,0,a group of persons playing,a group of persons playing,284,80.04663333333333,182.4456257820129
+2_090_1.mp4,0,0,0,0,0,a group of persons playing,a group of persons playing,0,180.0,185.21096873283383
+1_093_1.mp4,0,119,28,0,2,a group of persons playing,a group of persons playing,149,150.11663333333334,203.2159464359284
+2_093_1.mp4,0,15,4,0,0,a group of persons playing,a group of persons playing,19,65.0,72.48092412948608
+4_109_1.mp4,0,0,0,0,0,a group of persons playing,a group of persons playing,0,116.96666666666668,113.43915176391602
+3_093_1.mp4,0,16,2,18,6,a person running,a person running,42,35.00163333333333,50.73491191864014
+4_092_1.mp4,0,0,0,11,0,a person running,a person running,11,9.966666666666669,13.56185245513916
+2_066_1.mp4,0,3,0,21,8,a person running,a person running,32,20.0,32.392149448394775
+4_101_1.mp4,0,0,0,21,22,a person running,a person running,43,23.966666666666665,37.73033666610718
+3_104_1.mp4,0,5,0,34,13,a person running,a person running,52,24.991633333333333,44.88633751869202
+1_077_1.mp4,0,1,2,1,22,a person running,a person running,26,16.983633333333334,26.553305625915527
+4_087_1.mp4,0,9,0,6,11,a person running,a person running,26,15.966666666666669,24.138425827026367
+2_075_1.mp4,0,0,0,0,0,a person running,a person running,0,15.0,15.44086527824402
+4_090_1.mp4,0,0,0,1,2,a person running,a person running,3,9.966666666666669,10.97563648223877
+4_080_1.mp4,0,33,0,25,17,a person running,a person running,75,21.966666666666665,45.824803590774536
+1_070_1.mp4,0,18,0,0,11,a person running,a person running,29,14.981633333333331,25.782827377319336
+4_078_1.mp4,0,1,3,0,4,a person running,a person running,8,9.966666666666669,12.607141733169556
+4_104_1.mp4,0,0,0,5,12,a person running,a person running,17,5.966666666666667,11.619553565979004
+4_112_1.mp4,0,0,0,19,10,a person running,a person running,29,11.966666666666669,21.48321390151977
+2_095_1.mp4,0,0,0,0,1,a person running,a person running,1,15.0,15.741420030593872
+3_077_1.mp4,0,20,3,31,25,a person running,a person running,79,29.99663333333333,58.88872289657593
+2_064_1.mp4,0,4,11,26,23,a person running,a person running,64,15.0,38.37997484207153
+1_079_1.mp4,0,11,0,16,0,a person running,a person running,27,14.981633333333331,24.947385549545288
+4_102_1.mp4,0,0,0,0,0,a person running,a person running,0,9.966666666666669,9.924721479415894
+3_103_1.mp4,0,4,0,1,0,a person running,a person running,5,14.981633333333331,17.193052768707275
+3_087_1.mp4,0,7,0,9,5,a person running,a person running,21,19.986633333333334,28.12472581863404
+3_075_1.mp4,0,17,0,20,88,a person running,a person running,125,30.2302,75.66418766975403
+4_100_1.mp4,0,0,0,16,3,a person running,a person running,19,8.966666666666667,15.189207315444946
+4_089_1.mp4,0,86,0,61,294,a person lying in the floor,a person lying in the floor,441,74.96666666666667,216.17844939231875
+2_080_1.mp4,0,0,0,212,140,a person lying in the floor,a person lying in the floor,352,60.0,186.79728364944447
+3_092_1.mp4,0,115,0,77,219,a person lying in the floor,a person lying in the floor,411,70.03663333333334,221.1765916347504
+1_091_1.mp4,0,195,0,22,40,a person lying in the floor,a person lying in the floor,257,45.011633333333336,138.6667182445526
+3_099_1.mp4,0,40,0,220,61,a person lying in the floor,a person lying in the floor,321,55.02163333333333,173.05672645568848
+1_078_1.mp4,0,93,0,37,101,a person lying in the floor,a person lying in the floor,231,40.00663333333333,124.50521969795228
+4_094_1.mp4,0,5,0,267,43,a person lying in the floor,a person lying in the floor,315,53.96666666666667,156.23650121688843
+3_086_1.mp4,0,87,0,53,391,a person lying in the floor,a person lying in the floor,531,90.05663333333334,284.8557696342468
+1_084_1.mp4,0,120,0,47,34,a person lying in the floor,a person lying in the floor,201,40.00663333333333,113.88917899131776
+2_069_1.mp4,0,25,4,9,45,a person chasing other person,a person chasing other person,83,25.0,56.26886296272278
+1_082_1.mp4,0,20,16,9,6,a person chasing other person,a person chasing other person,51,14.981633333333331,34.00166606903076
+4_108_1.mp4,0,1,1,13,15,a person chasing other person,a person chasing other person,30,11.966666666666669,21.79784464836121
+4_107_1.mp4,0,5,0,24,44,a person chasing other person,a person chasing other person,73,24.966666666666665,48.70659184455872
+4_114_1.mp4,0,0,0,25,8,a person chasing other person,a person chasing other person,33,11.933333333333334,22.893784284591675
+3_096_1.mp4,0,23,27,8,15,a person chasing other person,a person chasing other person,73,14.981633333333331,42.274393796920776
+1_073_1.mp4,0,6,0,0,0,a person chasing other person,a person chasing other person,6,14.981633333333331,17.633368968963623
+3_091_1.mp4,0,28,14,6,47,a person chasing other person,a person chasing other person,95,19.986633333333334,55.64584803581238
+2_078_1.mp4,0,11,14,3,8,a person chasing other person,a person chasing other person,36,15.0,28.9846739768982
+2_088_1.mp4,0,7,0,1,12,a person chasing other person,a person chasing other person,20,22.0,30.110100984573364

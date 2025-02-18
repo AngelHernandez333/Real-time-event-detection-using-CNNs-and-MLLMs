@@ -68,7 +68,7 @@ events = df_results['True Event'].unique()
 print(events)
 
 fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(10, 12))
-
+fig.suptitle('Event Prediction using all Components: Detector + Rules + MLLM + Information', fontsize=16, fontweight='bold')
 #mAP_values[['mAP']].plot(kind='bar', ax=axes[0])
 
 df_compare=pd.DataFrame(columns=['Event', 'percentage'])
@@ -91,11 +91,14 @@ for i in range(len(events)-1):
 
 
     df_event_grouped.plot(kind='bar', x='Predicted event', y='Count', ax=axes[i//3,i%3], color=colors)
-    axes[i//3,i%3].set_ylabel('Porcentage of predicts', fontsize=12, fontweight='bold')
-    axes[i//3,i%3].set_xlabel('Predicted event', fontsize=12, fontweight='bold').set_visible(False)
-    axes[i//3,i%3].set_xticklabels(df_event_grouped['Predicted event'], rotation=45, color='black', fontweight='bold',fontsize=9)
+    axes[i//3,i%3].set_ylabel('Correct Predictions (%)', fontsize=12, fontweight='bold')
+    axes[i//3,i%3].set_xlabel('Predicted event', fontsize=10, fontweight='bold').set_visible(False)
+    axes[i//3,i%3].set_xticklabels(df_event_grouped['Predicted event'], rotation=45, color='black', fontweight='bold',fontsize=8)
     axes[i//3,i%3].legend().set_visible(False)
     axes[i//3,i%3].set_title(f'{event}', fontsize=12, fontweight='bold')
+    axes[i//3,i%3].set_yticklabels(
+    ["{:.0f}".format(x * 100) for x in axes[i//3,i%3].get_yticks()], fontsize=10, fontweight="bold"
+    )
     axes[i//3,i%3].grid()
     #axes[i//3,i%3].set_ylim(bottom=0.5)
 fig.tight_layout(pad=3.0)
@@ -103,7 +106,7 @@ fig.set_size_inches(14, 10)
 #plt.tight_layout()
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(14, 10)
-
+plt.savefig('Results/Analize_F1.png')
 event=events[-1]
 df_event = df_results[df_results['True Event'] == event]
 df_event['Name']=1
@@ -127,7 +130,6 @@ plt.xticks(rotation=0)
 plt.legend().set_visible(False)
 plt.title(f'{event}', fontsize=12, fontweight='bold')
 plt.grid()
-
 plt.show()
 print(df_compare)
 df_compare.to_csv('Results/Analize_F1.csv', index=False)

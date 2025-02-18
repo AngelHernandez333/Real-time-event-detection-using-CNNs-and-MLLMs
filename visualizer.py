@@ -38,7 +38,7 @@ class Visualizer:
         while True:
             ret, frame = cap.read()
             if ret:
-                cv2.putText(
+                '''cv2.putText(
                     frame,
                     f"Frame {int(cap.get(cv2.CAP_PROP_POS_FRAMES))}",
                     (50, 50),
@@ -46,33 +46,29 @@ class Visualizer:
                     2.0,
                     (172, 182, 77),
                     2,
-                )
+                )'''
                 if annotations[int(cap.get(cv2.CAP_PROP_POS_FRAMES)) - 1]:
-                    i = 50
+                    i = 1
                     if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
                         cv2
                         detections, _ = self.__detector.detection(frame)
                         printed_detections = []
+                        person = False
+                        bicycle = False
                         for detection in detections:
                             if detection[1] > 0.8 and detection[0] == "person":
                                 printed_detections.append(detection)
-                                print(
-                                    "Frame",
-                                    int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                                    " ",
-                                    detection[4] - detection[2],
-                                    detection[5] - detection[3],
-                                    "Ratio ",
-                                    (detection[4] - detection[2])
-                                    / (detection[5] - detection[3]),
-                                )
-                                ratio = np.append(
-                                    ratio,
-                                    (detection[4] - detection[2])
-                                    / (detection[5] - detection[3]),
-                                )
+                                person = True
+                            if detection[1] > 0.8 and detection[0] == "bicycle":
+                                printed_detections.append(detection)
+                                bicycle = True
                         self.__detector.put_detections(printed_detections, frame)
-                    # evaluate.append(printed_detections)
+                        if person and bicycle:
+                            cv2.imwrite(
+                                f"{self.__video_rute}/detection_{int(cap.get(cv2.CAP_PROP_POS_FRAMES))}.jpg",
+                                frame,
+                            )
+                            
                 else:
                     i = 0
                 cv2.imshow(f"{files[self.__video]}, Frame", frame)
@@ -85,8 +81,8 @@ class Visualizer:
 
 if __name__ == "__main__":
     visualizer = Visualizer()
-    visualizer.set_video(4)
-    visualizer.set_video_rute("../Database/CHAD DATABASE/6-Chasing")
+    visualizer.set_video(1)
+    visualizer.set_video_rute("../Database/CHAD DATABASE/1-Riding a bicycle")
     visualizer.set_annotations_rute(
         "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
     )

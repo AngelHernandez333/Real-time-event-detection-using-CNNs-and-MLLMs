@@ -30,7 +30,7 @@ def calculate_ap(precision, recall):
 #df=pd.read_csv("/home/ubuntu/Tesis/Results/Results6Events64Videos.csv")
 #df=pd.read_csv("/home/ubuntu/Tesis/Results/ResultsNewRules8Events.csv")
 #df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
-df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
+'''df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
 df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
 df2["True Event"] = df2["True Event"].replace(
     "a person riding a bicycle", "everything is normal"
@@ -43,7 +43,20 @@ print(df)
 df=df[df['True Event']!= 'everything is normal']
 df = df[df['True Event']==df['Check event']]
 #  Get unique categories
+print(df)'''
+df = pd.read_csv('/home/ubuntu/Tesis/Results/Testing6_10.csv')
+df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
+df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
+df2["True Event"] = df2["True Event"].replace(
+    "a person riding a bicycle", "everything is normal"
+)
+df3 = pd.read_csv("Results/resultsMode0Samevideos.csv")
+df = pd.concat([df, df1, df2, df3], ignore_index=True)
+df = df[df["Check event"] != "everything is normal"]
+df = df[df["True Event"] != "everything is normal"]
 print(df)
+df=df[df['True Event']!= 'everything is normal']
+df = df[df['True Event']==df['Check event']]
 categories = df["True Event"].unique()
 print(categories)
 # Separate rows by category
@@ -113,7 +126,7 @@ axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
 axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
 axes[0].legend().set_visible(False)
 axes[0].grid()
-axes[0].set_ylim(bottom=0.4)
+axes[0].set_ylim(bottom=0.3)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[0].set_yticklabels(
 ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"

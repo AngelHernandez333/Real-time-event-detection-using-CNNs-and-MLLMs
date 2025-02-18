@@ -41,23 +41,36 @@ running=ward[ward['True Event']==events[3]]
 lying=ward[ward['True Event']==events[4]] 
 save=pd.concat([running,lying])
 save.to_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv",index=False)"""
-df = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesNew.csv")
-df2 = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesOld.csv")
-print("Nuevas reglas", df, "\nOld rules", df2)
 
-import numpy as np
+'''import matplotlib.pyplot as plt
+df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
+print(df)
+df=df[df['True Event']!= 'everything is normal']
+df = df[df['True Event']==df['Check event']]
+grouped = df.groupby('True Event').count()
+print(grouped['Name'])
+grouped.rename(columns={'Name':'Quantity of videos'},inplace=True)
+grouped.plot(kind='bar',y='Quantity of videos', color='#000055')
+plt.title('Distribution of the videos per event', fontsize=14, fontweight="bold")
+plt.xlabel('Events', fontsize=12, fontweight="bold")
+plt.ylabel('Quantity of videos', fontsize=12, fontweight="bold")
+plt.xticks(rotation=45, fontsize=10, fontweight="bold")
+plt.yticks(fontsize=10, fontweight="bold")
+plt.grid()
+plt.legend().set_visible(False)
+plt.gcf().set_size_inches(16, 10)
+plt.tight_layout()
+plt.gca().set_position([0.1, 0.3, 0.8, 0.6])
+plt.savefig('/home/ubuntu/Tesis/Results/DistributionVideosPerEvent.png')
+plt.show()
 
-df = pd.read_csv("/home/ubuntu/Tesis/Results/resultsTest.csv")
-print(df[df["Validations Number"] == 0])
-df2 = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
-print(df[df["Validations Number"] == 0])
-ward = [188.59, 198.68, 203.53, 201.51, 203.05, 181.95, 177.74]
-ward_array = np.array(ward)
-ward_array = np.array(ward)
-is_increasing = np.all(np.diff(ward_array) > 0)
-is_decreasing = np.all(np.diff(ward_array) < 0)
-print("Increasing:", is_increasing)
-print("Decreasing:", is_decreasing)
-
-ward = np.array(ward)
-print(np.mean(ward), np.std(ward))
+'''
+import pandas as pd
+df1=pd.read_csv('/home/ubuntu/Tesis/Results/Testing6_8.csv')
+df2=pd.read_csv('/home/ubuntu/Tesis/Results/Testing9_10.csv')
+ward=df1['True Event'].unique()
+df1=df1[df1['True Event']!=ward[1]]
+df1=df1[df1['True Event']!=ward[2]]
+df=pd.concat([df1,df2])
+print(df)
+df.to_csv('/home/ubuntu/Tesis/Results/Testing6_10.csv',index=False)

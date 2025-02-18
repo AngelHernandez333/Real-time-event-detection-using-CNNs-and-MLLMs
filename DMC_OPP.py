@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
-
+import time
 
 class DecisionMakerPerEvent(ABC):
     @abstractmethod
@@ -117,6 +117,7 @@ class DecisionMakerPerEvent(ABC):
 
     @staticmethod
     def organize_persons(loaded_data, verbose=False):
+        start_time=time.time()
         if verbose:
             print(
                 "Informacion cargada:",
@@ -165,6 +166,7 @@ class DecisionMakerPerEvent(ABC):
                     loaded_data[0][i] = temp[0]
                 person.append(loaded_data[0][i])
             persons.append(person)
+        print(time.time()-start_time, ' ms\n')
         return persons
 
     @staticmethod

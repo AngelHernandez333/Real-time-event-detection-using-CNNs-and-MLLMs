@@ -506,18 +506,20 @@ if __name__ == "__main__":
     tester.autotesting(events, description, [0])"""
     # Define the folder of the videos and the descriptions of the events
     # TODO: Verify the events and prompts and test the events
+
     # Riding a bicycle ✅
     # Fight ✅
     # Playing ✅
     # Running away✅
     # Person lying in the floor✅
     # Chasing✅
-    # Jumping✅
-    # Falling
-    # Guide
-    # Littering
-    # Thief
-    # Normal
+    #--------------------Last test were here ------------------------------
+    # Jumping 🚧Test
+    # Falling 🚧Test
+    # Guide✅
+    # Littering✅
+    # Thief 🔨 In process
+    #PickPocketing 🔨 In process
     """events = [
         "6-Chasing",
         "7-Jumping",
@@ -538,11 +540,18 @@ if __name__ == "__main__":
         "everything is normal",
     ]"""
 
-    events = [
-        "6-Chasing","7-Jumping","8-Falling",'9-guide','11-Littering',]
-    description = [ "a person chasing other person",
-        "a person falling", "a person jumping",
-        "a person guiding other person", "a person throwing trash in the floor"
+    '''events = [
+        "6-Chasing","7-Jumping",
+        "8-Falling",'9-guide'
+        ,'11-Littering',]
+    description = [ "a person chasing other person","a person jumping",
+        "a person falling", "a person guiding other person", 
+        "a person throwing trash in the floor"
+    ]  '''  
+    events = ["7-Jumping",
+        "8-Falling",]
+    description = ["a person jumping",
+        "a person falling",
     ]    
     """
     events = [
@@ -562,7 +571,7 @@ if __name__ == "__main__":
     # Prepare the tester
     tester = EventTester()
 
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing6_8.csv")
+    tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing9_10.csv")
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     tester.set_MLLM(llava)
@@ -570,4 +579,4 @@ if __name__ == "__main__":
     tester.show_video(True)
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0])
+    tester.simple_autotesting(events, description, [0,1,2,3,4])

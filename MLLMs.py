@@ -41,7 +41,8 @@ class LLaVA_OneVision(MLLMs):
             low_cpu_mem_usage=True,
             attn_implementation="sdpa",
         ).to(dtype=torch.float16, device="cuda")
-
+        #attn_implementation="flash_attention_2",
+        # use_flash_attention_2=True
     def set_processor(self, processor):
         self.__processor = AutoProcessor.from_pretrained(processor)
 

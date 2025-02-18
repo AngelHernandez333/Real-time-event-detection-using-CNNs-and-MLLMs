@@ -9,6 +9,18 @@ df2["True Event"] = df2["True Event"].replace(
 df3 = pd.read_csv("Results/resultsMode0Samevideos.csv")
 df = pd.concat([df1, df2, df3], ignore_index=True)
 df = df[df["Check event"] != "everything is normal"]
+
+#-
+df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
+df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
+df2["True Event"] = df2["True Event"].replace(
+    "a person riding a bicycle", "everything is normal"
+)
+df3 = pd.read_csv("Results/resultsMode0Samevideos.csv")
+df = pd.concat([df1, df2, df3], ignore_index=True)
+df = df[df["Check event"] != "everything is normal"]
+df = df[df["True Event"] != "everything is normal"]
+
 df["Precision"] = df["True Positive"] / (df["True Positive"] + df["False Positive"])
 df["Recall"] = df["True Positive"] / (df["True Positive"] + df["False Negative"])
 df.fillna(0, inplace=True)
@@ -111,20 +123,8 @@ for mode in modes:
 df_compare = df_compare.groupby(["Event", "Mode"]).mean()
 df_compare = df_compare.groupby(["Mode"]).mean()
 # -------------------Plotting
-fig, axes = plt.subplots(nrows=1, ncols=2)
-df_time = df_time.sort_values(by="Process Time Ratio")
+fig, ax = plt.subplots()
 
-df_time[["Process Time Ratio"]].plot(kind="bar", color="#004565", ax=axes[0])
-axes[0].set_xlabel("Mode").set_visible(False)
-axes[0].set_ylabel("Processing Ratio", fontsize=12, fontweight="bold")
-axes[0].axhline(1, color="#005500", linestyle="--")
-axes[0].set_xticklabels(
-    df_time.index, rotation=45, ha="right", fontsize=9, color="black", fontweight="bold"
-)
-axes[0].set_ylim(0.8)
-axes[0].grid()
-axes[0].legend(loc="best").set_visible(False)
-# plt.tight_layout()
 mode_names = {
     0: "Detector + Rules + MLLM +Info",
     1: "MLLM",
@@ -134,10 +134,17 @@ mode_names = {
 }
 df_compare.rename(index=mode_names, inplace=True)
 df_compare = df_compare.sort_values(by="percentage")
-df_compare.plot(kind="bar", color="#006545", ax=axes[1])
-axes[1].set_xlabel("Mode").set_visible(False)
-axes[1].set_ylabel(r"Correct clasification ($\%$)", fontsize=12, fontweight="bold")
-axes[1].set_xticklabels(
+
+df_compare.plot(kind="bar", color="#006545", ax=ax)
+ax.title.set_text('Event Prediction in all Configurations')
+ax.title.set_fontsize(14)
+ax.title.set_fontweight("bold")
+ax.set_yticklabels(
+    ["{:.0f}".format(x * 100) for x in ax.get_yticks()], fontsize=10, fontweight="bold"
+)
+ax.set_xlabel("Mode").set_visible(False)
+ax.set_ylabel(r"Correct classification ($\%$)", fontsize=12, fontweight="bold")
+ax.set_xticklabels(
     df_compare.index,
     rotation=45,
     ha="right",
@@ -145,9 +152,9 @@ axes[1].set_xticklabels(
     color="black",
     fontweight="bold",
 )
-axes[1].legend(loc="best").set_visible(False)
-axes[1].set_ylim(0.4, 0.65)
-axes[1].grid()
+ax.legend(loc="best").set_visible(False)
+ax.set_ylim(0.3, 0.6)
+ax.grid()
 plt.tight_layout()
-
+plt.savefig("Results/EventPrediction.png")
 plt.show()
