@@ -16,8 +16,8 @@ Implement a fact-checking mechanism based on Multimodal Large Language Models (M
 
 
 ## 🎓 Thesis Information
-- **Degree**: Master’s in [Robotics and Advanced Manufacturing]  
-- **Institution**: [CINVESTAV]  
+- **Degree**: Master’s in **Robotics and Advanced Manufacturing**
+- **Institution**: **CINVESTAV**
 - **Status**: In progress  
 
 ## ✅ To-Do List
