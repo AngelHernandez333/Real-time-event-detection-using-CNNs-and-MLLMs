@@ -24,4 +24,5 @@ Implement a fact-checking mechanism based on Multimodal Large Language Models (M
 - [x] Literature review  
 - [x] Develop architecture
 - [ ] Run experiments  
-- [ ] Write thesis documentation  
+- [ ] Write thesis documentation
+- [ ] Refactor code to make it application-ready
