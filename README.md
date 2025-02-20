@@ -1,6 +1,6 @@
 ![Project Status](https://img.shields.io/badge/status-in%20progress-yellow)
 
-#Real-time event detection using convolutional neural networks and validation with multimodal large language models
+# Real-time event detection using convolutional neural networks and validation with multimodal large language models
 
 **📌 This project is part of my Master's thesis and is currently a work in progress.**  
 This project seeks to  develop a multi-frame-per-second convolutional neural network (CNN) architecture for a multi-class detector capable of running efficiently on 'edge' processing platforms for real-time video analysis, to detect events.
