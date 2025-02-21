@@ -2,3 +2,6 @@
 	path = extern/pybind11
 	url = ../../pybind/pybind11
 	branch = stable
+[submodule "lib/janus"]
+	path = lib/janus
+	url = https://github.com/deepseek-ai/Janus.git
