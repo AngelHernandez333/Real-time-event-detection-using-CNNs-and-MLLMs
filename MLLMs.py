@@ -54,7 +54,8 @@ class LLaVA_OneVision(MLLMs):
                     {"type": "video"},
                     {
                         "type": "text",
-                        "text": f"{text} there is {event}? Just yes or no",
+                        "text": f"{text} is there {event}? Just yes or no"
+                        ,
                     },
                 ],
             },
@@ -103,11 +104,19 @@ class JanusPro(MLLMs):
         conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} tell me if in the video there is {event}? Just yes or no",
+                "content": f"{images_number} This is a video \n{text} tell me if in the video is there {event}? Just yes or no",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
+        '''conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text}, there is a person pickpocketing another person, tell me how would you describe that action so you can understand it better",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
         # Load images with PIL and convert to RGB
 
         pil_images = [

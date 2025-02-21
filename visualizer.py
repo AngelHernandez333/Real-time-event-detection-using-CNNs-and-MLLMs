@@ -5,6 +5,8 @@ from Detectors import YOLOv10Detector
 import numpy as np
 import os
 
+from PIL import Image
+
 
 class Visualizer:
     def __init__(self):
@@ -25,6 +27,8 @@ class Visualizer:
     def set_detector(self, detector):
         self.__detector = detector
 
+    def set_gif_making(self, gif_making):
+        self.__gif_making = gif_making
     def visualize(self):
         ratio = np.array([])
         actual_rute = f"{self.__video_rute}/"
@@ -35,6 +39,8 @@ class Visualizer:
         evaluate = []
         print("Here")
         i = 0
+        if self.__gif_making:
+            frames=[]
         while True:
             ret, frame = cap.read()
             if ret:
@@ -48,46 +54,77 @@ class Visualizer:
                     2,
                 )'''
                 if annotations[int(cap.get(cv2.CAP_PROP_POS_FRAMES)) - 1]:
-                    i = 1
+                    i = 0
                     if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
-                        cv2
                         detections, _ = self.__detector.detection(frame)
                         printed_detections = []
-                        person = False
-                        bicycle = False
                         for detection in detections:
                             if detection[1] > 0.8 and detection[0] == "person":
                                 printed_detections.append(detection)
                                 person = True
-                            if detection[1] > 0.8 and detection[0] == "bicycle":
-                                printed_detections.append(detection)
-                                bicycle = True
-                        self.__detector.put_detections(printed_detections, frame)
-                        if person and bicycle:
-                            cv2.imwrite(
-                                f"{self.__video_rute}/detection_{int(cap.get(cv2.CAP_PROP_POS_FRAMES))}.jpg",
-                                frame,
-                            )
-                            
+                        #self.__detector.put_detections(printed_detections, frame)
+
+                        if self.__gif_making:    
+                            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                            pil_image = Image.fromarray(frame_rgb)
+                            frames.append(pil_image)
                 else:
                     i = 0
                 cv2.imshow(f"{files[self.__video]}, Frame", frame)
                 if cv2.waitKey(1 + i) & 0xFF == ord("q"):
                     break
+                if len(frames) == 100:
+                    break
             else:
                 break
+        cv2.destroyAllWindows()
         cap.release()
+        if self.__gif_making:
+            print(len(frames))
+            # Step 1: Capture frames from a video or generate frames
+            event=self.__video_rute.split("/")[-1]
+            output_gif = f"{event}.gif"       # Output GIF file
+            # Step 2: Save frames as a GIF using PIL
+            frames[0].save(
+                output_gif,
+                save_all=True,
+                append_images=frames[1:],  # Append the rest of the frames
+                duration=34,             # Delay between frames in milliseconds
+                loop=0                     # Loop forever (0 means infinite loop)
+            )
+
+            print(f"GIF saved as {output_gif}")
+
+
 
 
 if __name__ == "__main__":
     visualizer = Visualizer()
-    visualizer.set_video(1)
-    visualizer.set_video_rute("../Database/CHAD DATABASE/1-Riding a bicycle")
-    visualizer.set_annotations_rute(
-        "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
-    )
-    ov_qmodel = YOLOv10Detector()
-    ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
-    ov_qmodel.set_labels(detection_labels)
-    visualizer.set_detector(ov_qmodel)
-    visualizer.visualize()
+    events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
+        '9-guide',
+        '10-thief',
+        '11-Littering',
+        "12-Tripping",
+        '13-Pickpockering',
+    ]
+    for i in range(len(events)):
+        visualizer.set_video(0)
+        rute="../Database/CHAD DATABASE/13-Pickpockering"
+        visualizer.set_video_rute(f"../Database/CHAD DATABASE/{events[i]}")
+        visualizer.set_annotations_rute(
+            "../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels"
+        )
+        ov_qmodel = YOLOv10Detector()
+        ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
+        ov_qmodel.set_labels(detection_labels)
+        visualizer.set_detector(ov_qmodel)
+        visualizer.set_gif_making(True)
+        visualizer.visualize()

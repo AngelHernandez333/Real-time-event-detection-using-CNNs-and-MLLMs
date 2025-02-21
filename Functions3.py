@@ -26,7 +26,10 @@ classes_focus = {
     "a person jumping": ["person"],
     "a person falling": ["person"],
     "a person guiding other person": ["person"],
+    "a person tripping": ["person"],
     "a person throwing trash in the floor": ["person"],
+    "a person stealing other person": ["person"],
+    "a person stealing other person's pocket": ["person"],
 }
 
 detection_labels = {
@@ -135,8 +138,12 @@ def decision_maker(event):
             dmc = EventGuiding()
         case "a person throwing trash in the floor":
             dmc = EventGarbage()
+        case 'a person tripping':
+            dmc = EventTripping()
         case "a person stealing other person":
             dmc = EventStealing()
+        case "a person stealing other person's pocket":
+            dmc = EventPickPockering()
     return dmc
 
 

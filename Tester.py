@@ -482,8 +482,8 @@ if __name__ == "__main__":
         "8-Falling",
         '9-guide',
         '11-Littering',
+        "12-Tripping",
         '10-thief',
-        "99-Normal",
     ]
     description = [
         "a person riding a bicycle",
@@ -495,9 +495,9 @@ if __name__ == "__main__":
         "a person jumping",
         "a person falling",
         "a person guiding other person",
+        "a person throwing trash in the floor",
+        "a person tripping by other person",
         "a person stealing other person",
-        "a person throwing trash in the floor"
-        "everything is normal",
     ]
     tester = EventTester()
     tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP.csv")
@@ -514,10 +514,11 @@ if __name__ == "__main__":
     # Person lying in the floor✅
     # Chasing✅
     #--------------------Last test were here ------------------------------
-    # Jumping 🚧Test
-    # Falling 🚧Test
+    # Jumping ✅
+    # Falling ✅
     # Guide✅
     # Littering✅
+    # Tripping 🔨Check the prompt
     # Thief 🔨 In process
     #PickPocketing 🔨 In process
     """events = [
@@ -548,35 +549,108 @@ if __name__ == "__main__":
         "a person falling", "a person guiding other person", 
         "a person throwing trash in the floor"
     ]  '''  
-    events = ["7-Jumping",
-        "8-Falling",]
-    description = ["a person jumping",
-        "a person falling",
-    ]    
-    """
-    events = [
+    '''events = ["12-Tripping",]
+    description = ["a person tripping",]
+    events = ["10-thief",]
+    description = ["a person stealing other person",]
+        events = ["13-Pickpockering",]
+    description = ["a person attempting to steal the other person's wallet",]  '''
+    '''events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
+        '9-guide',
         '11-Littering',
     ]
-    description = ["a person throwing trash in the floor"]"""
+    description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+        "a person jumping",
+        "a person falling",
+        "a person guiding other person",
+        "a person throwing trash in the floor",
+    ]'''
+    events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
+        '9-guide',
+        '10-thief',
+        '11-Littering',
+        "12-Tripping",
+        '13-Pickpockering',
+    ]
+    description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+        "a person jumping",
+        "a person falling",
+        "a person guiding other person",
+        "a person stealing other person",
+        "a person throwing trash in the floor",
+        'a person tripping',
+        "a person stealing other person's pocket",
+    ]
+    #"a person tripping by other person", 
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
 
-    llava = LLaVA_OneVision()
-    llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-    llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-    """janus = JanusPro()
+    
+    '''janus = JanusPro()
     janus.set_model("deepseek-ai/Janus-Pro-1B")
-    janus.set_processor("deepseek-ai/Janus-Pro-1B")"""
+    janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
     # Prepare the tester
     tester = EventTester()
-
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing9_10.csv")
+    test=1
+    if test==0:
+        llava = LLaVA_OneVision()
+        llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+        llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv")
+        tester.set_MLLM(llava)
+    elif test==1:
+        '''events = [
+            '10-thief',
+            '11-Littering',
+            "12-Tripping",
+            '13-Pickpockering',
+        ]
+        description = [
+            "a person stealing other person",
+            "a person throwing trash in the floor",
+            'a person tripping',
+            "a person stealing other person's pocket",
+        ]'''
+        janus = JanusPro()
+        janus.set_model("deepseek-ai/Janus-Pro-1B")
+        janus.set_processor("deepseek-ai/Janus-Pro-1B")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereJanus1.csv")
+        tester.set_MLLM(janus)
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
-    tester.set_MLLM(llava)
+    #tester.set_MLLM(llava)
     tester.show_detections(False)
     tester.show_video(True)
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     tester.simple_autotesting(events, description, [0,1,2,3,4])
+    #tester.simple_autotesting(events, description, [0,1,2,3,4])

@@ -66,11 +66,9 @@ plt.show()
 
 '''
 import pandas as pd
-df1=pd.read_csv('/home/ubuntu/Tesis/Results/Testing6_8.csv')
-df2=pd.read_csv('/home/ubuntu/Tesis/Results/Testing9_10.csv')
-ward=df1['True Event'].unique()
-df1=df1[df1['True Event']!=ward[1]]
-df1=df1[df1['True Event']!=ward[2]]
-df=pd.concat([df1,df2])
-print(df)
-df.to_csv('/home/ubuntu/Tesis/Results/Testing6_10.csv',index=False)
+
+df_Llava = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesLastEventsLlava.csv")
+df_Janus = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesLastEventsJanus.csv")
+
+print(df_Llava)
+print(df_Janus)

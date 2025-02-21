@@ -117,7 +117,6 @@ class DecisionMakerPerEvent(ABC):
 
     @staticmethod
     def organize_persons(loaded_data, verbose=False):
-        start_time=time.time()
         if verbose:
             print(
                 "Informacion cargada:",
@@ -166,7 +165,6 @@ class DecisionMakerPerEvent(ABC):
                     loaded_data[0][i] = temp[0]
                 person.append(loaded_data[0][i])
             persons.append(person)
-        print(time.time()-start_time, ' ms\n')
         return persons
 
     @staticmethod
@@ -217,6 +215,73 @@ class DecisionMakerPerEvent(ABC):
             if area_array.mean() > 0.93 and width / height > 1:
                 persons_index.append(i)
         return persons_index
+    @staticmethod
+    def verify_falling(persons, verbose=False):
+            persons_index = []
+            counter=0
+            for person in persons:
+                width_per_height_ratio = np.array([])
+                for i in range(len(person)):
+                    if verbose:
+                        print(
+                            i,
+                            "-",
+                            person[i][2],
+                            person[i][3],
+                            person[i][4],
+                            person[i][5],
+                            "\n",
+                        )
+                    height = person[i][5] - person[i][3]
+                    width = person[i][4] - person[i][2]
+                    width_per_height_ratio = np.append(
+                        width_per_height_ratio, width / height
+                    )
+                if verbose:
+                    print(
+                        "Ratio:",
+                        width_per_height_ratio,
+                    )
+                ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
+                if ratio_increasing:
+                    persons_index.append(counter)
+                counter+=1
+            return persons_index
+    @staticmethod
+    def verify_shaking(persons, verbose=False):
+            persons_index = []
+            counter=0
+            for person in persons:
+                width_per_height_ratio = np.array([])
+                for i in range(len(person)):
+                    if verbose:
+                        print(
+                            i,
+                            "-",
+                            person[i][2],
+                            person[i][3],
+                            person[i][4],
+                            person[i][5],
+                            "\n",
+                        )
+                    height = person[i][5] - person[i][3]
+                    width = person[i][4] - person[i][2]
+                    width_per_height_ratio = np.append(
+                        width_per_height_ratio, width / height
+                    )
+                if verbose:
+                    print(
+                        "Ratio:",
+                        width_per_height_ratio,np.abs(np.diff(width_per_height_ratio)).mean(),
+                        width_per_height_ratio[0]*0.10, 
+                    )
+
+                ratio_changing = np.abs(np.diff(width_per_height_ratio)).mean() > width_per_height_ratio[0]*0.10
+                if ratio_changing:
+                    persons_index.append(counter)
+                counter+=1
+            return persons_index
+
 
 
 class EventBicycle(DecisionMakerPerEvent):
@@ -553,39 +618,8 @@ class EventFalling(DecisionMakerPerEvent):
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        # Evaluate the persons
-        if len(persons) < 1:
-            return False
-        else:
-            for person in persons:
-                width_per_height_ratio = np.array([])
-                diferences = np.array([])
-                for i in range(len(person)):
-                    print(
-                        i,
-                        "-",
-                        person[i][2],
-                        person[i][3],
-                        person[i][4],
-                        person[i][5],
-                        "\n",
-                    )
-                    diferences = np.append(diferences, person[i][3])
-                    height = person[i][5] - person[i][3]
-                    width = person[i][4] - person[i][2]
-                    width_per_height_ratio = np.append(
-                        width_per_height_ratio, width / height
-                    )
-                print(
-                    "Differences:",
-                    diferences,
-                    "Ratio:",
-                    width_per_height_ratio,
-                )
-                ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
-                if ratio_increasing:
-                    return True
-        return False
+        person_index=DecisionMakerPerEvent.verify_falling(persons,True)
+        return len(person_index) > 0
 
 
 class EventGuiding(DecisionMakerPerEvent):
@@ -728,6 +762,57 @@ class EventGarbage(DecisionMakerPerEvent):
         return False
 
 
+class EventTripping(DecisionMakerPerEvent):
+    def __init__(self):
+        self.__classes_of_interest = [
+            "person",
+        ]
+
+    def detections_treatment(self):
+        pass
+
+    def get_classes_of_interest(self):
+        pass
+
+    def decision_maker(self, classes, detections, results, frames, MLLM, *args):
+        if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
+            if len(results) < 6:
+                return True, ""
+            corrects = DecisionMakerPerEvent.check_detections(
+                self.__classes_of_interest, detections, results
+            )
+            condition = self.process_detections(corrects)
+            print(
+                condition,
+                "\n---------------------------------------------------------------------\n",
+            )
+            condition, text = DecisionMakerPerEvent.output_decision(
+                condition, results, frames, MLLM
+            )
+            return condition, text
+        else:
+            return False, ""
+
+    def process_detections(self, loaded_data, verbose=False):
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        person_index=DecisionMakerPerEvent.verify_shaking(persons, verbose)
+        if verbose:
+            print('The persons shaking are', person_index, len(persons))
+        if len(person_index) < 1 or len(persons) < 2:
+            return False
+        for i in person_index:
+            for j in [x for x in range(len(persons)) if x != i]:
+                tripping= np.array([])
+                for k in range(len(persons[i])):
+                    trip= DecisionMakerPerEvent.boxes_touching([persons[i][k], persons[j][k]])
+                    if trip:
+                        tripping = np.append(tripping, 1)
+                    else:
+                        tripping = np.append(tripping, 0)
+                if tripping.sum() > len(tripping)//2:
+                    return True
+        return False
+
 class EventStealing(DecisionMakerPerEvent):
     def __init__(self):
         self.__classes_of_interest = [
@@ -746,6 +831,150 @@ class EventStealing(DecisionMakerPerEvent):
     def process_detections(self, loaded_data):
         pass
 
+class EventStealing(DecisionMakerPerEvent):
+    def __init__(self):
+        self.__classes_of_interest = [
+            "person",
+        ]
 
+    def detections_treatment(self):
+        pass
+
+    def get_classes_of_interest(self):
+        pass
+
+    def decision_maker(self, classes, detections, results, frames, MLLM, *args):
+        print(
+            len(results),
+            "-",
+            len(frames),
+            "\n---------------------------------------------------------------------\n",
+        )
+        if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
+            if len(results) < 6:
+                return True, ""
+            corrects = DecisionMakerPerEvent.check_detections(
+                self.__classes_of_interest, detections, results
+            )
+            # Save the list to a file
+            condition = self.process_detections(corrects)
+            print(
+                condition,
+                "\n---------------------------------------------------------------------\n",
+            )
+            condition, text = DecisionMakerPerEvent.output_decision(
+                condition, results, frames, MLLM
+            )
+            return condition, text
+        else:
+            return False, ""
+
+    def process_detections(self, loaded_data, verbose=False):
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        persons_index = DecisionMakerPerEvent.verify_running(persons)
+        if len(persons_index) < 1 or len(persons) < 2:
+            return False
+        print("Checking persons", persons_index)
+        for i in persons_index:
+            for j in [x for x in range(len(persons)) if x != i]:
+                if verbose:
+                    print(f"Testing the person {i} with the person {j}\n")
+                distance_array = np.array([])
+                width = persons[i][0][4] - persons[i][0][2]
+                for k in range(len(persons[i])):
+                    distance, _ = DecisionMakerPerEvent.distance_between(
+                        persons[i][k], persons[j][k]
+                    )
+                    if verbose:
+                        print(f"At frame {k} {persons[i][k]}, {persons[j][k]} {distance}\n")
+                    distance_array = np.append(distance_array, distance)
+                decresing = np.all(np.diff(distance_array) < 0)
+                if verbose:
+                    print(distance_array)
+                    print(decresing, width, np.std(distance_array))
+                if decresing or np.std(distance_array) < width:
+                    for k in range(len(persons[i])):
+                        if verbose:
+                            print(f"At frame {k} {persons[i][k]}, {persons[j][k]}\n")
+                        touching=DecisionMakerPerEvent.do_rectangles_touch(persons[i][k], persons[j][k])
+                        if touching:
+                            return True
+        return False
+
+class EventPickPockering(DecisionMakerPerEvent):
+    def __init__(self):
+        self.__classes_of_interest = [
+            "person",
+        ]
+
+    def detections_treatment(self):
+        pass
+
+    def get_classes_of_interest(self):
+        pass
+
+    def decision_maker(self, classes, detections, results, frames, MLLM, *args):
+        print(
+            len(results),
+            "-",
+            len(frames),
+            "\n---------------------------------------------------------------------\n",
+        )
+        if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
+            if len(results) < 6:
+                return True, ""
+            corrects = DecisionMakerPerEvent.check_detections(
+                self.__classes_of_interest, detections, results
+            )
+            # Save the list to a file
+            condition = self.process_detections(corrects)
+            print(
+                condition,
+                "\n---------------------------------------------------------------------\n",
+            )
+            condition, text = DecisionMakerPerEvent.output_decision(
+                condition, results, frames, MLLM
+            )
+            return condition, text
+        else:
+            return False, ""
+
+    def process_detections(self, loaded_data, verbose=False):
+        persons = DecisionMakerPerEvent.organize_persons(loaded_data)
+        # Evaluate the persons
+        if len(persons) < 2:
+            return False
+        else:
+            #First check the couple of persons that are together
+            check = []
+            for i in range(len(persons) - 1):
+                if verbose:
+                    print(
+                        f"Person {i}",
+                        "\n---------------------------------------------------------------------\n",
+                    )
+                for j in range(i + 1, len(persons)):
+                    touching = np.array([])
+                    for k in range(len(persons[i])):
+                        if verbose:
+                            print(i, j, k, persons[i][k], persons[j][k], "\n")
+                        touch = DecisionMakerPerEvent.boxes_touching(
+                            [persons[i][k], persons[j][k]]
+                        )
+                        if touch:
+                            touching = np.append(touching, 1)
+                        else:
+                            touching = np.append(touching, 0)
+                    if touching.sum() > 0:
+                        check.append([persons[i], persons[j]])
+            if verbose:
+                print('Status ',len(check)>0)
+            if len(check) ==0:
+                return False
+            for duo in check:
+                shaking=DecisionMakerPerEvent.verify_shaking(duo)
+                if len(shaking)>0:
+                    return True
+        return False
 if __name__ == "__main__":
     pass
