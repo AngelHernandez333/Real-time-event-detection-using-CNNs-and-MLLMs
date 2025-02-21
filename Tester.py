@@ -643,7 +643,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereJanus1.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(janus)
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
