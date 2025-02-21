@@ -3,10 +3,13 @@ import torch
 from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration
 import numpy as np
 from transformers import AutoModelForCausalLM
-from janus.models import MultiModalityCausalLM, VLChatProcessor
+import sys
+import os
 from PIL import Image
 import cv2
-
+# Añade la ruta de janus al sys.path
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "janus"))
+from lib.janus.janus.models import MultiModalityCausalLM, VLChatProcessor
 
 class MLLMs(ABC):
     @abstractmethod

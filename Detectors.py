@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 import cv2
-from ultralytics import YOLOv10
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "yolov10"))
+from lib.yolov10.ultralytics import YOLOv10
 
 
 class Detectors(ABC):

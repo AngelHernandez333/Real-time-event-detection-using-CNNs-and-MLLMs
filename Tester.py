@@ -620,12 +620,12 @@ if __name__ == "__main__":
     janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
     # Prepare the tester
     tester = EventTester()
-    test=1
+    test=0
     if test==0:
         llava = LLaVA_OneVision()
         llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
         llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(llava)
     elif test==1:
         '''events = [

@@ -1,10 +1,8 @@
 import cv2
-from ultralytics import YOLOv10
 from Functions3 import detection_labels
 from Detectors import YOLOv10Detector
 import numpy as np
 import os
-
 from PIL import Image
 
 
@@ -73,8 +71,9 @@ class Visualizer:
                 cv2.imshow(f"{files[self.__video]}, Frame", frame)
                 if cv2.waitKey(1 + i) & 0xFF == ord("q"):
                     break
-                if len(frames) == 100:
-                    break
+                if self.__gif_making:
+                    if len(frames) == 100:
+                        break
             else:
                 break
         cv2.destroyAllWindows()
@@ -126,5 +125,5 @@ if __name__ == "__main__":
         ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
         ov_qmodel.set_labels(detection_labels)
         visualizer.set_detector(ov_qmodel)
-        visualizer.set_gif_making(True)
+        visualizer.set_gif_making(False)
         visualizer.visualize()
