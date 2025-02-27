@@ -67,8 +67,7 @@ plt.show()
 '''
 import pandas as pd
 
-df_Llava = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesLastEventsLlava.csv")
-df_Janus = pd.read_csv("/home/ubuntu/Tesis/Results/mAP_valuesLastEventsJanus.csv")
-
-print(df_Llava)
-print(df_Janus)
+df=pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereQwen.csv')
+print(df)
+print(df['Duration'].sum()/(60*60))
+print(df['Process time'].sum()/(60*60))

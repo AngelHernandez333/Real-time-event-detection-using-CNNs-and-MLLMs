@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import cv2
 import time
 import os
-from MLLMs import LLaVA_OneVision, JanusPro
+from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
 from Functions3 import (
@@ -94,7 +94,7 @@ class VideoTester(ABC):
         elif len(corrects) > 1:
             for x in corrects:
                 if x == corrects[-1]:
-                    print(",".join(objects.split(",")[:-1]))
+                    #print(",".join(objects.split(",")[:-1]))
                     objects = ",".join(objects.split(",")[:-1])
                     objects += f" and"
                 objects += f" {classes[x]} {x},"
@@ -620,7 +620,7 @@ if __name__ == "__main__":
     janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
     # Prepare the tester
     tester = EventTester()
-    test=0
+    test=2
     if test==0:
         llava = LLaVA_OneVision()
         llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
@@ -643,8 +643,14 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereJanus.csv")
         tester.set_MLLM(janus)
+    elif test==2:
+        qwen2vl = Qwen2_VL()
+        qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
+        qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereQwen.csv")
+        tester.set_MLLM(qwen2vl)
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
     #tester.set_MLLM(llava)
@@ -652,5 +658,6 @@ if __name__ == "__main__":
     tester.show_video(True)
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0,1,2,3,4])
+    #tester.simple_autotesting(events, description, [0,1,2,3])
+    tester.simple_autotesting(events, description, [1])
     #tester.simple_autotesting(events, description, [0,1,2,3,4])

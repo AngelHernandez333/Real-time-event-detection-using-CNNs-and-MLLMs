@@ -145,7 +145,7 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-plt.savefig("Results/mAP_ProcessingTime.png")
+#plt.savefig("Results/mAP_ProcessingTime.png")
 plt.tight_layout()
 plt.show()
 print(df)

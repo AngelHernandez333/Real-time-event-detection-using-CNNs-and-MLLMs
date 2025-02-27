@@ -1,0 +1,161 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+4_095_1.mp4,0,3,0,2,4,a person stealing other person,a person stealing other person,9,13.966666666666669,23.498704195022583
+1_082_1.mp4,0,3,0,1,0,a person stealing other person,a person stealing other person,4,14.981633333333331,18.84735631942749
+4_084_1.mp4,0,0,0,0,0,a person stealing other person,a person stealing other person,0,14.966666666666669,14.752704620361328
+2_071_1.mp4,0,0,0,4,0,a person stealing other person,a person stealing other person,4,30.0,34.66081380844116
+3_080_1.mp4,0,0,0,4,0,a person stealing other person,a person stealing other person,4,29.99663333333333,34.6342933177948
+4_108_1.mp4,0,0,0,0,0,a person stealing other person,a person stealing other person,0,11.966666666666669,11.896051168441772
+3_081_1.mp4,0,0,0,1,0,a person stealing other person,a person stealing other person,1,29.69633333333333,31.617536067962646
+3_091_1.mp4,0,3,0,0,2,a person stealing other person,a person stealing other person,5,19.986633333333334,25.34357094764709
+4_083_1.mp4,0,0,0,0,0,a person stealing other person,a person stealing other person,0,19.966666666666665,19.75516986846924
+2_078_1.mp4,0,0,0,0,0,a person stealing other person,a person stealing other person,0,15.0,15.768217086791992
+2_070_1.mp4,0,2,1,1,1,a person stealing other person,a person stealing other person,5,20.0,25.16260766983032
+3_088_1.mp4,0,6,4,0,3,a person throwing trash in the floor,a person throwing trash in the floor,13,19.986633333333334,32.04590845108032
+1_080_1.mp4,0,2,12,0,0,a person throwing trash in the floor,a person throwing trash in the floor,14,14.981633333333331,27.362914562225345
+1_076_1.mp4,0,23,23,0,0,a person throwing trash in the floor,a person throwing trash in the floor,46,14.981633333333331,54.714539527893066
+2_072_1.mp4,0,9,30,1,4,a person throwing trash in the floor,a person throwing trash in the floor,44,15.0,53.162070512771606
+3_074_1.mp4,0,0,29,0,10,a person throwing trash in the floor,a person throwing trash in the floor,39,19.986633333333334,54.15398478507996
+4_103_1.mp4,0,30,7,11,1,a person throwing trash in the floor,a person throwing trash in the floor,49,17.966666666666665,57.77438926696777
+3_082_1.mp4,0,25,36,0,14,a person throwing trash in the floor,a person throwing trash in the floor,75,29.99663333333333,94.7283775806427
+2_092_1.mp4,0,9,27,1,1,a person throwing trash in the floor,a person throwing trash in the floor,38,15.0,47.85019302368164
+1_074_1.mp4,0,21,40,0,0,a person throwing trash in the floor,a person throwing trash in the floor,61,14.981633333333331,67.25161719322205
+3_095_1.mp4,0,23,48,0,0,a person throwing trash in the floor,a person throwing trash in the floor,71,24.991633333333333,86.50843143463135
+3_084_1.mp4,0,16,6,1,2,a person throwing trash in the floor,a person throwing trash in the floor,25,24.391033333333333,46.5655779838562
+1_086_1.mp4,0,19,49,0,0,a person throwing trash in the floor,a person throwing trash in the floor,68,24.991633333333333,83.6240234375
+4_099_1.mp4,0,1,7,0,1,a person tripping,a person tripping,9,24.966666666666665,32.2757625579834
+4_087_1.mp4,0,8,0,0,0,a person tripping,a person tripping,8,15.966666666666669,22.230645418167114
+2_081_1.mp4,0,6,0,0,0,a person tripping,a person tripping,6,17.0,22.91289472579956
+2_082_1.mp4,0,0,2,1,3,a person tripping,a person tripping,6,45.0,52.13168239593506
+4_098_1.mp4,0,35,5,0,0,a person tripping,a person tripping,40,19.966666666666665,52.65087294578552
+4_085_1.mp4,0,0,0,13,6,a person stealing other person's pocket,a person stealing other person's pocket,19,13.966666666666669,29.338228225708008
+3_083_1.mp4,0,1,0,0,1,a person stealing other person's pocket,a person stealing other person's pocket,2,19.986633333333334,22.347917795181274
+1_075_1.mp4,0,2,0,0,0,a person stealing other person's pocket,a person stealing other person's pocket,2,14.981633333333331,17.082535982131958
+4_086_1.mp4,0,3,0,12,10,a person stealing other person's pocket,a person stealing other person's pocket,25,15.966666666666669,36.29532551765442
+4_095_1.mp4,1,8,0,22,47,a person stealing other person,a person stealing other person,77,13.966666666666669,64.77332162857056
+1_082_1.mp4,1,17,1,14,51,a person stealing other person,a person stealing other person,83,14.981633333333331,73.20006227493286
+4_084_1.mp4,1,0,0,32,51,a person stealing other person,a person stealing other person,83,14.966666666666669,69.51882410049438
+2_071_1.mp4,1,0,0,72,102,a person stealing other person,a person stealing other person,174,30.0,153.66503596305847
+3_080_1.mp4,1,0,0,48,125,a person stealing other person,a person stealing other person,173,29.99663333333333,152.99957537651062
+4_108_1.mp4,1,3,0,31,31,a person stealing other person,a person stealing other person,65,11.966666666666669,54.32178521156311
+3_081_1.mp4,1,0,0,39,133,a person stealing other person,a person stealing other person,172,29.69633333333333,152.1471710205078
+3_091_1.mp4,1,11,0,23,79,a person stealing other person,a person stealing other person,113,19.986633333333334,99.81532597541808
+4_083_1.mp4,1,5,0,71,37,a person stealing other person,a person stealing other person,113,19.966666666666665,94.46597290039062
+2_078_1.mp4,1,0,0,30,54,a person stealing other person,a person stealing other person,84,15.0,74.41208386421204
+2_070_1.mp4,1,2,2,21,89,a person stealing other person,a person stealing other person,114,20.0,100.82559180259705
+3_088_1.mp4,1,13,27,2,71,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,100.05631160736084
+1_080_1.mp4,1,10,47,0,26,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,73.47084832191467
+1_076_1.mp4,1,25,32,0,26,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,73.22596764564514
+2_072_1.mp4,1,13,4,17,50,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,74.0117290019989
+3_074_1.mp4,1,1,6,7,99,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,101.02484440803528
+4_103_1.mp4,1,7,2,62,30,a person throwing trash in the floor,a person throwing trash in the floor,101,17.966666666666665,84.20366954803467
+3_082_1.mp4,1,25,24,0,124,a person throwing trash in the floor,a person throwing trash in the floor,173,29.99663333333333,152.5873680114746
+2_092_1.mp4,1,9,30,1,44,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,74.2677993774414
+1_074_1.mp4,1,21,50,0,12,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,73.28146266937256
+3_095_1.mp4,1,51,31,18,43,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,126.5735912322998
+3_084_1.mp4,1,8,10,24,98,a person throwing trash in the floor,a person throwing trash in the floor,140,24.391033333333333,126.9945023059845
+1_086_1.mp4,1,50,71,16,6,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,126.69207525253296
+4_099_1.mp4,1,2,18,16,107,a person tripping,a person tripping,143,24.966666666666665,119.53028106689452
+4_087_1.mp4,1,33,11,20,25,a person tripping,a person tripping,89,15.966666666666669,74.3807418346405
+2_081_1.mp4,1,11,2,74,9,a person tripping,a person tripping,96,17.0,85.38565254211426
+2_082_1.mp4,1,0,0,31,233,a person tripping,a person tripping,264,45.0,233.44506978988647
+4_098_1.mp4,1,21,11,51,30,a person tripping,a person tripping,113,19.966666666666665,94.03477883338928
+4_085_1.mp4,1,0,2,22,53,a person stealing other person's pocket,a person stealing other person's pocket,77,13.966666666666669,64.35258078575134
+3_083_1.mp4,1,1,0,30,82,a person stealing other person's pocket,a person stealing other person's pocket,113,19.986633333333334,100.28822994232178
+1_075_1.mp4,1,17,5,3,58,a person stealing other person's pocket,a person stealing other person's pocket,83,14.981633333333331,73.23691272735596
+4_086_1.mp4,1,11,0,34,44,a person stealing other person's pocket,a person stealing other person's pocket,89,15.966666666666669,74.36034560203552
+4_095_1.mp4,2,12,1,18,46,a person stealing other person,a person stealing other person,77,13.966666666666669,76.50629544258118
+1_082_1.mp4,2,24,2,7,50,a person stealing other person,a person stealing other person,83,14.981633333333331,85.9265079498291
+4_084_1.mp4,2,0,0,32,51,a person stealing other person,a person stealing other person,83,14.966666666666669,82.35724878311157
+2_071_1.mp4,2,0,0,72,102,a person stealing other person,a person stealing other person,174,30.0,179.8733353614807
+3_080_1.mp4,2,1,0,47,125,a person stealing other person,a person stealing other person,173,29.99663333333333,179.3363540172577
+4_108_1.mp4,2,14,0,20,31,a person stealing other person,a person stealing other person,65,11.966666666666669,64.76401090621948
+3_081_1.mp4,2,0,0,39,133,a person stealing other person,a person stealing other person,172,29.69633333333333,176.9805235862732
+3_091_1.mp4,2,14,1,20,78,a person stealing other person,a person stealing other person,113,19.986633333333334,117.03508830070496
+4_083_1.mp4,2,11,0,65,37,a person stealing other person,a person stealing other person,113,19.966666666666665,111.99049019813538
+2_078_1.mp4,2,1,1,29,53,a person stealing other person,a person stealing other person,84,15.0,86.61013722419739
+2_070_1.mp4,2,9,9,14,82,a person stealing other person,a person stealing other person,114,20.0,115.94021940231325
+3_088_1.mp4,2,15,43,0,55,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,116.3624620437622
+1_080_1.mp4,2,10,49,0,24,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,84.14989995956421
+1_076_1.mp4,2,25,32,0,26,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,83.94677567481995
+2_072_1.mp4,2,29,50,1,4,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,85.48588967323303
+3_074_1.mp4,2,6,48,2,57,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,114.65873074531557
+4_103_1.mp4,2,49,13,20,19,a person throwing trash in the floor,a person throwing trash in the floor,101,17.966666666666665,98.38114857673644
+3_082_1.mp4,2,25,82,0,66,a person throwing trash in the floor,a person throwing trash in the floor,173,29.99663333333333,174.23259234428406
+2_092_1.mp4,2,9,56,1,18,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,85.63584470748901
+1_074_1.mp4,2,21,51,0,11,a person throwing trash in the floor,a person throwing trash in the floor,83,14.981633333333331,84.3588490486145
+3_095_1.mp4,2,69,74,0,0,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,145.413654088974
+3_084_1.mp4,2,26,63,6,45,a person throwing trash in the floor,a person throwing trash in the floor,140,24.391033333333333,141.2573926448822
+1_086_1.mp4,2,66,76,0,1,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,144.09693431854248
+4_099_1.mp4,2,18,117,0,8,a person tripping,a person tripping,143,24.966666666666665,138.8193073272705
+4_087_1.mp4,2,53,36,0,0,a person tripping,a person tripping,89,15.966666666666669,86.6832959651947
+2_081_1.mp4,2,85,11,0,0,a person tripping,a person tripping,96,17.0,98.08285284042358
+2_082_1.mp4,2,27,226,4,7,a person tripping,a person tripping,264,45.0,267.6489143371582
+4_098_1.mp4,2,72,41,0,0,a person tripping,a person tripping,113,19.966666666666665,109.844735622406
+4_085_1.mp4,2,0,2,22,53,a person stealing other person's pocket,a person stealing other person's pocket,77,13.966666666666669,75.22182726860046
+3_083_1.mp4,2,1,0,30,82,a person stealing other person's pocket,a person stealing other person's pocket,113,19.986633333333334,114.22068285942078
+1_075_1.mp4,2,19,8,1,55,a person stealing other person's pocket,a person stealing other person's pocket,83,14.981633333333333,84.07295823097229
+4_086_1.mp4,2,11,0,34,44,a person stealing other person's pocket,a person stealing other person's pocket,89,15.966666666666667,85.87706995010376
+4_095_1.mp4,3,1,0,4,4,a person stealing other person,a person stealing other person,9,13.966666666666667,20.97493886947632
+1_082_1.mp4,3,0,0,4,0,a person stealing other person,a person stealing other person,4,14.981633333333333,18.677460193634033
+4_084_1.mp4,3,0,0,0,0,a person stealing other person,a person stealing other person,0,14.966666666666667,14.644336462020874
+2_071_1.mp4,3,0,0,4,0,a person stealing other person,a person stealing other person,4,30.0,34.42921781539917
+3_080_1.mp4,3,0,0,4,0,a person stealing other person,a person stealing other person,4,29.996633333333335,34.26001191139221
+4_108_1.mp4,3,0,0,0,0,a person stealing other person,a person stealing other person,0,11.966666666666667,11.862952947616577
+3_081_1.mp4,3,0,0,1,0,a person stealing other person,a person stealing other person,1,29.696333333333335,31.52693819999695
+3_091_1.mp4,3,2,0,1,2,a person stealing other person,a person stealing other person,5,19.986633333333334,25.01900362968445
+4_083_1.mp4,3,0,0,0,0,a person stealing other person,a person stealing other person,0,19.966666666666665,19.62533211708069
+2_078_1.mp4,3,0,0,0,0,a person stealing other person,a person stealing other person,0,15.0,15.669240474700928
+2_070_1.mp4,3,0,0,3,2,a person stealing other person,a person stealing other person,5,20.0,24.911652326583862
+3_088_1.mp4,3,5,1,1,6,a person throwing trash in the floor,a person throwing trash in the floor,13,19.986633333333334,31.643853902816772
+1_080_1.mp4,3,2,12,0,0,a person throwing trash in the floor,a person throwing trash in the floor,14,14.981633333333333,26.905125379562378
+1_076_1.mp4,3,23,23,0,0,a person throwing trash in the floor,a person throwing trash in the floor,46,14.981633333333333,53.52558946609497
+2_072_1.mp4,3,4,4,6,30,a person throwing trash in the floor,a person throwing trash in the floor,44,15.0,52.19487524032593
+3_074_1.mp4,3,0,2,0,37,a person throwing trash in the floor,a person throwing trash in the floor,39,19.986633333333334,53.26120162010193
+4_103_1.mp4,3,7,2,34,6,a person throwing trash in the floor,a person throwing trash in the floor,49,17.966666666666665,56.89556837081909
+3_082_1.mp4,3,25,16,0,34,a person throwing trash in the floor,a person throwing trash in the floor,75,29.996633333333335,93.33399677276611
+2_092_1.mp4,3,9,17,1,11,a person throwing trash in the floor,a person throwing trash in the floor,38,15.0,47.0739529132843
+1_074_1.mp4,3,21,40,0,0,a person throwing trash in the floor,a person throwing trash in the floor,61,14.981633333333333,65.86485624313354
+3_095_1.mp4,3,18,22,5,26,a person throwing trash in the floor,a person throwing trash in the floor,71,24.991633333333333,84.99655270576477
+3_084_1.mp4,3,8,0,9,8,a person throwing trash in the floor,a person throwing trash in the floor,25,24.391033333333333,45.759084939956665
+1_086_1.mp4,3,16,49,3,0,a person throwing trash in the floor,a person throwing trash in the floor,68,24.991633333333333,81.90165781974792
+4_099_1.mp4,3,0,0,1,8,a person tripping,a person tripping,9,24.966666666666665,32.087031841278076
+4_087_1.mp4,3,5,0,3,0,a person tripping,a person tripping,8,15.966666666666667,22.065869569778442
+2_081_1.mp4,3,3,0,3,0,a person tripping,a person tripping,6,17.0,22.710121154785156
+2_082_1.mp4,3,0,0,1,5,a person tripping,a person tripping,6,45.0,51.846845388412476
+4_098_1.mp4,3,11,5,24,0,a person tripping,a person tripping,40,19.966666666666665,51.74645972251892
+4_085_1.mp4,3,0,0,13,6,a person stealing other person's pocket,a person stealing other person's pocket,19,13.966666666666667,28.880982875823975
+3_083_1.mp4,3,0,0,1,1,a person stealing other person's pocket,a person stealing other person's pocket,2,19.986633333333334,22.30009937286377
+1_075_1.mp4,3,2,0,0,0,a person stealing other person's pocket,a person stealing other person's pocket,2,14.981633333333333,16.993356704711914
+4_086_1.mp4,3,4,0,11,10,a person stealing other person's pocket,a person stealing other person's pocket,25,15.966666666666667,35.60370421409607
+4_095_1.mp4,4,1,0,29,47,a person stealing other person,a person stealing other person,77,13.966666666666667,13.920369863510132
+1_082_1.mp4,4,2,0,29,24,a person stealing other person,a person stealing other person,55,14.981633333333333,15.429598569869995
+4_084_1.mp4,4,0,0,30,51,a person stealing other person,a person stealing other person,81,14.966666666666667,14.708013534545898
+2_071_1.mp4,4,0,0,72,102,a person stealing other person,a person stealing other person,174,30.0,31.153486013412476
+3_080_1.mp4,4,1,0,47,112,a person stealing other person,a person stealing other person,160,29.996633333333335,31.077407360076904
+4_108_1.mp4,4,0,0,34,31,a person stealing other person,a person stealing other person,65,11.966666666666667,11.799703359603882
+3_081_1.mp4,4,0,0,37,87,a person stealing other person,a person stealing other person,124,29.696333333333335,30.635936498641968
+3_091_1.mp4,4,0,0,34,79,a person stealing other person,a person stealing other person,113,19.986633333333334,20.985426664352417
+4_083_1.mp4,4,0,0,76,35,a person stealing other person,a person stealing other person,111,19.966666666666665,19.686777114868164
+2_078_1.mp4,4,2,0,28,54,a person stealing other person,a person stealing other person,84,15.0,15.657491683959961
+2_070_1.mp4,4,1,0,22,91,a person stealing other person,a person stealing other person,114,20.0,20.725691556930542
+3_088_1.mp4,4,4,6,11,92,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,20.869555234909058
+1_080_1.mp4,4,0,10,10,24,a person throwing trash in the floor,a person throwing trash in the floor,44,14.981633333333333,15.36396336555481
+1_076_1.mp4,4,23,23,2,2,a person throwing trash in the floor,a person throwing trash in the floor,50,14.981633333333333,15.386520862579346
+2_072_1.mp4,4,18,34,12,20,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,15.60619330406189
+3_074_1.mp4,4,0,39,8,66,a person throwing trash in the floor,a person throwing trash in the floor,113,19.986633333333334,20.8095703125
+4_103_1.mp4,4,41,10,28,22,a person throwing trash in the floor,a person throwing trash in the floor,101,17.966666666666665,17.94354772567749
+3_082_1.mp4,4,25,51,0,97,a person throwing trash in the floor,a person throwing trash in the floor,173,29.996633333333335,31.097114086151123
+2_092_1.mp4,4,10,31,0,43,a person throwing trash in the floor,a person throwing trash in the floor,84,15.0,15.682781219482422
+1_074_1.mp4,4,21,38,0,7,a person throwing trash in the floor,a person throwing trash in the floor,66,14.981633333333333,15.366671562194824
+3_095_1.mp4,4,26,51,43,23,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,26.079739570617676
+3_084_1.mp4,4,18,7,14,101,a person throwing trash in the floor,a person throwing trash in the floor,140,24.391033333333333,25.2202205657959
+1_086_1.mp4,4,22,49,44,28,a person throwing trash in the floor,a person throwing trash in the floor,143,24.991633333333333,25.762582063674927
+4_099_1.mp4,4,5,4,13,121,a person tripping,a person tripping,143,24.966666666666665,24.948227882385254
+4_087_1.mp4,4,6,0,47,36,a person tripping,a person tripping,89,15.966666666666667,15.746209859848022
+2_081_1.mp4,4,8,1,77,10,a person tripping,a person tripping,96,17.0,17.775697231292725
+2_082_1.mp4,4,4,1,27,232,a person tripping,a person tripping,264,45.0,46.70176315307617
+4_098_1.mp4,4,47,5,25,36,a person tripping,a person tripping,113,19.966666666666665,19.87465739250183
+4_085_1.mp4,4,12,6,10,49,a person stealing other person's pocket,a person stealing other person's pocket,77,13.966666666666667,13.79715609550476
+3_083_1.mp4,4,2,0,29,79,a person stealing other person's pocket,a person stealing other person's pocket,110,19.986633333333334,20.710238933563232
+1_075_1.mp4,4,4,0,15,6,a person stealing other person's pocket,a person stealing other person's pocket,25,14.981633333333333,15.388519287109375
+4_086_1.mp4,4,17,11,28,33,a person stealing other person's pocket,a person stealing other person's pocket,89,15.966666666666667,15.786356687545776

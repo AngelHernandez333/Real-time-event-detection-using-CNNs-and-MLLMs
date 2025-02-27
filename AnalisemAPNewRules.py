@@ -43,17 +43,18 @@ print(df)
 df=df[df['True Event']!= 'everything is normal']
 df = df[df['True Event']==df['Check event']]
 df= pd.read_csv("Results/TestingDev.csv")'''
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereJanus1.csv')
-description = [
+df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv')
+df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereJanus.csv')
+'''description = [
     "a person stealing other person",
     "a person throwing trash in the floor",
     "a person tripping",
     "a person stealing other person's pocket",
 ]
 
-# Filter the DataFrame to only keep rows with True Event in the description list
-df = df[df["True Event"].isin(description)]
-
+# Filter the DataFrame to only keep rows with True Event not in the description list
+df = df[~df["True Event"].isin(description)]
+'''
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -111,7 +112,7 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/mAP_valuesLastEventsLlava.csv")
+#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAP_valuesLast4EventsJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
@@ -125,7 +126,7 @@ axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
 axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
 axes[0].legend().set_visible(False)
 axes[0].grid()
-#axes[0].set_ylim(bottom=0.4)
+axes[0].set_ylim(bottom=0.0, top=1.0)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 #axes[0].set_yticklabels(
 #["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
@@ -144,7 +145,7 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/mAP_ProcessingTime.png")
+#plt.savefig("Results/Meeting/mAP_valuesExcept4LastEventsLlava.png")
 plt.tight_layout()
 plt.show()
 print(df)

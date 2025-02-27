@@ -1,0 +1,8 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+4_085_1.mp4,0,0,0,13,6,a person stealing other person's wallet,a person stealing other person's wallet,19,13.966666666666669,31.165652751922607
+4_085_1.mp4,0,0,0,13,6,a person stealing other person ,a person stealing other person ,19,13.966666666666669,31.746830701828003
+3_083_1.mp4,0,1,0,0,1,a person stealing other person ,a person stealing other person ,2,19.986633333333334,22.441867113113403
+1_075_1.mp4,0,2,0,0,0,a person stealing other person ,a person stealing other person ,2,14.981633333333331,17.009628295898438
+4_085_1.mp4,0,0,0,13,6,a person stealing other person's pocket,a person stealing other person's pocket,19,13.966666666666669,31.17597198486328
+3_083_1.mp4,0,1,0,0,1,a person stealing other person's pocket,a person stealing other person's pocket,2,19.986633333333334,22.368852615356445
+1_075_1.mp4,0,2,0,0,0,a person stealing other person's pocket,a person stealing other person's pocket,2,14.981633333333331,17.06570339202881

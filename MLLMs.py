@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
 import torch
-from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration
+from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration,Qwen2VLForConditionalGeneration, AutoTokenizer
 import numpy as np
 from transformers import AutoModelForCausalLM
 import sys
 import os
 from PIL import Image
 import cv2
+
+import time
+from math import sqrt
+
 # Añade la ruta de janus al sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "janus"))
 from lib.janus.janus.models import MultiModalityCausalLM, VLChatProcessor
@@ -29,7 +33,18 @@ class MLLMs(ABC):
         cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(cv_image_rgb)
         return pil_image
-
+    @staticmethod
+    def resize_frame(frame, max_pixels):
+        # Calculate aspect ratio and target dimensions based on max_pixels
+        h, w, _ = frame.shape
+        aspect_ratio = w / h
+        target_area = max_pixels
+        target_h = int(sqrt(target_area / aspect_ratio))
+        target_w = int(aspect_ratio * target_h)
+        resized_frame = cv2.resize(
+            frame, (target_w, target_h), interpolation=cv2.INTER_CUBIC
+        )
+        return resized_frame
 
 class LLaVA_OneVision(MLLMs):
     def __init__(self):
@@ -112,14 +127,6 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        '''conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text}, there is a person pickpocketing another person, tell me how would you describe that action so you can understand it better",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]'''
         # Load images with PIL and convert to RGB
 
         pil_images = [
@@ -155,6 +162,73 @@ class JanusPro(MLLMs):
             print(f"{prepare_inputs['sft_format'][0]}", answer)
 
         return answer.split(".")[0]
+
+
+class Qwen2_VL(MLLMs):
+    def __init__(self):
+        self.__model = None
+        self.__processor = None
+
+    def set_model(self, model):
+        self.__model = Qwen2VLForConditionalGeneration.from_pretrained(
+        model,
+        torch_dtype=torch.bfloat16,
+        attn_implementation="flash_attention_2",
+        device_map="auto",
+        )
+    def set_processor(self, processor):
+        # default processer
+        # processor = AutoProcessor.from_pretrained("Qwen/Qwen2-VL-2B-Instruct")
+        # The default range for the number of visual tokens per image in the model is 4-16384. You can set min_pixels and max_pixels according to your needs, such as a token count range of 256-1280, to balance speed and memory usage.
+        min_pixels = 256 * 28 * 28
+        max_pixels = 512 * 28 * 28
+        self.__processor = AutoProcessor.from_pretrained(
+            processor, min_pixels=min_pixels, max_pixels=max_pixels
+        )
+
+    def event_validation(self, frames, event, text="Watch the video,", verbose=False):
+        conversation = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "video",
+                },
+                {"type": "text", "text": f"{text} is there {event}? Just yes or no"},
+            ],
+        }
+        ]
+        video = torch.tensor(np.stack(frames)).permute(0, 3, 1, 2).float()
+        # Preparation for inference
+        text = self.__processor.apply_chat_template(
+            conversation, tokenize=False, add_generation_prompt=True
+        )
+
+        # image_inputs, video_inputs = process_vision_info(messages)
+        inputs = self.__processor(
+            text=[text],
+            videos=video,
+            padding=True,
+            return_tensors="pt",
+        )
+        inputs = inputs.to("cuda")
+
+        # Inference
+        generated_ids = self.__model.generate(**inputs, max_new_tokens=128)
+        generated_ids_trimmed = [
+            out_ids[len(in_ids) :]
+            for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+        ]
+        output_text = self.__processor.batch_decode(
+            generated_ids_trimmed,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+        return output_text[0].split(".")[0]
+
+
+
+
 
 
 if __name__ == "__main__":
