@@ -59,9 +59,10 @@ class Visualizer:
                         for detection in detections:
                             if detection[1] > 0.8 and detection[0] == "person":
                                 printed_detections.append(detection)
-                                person = True
-                        #self.__detector.put_detections(printed_detections, frame)
-
+                        for detection in detections:
+                            if detection[1] > 0.8 and detection[0] == "bicycle":
+                                printed_detections.append(detection)
+                        self.__detector.put_detections(printed_detections, frame)
                         if self.__gif_making:    
                             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                             pil_image = Image.fromarray(frame_rgb)
@@ -82,7 +83,7 @@ class Visualizer:
             print(len(frames))
             # Step 1: Capture frames from a video or generate frames
             event=self.__video_rute.split("/")[-1]
-            output_gif = f"{event}.gif"       # Output GIF file
+            output_gif = f"{event}1.gif"       # Output GIF file
             # Step 2: Save frames as a GIF using PIL
             frames[0].save(
                 output_gif,
@@ -101,18 +102,6 @@ if __name__ == "__main__":
     visualizer = Visualizer()
     events = [
         "1-Riding a bicycle",
-        "2-Fight",
-        "3-Playing",
-        "4-Running away",
-        "5-Person lying in the floor",
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        '9-guide',
-        '10-thief',
-        '11-Littering',
-        "12-Tripping",
-        '13-Pickpockering',
     ]
     for i in range(len(events)):
         visualizer.set_video(0)
@@ -125,5 +114,5 @@ if __name__ == "__main__":
         ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
         ov_qmodel.set_labels(detection_labels)
         visualizer.set_detector(ov_qmodel)
-        visualizer.set_gif_making(False)
+        visualizer.set_gif_making(True)
         visualizer.visualize()

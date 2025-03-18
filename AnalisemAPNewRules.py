@@ -44,7 +44,7 @@ df=df[df['True Event']!= 'everything is normal']
 df = df[df['True Event']==df['Check event']]
 df= pd.read_csv("Results/TestingDev.csv")'''
 df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv')
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereJanus.csv')
+df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingJanusAll.csv')
 '''description = [
     "a person stealing other person",
     "a person throwing trash in the floor",
@@ -112,7 +112,7 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAP_valuesLast4EventsJanus.csv")
+mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
@@ -145,7 +145,7 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/Meeting/mAP_valuesExcept4LastEventsLlava.png")
+#plt.savefig("Results/Meeting/mAPLLava.png")
 plt.tight_layout()
 plt.show()
 print(df)

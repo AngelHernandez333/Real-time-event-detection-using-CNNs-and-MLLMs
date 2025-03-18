@@ -16,15 +16,6 @@ def softmax(z):
     exp_z = np.exp(z - np.max(z))  # Subtract max(z) for numerical stability
     return exp_z / np.sum(exp_z)
 
-'''df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_SameVideosDifVal3.csv')
-df.drop(['Mode','Duration', 'Process time'], axis=1, inplace=True)
-df_normal = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_NormalVideos.csv')
-df_normal.drop(['Mode','Duration', 'Process time'], axis=1, inplace=True)
-df_normal['True Event']='everything is normal'
-df_use= pd.concat([df,df_normal])
-df_use.to_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv', index=False)
-print(df_use)
-'''
 df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
 df['Precision'] = df['True Positive'] / (df['True Positive'] + df['False Positive'])
 df['Recall'] = df['True Positive'] / (df['True Positive'] + df['False Negative'])
@@ -133,3 +124,4 @@ plt.grid()
 plt.show()
 print(df_compare)
 df_compare.to_csv('Results/Analize_F1.csv', index=False)
+print(df_compare['percentage'].mean())

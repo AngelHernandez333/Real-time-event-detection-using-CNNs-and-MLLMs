@@ -119,10 +119,63 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
+        '''
         conversation = [
             {
                 "role": "<|User|>",
                 "content": f"{images_number} This is a video \n{text} tell me if in the video is there {event}? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        '''
+        '''
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} is there {event}? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
+        '''
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} is {event} in the video? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} tell me if is {event} in the video? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
+        '''conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} does the video contain {event}? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
+        '''conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} confirm if the video contain {event}? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} does the video contain {event}? Just yes or no",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},

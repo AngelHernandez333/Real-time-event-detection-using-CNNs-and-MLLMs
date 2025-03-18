@@ -348,7 +348,7 @@ class EventTester(VideoTester):
                 rute = f"{self.__rute}/{folders[video_kind]}/"
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
-                    for i in range(len(descriptions) - 1):
+                    for i in range(len(descriptions)):
                         finished = False
                         count = self.__df[
                             (self.__df["Name"] == files[j])
@@ -391,7 +391,7 @@ class EventTester(VideoTester):
                                     "Process time": time_video,
                                 }
                                 tester.append_dataframe(row)
-                                # Append the row to the DataFrame
+                                self.save_dataframe()
                             else:
                                 break
                     else:
@@ -403,7 +403,6 @@ class EventTester(VideoTester):
             else:
                 continue
             break
-        self.save_dataframe()
 
     def simple_autotesting(self, folders, descriptions, modes):
         for k in modes:
@@ -579,7 +578,7 @@ if __name__ == "__main__":
         "a person guiding other person",
         "a person throwing trash in the floor",
     ]'''
-    events = [
+    '''events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -608,19 +607,67 @@ if __name__ == "__main__":
         "a person throwing trash in the floor",
         'a person tripping',
         "a person stealing other person's pocket",
-    ]
+    ]'''
     #"a person tripping by other person", 
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
 
-    
+    '''events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+    ]
+    description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+    ]'''
     '''janus = JanusPro()
     janus.set_model("deepseek-ai/Janus-Pro-1B")
     janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
+    '''events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
+        '9-guide',
+        '10-thief',
+        '11-Littering',
+        "12-Tripping",
+        '13-Pickpockering',
+    ]'''
+    events = [
+        "ALL",
+    ]
+    description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+        "a person jumping",
+        "a person falling",
+        "a person guiding other person",
+        "a person stealing other person",
+        "a person throwing trash in the floor",
+        'a person tripping',
+        "a person stealing other person's pocket",
+    ]
     # Prepare the tester
     tester = EventTester()
-    test=2
+    test=1
     if test==0:
         llava = LLaVA_OneVision()
         llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
@@ -628,22 +675,10 @@ if __name__ == "__main__":
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(llava)
     elif test==1:
-        '''events = [
-            '10-thief',
-            '11-Littering',
-            "12-Tripping",
-            '13-Pickpockering',
-        ]
-        description = [
-            "a person stealing other person",
-            "a person throwing trash in the floor",
-            'a person tripping',
-            "a person stealing other person's pocket",
-        ]'''
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereJanus.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingJanusAll.csv")
         tester.set_MLLM(janus)
     elif test==2:
         qwen2vl = Qwen2_VL()
@@ -659,5 +694,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     #tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [1])
     #tester.simple_autotesting(events, description, [0,1,2,3,4])
+    tester.autotesting(events, description, [0,1,2,3,4])

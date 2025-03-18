@@ -18,7 +18,6 @@ if __name__ == "__main__":
         "11-Littering",
         "12-Tripping",
         "13-Pickpockering",
-        "99-Normal",
     ]
     description = [
         "a person riding a bicycle",
@@ -34,7 +33,6 @@ if __name__ == "__main__":
         "a person littering",
         "a person tripping",
         "a person pickpockering",
-        "everything is normal",
     ]
     columns = ["Name", "Event"]
     df = pd.DataFrame(columns=columns)
