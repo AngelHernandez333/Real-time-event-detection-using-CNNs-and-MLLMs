@@ -72,7 +72,7 @@ class VideoTester(ABC):
         pass
 
     @staticmethod
-    def prompt_text(classes, event, detector_usage, classes_focus):
+    def prompt_text(classes, event, detector_usage, classes_focus, detections):
         if detector_usage > 2:
             return "Watch the video,"
         initial = "There are"
@@ -308,7 +308,7 @@ class EventTester(VideoTester):
                 results.pop(0)
                 frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 text = VideoTester.prompt_text(
-                    classes, self.__event, self.__mode, classes_focus
+                    classes, self.__event, self.__mode, classes_focus, detections
                 )
                 prompt = self.__MLLM.event_validation(
                     frames, self.__event, text, verbose=True
@@ -678,7 +678,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingJanusAll.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
         tester.set_MLLM(janus)
     elif test==2:
         qwen2vl = Qwen2_VL()
@@ -694,5 +694,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     #tester.simple_autotesting(events, description, [0,1,2,3])
-    #tester.simple_autotesting(events, description, [0,1,2,3,4])
-    tester.autotesting(events, description, [0,1,2,3,4])
+    tester.simple_autotesting(events, description, [0])
+    #tester.autotesting(events, description, [0,1,2,3,4])
