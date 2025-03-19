@@ -138,7 +138,7 @@ def decision_maker(event):
             dmc = EventGuiding()
         case "a person throwing trash in the floor":
             dmc = EventGarbage()
-        case 'a person tripping':
+        case "a person tripping":
             dmc = EventTripping()
         case "a person stealing other person":
             dmc = EventStealing()

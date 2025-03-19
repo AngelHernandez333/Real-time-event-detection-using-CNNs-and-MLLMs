@@ -21,7 +21,7 @@ def calculate_ap(precision, recall):
     return ap
 
 
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv')
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
 
 #  Get unique categories
 print(df)
@@ -86,7 +86,7 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle('Performance evaluation', fontsize=16, fontweight='bold')
+fig.suptitle("Performance evaluation", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
@@ -96,9 +96,9 @@ axes[0].legend().set_visible(False)
 axes[0].grid()
 axes[0].set_ylim(bottom=0.0, top=1.0)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
-#axes[0].set_yticklabels(
-#["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
-#)
+# axes[0].set_yticklabels(
+# ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
+# )
 
 mAP_values[["Processing time ratio"]].plot(kind="bar", ax=axes[1], color="#ff7f0e")
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
@@ -108,14 +108,14 @@ axes[1].legend().set_visible(False)
 axes[1].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[1].grid()
 axes[1].set_yticklabels(
-["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
+    ["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
 )
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/Meeting/mAPLLava.png")
+# plt.savefig("Results/Meeting/mAPLLava.png")
 plt.tight_layout()
 plt.show()
 print(df)
-print(len(df['Name'].unique()))
-print(len(df['True Event'].unique()))
+print(len(df["Name"].unique()))
+print(len(df["True Event"].unique()))

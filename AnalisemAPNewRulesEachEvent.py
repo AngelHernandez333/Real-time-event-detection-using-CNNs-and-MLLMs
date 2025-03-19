@@ -20,7 +20,8 @@ def calculate_ap(precision, recall):
 
     return ap
 
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv')
+
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv")
 description = [
     "a person stealing other person",
     "a person throwing trash in the floor",
@@ -44,7 +45,7 @@ category_dfs = {category: df[df["True Event"] == category] for category in categ
 
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10, 12))
 
-fig.suptitle('Events evaluation', fontsize=16, fontweight='bold')
+fig.suptitle("Events evaluation", fontsize=16, fontweight="bold")
 for i in range(len(categories)):
     df1 = category_dfs[categories[i]]
     #
@@ -78,18 +79,22 @@ for i in range(len(categories)):
         4: "Detector + Rules",
     }
     mean_values.rename(index=mode_names, inplace=True)
-    
-    mean_values[["AP"]].plot(kind="bar", ax=axes[i//2][i%2])
-    axes[i//2][i%2].set_ylabel("AP", fontsize=10, fontweight="bold")
-    axes[i//2][i%2].set_xlabel("Mode", fontsize=10, fontweight="bold").set_visible(False)
-    axes[i//2][i%2].set_xticklabels(mean_values.index, rotation=45, color="black", fontweight="bold")
-    #axes[i//2][i%2].set_yticklabels(np.round(np.linspace(0, 1, 11), 2), color="black", fontweight="bold")
-    axes[i//2][i%2].legend().set_visible(False)
-    axes[i//2][i%2].grid()
-    axes[i//2][i%2].relim()
-    axes[i//2][i%2].set_ylim(0, 1)
-    axes[i//2][i%2].set_title(f"{categories[i]}", fontsize=14, fontweight="bold")
-    '''axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
+
+    mean_values[["AP"]].plot(kind="bar", ax=axes[i // 2][i % 2])
+    axes[i // 2][i % 2].set_ylabel("AP", fontsize=10, fontweight="bold")
+    axes[i // 2][i % 2].set_xlabel("Mode", fontsize=10, fontweight="bold").set_visible(
+        False
+    )
+    axes[i // 2][i % 2].set_xticklabels(
+        mean_values.index, rotation=45, color="black", fontweight="bold"
+    )
+    # axes[i//2][i%2].set_yticklabels(np.round(np.linspace(0, 1, 11), 2), color="black", fontweight="bold")
+    axes[i // 2][i % 2].legend().set_visible(False)
+    axes[i // 2][i % 2].grid()
+    axes[i // 2][i % 2].relim()
+    axes[i // 2][i % 2].set_ylim(0, 1)
+    axes[i // 2][i % 2].set_title(f"{categories[i]}", fontsize=14, fontweight="bold")
+    """axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
     axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
     axes[0].legend().set_visible(False)
     axes[0].grid()
@@ -99,7 +104,7 @@ for i in range(len(categories)):
     plt.legend(loc="best")
     plt.tight_layout()
     plt.grid()
-    plt.ylim(bottom=0)'''
+    plt.ylim(bottom=0)"""
     # plt.xlim(0.4)
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)

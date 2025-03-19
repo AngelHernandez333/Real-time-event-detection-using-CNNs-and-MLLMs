@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import cv2
 import sys
 import os
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "yolov10"))
 from lib.yolov10.ultralytics import YOLOv10
 
@@ -59,7 +60,7 @@ class YOLOv10Detector(Detectors):
     def put_detections(self, detections, image):
         for detection in detections:
             text = f"Class: {detection[0] }-{detection[1]:.2f}, {detection[2]}, {detection[3]}, {detection[4]}, {detection[5]}"
-            '''cv2.putText(
+            """cv2.putText(
                 image,
                 text,
                 (detection[2], detection[3] - 10),
@@ -74,21 +75,21 @@ class YOLOv10Detector(Detectors):
                 (detection[4], detection[5]),
                 (255, 0, 255),
                 1,
-            )'''
-            if detection[0] == 'person':
+            )"""
+            if detection[0] == "person":
                 cv2.rectangle(
                     image,
                     (detection[2], detection[3]),
                     (detection[4], detection[5]),
-                    (0, 255,0),
+                    (0, 255, 0),
                     2,
                 )
-            elif detection[0] == 'bicycle':
+            elif detection[0] == "bicycle":
                 cv2.rectangle(
                     image,
                     (detection[2], detection[3]),
                     (detection[4], detection[5]),
-                    (0, 255,0),
+                    (0, 255, 0),
                     2,
                 )
 

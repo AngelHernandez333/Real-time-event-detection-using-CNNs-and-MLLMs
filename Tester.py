@@ -71,41 +71,129 @@ class VideoTester(ABC):
     def simple_autotesting(self):
         pass
 
+    @abstractmethod
+    def testing_video_CLIP(self):
+        pass
+
+    @abstractmethod
+    def set_image_encoder(self):
+        pass
+
+    @abstractmethod
+    def simple_autotestingCLIP(self):
+        pass
+
     @staticmethod
-    def prompt_text(classes, event, detector_usage, classes_focus, detections):
+    def prompt_text(
+        classes, event, detector_usage, classes_focus, detections, video_information
+    ):
         if detector_usage > 2:
-            return "Watch the video,"
-        initial = "There are"
-        objects = ""
+            return "Watch the video."
         corrects = []
-        for entity in classes_focus[event]:
-            if classes[entity] > 0:
-                corrects.append(entity)
-        if len(corrects) == 1:
-            if classes[corrects[0]] == 1:
-                objects += (
-                    f"There is {classes[corrects[0]]} {corrects[0]} in the video,"
+        for detection in detections:
+            if detection[0] in classes_focus[event] and detection[1] > 0.7:
+                corrects.append(detection)
+        sections = {
+            "Top-Left": [],
+            "Top-Center": [],
+            "Top-Right": [],
+            "Middle-Left": [],
+            "Middle-Center": [],
+            "Middle-Right": [],
+            "Bottom-Left": [],
+            "Bottom-Center": [],
+            "Bottom-Right": [],
+        }
+
+        # Example function to determine which section an object is in
+        def get_section(x, y, frame_width, frame_height):
+            # Calculate the boundaries for each section
+            x_step = frame_width // 3
+            y_step = frame_height // 3
+
+            if x < x_step:
+                x_pos = "Left"
+            elif x < 2 * x_step:
+                x_pos = "Center"
+            else:
+                x_pos = "Right"
+
+            if y < y_step:
+                y_pos = "Top"
+            elif y < 2 * y_step:
+                y_pos = "Middle"
+            else:
+                y_pos = "Bottom"
+
+            return f"{y_pos}-{x_pos}"
+
+        def generate_prompt_with_context(sections):
+            # Check if all sections are empty
+            if all(not objects for objects in sections.values()):
+                return "Watch the video."
+
+            # Introductory description for the MLLM
+            intro = (
+                "The video is divided into nine quadrants, arranged in a 3x3 grid. "
+                "The quadrants are labeled as Top-Left, Top-Center, Top-Right, "
+                "Middle-Left, Middle-Center, Middle-Right, Bottom-Left, Bottom-Center, "
+                "and Bottom-Right. Here is a description of the objects detected in each quadrant: "
+            )
+
+            prompt_parts = []
+
+            for section, objects in sections.items():
+                if not objects:
+                    continue  # Skip empty sections
+
+                # Count the occurrences of each object
+                from collections import Counter
+
+                object_counts = Counter(objects)
+
+                # Create a list of descriptions for the objects in this section
+                object_descriptions = []
+                for obj, count in object_counts.items():
+                    if count == 1:
+                        object_descriptions.append(f"1 {obj}")
+                    else:
+                        object_descriptions.append(f"{count} {obj}s")
+
+                # Join the object descriptions with "and" if there are multiple
+                if len(object_descriptions) > 1:
+                    objects_str = (
+                        ", ".join(object_descriptions[:-1])
+                        + f" and {object_descriptions[-1]}"
+                    )
+                else:
+                    objects_str = object_descriptions[0]
+
+                # Add the section description to the prompt parts
+                prompt_parts.append(f"{objects_str} in the {section}")
+
+            # Join all section descriptions with commas and "and" for the final prompt
+            if len(prompt_parts) > 1:
+                objects_description = (
+                    ", ".join(prompt_parts[:-1]) + f", and {prompt_parts[-1]}"
                 )
             else:
-                objects += (
-                    f"There are {classes[corrects[0]]} {corrects[0]}s in the video,"
-                )
-            return objects
-        elif len(corrects) > 1:
-            for x in corrects:
-                if x == corrects[-1]:
-                    #print(",".join(objects.split(",")[:-1]))
-                    objects = ",".join(objects.split(",")[:-1])
-                    objects += f" and"
-                objects += f" {classes[x]} {x},"
-                if classes[x] > 1:
-                    objects = objects[:-1] + "s,"
-        if objects == "":
-            text = "Watch the video,"
-        else:
-            objects = objects[:-1]
-            text = f"{initial}{objects} in the video,"
-        return text
+                objects_description = prompt_parts[0]
+
+            # Combine the intro and the objects description
+            full_prompt = intro + "There are " + objects_description + "."
+
+            return full_prompt
+
+        for detection in corrects:
+            section = get_section(
+                (detection[4] + detection[2]) / 2,
+                (detection[5] + detection[3]) / 2,
+                video_information[0],
+                video_information[1],
+            )
+            sections[section].append(detection[0])
+        prompt = generate_prompt_with_context(sections)
+        return prompt
 
     @staticmethod
     def take_frame(frame, frame_number, frames, gap, detections, results):
@@ -125,6 +213,7 @@ class EventTester(VideoTester):
         self.__showdet = False
         self.__detector = None
         self.__MLLM = None
+        self.__image_encoder = None
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -140,6 +229,9 @@ class EventTester(VideoTester):
 
     def set_rute(self, rute):
         self.__rute = rute
+
+    def set_image_encoder(self, image_encoder):
+        self.__image_encoder = image_encoder
 
     def show_detections(self, showdet):
         self.__showdet = showdet
@@ -215,6 +307,9 @@ class EventTester(VideoTester):
             classes[i] = 0
         # Inicializacion de los modelos
         cap = cv2.VideoCapture(video_path)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        video_information = (width, height)
         fps = cap.get(cv2.CAP_PROP_FPS)
         duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
         prev_frame_time = 0
@@ -308,7 +403,12 @@ class EventTester(VideoTester):
                 results.pop(0)
                 frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 text = VideoTester.prompt_text(
-                    classes, self.__event, self.__mode, classes_focus, detections
+                    classes,
+                    self.__event,
+                    self.__mode,
+                    classes_focus,
+                    detections,
+                    video_information,
                 )
                 prompt = self.__MLLM.event_validation(
                     frames, self.__event, text, verbose=True
@@ -468,6 +568,164 @@ class EventTester(VideoTester):
             break
         self.save_dataframe()
 
+    def testing_video_CLIP(self, video_path):
+        # Contador de las detecciones
+        classes = dict()
+        # Inicializadas en cero
+        for i in detection_labels.values():
+            classes[i] = 0
+        # Inicializacion de los modelos
+        cap = cv2.VideoCapture(video_path)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        video_information = (width, height)
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
+        prev_frame_time = 0
+        new_frame_time = 0
+        # Almacenamiento de los frames, prompts y resultados
+        frames = []
+        # Resultados
+        frames_number = [0]
+        fps_list = []
+        prompts = ["Loading..."]
+        events = []
+        if self.__mode in [0, 3, 4]:
+            dmc = decision_maker(self.__event)
+        # Charge time
+        prev_frame_time = time.time()
+        results = []
+        start_video = time.time()
+        while True:
+            # Leer el siguiente frame
+            ret, frame = cap.read()
+            if not ret:
+                print("No se pudo obtener el frame. Fin del video o error.")
+                finished = True
+                break
+            match self.__mode:
+                case 0:
+                    # Only MLLM
+                    detections = []
+                    VideoTester.take_frame(
+                        frame,
+                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
+                        frames,
+                        5,
+                        detections,
+                        results,
+                    )
+            if len(frames) > 6 and self.__mode < 4:
+                frames.pop(0)
+                results.pop(0)
+                frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
+                event = self.__image_encoder.outputs(frames)
+                text = VideoTester.prompt_text(
+                    classes,
+                    event,
+                    self.__mode,
+                    classes_focus,
+                    detections,
+                    video_information,
+                )
+                prompt = self.__MLLM.event_validation(
+                    frames, self.__event, text, verbose=True
+                )
+                prompts.append(prompt)
+                events.append(event)
+            # -------------------------------------
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                finished = False
+                break
+            new_frame_time = time.time()
+            fps = 1 / (new_frame_time - prev_frame_time)
+            time_per_frame = (new_frame_time - prev_frame_time) * 1000
+            prev_frame_time = new_frame_time
+            print("Los FPS son", fps)
+            fps_list.append(fps)
+            cv2.putText(
+                frame,
+                f"Time {time_per_frame:.2f} ms {prompts[-1]}-{len(prompts)-1}",
+                (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                2.0,
+                (172, 182, 77),
+                2,
+            )
+            if self.__showdet:
+                self.__detector.put_detections(detections, frame)
+            if self.__showvideo:
+                cv2.imshow("Video", frame)
+        cap.release()
+        time_video = time.time() - start_video
+        cv2.destroyAllWindows()
+        return frames_number, fps_list, prompts, duration, time_video, finished, events
+
+    def simple_autotesting_CLIP(self, folders, descriptions, modes):
+        for k in modes:
+            for video_kind in range(len(folders)):
+                rute = f"{self.__rute}/{folders[video_kind]}/"
+                files = os.listdir(rute)
+                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
+                    finished = False
+                    count = self.__df[
+                        (self.__df["Name"] == files[j])
+                        & (self.__df["Check event"] == descriptions[video_kind])
+                        & (self.__df["Mode"] == k)
+                    ].shape[0]
+                    check = self.__df[
+                        (self.__df["Check event"] == descriptions[video_kind])
+                        & (self.__df["Mode"] == k)
+                    ].shape[0]
+                    if count == 0:
+                        self.set_event(descriptions[video_kind])
+                        self.set_mode(k)
+                        (
+                            frames_number,
+                            fps_list,
+                            prompts,
+                            duration,
+                            time_video,
+                            finished,
+                            events,
+                        ) = self.testing_video(
+                            f"../Database/CHAD DATABASE/{events[video_kind]}/{files[j]}",
+                            files[j],
+                        )
+                        if finished:
+                            frames_number = frames_number[1::]
+                            prompts = prompts[1::]
+                            print("Prompts:", prompts)
+                            tp, fp, fn, tn = self.check_precision(
+                                prompts, frames_number, files[j]
+                            )
+                            # Save the results
+                            row = {
+                                "Name": files[j],
+                                "Mode": k,
+                                "True Positive": tp,
+                                "False Positive": fp,
+                                "False Negative": fn,
+                                "True Negative": tn,
+                                "True Event": description[video_kind],
+                                "Check event": description[video_kind],
+                                "Validations Number": len(prompts),
+                                "Duration": duration,
+                                "Process time": time_video,
+                            }
+                            tester.append_dataframe(row)
+                            self.save_dataframe()
+                            # Append the row to the DataFrame
+                        else:
+                            break
+                else:
+                    continue
+                break
+            else:
+                continue
+            break
+        self.save_dataframe()
+
 
 if __name__ == "__main__":
     """events = [
@@ -512,14 +770,14 @@ if __name__ == "__main__":
     # Running away✅
     # Person lying in the floor✅
     # Chasing✅
-    #--------------------Last test were here ------------------------------
+    # --------------------Last test were here ------------------------------
     # Jumping ✅
     # Falling ✅
     # Guide✅
     # Littering✅
     # Tripping 🔨Check the prompt
     # Thief 🔨 In process
-    #PickPocketing 🔨 In process
+    # PickPocketing 🔨 In process
     """events = [
         "6-Chasing",
         "7-Jumping",
@@ -540,21 +798,21 @@ if __name__ == "__main__":
         "everything is normal",
     ]"""
 
-    '''events = [
+    """events = [
         "6-Chasing","7-Jumping",
         "8-Falling",'9-guide'
         ,'11-Littering',]
     description = [ "a person chasing other person","a person jumping",
         "a person falling", "a person guiding other person", 
         "a person throwing trash in the floor"
-    ]  '''  
-    '''events = ["12-Tripping",]
+    ]  """
+    """events = ["12-Tripping",]
     description = ["a person tripping",]
     events = ["10-thief",]
     description = ["a person stealing other person",]
         events = ["13-Pickpockering",]
-    description = ["a person attempting to steal the other person's wallet",]  '''
-    '''events = [
+    description = ["a person attempting to steal the other person's wallet",]  """
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -577,8 +835,8 @@ if __name__ == "__main__":
         "a person falling",
         "a person guiding other person",
         "a person throwing trash in the floor",
-    ]'''
-    '''events = [
+    ]"""
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -607,13 +865,13 @@ if __name__ == "__main__":
         "a person throwing trash in the floor",
         'a person tripping',
         "a person stealing other person's pocket",
-    ]'''
-    #"a person tripping by other person", 
+    ]"""
+    # "a person tripping by other person",
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
 
-    '''events = [
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -628,11 +886,11 @@ if __name__ == "__main__":
         "a person running",
         "a person lying in the floor",
         "a person chasing other person",
-    ]'''
-    '''janus = JanusPro()
+    ]"""
+    """janus = JanusPro()
     janus.set_model("deepseek-ai/Janus-Pro-1B")
-    janus.set_processor("deepseek-ai/Janus-Pro-1B")'''
-    '''events = [
+    janus.set_processor("deepseek-ai/Janus-Pro-1B")"""
+    """events = [
         "1-Riding a bicycle",
         "2-Fight",
         "3-Playing",
@@ -646,9 +904,24 @@ if __name__ == "__main__":
         '11-Littering',
         "12-Tripping",
         '13-Pickpockering',
-    ]'''
-    events = [
+    ]"""
+    """events = [
         "ALL",
+    ]"""
+    events = [
+        "1-Riding a bicycle",
+        "2-Fight",
+        "3-Playing",
+        "4-Running away",
+        "5-Person lying in the floor",
+        "6-Chasing",
+        "7-Jumping",
+        "8-Falling",
+        "9-guide",
+        "10-thief",
+        "11-Littering",
+        "12-Tripping",
+        "13-Pickpockering",
     ]
     description = [
         "a person riding a bicycle",
@@ -662,25 +935,25 @@ if __name__ == "__main__":
         "a person guiding other person",
         "a person stealing other person",
         "a person throwing trash in the floor",
-        'a person tripping',
+        "a person tripping",
         "a person stealing other person's pocket",
     ]
     # Prepare the tester
     tester = EventTester()
-    test=1
-    if test==0:
+    test = 1
+    if test == 0:
         llava = LLaVA_OneVision()
         llava.set_model("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
         llava.set_processor("llava-hf/llava-onevision-qwen2-0.5b-ov-hf")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(llava)
-    elif test==1:
+    elif test == 1:
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
         tester.set_MLLM(janus)
-    elif test==2:
+    elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
@@ -688,11 +961,11 @@ if __name__ == "__main__":
         tester.set_MLLM(qwen2vl)
     tester.set_rute("../Database/CHAD DATABASE")
     tester.set_detector(ov_qmodel)
-    #tester.set_MLLM(llava)
+    # tester.set_MLLM(llava)
     tester.show_detections(False)
     tester.show_video(True)
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
-    #tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0])
-    #tester.autotesting(events, description, [0,1,2,3,4])
+    # tester.simple_autotesting(events, description, [0,1,2,3])
+    tester.simple_autotesting(events, description, [0, 1, 2, 3, 4])
+    # tester.autotesting(events, description, [0,1,2,3,4])

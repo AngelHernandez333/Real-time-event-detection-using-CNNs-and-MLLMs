@@ -25,12 +25,12 @@ def calculate_ap(precision, recall):
 # Count the occurrences of each type of event
 
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/Testing6_8.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
-#df=pd.read_csv("/home/ubuntu/Tesis/Results/Results6Events64Videos.csv")
-#df=pd.read_csv("/home/ubuntu/Tesis/Results/ResultsNewRules8Events.csv")
-#df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
-'''df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/Testing6_8.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
+# df=pd.read_csv("/home/ubuntu/Tesis/Results/Results6Events64Videos.csv")
+# df=pd.read_csv("/home/ubuntu/Tesis/Results/ResultsNewRules8Events.csv")
+# df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
+"""df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
 df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
 df2["True Event"] = df2["True Event"].replace(
     "a person riding a bicycle", "everything is normal"
@@ -42,10 +42,10 @@ df = df[df["True Event"] != "everything is normal"]
 print(df)
 df=df[df['True Event']!= 'everything is normal']
 df = df[df['True Event']==df['Check event']]
-df= pd.read_csv("Results/TestingDev.csv")'''
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv')
-df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingJanusAll.csv')
-'''description = [
+df= pd.read_csv("Results/TestingDev.csv")"""
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAll.csv")
+"""description = [
     "a person stealing other person",
     "a person throwing trash in the floor",
     "a person tripping",
@@ -54,7 +54,7 @@ df = pd.read_csv('/home/ubuntu/Tesis/Results/TestingJanusAll.csv')
 
 # Filter the DataFrame to only keep rows with True Event not in the description list
 df = df[~df["True Event"].isin(description)]
-'''
+"""
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -118,7 +118,7 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle('Performance evaluation', fontsize=16, fontweight='bold')
+fig.suptitle("Performance evaluation", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
@@ -128,9 +128,9 @@ axes[0].legend().set_visible(False)
 axes[0].grid()
 axes[0].set_ylim(bottom=0.0, top=1.0)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
-#axes[0].set_yticklabels(
-#["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
-#)
+# axes[0].set_yticklabels(
+# ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
+# )
 
 mAP_values[["Processing time ratio"]].plot(kind="bar", ax=axes[1], color="#ff7f0e")
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
@@ -140,14 +140,14 @@ axes[1].legend().set_visible(False)
 axes[1].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[1].grid()
 axes[1].set_yticklabels(
-["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
+    ["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
 )
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/Meeting/mAPLLava.png")
+# plt.savefig("Results/Meeting/mAPLLava.png")
 plt.tight_layout()
 plt.show()
 print(df)
-print(len(df['Name'].unique()))
-print(len(df['True Event'].unique()))
+print(len(df["Name"].unique()))
+print(len(df["True Event"].unique()))

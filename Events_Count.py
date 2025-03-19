@@ -31,7 +31,7 @@ if __name__ == "__main__":
         "a person guiding other person",
         "a person stealing other person",
         "a person throwing trash in the floor",
-        'a person tripping',
+        "a person tripping",
         "a person stealing other person's pocket",
     ]
     columns = ["Name", "Event"]
@@ -52,4 +52,3 @@ if __name__ == "__main__":
             )
     df.to_csv("VideosEventAll.csv", index=False)
     print(df)
-    

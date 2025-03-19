@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import time
 
+
 class DecisionMakerPerEvent(ABC):
     @abstractmethod
     def detections_treatment(self):
@@ -215,73 +216,78 @@ class DecisionMakerPerEvent(ABC):
             if area_array.mean() > 0.93 and width / height > 1:
                 persons_index.append(i)
         return persons_index
+
     @staticmethod
     def verify_falling(persons, verbose=False):
-            persons_index = []
-            counter=0
-            for person in persons:
-                width_per_height_ratio = np.array([])
-                for i in range(len(person)):
-                    if verbose:
-                        print(
-                            i,
-                            "-",
-                            person[i][2],
-                            person[i][3],
-                            person[i][4],
-                            person[i][5],
-                            "\n",
-                        )
-                    height = person[i][5] - person[i][3]
-                    width = person[i][4] - person[i][2]
-                    width_per_height_ratio = np.append(
-                        width_per_height_ratio, width / height
-                    )
+        persons_index = []
+        counter = 0
+        for person in persons:
+            width_per_height_ratio = np.array([])
+            for i in range(len(person)):
                 if verbose:
                     print(
-                        "Ratio:",
-                        width_per_height_ratio,
+                        i,
+                        "-",
+                        person[i][2],
+                        person[i][3],
+                        person[i][4],
+                        person[i][5],
+                        "\n",
                     )
-                ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
-                if ratio_increasing:
-                    persons_index.append(counter)
-                counter+=1
-            return persons_index
+                height = person[i][5] - person[i][3]
+                width = person[i][4] - person[i][2]
+                width_per_height_ratio = np.append(
+                    width_per_height_ratio, width / height
+                )
+            if verbose:
+                print(
+                    "Ratio:",
+                    width_per_height_ratio,
+                )
+            ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
+            if ratio_increasing:
+                persons_index.append(counter)
+            counter += 1
+        return persons_index
+
     @staticmethod
     def verify_shaking(persons, verbose=False):
-            persons_index = []
-            counter=0
-            for person in persons:
-                width_per_height_ratio = np.array([])
-                for i in range(len(person)):
-                    if verbose:
-                        print(
-                            i,
-                            "-",
-                            person[i][2],
-                            person[i][3],
-                            person[i][4],
-                            person[i][5],
-                            "\n",
-                        )
-                    height = person[i][5] - person[i][3]
-                    width = person[i][4] - person[i][2]
-                    width_per_height_ratio = np.append(
-                        width_per_height_ratio, width / height
-                    )
+        persons_index = []
+        counter = 0
+        for person in persons:
+            width_per_height_ratio = np.array([])
+            for i in range(len(person)):
                 if verbose:
                     print(
-                        "Ratio:",
-                        width_per_height_ratio,np.abs(np.diff(width_per_height_ratio)).mean(),
-                        width_per_height_ratio[0]*0.10, 
+                        i,
+                        "-",
+                        person[i][2],
+                        person[i][3],
+                        person[i][4],
+                        person[i][5],
+                        "\n",
                     )
+                height = person[i][5] - person[i][3]
+                width = person[i][4] - person[i][2]
+                width_per_height_ratio = np.append(
+                    width_per_height_ratio, width / height
+                )
+            if verbose:
+                print(
+                    "Ratio:",
+                    width_per_height_ratio,
+                    np.abs(np.diff(width_per_height_ratio)).mean(),
+                    width_per_height_ratio[0] * 0.10,
+                )
 
-                ratio_changing = np.abs(np.diff(width_per_height_ratio)).mean() > width_per_height_ratio[0]*0.10
-                if ratio_changing:
-                    persons_index.append(counter)
-                counter+=1
-            return persons_index
-
+            ratio_changing = (
+                np.abs(np.diff(width_per_height_ratio)).mean()
+                > width_per_height_ratio[0] * 0.10
+            )
+            if ratio_changing:
+                persons_index.append(counter)
+            counter += 1
+        return persons_index
 
 
 class EventBicycle(DecisionMakerPerEvent):
@@ -618,7 +624,7 @@ class EventFalling(DecisionMakerPerEvent):
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        person_index=DecisionMakerPerEvent.verify_falling(persons,True)
+        person_index = DecisionMakerPerEvent.verify_falling(persons, True)
         return len(person_index) > 0
 
 
@@ -660,7 +666,7 @@ class EventGuiding(DecisionMakerPerEvent):
         if len(persons) < 2:
             return False
         else:
-            #First check the couple of persons that are together
+            # First check the couple of persons that are together
             check = []
             for i in range(len(persons) - 1):
                 if verbose:
@@ -682,7 +688,7 @@ class EventGuiding(DecisionMakerPerEvent):
                     if touching.sum() > (len(touching) - 1):
                         check.append([persons[i], persons[j]])
             for duo in check:
-                #Check each duo
+                # Check each duo
                 widht = duo[0][0][4] - duo[0][0][2]
                 height = duo[0][0][5] - duo[0][0][3]
                 distancex = np.array([])
@@ -795,23 +801,26 @@ class EventTripping(DecisionMakerPerEvent):
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        person_index=DecisionMakerPerEvent.verify_shaking(persons, verbose)
+        person_index = DecisionMakerPerEvent.verify_shaking(persons, verbose)
         if verbose:
-            print('The persons shaking are', person_index, len(persons))
+            print("The persons shaking are", person_index, len(persons))
         if len(person_index) < 1 or len(persons) < 2:
             return False
         for i in person_index:
             for j in [x for x in range(len(persons)) if x != i]:
-                tripping= np.array([])
+                tripping = np.array([])
                 for k in range(len(persons[i])):
-                    trip= DecisionMakerPerEvent.boxes_touching([persons[i][k], persons[j][k]])
+                    trip = DecisionMakerPerEvent.boxes_touching(
+                        [persons[i][k], persons[j][k]]
+                    )
                     if trip:
                         tripping = np.append(tripping, 1)
                     else:
                         tripping = np.append(tripping, 0)
-                if tripping.sum() > len(tripping)//2:
+                if tripping.sum() > len(tripping) // 2:
                     return True
         return False
+
 
 class EventStealing(DecisionMakerPerEvent):
     def __init__(self):
@@ -830,6 +839,7 @@ class EventStealing(DecisionMakerPerEvent):
 
     def process_detections(self, loaded_data):
         pass
+
 
 class EventStealing(DecisionMakerPerEvent):
     def __init__(self):
@@ -886,7 +896,9 @@ class EventStealing(DecisionMakerPerEvent):
                         persons[i][k], persons[j][k]
                     )
                     if verbose:
-                        print(f"At frame {k} {persons[i][k]}, {persons[j][k]} {distance}\n")
+                        print(
+                            f"At frame {k} {persons[i][k]}, {persons[j][k]} {distance}\n"
+                        )
                     distance_array = np.append(distance_array, distance)
                 decresing = np.all(np.diff(distance_array) < 0)
                 if verbose:
@@ -896,10 +908,13 @@ class EventStealing(DecisionMakerPerEvent):
                     for k in range(len(persons[i])):
                         if verbose:
                             print(f"At frame {k} {persons[i][k]}, {persons[j][k]}\n")
-                        touching=DecisionMakerPerEvent.do_rectangles_touch(persons[i][k], persons[j][k])
+                        touching = DecisionMakerPerEvent.do_rectangles_touch(
+                            persons[i][k], persons[j][k]
+                        )
                         if touching:
                             return True
         return False
+
 
 class EventPickPockering(DecisionMakerPerEvent):
     def __init__(self):
@@ -945,7 +960,7 @@ class EventPickPockering(DecisionMakerPerEvent):
         if len(persons) < 2:
             return False
         else:
-            #First check the couple of persons that are together
+            # First check the couple of persons that are together
             check = []
             for i in range(len(persons) - 1):
                 if verbose:
@@ -968,13 +983,15 @@ class EventPickPockering(DecisionMakerPerEvent):
                     if touching.sum() > 0:
                         check.append([persons[i], persons[j]])
             if verbose:
-                print('Status ',len(check)>0)
-            if len(check) ==0:
+                print("Status ", len(check) > 0)
+            if len(check) == 0:
                 return False
             for duo in check:
-                shaking=DecisionMakerPerEvent.verify_shaking(duo)
-                if len(shaking)>0:
+                shaking = DecisionMakerPerEvent.verify_shaking(duo)
+                if len(shaking) > 0:
                     return True
         return False
+
+
 if __name__ == "__main__":
     pass

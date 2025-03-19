@@ -25,12 +25,12 @@ def calculate_ap(precision, recall):
 # Count the occurrences of each type of event
 
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/Testing6_8.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
-#df=pd.read_csv("/home/ubuntu/Tesis/Results/Results6Events64Videos.csv")
-#df=pd.read_csv("/home/ubuntu/Tesis/Results/ResultsNewRules8Events.csv")
-#df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
-'''df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/Testing6_8.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/RunningLyingOld.csv")
+# df=pd.read_csv("/home/ubuntu/Tesis/Results/Results6Events64Videos.csv")
+# df=pd.read_csv("/home/ubuntu/Tesis/Results/ResultsNewRules8Events.csv")
+# df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_AllDescriptions.csv')
+"""df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
 df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
 df2["True Event"] = df2["True Event"].replace(
     "a person riding a bicycle", "everything is normal"
@@ -43,8 +43,8 @@ print(df)
 df=df[df['True Event']!= 'everything is normal']
 df = df[df['True Event']==df['Check event']]
 #  Get unique categories
-print(df)'''
-df = pd.read_csv('/home/ubuntu/Tesis/Results/Testing6_10.csv')
+print(df)"""
+df = pd.read_csv("/home/ubuntu/Tesis/Results/Testing6_10.csv")
 df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
 df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
 df2["True Event"] = df2["True Event"].replace(
@@ -55,8 +55,8 @@ df = pd.concat([df, df1, df2, df3], ignore_index=True)
 df = df[df["Check event"] != "everything is normal"]
 df = df[df["True Event"] != "everything is normal"]
 print(df)
-df=df[df['True Event']!= 'everything is normal']
-df = df[df['True Event']==df['Check event']]
+df = df[df["True Event"] != "everything is normal"]
+df = df[df["True Event"] == df["Check event"]]
 categories = df["True Event"].unique()
 print(categories)
 # Separate rows by category
@@ -112,13 +112,17 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/mAP_values6events.csv")
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/mAP_values6events.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle('Performance evaluation: mAP and Processing Time for 64 Videos and 6 Events', fontsize=16, fontweight='bold')
+fig.suptitle(
+    "Performance evaluation: mAP and Processing Time for 64 Videos and 6 Events",
+    fontsize=16,
+    fontweight="bold",
+)
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
@@ -129,7 +133,7 @@ axes[0].grid()
 axes[0].set_ylim(bottom=0.3)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[0].set_yticklabels(
-["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
+    ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
 )
 
 mAP_values[["Processing time ratio"]].plot(kind="bar", ax=axes[1], color="#ff7f0e")
@@ -140,14 +144,14 @@ axes[1].legend().set_visible(False)
 axes[1].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[1].grid()
 axes[1].set_yticklabels(
-["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
+    ["{:.1f}".format(x) for x in axes[1].get_yticks()], fontsize=10, fontweight="bold"
 )
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/mAP_ProcessingTime.png")
+# plt.savefig("Results/mAP_ProcessingTime.png")
 plt.tight_layout()
 plt.show()
 print(df)
-print(len(df['Name'].unique()))
-print(len(df['True Event'].unique()))
+print(len(df["Name"].unique()))
+print(len(df["True Event"].unique()))

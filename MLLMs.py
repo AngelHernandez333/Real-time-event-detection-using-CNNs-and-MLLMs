@@ -1,6 +1,11 @@
 from abc import ABC, abstractmethod
 import torch
-from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration,Qwen2VLForConditionalGeneration, AutoTokenizer
+from transformers import (
+    AutoProcessor,
+    LlavaOnevisionForConditionalGeneration,
+    Qwen2VLForConditionalGeneration,
+    AutoTokenizer,
+)
 import numpy as np
 from transformers import AutoModelForCausalLM
 import sys
@@ -14,6 +19,7 @@ from math import sqrt
 # Añade la ruta de janus al sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "janus"))
 from lib.janus.janus.models import MultiModalityCausalLM, VLChatProcessor
+
 
 class MLLMs(ABC):
     @abstractmethod
@@ -33,6 +39,7 @@ class MLLMs(ABC):
         cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(cv_image_rgb)
         return pil_image
+
     @staticmethod
     def resize_frame(frame, max_pixels):
         # Calculate aspect ratio and target dimensions based on max_pixels
@@ -45,6 +52,7 @@ class MLLMs(ABC):
             frame, (target_w, target_h), interpolation=cv2.INTER_CUBIC
         )
         return resized_frame
+
 
 class LLaVA_OneVision(MLLMs):
     def __init__(self):
@@ -59,8 +67,9 @@ class LLaVA_OneVision(MLLMs):
             low_cpu_mem_usage=True,
             attn_implementation="sdpa",
         ).to(dtype=torch.float16, device="cuda")
-        #attn_implementation="flash_attention_2",
+        # attn_implementation="flash_attention_2",
         # use_flash_attention_2=True
+
     def set_processor(self, processor):
         self.__processor = AutoProcessor.from_pretrained(processor)
 
@@ -72,8 +81,7 @@ class LLaVA_OneVision(MLLMs):
                     {"type": "video"},
                     {
                         "type": "text",
-                        "text": f"{text} is there {event}? Just yes or no"
-                        ,
+                        "text": f"{text} is there {event}? Just yes or no",
                     },
                 ],
             },
@@ -119,7 +127,7 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
-        '''
+        """
         conversation = [
             {
                 "role": "<|User|>",
@@ -128,8 +136,8 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        '''
-        '''
+        """
+        """
         conversation = [
             {
                 "role": "<|User|>",
@@ -137,8 +145,8 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]'''
-        '''
+        ]"""
+        """
         conversation = [
             {
                 "role": "<|User|>",
@@ -155,27 +163,27 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]'''
-        '''conversation = [
+        ]"""
+        """conversation = [
             {
                 "role": "<|User|>",
                 "content": f"{images_number} This is a video \n{text} does the video contain {event}? Just yes or no",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]'''
-        '''conversation = [
+        ]"""
+        """conversation = [
             {
                 "role": "<|User|>",
                 "content": f"{images_number} This is a video \n{text} confirm if the video contain {event}? Just yes or no",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]'''
+        ]"""
         conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} does the video contain {event}? Just yes or no",
+                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
@@ -224,11 +232,12 @@ class Qwen2_VL(MLLMs):
 
     def set_model(self, model):
         self.__model = Qwen2VLForConditionalGeneration.from_pretrained(
-        model,
-        torch_dtype=torch.bfloat16,
-        attn_implementation="flash_attention_2",
-        device_map="auto",
+            model,
+            torch_dtype=torch.bfloat16,
+            attn_implementation="flash_attention_2",
+            device_map="auto",
         )
+
     def set_processor(self, processor):
         # default processer
         # processor = AutoProcessor.from_pretrained("Qwen/Qwen2-VL-2B-Instruct")
@@ -241,15 +250,18 @@ class Qwen2_VL(MLLMs):
 
     def event_validation(self, frames, event, text="Watch the video,", verbose=False):
         conversation = [
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "video",
-                },
-                {"type": "text", "text": f"{text} is there {event}? Just yes or no"},
-            ],
-        }
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "video",
+                    },
+                    {
+                        "type": "text",
+                        "text": f"{text} is there {event}? Just yes or no",
+                    },
+                ],
+            }
         ]
         video = torch.tensor(np.stack(frames)).permute(0, 3, 1, 2).float()
         # Preparation for inference
@@ -278,10 +290,6 @@ class Qwen2_VL(MLLMs):
             clean_up_tokenization_spaces=False,
         )
         return output_text[0].split(".")[0]
-
-
-
-
 
 
 if __name__ == "__main__":

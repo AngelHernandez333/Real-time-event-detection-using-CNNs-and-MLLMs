@@ -10,7 +10,7 @@ df3 = pd.read_csv("Results/resultsMode0Samevideos.csv")
 df = pd.concat([df1, df2, df3], ignore_index=True)
 df = df[df["Check event"] != "everything is normal"]
 
-#-
+# -
 df1 = pd.read_csv("Results/resultsMode1_5Samevideos.csv")
 df2 = pd.read_csv("Results/resultsLLavaAV_NormalVideos.csv")
 df2["True Event"] = df2["True Event"].replace(
@@ -136,7 +136,7 @@ df_compare.rename(index=mode_names, inplace=True)
 df_compare = df_compare.sort_values(by="percentage")
 
 df_compare.plot(kind="bar", color="#006545", ax=ax)
-ax.title.set_text('Event Prediction in all Configurations')
+ax.title.set_text("Event Prediction in all Configurations")
 ax.title.set_fontsize(14)
 ax.title.set_fontweight("bold")
 ax.set_yticklabels(

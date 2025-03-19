@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+
 def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
@@ -19,15 +20,19 @@ def calculate_ap(precision, recall):
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
     return ap
+
+
 def calculate_map(name, rute):
     df = pd.read_csv(f"{rute}/{name}")
-    df=df[df['Mode']==1]
+    df = df[df["Mode"] == 1]
     categories = df["True Event"].unique()
     # Separate rows by category
     df["Precision"] = df["True Positive"] / (df["True Positive"] + df["False Positive"])
     df["Recall"] = df["True Positive"] / (df["True Positive"] + df["False Negative"])
     df.fillna(0, inplace=True)
-    category_dfs = {category: df[df["True Event"] == category] for category in categories}
+    category_dfs = {
+        category: df[df["True Event"] == category] for category in categories
+    }
 
     mAP_process = []
     for i in range(len(categories)):
@@ -51,18 +56,20 @@ def calculate_map(name, rute):
     # Calculate the mean Average Precision (mAP) for each mode
     mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
     return mAP_values
+
+
 if __name__ == "__main__":
-    rute='/home/ubuntu/Tesis/Results/temp'
-    name='TestingJanusIs.csv'
+    rute = "/home/ubuntu/Tesis/Results/temp"
+    name = "TestingJanusIs.csv"
     files = os.listdir(rute)
     results = []
     for i in range(len(files)):
         results.append(calculate_map(files[i], rute))
-    print('\n\n\n')
+    print("\n\n\n")
     final_results = pd.DataFrame()
     for i in range(len(results)):
         result = results[i]
-        result["File"] = files[i].split('.')[0].split('TestingJanus')[-1]
+        result["File"] = files[i].split(".")[0].split("TestingJanus")[-1]
         final_results = pd.concat([final_results, result])
     print(final_results)
     # Plot the AP values for each file
@@ -84,12 +91,28 @@ if __name__ == "__main__":
         subset = final_results.loc[mode]
         plt.bar(index + i * bar_width, subset["AP"], bar_width, label=mode)
         for j, value in enumerate(subset["AP"]):
-            plt.text(index[j] + i * bar_width, value + 0.01, f'{value:.2f}', ha='center', va='bottom', color='black', fontweight='bold')
+            plt.text(
+                index[j] + i * bar_width,
+                value + 0.01,
+                f"{value:.2f}",
+                ha="center",
+                va="bottom",
+                color="black",
+                fontweight="bold",
+            )
 
-    plt.xlabel('File').set_visible(False)
-    plt.ylabel('mAP', fontsize=10, fontweight="bold")
-    plt.title('Mean Average Precision (mAP) for prompts', fontsize=16, fontweight="bold")
-    plt.xticks(index + bar_width / 2, final_results["File"].unique(), rotation=45, color="black", fontweight="bold")
+    plt.xlabel("File").set_visible(False)
+    plt.ylabel("mAP", fontsize=10, fontweight="bold")
+    plt.title(
+        "Mean Average Precision (mAP) for prompts", fontsize=16, fontweight="bold"
+    )
+    plt.xticks(
+        index + bar_width / 2,
+        final_results["File"].unique(),
+        rotation=45,
+        color="black",
+        fontweight="bold",
+    )
     plt.legend().set_visible(False)
     plt.grid(True)
     plt.tight_layout()
