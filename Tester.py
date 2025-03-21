@@ -239,6 +239,47 @@ class EventTester(VideoTester):
     def show_video(self, showvideo):
         self.__showvideo = showvideo
 
+    def check_precisionCLIP(self, frames_number, video_name, predicted_events, event):
+        # True positive Prediction and Reality are true
+        # True negative Prediction and Reality are false
+        # False negative Prediction is false and Reality is true
+        # False positive Prediction is true and Reality is false
+        tp = 0
+        fp = 0
+        fn = 0
+        tn = 0
+        prompts = [predicts.split('a video of ')[-1] for predicts in predicted_events]
+        print(event, predicted_events, prompts)
+        name = video_name.split(".")[0]
+        frames = np.load(
+            f"../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/{name}.npy"
+        )
+        other_predictions = {}
+        for i in range(len(prompts)):
+            print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
+            if prompts[i] == event and frames[frames_number[i] - 1] == 1:
+                tp += 1
+            elif prompts[i] == event and frames[frames_number[i] - 1] == 0:
+                fp += 1
+            elif prompts[i] != event and frames[frames_number[i] - 1] == 1:
+                fn += 1
+            else:
+                tn += 1
+            if prompts[i] != event:
+                if prompts[i] in other_predictions:
+                    other_predictions[prompts[i]] += 1
+                else:
+                    other_predictions[prompts[i]] = 1
+        other_predictions = ", ".join(
+            [f"{key}: {value}" for key, value in other_predictions.items()]
+        )
+        print(tp, fp, fn, tn)
+        try:
+            return tp, fp, fn, tn, other_predictions
+        except:
+            return 0, 0, 0, 0 , other_predictions
+
+
     def check_precision(self, prompts, frames_number, video_name):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
@@ -466,7 +507,7 @@ class EventTester(VideoTester):
                                 time_video,
                                 finished,
                             ) = self.testing_video(
-                                f"../Database/CHAD DATABASE/{events[video_kind]}/{files[j]}",
+                                f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",
                                 files[j],
                             )
                             if finished:
@@ -531,7 +572,7 @@ class EventTester(VideoTester):
                             time_video,
                             finished,
                         ) = self.testing_video(
-                            f"../Database/CHAD DATABASE/{events[video_kind]}/{files[j]}",
+                            f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",
                             files[j],
                         )
                         if finished:
@@ -618,8 +659,7 @@ class EventTester(VideoTester):
             if len(frames) > 6 and self.__mode < 4:
                 frames.pop(0)
                 results.pop(0)
-                frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-                event = self.__image_encoder.outputs(frames)
+                event, avg_prob = self.__image_encoder.outputs(frames)
                 text = VideoTester.prompt_text(
                     classes,
                     event,
@@ -628,11 +668,15 @@ class EventTester(VideoTester):
                     detections,
                     video_information,
                 )
-                prompt = self.__MLLM.event_validation(
-                    frames, self.__event, text, verbose=True
-                )
-                prompts.append(prompt)
+                frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 events.append(event)
+                if avg_prob>0.99:
+                    prompt = self.__MLLM.event_validation(
+                        frames, self.__event, text, verbose=True
+                    )
+                    prompts.append(prompt)
+                else:
+                    prompts.append("")
             # -------------------------------------
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 finished = False
@@ -652,8 +696,6 @@ class EventTester(VideoTester):
                 (172, 182, 77),
                 2,
             )
-            if self.__showdet:
-                self.__detector.put_detections(detections, frame)
             if self.__showvideo:
                 cv2.imshow("Video", frame)
         cap.release()
@@ -661,7 +703,7 @@ class EventTester(VideoTester):
         cv2.destroyAllWindows()
         return frames_number, fps_list, prompts, duration, time_video, finished, events
 
-    def simple_autotesting_CLIP(self, folders, descriptions, modes):
+    def simple_autotestingCLIP(self, folders, descriptions, modes):
         for k in modes:
             for video_kind in range(len(folders)):
                 rute = f"{self.__rute}/{folders[video_kind]}/"
@@ -687,17 +729,15 @@ class EventTester(VideoTester):
                             duration,
                             time_video,
                             finished,
-                            events,
-                        ) = self.testing_video(
-                            f"../Database/CHAD DATABASE/{events[video_kind]}/{files[j]}",
-                            files[j],
-                        )
+                            predicted_events,
+                        ) = self.testing_video_CLIP(
+                            f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",)
                         if finished:
                             frames_number = frames_number[1::]
                             prompts = prompts[1::]
                             print("Prompts:", prompts)
-                            tp, fp, fn, tn = self.check_precision(
-                                prompts, frames_number, files[j]
+                            tp, fp, fn, tn , other_predictions= self.check_precisionCLIP(frames_number,
+                            files[j], predicted_events, descriptions[video_kind]
                             )
                             # Save the results
                             row = {
@@ -707,13 +747,13 @@ class EventTester(VideoTester):
                                 "False Positive": fp,
                                 "False Negative": fn,
                                 "True Negative": tn,
-                                "True Event": description[video_kind],
-                                "Check event": description[video_kind],
+                                "True Event": descriptions[video_kind],
+                                "Check event": other_predictions,
                                 "Validations Number": len(prompts),
                                 "Duration": duration,
                                 "Process time": time_video,
                             }
-                            tester.append_dataframe(row)
+                            self.append_dataframe(row)
                             self.save_dataframe()
                             # Append the row to the DataFrame
                         else:

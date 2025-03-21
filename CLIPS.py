@@ -48,8 +48,12 @@ class CLIP_Model(CLIP):
         probs = logits_per_image.softmax(
             dim=1
         )  # we can take the softmax to get the label probabilities
-
-        print(probs)  # Get the max probability and its index for each image
+        max_probs, max_indices = probs.max(dim=1)
+                # Print the max probability and corresponding description for each image
+        for i in range(len(max_probs)):
+            print(
+                f"Image {i}: Max probability: {max_probs[i].item()}, Description: {self.__descriptions[max_indices[i].item()]}"
+            )
         # Calculate the average probability for each description
         avg_probs = probs.mean(dim=0)
         # Find the description with the highest average probability
@@ -57,4 +61,5 @@ class CLIP_Model(CLIP):
         print(
             f"\n\n\nHighest average probability: {max_avg_prob.item()}, Description: {self.__descriptions[max_avg_index.item()]}"
         )
-        return self.__descriptions[max_avg_index.item()]
+        print(f"\nTime {time.time()-start} seconds")
+        return self.__descriptions[max_avg_index.item()], max_avg_prob.item()
