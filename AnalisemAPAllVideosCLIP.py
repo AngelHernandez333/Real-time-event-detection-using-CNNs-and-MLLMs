@@ -5,8 +5,17 @@ import matplotlib.pyplot as plt
 
 
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
 
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
+
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+
+#MLLM 0.431
+#ONLY CLIP 0.42813
+
+#df = df[df["Mode"] == 0]
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
 
 def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
@@ -62,7 +71,7 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "CLIP",
+        0: "CLIP",1: "CLIP-MLLM",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -87,6 +96,18 @@ fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 fig.suptitle("Performance evaluation", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
+for i, bar in enumerate(axes[0].patches):
+    height = bar.get_height()
+    axes[0].text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+        fontsize=10,
+        fontweight="bold",
+        color="black",
+    )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
 axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
 axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
@@ -99,6 +120,18 @@ axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(
 # )
 
 mAP_values[["Processing time ratio"]].plot(kind="bar", ax=axes[1], color="#ff7f0e")
+for i, bar in enumerate(axes[1].patches):
+    height = bar.get_height()
+    axes[1].text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+        fontsize=10,
+        fontweight="bold",
+        color="black",
+    )
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
 axes[1].set_ylabel("Processing time per duration ratio", fontsize=16, fontweight="bold")
 axes[1].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
@@ -111,11 +144,11 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-plt.savefig("Results/Meeting/mAPCLIP.png")
+#plt.savefig("Results/Meeting/mAP.png")
 plt.tight_layout()
 plt.show()
 print(df)
 print(len(df["Name"].unique()))
 print(len(df["True Event"].unique()))
 print(mAP_values)
-mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
+#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")

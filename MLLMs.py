@@ -36,8 +36,8 @@ class MLLMs(ABC):
 
     @staticmethod
     def cv2_to_pil(cv_image):
-        cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
-        pil_image = Image.fromarray(cv_image_rgb)
+        #cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+        pil_image = Image.fromarray(cv_image)
         return pil_image
 
     @staticmethod
@@ -188,6 +188,14 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
+        '''conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} is there {event}? Just yes or no",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
         # Load images with PIL and convert to RGB
 
         pil_images = [

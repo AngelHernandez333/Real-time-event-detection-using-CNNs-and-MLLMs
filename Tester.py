@@ -72,15 +72,7 @@ class VideoTester(ABC):
         pass
 
     @abstractmethod
-    def testing_video_CLIP(self):
-        pass
-
-    @abstractmethod
     def set_image_encoder(self):
-        pass
-
-    @abstractmethod
-    def simple_autotestingCLIP(self):
         pass
 
     @staticmethod
@@ -230,54 +222,13 @@ class EventTester(VideoTester):
     def set_rute(self, rute):
         self.__rute = rute
 
-    def set_image_encoder(self, image_encoder):
-        self.__image_encoder = image_encoder
-
     def show_detections(self, showdet):
         self.__showdet = showdet
 
     def show_video(self, showvideo):
         self.__showvideo = showvideo
-
-    def check_precisionCLIP(self, frames_number, video_name, predicted_events, event):
-        # True positive Prediction and Reality are true
-        # True negative Prediction and Reality are false
-        # False negative Prediction is false and Reality is true
-        # False positive Prediction is true and Reality is false
-        tp = 0
-        fp = 0
-        fn = 0
-        tn = 0
-        prompts = [predicts.split('a video of ')[-1] for predicts in predicted_events]
-        print(event, predicted_events, prompts)
-        name = video_name.split(".")[0]
-        frames = np.load(
-            f"../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/{name}.npy"
-        )
-        other_predictions = {}
-        for i in range(len(prompts)):
-            print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
-            if prompts[i] == event and frames[frames_number[i] - 1] == 1:
-                tp += 1
-            elif prompts[i] == event and frames[frames_number[i] - 1] == 0:
-                fp += 1
-            elif prompts[i] != event and frames[frames_number[i] - 1] == 1:
-                fn += 1
-            else:
-                tn += 1
-            if prompts[i] != event:
-                if prompts[i] in other_predictions:
-                    other_predictions[prompts[i]] += 1
-                else:
-                    other_predictions[prompts[i]] = 1
-        other_predictions = ", ".join(
-            [f"{key}: {value}" for key, value in other_predictions.items()]
-        )
-        print(tp, fp, fn, tn)
-        try:
-            return tp, fp, fn, tn, other_predictions
-        except:
-            return 0, 0, 0, 0 , other_predictions
+    def set_image_encoder(self, image_encoder):
+        self.__image_encoder = image_encoder
 
 
     def check_precision(self, prompts, frames_number, video_name):
@@ -609,163 +560,6 @@ class EventTester(VideoTester):
             break
         self.save_dataframe()
 
-    def testing_video_CLIP(self, video_path):
-        # Contador de las detecciones
-        classes = dict()
-        # Inicializadas en cero
-        for i in detection_labels.values():
-            classes[i] = 0
-        # Inicializacion de los modelos
-        cap = cv2.VideoCapture(video_path)
-        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        video_information = (width, height)
-        fps = cap.get(cv2.CAP_PROP_FPS)
-        duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
-        prev_frame_time = 0
-        new_frame_time = 0
-        # Almacenamiento de los frames, prompts y resultados
-        frames = []
-        # Resultados
-        frames_number = [0]
-        fps_list = []
-        prompts = ["Loading..."]
-        events = []
-        if self.__mode in [0, 3, 4]:
-            dmc = decision_maker(self.__event)
-        # Charge time
-        prev_frame_time = time.time()
-        results = []
-        start_video = time.time()
-        while True:
-            # Leer el siguiente frame
-            ret, frame = cap.read()
-            if not ret:
-                print("No se pudo obtener el frame. Fin del video o error.")
-                finished = True
-                break
-            match self.__mode:
-                case 0:
-                    # Only MLLM
-                    detections = []
-                    VideoTester.take_frame(
-                        frame,
-                        int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-                        frames,
-                        5,
-                        detections,
-                        results,
-                    )
-            if len(frames) > 6 and self.__mode < 4:
-                frames.pop(0)
-                results.pop(0)
-                event, avg_prob = self.__image_encoder.outputs(frames)
-                text = VideoTester.prompt_text(
-                    classes,
-                    event,
-                    self.__mode,
-                    classes_focus,
-                    detections,
-                    video_information,
-                )
-                frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-                events.append(event)
-                if avg_prob>0.99:
-                    prompt = self.__MLLM.event_validation(
-                        frames, self.__event, text, verbose=True
-                    )
-                    prompts.append(prompt)
-                else:
-                    prompts.append("")
-            # -------------------------------------
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                finished = False
-                break
-            new_frame_time = time.time()
-            fps = 1 / (new_frame_time - prev_frame_time)
-            time_per_frame = (new_frame_time - prev_frame_time) * 1000
-            prev_frame_time = new_frame_time
-            print("Los FPS son", fps)
-            fps_list.append(fps)
-            cv2.putText(
-                frame,
-                f"Time {time_per_frame:.2f} ms {prompts[-1]}-{len(prompts)-1}",
-                (50, 50),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                2.0,
-                (172, 182, 77),
-                2,
-            )
-            if self.__showvideo:
-                cv2.imshow("Video", frame)
-        cap.release()
-        time_video = time.time() - start_video
-        cv2.destroyAllWindows()
-        return frames_number, fps_list, prompts, duration, time_video, finished, events
-
-    def simple_autotestingCLIP(self, folders, descriptions, modes):
-        for k in modes:
-            for video_kind in range(len(folders)):
-                rute = f"{self.__rute}/{folders[video_kind]}/"
-                files = os.listdir(rute)
-                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
-                    finished = False
-                    count = self.__df[
-                        (self.__df["Name"] == files[j])
-                        & (self.__df["Check event"] == descriptions[video_kind])
-                        & (self.__df["Mode"] == k)
-                    ].shape[0]
-                    check = self.__df[
-                        (self.__df["Check event"] == descriptions[video_kind])
-                        & (self.__df["Mode"] == k)
-                    ].shape[0]
-                    if count == 0:
-                        self.set_event(descriptions[video_kind])
-                        self.set_mode(k)
-                        (
-                            frames_number,
-                            fps_list,
-                            prompts,
-                            duration,
-                            time_video,
-                            finished,
-                            predicted_events,
-                        ) = self.testing_video_CLIP(
-                            f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",)
-                        if finished:
-                            frames_number = frames_number[1::]
-                            prompts = prompts[1::]
-                            print("Prompts:", prompts)
-                            tp, fp, fn, tn , other_predictions= self.check_precisionCLIP(frames_number,
-                            files[j], predicted_events, descriptions[video_kind]
-                            )
-                            # Save the results
-                            row = {
-                                "Name": files[j],
-                                "Mode": k,
-                                "True Positive": tp,
-                                "False Positive": fp,
-                                "False Negative": fn,
-                                "True Negative": tn,
-                                "True Event": descriptions[video_kind],
-                                "Check event": other_predictions,
-                                "Validations Number": len(prompts),
-                                "Duration": duration,
-                                "Process time": time_video,
-                            }
-                            self.append_dataframe(row)
-                            self.save_dataframe()
-                            # Append the row to the DataFrame
-                        else:
-                            break
-                else:
-                    continue
-                break
-            else:
-                continue
-            break
-        self.save_dataframe()
-
 
 if __name__ == "__main__":
     """events = [
@@ -991,7 +785,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevcsv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -1007,5 +801,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0, 1, 2, 3, 4])
+    tester.simple_autotesting(events, description, [ 4])
     # tester.autotesting(events, description, [0,1,2,3,4])

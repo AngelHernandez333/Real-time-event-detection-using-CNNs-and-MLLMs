@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 import time
 from transformers import CLIPProcessor, CLIPModel
-
+import torch
+from PIL import Image
+import cv2
 
 class CLIP(ABC):
     @abstractmethod
@@ -16,6 +18,14 @@ class CLIP(ABC):
     def outputs(self):
         pass
 
+    @abstractmethod
+    def get_descriptions(self, descriptions):
+        pass
+
+    def set_descriptions(self, descriptions):
+        pass
+
+
 
 class CLIP_Model(CLIP):
     def __init__(self):
@@ -24,22 +34,35 @@ class CLIP_Model(CLIP):
         self.__descriptions = None
 
     def set_model(self, model):
-        self.__model = CLIPModel.from_pretrained(model)
+        device = "cuda"
+        torch_dtype = torch.float16
+
+        self.__model = CLIPModel.from_pretrained(model,  attn_implementation="sdpa",
+                                            device_map=device, torch_dtype=torch_dtype,)
 
     def set_processor(self, processor):
         self.__processor = CLIPProcessor.from_pretrained(processor)
 
     def set_descriptions(self, descriptions):
         self.__descriptions = descriptions
+    def get_descriptions(self):
+        return self.__descriptions
 
     def outputs(self, images):
-
+        device = "cuda"
+        torch_dtype = torch.float16
         start = time.time()
+        #pil_images = [
+        #    cv2_to_pil(frame) for frame in images]
         inputs = self.__processor(
-            text=self.__descriptions, images=images, return_tensors="pt", padding=True
-        )
+        text=self.__descriptions, images=images, return_tensors="pt", padding=True
+        ).to(device)
+        
+        with torch.no_grad():
 
-        outputs = self.__model(**inputs)
+            with torch.autocast(device):
+
+                outputs = self.__model(**inputs)
 
         logits_per_image = (
             outputs.logits_per_image

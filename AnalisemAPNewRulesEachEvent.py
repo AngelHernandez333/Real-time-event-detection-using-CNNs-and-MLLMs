@@ -21,7 +21,7 @@ def calculate_ap(precision, recall):
     return ap
 
 
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingIsThereLlava.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32.csv")
 description = [
     "a person stealing other person",
     "a person throwing trash in the floor",

@@ -1,20 +1,33 @@
-import torch
+import cv2 
+import os
 
-# Check if CUDA (GPU support) is available
-if torch.cuda.is_available():
-    # Get the number of GPUs available
-    num_gpus = torch.cuda.device_count()
-    print(f"Number of GPUs available: {num_gpus}")
+descriptions = [
+    "a person riding a bicycle",
+    "a certain number of persons fighting",
+    "a group of persons playing",
+    "a person running",
+    "a person lying in the floor",
+    "a person chasing other person",
+    "a person jumping",
+    "a person falling",
+    "a person guiding other person",
+    "a person stealing other person",
+    "a person throwing trash in the floor",
+    "a person tripping",
+    "a person stealing other person's pocket",
+]
+rute = f"/home/ubuntu/Tesis/Temp/"
+files = os.listdir(rute)
+images = []
 
-    # Loop through each GPU and print its details
-    for i in range(num_gpus):
-        print(f"\nGPU {i}:")
-        print(f"  Name: {torch.cuda.get_device_name(i)}")
-        print(
-            f"  Memory: {torch.cuda.get_device_properties(i).total_memory / 1e9:.2f} GB"
-        )
-        print(
-            f"  CUDA Capability: {torch.cuda.get_device_properties(i).major}.{torch.cuda.get_device_properties(i).minor}"
-        )
-else:
-    print("No GPUs available. Using CPU.")
+for i in range(7):
+    image_path = f"/home/ubuntu/Tesis/Temp/{files[i]}"
+
+    image=cv2.imread(image_path)
+
+    frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    cv2.imshow('Test', frame)
+    cv2.waitKey(0)
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    cv2.imshow('Test 2', frame)
+    cv2.waitKey(0)
