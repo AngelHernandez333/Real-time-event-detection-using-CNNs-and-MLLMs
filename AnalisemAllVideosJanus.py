@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def calculate_ap(precision, recall):
+'''def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -17,6 +17,23 @@ def calculate_ap(precision, recall):
     # Encuentra puntos donde el recall cambia y calcula el área bajo la curva
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
+
+    return ap'''
+def calculate_ap(precision, recall):
+    # Sort by recall (ascending)
+    sorted_indices = np.argsort(recall)
+    precision = np.array(precision)[sorted_indices]
+    recall = np.array(recall)[sorted_indices]
+
+    # Pad with (0,0) and (1,0)
+    precision = np.concatenate(([0], precision, [0]))
+    recall = np.concatenate(([0], recall, [1]))
+
+    # Compute AP as the area under the raw curve (no interpolation)
+    ap = 0.0
+    for i in range(1, len(recall)):
+        delta_recall = recall[i] - recall[i-1]
+        ap += delta_recall * precision[i]
 
     return ap
 

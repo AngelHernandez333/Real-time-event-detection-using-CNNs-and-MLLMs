@@ -1,0 +1,309 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+4_076_1.mp4,0,8,0,40,29,a video of a person riding a bicycle on the street,,77,13.966666666666669,18.9778106212616
+3_106_1.mp4,0,24,0,3,3,a video of a person riding a bicycle on the street,,30,14.981633333333331,16.384236574172974
+1_067_1.mp4,0,14,0,7,0,a video of a person riding a bicycle on the street,,21,9.976633333333334,10.900658130645752
+1_066_1.mp4,0,14,0,11,19,a video of a person riding a bicycle on the street,,44,14.981633333333331,17.512191772460938
+2_096_1.mp4,0,24,0,14,21,a video of a person riding a bicycle on the street,,59,15.0,18.92207360267639
+4_077_1.mp4,0,18,0,10,5,a video of a person riding a bicycle on the street,,33,10.966666666666669,11.64335012435913
+3_105_1.mp4,0,24,0,21,16,a video of a person riding a bicycle on the street,,61,20.053366666666665,23.61687660217285
+2_067_1.mp4,0,0,0,29,115,a video of multiple people engaged in a physical fight,,144,25.0,35.665409564971924
+4_082_1.mp4,0,2,0,150,25,a video of multiple people engaged in a physical fight,,177,30.966666666666665,38.244001388549805
+3_079_1.mp4,0,0,0,101,114,a video of multiple people engaged in a physical fight,,215,45.011633333333336,60.29378342628479
+2_065_1.mp4,0,0,0,131,129,a video of multiple people engaged in a physical fight,,260,45.0,64.04455542564392
+1_081_1.mp4,0,0,0,28,4,a video of multiple people engaged in a physical fight,,32,12.979633333333334,14.616708517074583
+3_089_1.mp4,0,0,0,108,9,a video of multiple people engaged in a physical fight,,117,29.99663333333333,37.80957889556885
+1_088_1.mp4,0,0,0,163,100,a video of multiple people engaged in a physical fight,,263,45.011633333333336,63.96068358421326
+2_068_1.mp4,0,0,0,101,69,a video of multiple people engaged in a physical fight,,170,35.0,47.41705298423767
+1_071_1.mp4,0,0,0,65,48,a video of multiple people engaged in a physical fight,,113,19.986633333333334,28.47224926948548
+4_079_1.mp4,0,0,0,122,80,a video of multiple people engaged in a physical fight,,202,34.96666666666667,42.55185794830322
+3_076_1.mp4,0,6,0,165,116,a video of multiple people engaged in a physical fight,,287,49.78306666666667,72.89276266098022
+2_081_1.mp4,0,0,0,85,11,a video of multiple people engaged in a physical fight,,96,17.0,24.57187032699585
+1_072_1.mp4,0,17,0,98,18,a video of multiple people engaged in a physical fight,,133,24.991633333333333,34.8580858707428
+2_077_1.mp4,0,0,0,28,38,a video of multiple people engaged in a physical fight,,66,12.0,16.967647075653076
+4_096_1.mp4,0,0,0,79,51,a video of multiple people engaged in a physical fight,,130,22.966666666666665,28.12432861328125
+2_076_1.mp4,0,0,0,59,58,a video of multiple people engaged in a physical fight,,117,25.0,33.623454570770264
+4_103_1.mp4,0,0,0,69,32,a video of multiple people engaged in a physical fight,,101,17.966666666666665,21.906368255615234
+1_083_1.mp4,0,0,0,42,33,a video of multiple people engaged in a physical fight,,75,14.981633333333331,20.587557554244995
+4_105_1.mp4,0,0,0,96,73,a video of multiple people engaged in a physical fight,,169,34.96666666666667,40.731388092041016
+2_086_1.mp4,0,11,0,169,114,a video of multiple people engaged in a physical fight,,294,50.0,72.03526377677917
+3_078_1.mp4,0,0,0,51,241,a video of multiple people engaged in a physical fight,,292,50.01663333333333,71.05658268928528
+4_081_1.mp4,0,0,0,53,60,a video of multiple people engaged in a physical fight,,113,19.966666666666665,23.878570079803467
+3_095_1.mp4,0,0,0,69,74,a video of multiple people engaged in a physical fight,,143,24.991633333333333,35.46646332740784
+1_069_1.mp4,0,0,0,173,58,a video of multiple people engaged in a physical fight,,231,40.00663333333333,55.77508354187012
+2_084_1.mp4,0,0,0,65,49,a video of multiple people engaged in a physical fight,,114,20.0,28.030665397644043
+1_086_1.mp4,0,0,0,66,77,a video of multiple people engaged in a physical fight,,143,24.991633333333333,34.90790152549744
+2_079_1.mp4,0,0,0,72,42,a video of multiple people engaged in a physical fight,,114,20.0,28.29838728904724
+4_093_1.mp4,0,0,0,114,29,a video of multiple people engaged in a physical fight,,143,24.966666666666665,29.944315910339355
+1_094_1.mp4,0,79,16,161,127,a video of a group of people playing a sport together,,383,65.03163333333333,93.77584862709044
+3_101_1.mp4,0,5,0,585,273,a video of a group of people playing a sport together,,863,145.07826666666668,208.1441295146942
+4_111_1.mp4,0,0,0,253,130,a video of a group of people playing a sport together,,383,64.96666666666667,79.06062912940979
+3_102_1.mp4,0,17,0,245,211,a video of a group of people playing a sport together,,473,80.04663333333333,115.62195324897766
+2_090_1.mp4,0,0,0,524,507,a video of a group of people playing a sport together,,1031,180.0,253.80871486663816
+1_093_1.mp4,0,17,19,513,344,a video of a group of people playing a sport together,,893,150.11663333333334,211.51351928710935
+2_093_1.mp4,0,0,0,260,124,a video of a group of people playing a sport together,,384,65.0,93.2804880142212
+4_109_1.mp4,0,0,0,449,245,a video of a group of people playing a sport together,,694,116.96666666666668,142.2999303340912
+4_110_1.mp4,0,0,0,30,77,a video of a person running,,107,19.966666666666665,23.704124927520752
+3_090_1.mp4,0,5,39,3,22,a video of a person running,,69,19.986633333333334,24.417893171310425
+3_093_1.mp4,0,53,74,14,34,a video of a person running,,175,35.00163333333333,47.0092613697052
+4_092_1.mp4,0,2,0,32,19,a video of a person running,,53,9.966666666666669,11.696264743804932
+2_066_1.mp4,0,18,0,61,24,a video of a person running,,103,20.0,27.36329197883606
+4_101_1.mp4,0,0,6,75,55,a video of a person running,,136,23.966666666666665,28.61174154281616
+2_094_1.mp4,0,21,175,13,355,a video of a person running,,564,120.0,157.6148853302002
+1_068_1.mp4,0,0,0,31,41,a video of a person running,,72,14.981633333333331,19.684109687805176
+3_104_1.mp4,0,66,62,2,9,a video of a person running,,139,24.991633333333333,34.58665609359741
+3_094_1.mp4,0,16,29,23,68,a video of a person running,,136,24.991633333333333,34.75888752937317
+1_077_1.mp4,0,4,6,14,52,a video of a person running,,76,16.983633333333334,21.79018473625183
+4_087_1.mp4,0,0,0,53,36,a video of a person running,,89,15.966666666666669,18.82052493095398
+2_075_1.mp4,0,0,0,17,0,a video of a person running,,17,15.0,15.389920473098757
+4_090_1.mp4,0,0,0,23,29,a video of a person running,,52,9.966666666666669,11.67904281616211
+2_085_1.mp4,0,4,0,14,36,a video of a person running,,54,10.0,13.863935708999634
+3_085_1.mp4,0,7,23,18,65,a video of a person running,,113,19.986633333333334,28.081010818481445
+4_088_1.mp4,0,13,16,17,31,a video of a person running,,77,13.966666666666669,16.543527364730835
+1_096_1.mp4,0,5,5,5,8,a video of a person running,,23,9.976633333333334,10.95556116104126
+4_080_1.mp4,0,17,1,57,50,a video of a person running,,125,21.966666666666665,26.315269231796265
+1_070_1.mp4,0,21,0,13,21,a video of a person running,,55,14.981633333333331,18.22790050506592
+4_078_1.mp4,0,10,1,17,25,a video of a person running,,53,9.966666666666669,11.67976188659668
+4_104_1.mp4,0,0,0,16,13,a video of a person running,,29,5.966666666666667,6.860835552215576
+2_073_1.mp4,0,1,40,27,147,a video of a person running,,215,45.0,59.67634654045105
+4_112_1.mp4,0,0,0,27,38,a video of a person running,,65,11.966666666666669,14.087076425552368
+2_095_1.mp4,0,30,4,10,20,a video of a person running,,64,15.0,19.20159077644348
+3_077_1.mp4,0,53,70,17,16,a video of a person running,,156,29.99663333333333,40.63178968429565
+2_064_1.mp4,0,3,2,35,44,a video of a person running,,84,15.0,21.01946997642517
+1_079_1.mp4,0,0,0,27,0,a video of a person running,,27,14.981633333333331,15.87596583366394
+4_102_1.mp4,0,0,0,21,29,a video of a person running,,50,9.966666666666669,11.486874103546144
+3_103_1.mp4,0,21,31,3,1,a video of a person running,,56,14.981633333333331,18.583167791366577
+3_097_1.mp4,0,16,43,20,32,a video of a person running,,111,24.991633333333333,32.31347465515137
+1_095_1.mp4,0,0,0,27,13,a video of a person running,,40,13.980633333333332,16.040746212005615
+3_087_1.mp4,0,26,47,5,10,a video of a person running,,88,19.986633333333334,25.94834303855896
+4_113_1.mp4,0,0,0,55,40,a video of a person running,,95,16.966666666666665,20.21443200111389
+3_075_1.mp4,0,18,15,19,105,a video of a person running,,157,30.2302,41.171045780181885
+4_100_1.mp4,0,0,0,25,21,a video of a person running,,46,8.966666666666667,10.492075204849243
+4_089_1.mp4,0,0,0,148,294,a video of a person lying motionless on the ground,,442,74.96666666666667,90.33221292495728
+2_080_1.mp4,0,0,0,202,137,a video of a person lying motionless on the ground,,339,60.0,84.42842936515808
+3_092_1.mp4,0,0,0,167,88,a video of a person lying motionless on the ground,,255,70.03663333333334,85.84000658988953
+1_091_1.mp4,0,193,0,14,42,a video of a person lying motionless on the ground,,249,45.011633333333336,61.96176052093506
+3_099_1.mp4,0,51,0,166,57,a video of a person lying motionless on the ground,,274,55.02163333333333,73.2461667060852
+1_078_1.mp4,0,121,0,9,103,a video of a person lying motionless on the ground,,233,40.00663333333333,56.13144898414612
+4_094_1.mp4,0,0,0,269,45,a video of a person lying motionless on the ground,,314,53.96666666666667,64.72554230690002
+3_086_1.mp4,0,117,0,19,376,a video of a person lying motionless on the ground,,512,90.05663333333334,125.81448459625244
+1_084_1.mp4,0,0,0,136,36,a video of a person lying motionless on the ground,,172,40.00663333333333,50.5952742099762
+2_069_1.mp4,0,0,0,78,65,a video of a person aggressively chasing another person,,143,25.0,35.13506746292114
+1_082_1.mp4,0,0,0,31,52,a video of a person aggressively chasing another person,,83,14.981633333333331,20.5645592212677
+3_093_1.mp4,0,0,0,67,108,a video of a person aggressively chasing another person,,175,35.00163333333333,47.72561454772949
+2_071_1.mp4,0,0,0,51,61,a video of a person aggressively chasing another person,,112,30.0,37.324647188186646
+3_080_1.mp4,0,0,0,48,98,a video of a person aggressively chasing another person,,146,29.99663333333333,39.84796166419983
+4_101_1.mp4,0,0,0,75,61,a video of a person aggressively chasing another person,,136,23.966666666666665,28.749701976776123
+4_108_1.mp4,0,0,0,34,31,a video of a person aggressively chasing another person,,65,11.966666666666669,14.173872709274292
+4_107_1.mp4,0,0,0,45,98,a video of a person aggressively chasing another person,,143,24.966666666666665,29.83163785934448
+4_114_1.mp4,0,0,0,55,10,a video of a person aggressively chasing another person,,65,11.933333333333334,14.142081022262571
+3_096_1.mp4,0,0,0,37,46,a video of a person aggressively chasing another person,,83,14.981633333333331,21.0563485622406
+1_073_1.mp4,0,0,0,30,21,a video of a person aggressively chasing another person,,51,14.981633333333331,17.760236501693726
+3_091_1.mp4,0,0,0,34,79,a video of a person aggressively chasing another person,,113,19.986633333333334,28.26802349090576
+4_083_1.mp4,0,0,0,76,23,a video of a person aggressively chasing another person,,99,19.966666666666665,22.87472128868103
+2_078_1.mp4,0,0,0,30,54,a video of a person aggressively chasing another person,,84,15.0,21.13121247291565
+2_077_1.mp4,0,0,0,28,38,a video of a person aggressively chasing another person,,66,12.0,16.789178133010864
+1_087_1.mp4,0,0,0,28,67,a video of a person aggressively chasing another person,,95,16.983633333333334,23.45148801803589
+2_088_1.mp4,0,0,0,36,37,a video of a person aggressively chasing another person,,73,22.0,26.349610567092896
+1_085_1.mp4,0,0,0,341,284,a video of a person aggressively chasing another person,,625,110.07663333333332,152.86178874969482
+2_083_1.mp4,0,0,0,232,318,a video of a person aggressively chasing another person,,550,95.0,133.59821772575378
+1_092_1.mp4,0,0,0,33,36,a video of a person jumping high in the air with both feet,,69,14.981633333333331,19.29534482955933
+2_089_1.mp4,0,0,0,111,93,a video of a person jumping high in the air with both feet,,204,35.0,49.30451440811157
+3_100_1.mp4,0,0,0,74,33,a video of a person jumping high in the air with both feet,,107,19.986633333333334,27.357370853424072
+4_089_1.mp4,0,0,0,148,294,a video of a person accidentally falling to the ground,,442,74.96666666666667,90.37693524360655
+2_080_1.mp4,0,0,0,202,137,a video of a person accidentally falling to the ground,,339,60.0,86.29253888130188
+1_090_1.mp4,0,0,0,19,35,a video of a person accidentally falling to the ground,,54,14.981633333333331,18.16408514976501
+1_078_1.mp4,0,0,0,130,103,a video of a person accidentally falling to the ground,,233,40.00663333333333,56.55654835700989
+3_086_1.mp4,0,0,0,136,376,a video of a person accidentally falling to the ground,,512,90.05663333333334,126.10765838623048
+2_074_1.mp4,0,1,0,131,72,a video of a person accidentally falling to the ground,,204,35.0,49.44353127479553
+1_084_1.mp4,0,0,0,136,36,a video of a person accidentally falling to the ground,,172,40.00663333333333,50.868393421173096
+4_106_1.mp4,0,0,0,65,56,a video of a person gently guiding another person by the arm,,121,23.966666666666665,27.70666790008545
+3_098_1.mp4,0,0,0,86,174,a video of a person gently guiding another person by the arm,,260,50.01663333333333,67.72591042518616
+4_097_1.mp4,0,0,0,131,1,a video of a person gently guiding another person by the arm,,132,23.066666666666663,27.568705797195435
+1_089_1.mp4,0,22,0,93,7,a video of a person gently guiding another person by the arm,,122,29.99663333333333,37.293867111206055
+2_087_1.mp4,0,0,0,50,69,a video of a person gently guiding another person by the arm,,119,25.0,32.91285800933838
+4_095_1.mp4,0,0,0,30,47,a video of a person stealing other person,,77,13.966666666666669,16.66415548324585
+1_082_1.mp4,0,0,0,31,52,a video of a person stealing other person,,83,14.981633333333331,20.60757350921631
+4_084_1.mp4,0,0,0,26,29,a video of a person stealing other person,,55,14.966666666666669,16.115533351898193
+2_071_1.mp4,0,0,0,51,61,a video of a person stealing other person,,112,30.0,37.25023770332336
+3_080_1.mp4,0,0,0,48,98,a video of a person stealing other person,,146,29.99663333333333,39.771795988082886
+4_108_1.mp4,0,0,0,34,31,a video of a person stealing other person,,65,11.966666666666669,14.057682752609251
+3_081_1.mp4,0,0,0,39,101,a video of a person stealing other person,,140,29.69633333333333,38.84527778625488
+3_091_1.mp4,0,0,0,34,79,a video of a person stealing other person,,113,19.986633333333334,28.20236897468567
+4_083_1.mp4,0,0,0,76,23,a video of a person stealing other person,,99,19.966666666666665,22.95486259460449
+2_078_1.mp4,0,0,0,30,54,a video of a person stealing other person,,84,15.0,21.15828824043274
+2_070_1.mp4,0,0,0,23,85,a video of a person stealing other person,,108,20.0,27.56748414039612
+3_088_1.mp4,0,3,0,12,93,a video of a person deliberately throwing garbage on the ground,,108,19.986633333333334,27.629645824432373
+1_080_1.mp4,0,0,0,10,34,a video of a person deliberately throwing garbage on the ground,,44,14.981633333333331,17.359789609909058
+1_076_1.mp4,0,0,0,25,25,a video of a person deliberately throwing garbage on the ground,,50,14.981633333333331,17.707895278930664
+2_072_1.mp4,0,10,10,20,31,a video of a person deliberately throwing garbage on the ground,,71,15.0,20.000401258468628
+3_074_1.mp4,0,0,20,8,85,a video of a person deliberately throwing garbage on the ground,,113,19.986633333333334,28.02369713783264
+4_103_1.mp4,0,0,0,69,32,a video of a person deliberately throwing garbage on the ground,,101,17.966666666666665,21.51999855041504
+3_082_1.mp4,0,3,17,22,128,a video of a person deliberately throwing garbage on the ground,,170,29.99663333333333,41.92115497589111
+2_092_1.mp4,0,0,5,10,69,a video of a person deliberately throwing garbage on the ground,,84,15.0,20.88771224021912
+1_074_1.mp4,0,0,0,21,38,a video of a person deliberately throwing garbage on the ground,,59,14.981633333333331,18.583731174468998
+3_095_1.mp4,0,18,15,51,59,a video of a person deliberately throwing garbage on the ground,,143,24.991633333333333,35.31701374053955
+3_084_1.mp4,0,0,4,32,89,a video of a person deliberately throwing garbage on the ground,,125,24.391033333333333,32.85818886756897
+1_086_1.mp4,0,5,0,61,77,a video of a person deliberately throwing garbage on the ground,,143,24.991633333333333,34.729089975357056
+4_099_1.mp4,0,0,0,18,125,a video of a person tripping over an obstacle,,143,24.966666666666665,30.04939603805542
+4_087_1.mp4,0,0,0,53,36,a video of a person tripping over an obstacle,,89,15.966666666666669,19.014301538467407
+2_081_1.mp4,0,0,0,85,11,a video of a person tripping over an obstacle,,96,17.0,24.01332116127014
+2_082_1.mp4,0,0,0,31,215,a video of a person tripping over an obstacle,,246,45.0,62.55626273155213
+4_098_1.mp4,0,0,0,72,41,a video of a person tripping over an obstacle,,113,19.966666666666665,23.848787784576416
+4_085_1.mp4,0,0,0,22,55,a video of a person pickpocketing a wallet from someone's pocket,,77,13.966666666666669,16.498380184173584
+3_083_1.mp4,0,0,0,30,72,a video of a person pickpocketing a wallet from someone's pocket,,102,19.986633333333334,28.39132809638977
+1_075_1.mp4,0,0,0,20,43,a video of a person pickpocketing a wallet from someone's pocket,,63,14.981633333333333,18.49446702003479
+4_086_1.mp4,0,0,0,45,44,a video of a person pickpocketing a wallet from someone's pocket,,89,15.966666666666667,18.635696411132812
+4_076_1.mp4,1,8,0,0,0,a video of a person riding a bicycle on the street,,77,13.966666666666667,22.796588897705078
+3_106_1.mp4,1,24,0,0,0,a video of a person riding a bicycle on the street,,30,14.981633333333333,36.17726397514343
+1_067_1.mp4,1,14,0,0,0,a video of a person riding a bicycle on the street,,21,9.976633333333334,22.44655704498291
+1_066_1.mp4,1,14,0,0,0,a video of a person riding a bicycle on the street,,44,14.981633333333333,28.75550127029419
+2_096_1.mp4,1,24,0,0,0,a video of a person riding a bicycle on the street,,59,15.0,38.50683355331421
+4_077_1.mp4,1,18,0,0,0,a video of a person riding a bicycle on the street,,33,10.966666666666667,25.869281768798828
+3_105_1.mp4,1,24,0,3,6,a video of a person riding a bicycle on the street,,61,20.053366666666665,64.55007195472717
+2_067_1.mp4,1,0,0,7,39,a video of multiple people engaged in a physical fight,,144,25.0,90.984299659729
+4_082_1.mp4,1,2,0,67,0,a video of multiple people engaged in a physical fight,,177,30.966666666666665,108.27605080604553
+3_079_1.mp4,1,0,0,40,27,a video of multiple people engaged in a physical fight,,215,45.011633333333336,218.9597463607788
+2_065_1.mp4,1,0,0,52,35,a video of multiple people engaged in a physical fight,,260,45.0,154.5798783302307
+1_081_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,32,12.979633333333334,14.368661165237427
+3_089_1.mp4,1,0,0,34,3,a video of multiple people engaged in a physical fight,,117,29.996633333333335,139.24340510368347
+1_088_1.mp4,1,0,0,6,13,a video of multiple people engaged in a physical fight,,263,45.011633333333336,89.5905385017395
+2_068_1.mp4,1,0,0,27,11,a video of multiple people engaged in a physical fight,,170,35.0,91.2946195602417
+1_071_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,113,19.986633333333334,27.630224227905273
+4_079_1.mp4,1,0,0,40,8,a video of multiple people engaged in a physical fight,,202,34.96666666666667,82.66250801086426
+3_076_1.mp4,1,6,0,105,12,a video of multiple people engaged in a physical fight,,287,49.78306666666667,304.0671637058258
+2_081_1.mp4,1,0,0,4,4,a video of multiple people engaged in a physical fight,,96,17.0,41.95091009140015
+1_072_1.mp4,1,17,0,24,0,a video of multiple people engaged in a physical fight,,133,24.991633333333333,78.67123079299927
+2_077_1.mp4,1,0,0,20,1,a video of multiple people engaged in a physical fight,,66,12.0,34.964195728302
+4_096_1.mp4,1,0,0,10,13,a video of multiple people engaged in a physical fight,,130,22.966666666666665,51.908512115478516
+2_076_1.mp4,1,0,0,7,4,a video of multiple people engaged in a physical fight,,117,25.0,45.36075305938721
+4_103_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,101,17.966666666666665,21.472031116485596
+1_083_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,75,14.981633333333333,20.001192092895508
+4_105_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,169,34.96666666666667,39.82992672920227
+2_086_1.mp4,1,11,0,89,10,a video of multiple people engaged in a physical fight,,294,50.0,236.42125296592712
+3_078_1.mp4,1,0,0,41,93,a video of multiple people engaged in a physical fight,,292,50.01663333333333,301.55264043807983
+4_081_1.mp4,1,0,0,3,0,a video of multiple people engaged in a physical fight,,113,19.966666666666665,30.107484340667725
+3_095_1.mp4,1,0,0,19,24,a video of multiple people engaged in a physical fight,,143,24.991633333333333,155.9598844051361
+1_069_1.mp4,1,0,0,6,0,a video of multiple people engaged in a physical fight,,231,40.00663333333333,60.239195585250854
+2_084_1.mp4,1,0,0,17,15,a video of multiple people engaged in a physical fight,,114,20.0,108.74954628944397
+1_086_1.mp4,1,0,0,7,25,a video of multiple people engaged in a physical fight,,143,24.991633333333333,63.10842967033386
+2_079_1.mp4,1,0,0,42,33,a video of multiple people engaged in a physical fight,,114,20.0,109.59898924827576
+4_093_1.mp4,1,0,0,0,0,a video of multiple people engaged in a physical fight,,143,24.966666666666665,29.7444908618927
+1_094_1.mp4,1,79,16,83,14,a video of a group of people playing a sport together,,383,65.03163333333333,333.68116545677185
+3_101_1.mp4,1,5,0,391,55,a video of a group of people playing a sport together,,863,145.07826666666668,970.3850989341736
+4_111_1.mp4,1,0,0,0,0,a video of a group of people playing a sport together,,383,64.96666666666667,78.28487730026245
+3_102_1.mp4,1,17,0,193,51,a video of a group of people playing a sport together,,473,80.04663333333333,540.5180683135986
+2_090_1.mp4,1,0,0,69,28,a video of a group of people playing a sport together,,1031,180.0,350.7833511829376
+1_093_1.mp4,1,17,19,138,37,a video of a group of people playing a sport together,,893,150.11663333333334,422.6657829284668
+2_093_1.mp4,1,0,0,125,50,a video of a group of people playing a sport together,,384,65.0,276.44663190841675
+4_109_1.mp4,1,0,0,0,0,a video of a group of people playing a sport together,,694,116.96666666666667,141.7779622077942
+4_110_1.mp4,1,0,0,0,0,a video of a person running,,107,19.966666666666665,24.314987182617188
+3_090_1.mp4,1,0,0,0,13,a video of a person running,,69,19.986633333333334,80.18466997146606
+3_093_1.mp4,1,29,12,14,18,a video of a person running,,175,35.00163333333333,185.9376256465912
+4_092_1.mp4,1,2,0,0,0,a video of a person running,,53,9.966666666666667,13.08504867553711
+2_066_1.mp4,1,17,0,26,3,a video of a person running,,103,20.0,72.72377252578735
+4_101_1.mp4,1,0,1,0,0,a video of a person running,,136,23.966666666666665,32.905259132385254
+2_094_1.mp4,1,15,47,0,160,a video of a person running,,564,120.0,473.2876169681549
+1_068_1.mp4,1,0,0,0,0,a video of a person running,,72,14.981633333333333,19.601685762405396
+3_104_1.mp4,1,15,1,0,2,a video of a person running,,139,24.991633333333333,147.5382022857666
+3_094_1.mp4,1,10,9,23,30,a video of a person running,,136,24.991633333333333,132.00202083587646
+1_077_1.mp4,1,4,6,0,0,a video of a person running,,76,16.983633333333334,29.753738164901733
+4_087_1.mp4,1,0,0,6,0,a video of a person running,,89,15.966666666666667,23.765061378479004
+2_075_1.mp4,1,0,0,7,0,a video of a person running,,17,15.0,21.908347606658936
+4_090_1.mp4,1,0,0,0,0,a video of a person running,,52,9.966666666666667,11.536420106887817
+2_085_1.mp4,1,4,0,3,19,a video of a person running,,54,10.0,41.25058054924011
+3_085_1.mp4,1,7,8,7,13,a video of a person running,,113,19.986633333333334,89.58787870407104
+4_088_1.mp4,1,4,7,0,0,a video of a person running,,77,13.966666666666667,38.979307651519775
+1_096_1.mp4,1,5,5,0,0,a video of a person running,,23,9.976633333333334,19.047269821166992
+4_080_1.mp4,1,17,1,14,1,a video of a person running,,125,21.966666666666665,56.55783987045288
+1_070_1.mp4,1,21,0,0,0,a video of a person running,,55,14.981633333333333,35.196043729782104
+4_078_1.mp4,1,10,0,0,0,a video of a person running,,53,9.966666666666667,20.275992393493652
+4_104_1.mp4,1,0,0,0,0,a video of a person running,,29,5.966666666666667,6.774065017700195
+2_073_1.mp4,1,1,24,14,56,a video of a person running,,215,45.0,170.0667040348053
+4_112_1.mp4,1,0,0,0,0,a video of a person running,,65,11.966666666666667,14.08875322341919
+2_095_1.mp4,1,21,0,10,5,a video of a person running,,64,15.0,61.7081618309021
+3_077_1.mp4,1,44,22,0,1,a video of a person running,,156,29.996633333333335,142.54814434051514
+2_064_1.mp4,1,0,2,10,11,a video of a person running,,84,15.0,48.43507194519043
+1_079_1.mp4,1,0,0,0,0,a video of a person running,,27,14.981633333333333,15.66252875328064
+4_102_1.mp4,1,0,0,0,0,a video of a person running,,50,9.966666666666667,11.440410375595093
+3_103_1.mp4,1,18,0,1,0,a video of a person running,,56,14.981633333333333,62.85152792930603
+3_097_1.mp4,1,10,19,7,0,a video of a person running,,111,24.991633333333333,88.06895899772644
+1_095_1.mp4,1,0,0,0,0,a video of a person running,,40,13.980633333333333,15.989777088165283
+3_087_1.mp4,1,13,0,5,3,a video of a person running,,88,19.986633333333334,93.66508984565735
+4_113_1.mp4,1,0,0,0,30,a video of a person running,,95,16.966666666666665,43.120157957077026
+3_075_1.mp4,1,17,0,8,6,a video of a person running,,157,30.2302,100.95276546478271
+4_100_1.mp4,1,0,0,0,0,a video of a person running,,46,8.966666666666667,11.094943523406982
+4_089_1.mp4,1,0,0,4,2,a video of a person lying motionless on the ground,,442,74.96666666666667,95.38875555992126
+2_080_1.mp4,1,0,0,15,0,a video of a person lying motionless on the ground,,339,60.0,124.04630517959595
+3_092_1.mp4,1,0,0,60,22,a video of a person lying motionless on the ground,,255,70.03663333333334,241.12322545051575
+1_091_1.mp4,1,193,0,0,2,a video of a person lying motionless on the ground,,249,45.011633333333336,235.52060079574585
+3_099_1.mp4,1,30,0,11,5,a video of a person lying motionless on the ground,,274,55.021633333333334,290.6248481273651
+1_078_1.mp4,1,121,0,1,0,a video of a person lying motionless on the ground,,233,40.00663333333333,207.06320095062256
+4_094_1.mp4,1,0,0,0,0,a video of a person lying motionless on the ground,,314,53.96666666666667,64.20771551132202
+3_086_1.mp4,1,116,0,8,42,a video of a person lying motionless on the ground,,512,90.05663333333334,581.1058430671692
+1_084_1.mp4,1,0,0,3,0,a video of a person lying motionless on the ground,,172,40.00663333333333,52.741697549819946
+2_069_1.mp4,1,0,0,39,19,a video of a person aggressively chasing another person,,143,25.0,92.4632658958435
+1_082_1.mp4,1,0,0,15,0,a video of a person aggressively chasing another person,,83,14.981633333333333,32.677374601364136
+3_093_1.mp4,1,0,0,43,30,a video of a person aggressively chasing another person,,175,35.00163333333333,185.53948211669922
+2_071_1.mp4,1,0,0,16,16,a video of a person aggressively chasing another person,,112,30.0,75.72380018234253
+3_080_1.mp4,1,0,0,37,22,a video of a person aggressively chasing another person,,146,29.996633333333335,131.9186441898346
+4_101_1.mp4,1,0,0,0,1,a video of a person aggressively chasing another person,,136,23.966666666666665,33.05611205101013
+4_108_1.mp4,1,0,0,1,0,a video of a person aggressively chasing another person,,65,11.966666666666667,14.90163540840149
+4_107_1.mp4,1,0,0,7,0,a video of a person aggressively chasing another person,,143,24.966666666666665,35.107845306396484
+4_114_1.mp4,1,0,0,29,3,a video of a person aggressively chasing another person,,65,11.933333333333334,39.35601019859314
+3_096_1.mp4,1,0,0,24,13,a video of a person aggressively chasing another person,,83,14.981633333333333,77.065190076828
+1_073_1.mp4,1,0,0,21,0,a video of a person aggressively chasing another person,,51,14.981633333333333,34.91386961936951
+3_091_1.mp4,1,0,0,17,15,a video of a person aggressively chasing another person,,113,19.986633333333334,122.25057005882263
+4_083_1.mp4,1,0,0,33,2,a video of a person aggressively chasing another person,,99,19.966666666666665,61.71208214759827
+2_078_1.mp4,1,0,0,0,24,a video of a person aggressively chasing another person,,84,15.0,48.423604011535645
+2_077_1.mp4,1,0,0,20,1,a video of a person aggressively chasing another person,,66,12.0,34.47013592720032
+1_087_1.mp4,1,0,0,0,0,a video of a person aggressively chasing another person,,95,16.983633333333334,23.3339364528656
+2_088_1.mp4,1,0,0,0,0,a video of a person aggressively chasing another person,,73,22.0,26.22277331352234
+1_085_1.mp4,1,0,0,12,0,a video of a person aggressively chasing another person,,625,110.07663333333333,163.91097569465637
+2_083_1.mp4,1,0,0,75,78,a video of a person aggressively chasing another person,,550,95.0,325.90021777153015
+1_092_1.mp4,1,0,0,26,9,a video of a person jumping high in the air with both feet,,69,14.981633333333333,53.72984576225281
+2_089_1.mp4,1,0,0,19,18,a video of a person jumping high in the air with both feet,,204,35.0,94.70838499069214
+3_100_1.mp4,1,0,0,2,1,a video of a person jumping high in the air with both feet,,107,19.986633333333334,117.72146081924438
+4_089_1.mp4,1,0,0,4,2,a video of a person accidentally falling to the ground,,442,74.96666666666667,97.09292602539062
+2_080_1.mp4,1,0,0,15,0,a video of a person accidentally falling to the ground,,339,60.0,127.11834979057312
+1_090_1.mp4,1,0,0,0,0,a video of a person accidentally falling to the ground,,54,14.981633333333333,18.072553634643555
+1_078_1.mp4,1,0,0,122,0,a video of a person accidentally falling to the ground,,233,40.00663333333333,214.7665991783142
+3_086_1.mp4,1,0,0,124,42,a video of a person accidentally falling to the ground,,512,90.05663333333334,601.4749150276184
+2_074_1.mp4,1,1,0,23,6,a video of a person accidentally falling to the ground,,204,35.0,82.16749095916748
+1_084_1.mp4,1,0,0,3,0,a video of a person accidentally falling to the ground,,172,40.00663333333333,53.44023084640503
+4_106_1.mp4,1,0,0,0,0,a video of a person gently guiding another person by the arm,,121,23.966666666666665,27.790730714797974
+3_098_1.mp4,1,0,0,10,29,a video of a person gently guiding another person by the arm,,260,50.01663333333333,271.62361550331116
+4_097_1.mp4,1,0,0,0,0,a video of a person gently guiding another person by the arm,,132,23.066666666666666,27.48843240737915
+1_089_1.mp4,1,22,0,17,0,a video of a person gently guiding another person by the arm,,122,29.996633333333335,73.45957469940186
+2_087_1.mp4,1,0,0,1,9,a video of a person gently guiding another person by the arm,,119,25.0,49.992727279663086
+4_095_1.mp4,1,0,0,17,6,a video of a person stealing other person,,77,13.966666666666667,36.89488768577576
+1_082_1.mp4,1,0,0,15,0,a video of a person stealing other person,,83,14.981633333333333,33.19993996620178
+4_084_1.mp4,1,0,0,1,0,a video of a person stealing other person,,55,14.966666666666667,16.894752740859985
+2_071_1.mp4,1,0,0,16,16,a video of a person stealing other person,,112,30.0,77.16948866844177
+3_080_1.mp4,1,0,0,37,22,a video of a person stealing other person,,146,29.996633333333335,133.67860746383667
+4_108_1.mp4,1,0,0,1,0,a video of a person stealing other person,,65,11.966666666666667,14.826509952545166
+3_081_1.mp4,1,0,0,10,85,a video of a person stealing other person,,140,29.696333333333335,154.7593493461609
+3_091_1.mp4,1,0,0,17,15,a video of a person stealing other person,,113,19.986633333333334,123.79880166053772
+4_083_1.mp4,1,0,0,33,2,a video of a person stealing other person,,99,19.966666666666665,62.239660024642944
+2_078_1.mp4,1,0,0,0,24,a video of a person stealing other person,,84,15.0,49.216580390930176
+2_070_1.mp4,1,0,0,19,67,a video of a person stealing other person,,108,20.0,110.93311762809753
+3_088_1.mp4,1,3,0,11,42,a video of a person deliberately throwing garbage on the ground,,108,19.986633333333334,114.09300374984741
+1_080_1.mp4,1,0,0,0,0,a video of a person deliberately throwing garbage on the ground,,44,14.981633333333333,17.23483943939209
+1_076_1.mp4,1,0,0,14,2,a video of a person deliberately throwing garbage on the ground,,50,14.981633333333333,30.797499895095825
+2_072_1.mp4,1,10,10,11,20,a video of a person deliberately throwing garbage on the ground,,71,15.0,70.39478969573975
+3_074_1.mp4,1,0,20,0,2,a video of a person deliberately throwing garbage on the ground,,113,19.986633333333334,57.97207522392273
+4_103_1.mp4,1,0,0,0,0,a video of a person deliberately throwing garbage on the ground,,101,17.966666666666665,21.654172897338867
+3_082_1.mp4,1,3,5,21,13,a video of a person deliberately throwing garbage on the ground,,170,29.996633333333335,106.60009860992432
+2_092_1.mp4,1,0,5,7,14,a video of a person deliberately throwing garbage on the ground,,84,15.0,54.54814147949219
+1_074_1.mp4,1,0,0,8,0,a video of a person deliberately throwing garbage on the ground,,59,14.981633333333333,27.119523525238037
+3_095_1.mp4,1,18,15,1,9,a video of a person deliberately throwing garbage on the ground,,143,24.991633333333333,157.15576457977295
+3_084_1.mp4,1,0,0,29,20,a video of a person deliberately throwing garbage on the ground,,125,24.391033333333333,112.41350221633911
+1_086_1.mp4,1,5,0,2,25,a video of a person deliberately throwing garbage on the ground,,143,24.991633333333333,63.68385195732117
+4_099_1.mp4,1,0,0,0,0,a video of a person tripping over an obstacle,,143,24.966666666666665,29.910642385482788
+4_087_1.mp4,1,0,0,6,0,a video of a person tripping over an obstacle,,89,15.966666666666667,24.218929767608643
+2_081_1.mp4,1,0,0,4,4,a video of a person tripping over an obstacle,,96,17.0,42.233126401901245
+2_082_1.mp4,1,0,0,0,1,a video of a person tripping over an obstacle,,246,45.0,77.94363045692444
+4_098_1.mp4,1,0,0,0,0,a video of a person tripping over an obstacle,,113,19.966666666666665,24.28737711906433
+4_085_1.mp4,1,0,0,0,3,a video of a person pickpocketing a wallet from someone's pocket,,77,13.966666666666667,28.430336713790894
+3_083_1.mp4,1,0,0,9,5,a video of a person pickpocketing a wallet from someone's pocket,,102,19.986633333333334,109.30511093139648
+1_075_1.mp4,1,0,0,0,0,a video of a person pickpocketing a wallet from someone's pocket,,63,14.981633333333333,18.9458966255188
+4_086_1.mp4,1,0,0,27,0,a video of a person pickpocketing a wallet from someone's pocket,,89,15.966666666666667,41.91494798660278

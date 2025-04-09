@@ -9,7 +9,10 @@ import matplotlib.pyplot as plt
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
 
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
+
 
 #MLLM 0.431
 #ONLY CLIP 0.42813
@@ -17,7 +20,7 @@ df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
 #df = df[df["Mode"] == 0]
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
 
-def calculate_ap(precision, recall):
+'''def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -31,6 +34,25 @@ def calculate_ap(precision, recall):
     # Encuentra puntos donde el recall cambia y calcula el área bajo la curva
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
+
+    return ap'''
+import numpy as np
+
+def calculate_ap(precision, recall):
+    # Sort by recall (ascending)
+    sorted_indices = np.argsort(recall)
+    precision = np.array(precision)[sorted_indices]
+    recall = np.array(recall)[sorted_indices]
+
+    # Pad with (0,0) and (1,0)
+    precision = np.concatenate(([0], precision, [0]))
+    recall = np.concatenate(([0], recall, [1]))
+
+    # Compute AP as the area under the raw curve (no interpolation)
+    ap = 0.0
+    for i in range(1, len(recall)):
+        delta_recall = recall[i] - recall[i-1]
+        ap += delta_recall * precision[i]
 
     return ap
 
@@ -86,7 +108,8 @@ for i in range(len(categories)):
     # plt.xlim(0.4)
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
-print(mAP_values)
+print('\n\n',mAP_values)
+mAP_values['Process time'] = 30.0 /mAP_values['Process time'] 
 #mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
@@ -133,7 +156,7 @@ for i, bar in enumerate(axes[1].patches):
         color="black",
     )
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
-axes[1].set_ylabel("Processing time per duration ratio", fontsize=16, fontweight="bold")
+axes[1].set_ylabel("FPS", fontsize=16, fontweight="bold")
 axes[1].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
 axes[1].legend().set_visible(False)
 axes[1].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
@@ -148,7 +171,5 @@ fig.set_size_inches(16, 10)
 plt.tight_layout()
 plt.show()
 print(df)
-print(len(df["Name"].unique()))
-print(len(df["True Event"].unique()))
 print(mAP_values)
 #mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")

@@ -5,9 +5,6 @@ from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
 from Functions3 import (
-    decision_maker,
-    decision_makerComplex,
-    classes_focus,
     detection_labels,
 )
 import numpy as np
@@ -18,6 +15,29 @@ import numpy as np
 from CLIPS import CLIP_Model
 from DMC_OPP import ALL_Rules
 
+classes_focus = {
+    "a person riding a bicycle on the street": ["person", "bicycle"],
+    "multiple people engaged in a physical fight": ["person"],
+    "a group of people playing a sport together": [
+        "person",
+        "frisbee",
+        "sports ball",
+        "baseball glove",
+        "tennis racket",
+    ],
+    "a person running": ["person"],
+    "a person lying motionless on the ground": ["person"],
+    "a person aggressively chasing another person": ["person"],
+    "a person jumping high in the air with both feet": ["person"],
+    "a person accidentally falling to the ground": ["person"],
+    "a person gently guiding another person by the arm": ["person"],
+    "a person tripping over an obstacle": ["person"],
+    "a person deliberately throwing garbage on the ground": ["person"],
+    "a person stealing other person": ["person"],
+    "a person pickpocketing a wallet from someone's pocket": ["person"],
+}
+
+PREFIX='a video of '
 def prompt_text(classes, event, detector_usage, classes_focus):
     if detector_usage > 2:
         return "Watch the video."
@@ -90,7 +110,7 @@ class EventTesterCLIP(VideoTester):
         # True negative Prediction and Reality are false
         # False negative Prediction is false and Reality is true
         # False positive Prediction is true and Reality is false
-        normal_class = "a video of a normal view (persons walking or standing)"
+        normal_class = PREFIX + "a normal view (persons walking or standing)"
         all_classes = [normal_class] + anomaly_classes
         name = video_name.split(".")[0]
         frames = np.load(
@@ -288,7 +308,7 @@ class EventTesterCLIP(VideoTester):
                 frames.pop(0)
                 results.pop(0)
                 if len(descriptions)>0:
-                    normal_prompt='a video of a normal view (persons walking or standing)'
+                    normal_prompt= PREFIX+'a normal view (persons walking or standing)'
                     descriptions.append(normal_prompt)
                     self.__image_encoder.set_descriptions(descriptions)
                     event, avg_prob = self.__image_encoder.outputs(frames)
@@ -296,7 +316,7 @@ class EventTesterCLIP(VideoTester):
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     if self.__mode == 1 and event != normal_prompt:
                         text=prompt_text(classes,
-                            event.split("a video of ")[1],
+                            event.split(PREFIX)[1],
                             self.__mode,
                             classes_focus,)
                         '''text = VideoTester.prompt_text(
@@ -308,7 +328,7 @@ class EventTesterCLIP(VideoTester):
                             video_information,
                         )'''
                         prompt = self.__MLLM.event_validation(
-                            frames, event.split("a video of ")[1], text, verbose=True
+                            frames, event.split(PREFIX)[1], text, verbose=True
                         )
                         prompts.append(prompt)
                     else:
@@ -420,7 +440,7 @@ if __name__ == "__main__":
         "12-Tripping",
         "13-Pickpockering",
     ]
-    description = [
+    '''description = [
             "a person riding a bicycle",
             "a certain number of persons fighting",
             "a group of persons playing",
@@ -434,7 +454,22 @@ if __name__ == "__main__":
             "a person throwing trash in the floor",
             "a person tripping",
             "a person stealing other person's pocket",
-        ]
+        ]'''
+    description = [
+        "a person riding a bicycle on the street",  # Added context
+        "multiple people engaged in a physical fight",  # More specific than "fighting"
+        "a group of people playing a sport together",  # Added "sport" for visual clarity
+        "a person running",  # Added context
+        "a person lying motionless on the ground",  # "Motionless" helps distinguish from falling
+        "a person aggressively chasing another person",  # "Aggressively" adds distinction
+        "a person jumping high in the air with both feet",  # More specific than just "jumping"
+        "a person accidentally falling to the ground",  # "Accidentally" helps distinguish
+        "a person gently guiding another person by the arm",  # Added detail
+        "a person stealing other person",  # More specific than "stealing"
+        "a person deliberately throwing garbage on the ground",  # "Deliberately" adds clarity
+        "a person tripping over an obstacle",  # More descriptive
+        "a person pickpocketing a wallet from someone's pocket",  # Very specific
+    ]
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -449,38 +484,37 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_LDPROMPT")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing.csv")
         tester.set_MLLM(qwen2vl)
     # tester.set_MLLM(llava)
     tester.show_video(False)
     CLIP_encoder = CLIP_Model()
     
-    CLIP_encoder.set_model("openai/clip-vit-base-patch32")
-    CLIP_encoder.set_processor("openai/clip-vit-base-patch32")
+    #CLIP_encoder.set_model("openai/clip-vit-base-patch32")
+    #CLIP_encoder.set_processor("openai/clip-vit-base-patch32")
     #openai/clip-vit-large-patch14
     
     #CLIP_encoder.set_model("openai/clip-vit-large-patch14-336")
     #CLIP_encoder.set_processor("openai/clip-vit-large-patch14-336")
 
     #openai/clip-vit-large-patch14-336
-    #CLIP_encoder.set_model("openai/clip-vit-base-patch16")
-    #CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
+    CLIP_encoder.set_model("openai/clip-vit-base-patch16")
+    CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
     # Add a prefix to each description
     
-    prefix = "a video of "
     #prefix="an image of a "
     #This image shows
     #This is an image of a
     #
 
     #prefix = "a photo of "
-    descriptions = [prefix + des for des in description]
+    descriptions = [PREFIX + des for des in description]
     CLIP_encoder.set_descriptions(descriptions)
     tester.set_image_encoder(CLIP_encoder)
     # Start the autotesting
@@ -491,9 +525,9 @@ if __name__ == "__main__":
     ov_qmodel.set_labels(detection_labels)
     tester.set_detector(ov_qmodel)
     tester.set_rute("../Database/CHAD DATABASE")
-    tester.show_video(True)
+    tester.show_video(False)
     tester.show_detections(False)
-    tester.simple_autotesting(events, descriptions, [1,0])
+    tester.simple_autotesting(events, descriptions, [0,1])
     # TODO: Verify the events and prompts and test the events
 
     # ALL IMAGES ✅
