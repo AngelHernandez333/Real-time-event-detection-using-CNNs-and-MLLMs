@@ -16,9 +16,9 @@ from CLIPS import CLIP_Model
 from DMC_OPP import ALL_Rules
 
 classes_focus = {
-    "a person riding a bicycle on the street": ["person", "bicycle"],
+    "a person riding a bicycle": ["person", "bicycle"],
     "multiple people engaged in a physical fight": ["person"],
-    "a group of people playing a sport together": [
+    "a group of persons playing": [
         "person",
         "frisbee",
         "sports ball",
@@ -26,16 +26,24 @@ classes_focus = {
         "tennis racket",
     ],
     "a person running": ["person"],
-    "a person lying motionless on the ground": ["person"],
-    "a person aggressively chasing another person": ["person"],
-    "a person jumping high in the air with both feet": ["person"],
-    "a person accidentally falling to the ground": ["person"],
-    "a person gently guiding another person by the arm": ["person"],
-    "a person tripping over an obstacle": ["person"],
+    "a person lying in the floor": ["person"],
+    "a person chasing other person": ["person"],
+    "everything is normal": [
+        "person",
+        "bicycle",
+        "frisbee",
+        "sports ball",
+        "baseball glove",
+        "tennis racket",
+    ],
+    "a person jumping": ["person"],
+    "a person falling": ["person"],
+    "a person guiding other person": ["person"],
+    "a person tripping by other person": ["person"],
     "a person deliberately throwing garbage on the ground": ["person"],
-    "a person stealing other person": ["person"],
-    "a person pickpocketing a wallet from someone's pocket": ["person"],
-}
+    "a person running to steal other person": ["person"],
+    "a person coming close to a other person's pocket": ["person"],
+}  
 
 PREFIX='a video of '
 def prompt_text(classes, event, detector_usage, classes_focus):
@@ -470,6 +478,21 @@ if __name__ == "__main__":
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
     ]
+    description = [
+            "a person riding a bicycle",
+            "multiple people engaged in a physical fight",
+            "a group of persons playing",
+            "a person running",
+            "a person lying in the floor",
+            "a person chasing other person",
+            "a person jumping with both feet",
+            "a person falling",
+            "a person guiding other person",
+            "a person running to steal other person",
+            "a person deliberately throwing garbage on the ground",
+            "a person tripping by other person",
+            "a person coming close to a other person's pocket",
+        ]
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -484,7 +507,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion2.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -527,7 +550,7 @@ if __name__ == "__main__":
     tester.set_rute("../Database/CHAD DATABASE")
     tester.show_video(False)
     tester.show_detections(False)
-    tester.simple_autotesting(events, descriptions, [0,1])
+    tester.simple_autotesting(events, descriptions, [0])
     # TODO: Verify the events and prompts and test the events
 
     # ALL IMAGES ✅

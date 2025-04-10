@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
-
-
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion2.csv")
 #MLLM 0.431
 #ONLY CLIP 0.42813
 
