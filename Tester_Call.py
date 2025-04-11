@@ -36,14 +36,15 @@ classes_focus = {
         "baseball glove",
         "tennis racket",
     ],
-    "a person jumping": ["person"],
+    "a person jumping in the air with both feet off the ground": ["person"],
     "a person falling": ["person"],
     "a person guiding other person": ["person"],
-    "a person tripping by other person": ["person"],
+    "a person being tripped by another person": ["person"],
     "a person deliberately throwing garbage on the ground": ["person"],
-    "a person running to steal other person": ["person"],
-    "a person coming close to a other person's pocket": ["person"],
+    "a person running toward another person to steal something from them": ["person"],
+    "a person sneaking their hand into another person's pocket to pickpocket": ["person"],
 }  
+
 
 PREFIX='a video of '
 def prompt_text(classes, event, detector_usage, classes_focus):
@@ -485,13 +486,13 @@ if __name__ == "__main__":
             "a person running",
             "a person lying in the floor",
             "a person chasing other person",
-            "a person jumping with both feet",
+            "a person jumping in the air with both feet off the ground",
             "a person falling",
             "a person guiding other person",
-            "a person running to steal other person",
+            "a person running toward another person to steal something from them",
             "a person deliberately throwing garbage on the ground",
-            "a person tripping by other person",
-            "a person coming close to a other person's pocket",
+            "a person being tripped by another person",
+            "a person sneaking their hand into another person's pocket to pickpocket",
         ]
     # Prepare the tester
     tester = EventTesterCLIP()
@@ -507,7 +508,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion2.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion4.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
