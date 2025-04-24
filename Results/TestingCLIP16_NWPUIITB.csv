@@ -1,0 +1,7 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+000350.avi,0,0,0,93,46,a video of a person riding a bicycle on the street,,139,29.16,36.621920585632324
+000289.avi,0,21,0,85,135,a video of a person riding a bicycle on the street,,241,49.96,58.31855249404907
+000326.avi,0,0,0,53,104,a video of a person riding a bicycle on the street,,157,32.68,39.18381452560425
+000313.avi,0,0,0,101,105,a video of a person riding a bicycle on the street,,206,42.44,51.218018770217896
+000325.avi,0,0,0,48,92,a video of a person riding a bicycle on the street,,140,29.36,35.21843862533569
+000345.avi,0,0,0,55,86,a video of a person riding a bicycle on the street,,141,29.44,35.795053005218506
