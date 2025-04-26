@@ -1,0 +1,109 @@
+Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,Check event,Validations Number,Duration,Process time
+000350.avi,0,36,0,0,0,a person riding a bicycle,a person riding a bicycle,36,29.16,69.95558619499207
+000289.avi,0,68,0,0,0,a person riding a bicycle,a person riding a bicycle,68,49.96,113.47276091575624
+000326.avi,0,27,0,0,0,a person riding a bicycle,a person riding a bicycle,27,32.68,59.474950075149536
+000313.avi,0,14,0,0,0,a person riding a bicycle,a person riding a bicycle,14,42.44,52.92960023880005
+000325.avi,0,24,0,0,0,a person riding a bicycle,a person riding a bicycle,24,29.36,52.82401466369629
+000345.avi,0,0,0,0,0,a person riding a bicycle,a person riding a bicycle,0,29.44,25.39788842201233
+D013_03.avi,0,32,0,0,0,a person riding a bicycle,a person riding a bicycle,32,66.04,85.22036409378052
+000296.avi,0,12,0,0,0,a person riding a bicycle,a person riding a bicycle,12,38.24,45.4540479183197
+D047_05.avi,0,2,0,0,0,a person riding a bicycle,a person riding a bicycle,2,12.04,11.96299958229065
+000253.avi,0,29,0,0,0,a person riding a bicycle,a person riding a bicycle,29,29.04,61.13768529891968
+D235_01.avi,0,38,0,0,0,a person riding a bicycle,a person riding a bicycle,38,64.04,90.25821256637572
+D013_02.avi,0,70,0,0,0,a person riding a bicycle,a person riding a bicycle,70,100.04,149.0566062927246
+000324.avi,0,22,0,0,0,a person riding a bicycle,a person riding a bicycle,22,34.24,54.19809317588806
+000270.avi,0,38,0,0,0,a person riding a bicycle,a person riding a bicycle,38,25.8,67.94716668128967
+D235_07.avi,0,46,0,0,0,a person riding a bicycle,a person riding a bicycle,46,98.04,125.81191492080688
+000318.avi,0,46,0,0,0,a person riding a bicycle,a person riding a bicycle,46,25.36,76.41380620002747
+000211.avi,0,184,117,0,0,a certain number of persons fighting,a certain number of persons fighting,301,57.08,397.4527742862701
+D076_05.avi,0,102,131,0,6,a certain number of persons fighting,a certain number of persons fighting,239,70.04,326.58927392959595
+D043_01.avi,0,75,61,0,2,a certain number of persons fighting,a certain number of persons fighting,138,86.04,226.56871032714844
+000213.avi,0,255,48,0,0,a certain number of persons fighting,a certain number of persons fighting,303,62.72,388.6248695850372
+000266.avi,0,239,94,0,0,a certain number of persons fighting,a certain number of persons fighting,333,54.32,421.05015301704407
+D031_01.avi,0,163,96,0,1,a certain number of persons fighting,a certain number of persons fighting,260,81.04,352.7705361843109
+000278.avi,0,104,25,0,0,a certain number of persons fighting,a certain number of persons fighting,129,24.52,160.88123202323914
+000321.avi,0,93,84,0,0,a certain number of persons fighting,a certain number of persons fighting,177,33.52,218.06137657165527
+000251.avi,0,314,59,0,0,a certain number of persons fighting,a certain number of persons fighting,373,60.8,460.7896764278412
+000220.avi,0,161,0,0,0,a certain number of persons fighting,a certain number of persons fighting,161,33.36,197.31212162971497
+D077_06.avi,0,15,96,5,1,a certain number of persons fighting,a certain number of persons fighting,117,86.04,176.25537014007568
+000284.avi,0,287,150,0,0,a certain number of persons fighting,a certain number of persons fighting,437,84.4,547.0731089115143
+D029_01.avi,0,34,112,0,0,a certain number of persons fighting,a certain number of persons fighting,146,79.04,212.1836714744568
+000256.avi,0,379,0,0,0,a group of persons playing,a group of persons playing,379,133.56,535.9806265830994
+000334.avi,0,0,0,0,0,a group of persons playing,a group of persons playing,0,21.96,16.347973585128784
+000346.avi,0,291,0,0,0,a group of persons playing,a group of persons playing,291,131.16,457.62144136428833
+000310.avi,0,66,0,0,0,a group of persons playing,a group of persons playing,66,30.6,90.63219285011292
+000336.avi,0,157,0,0,0,a group of persons playing,a group of persons playing,157,68.0,229.86515069007874
+000314.avi,0,0,0,0,0,a group of persons playing,a group of persons playing,0,24.76,18.669734477996826
+000222.avi,0,77,0,0,0,a group of persons playing,a group of persons playing,77,40.92,112.15087103843689
+000258.avi,0,3,0,0,0,a group of persons playing,a group of persons playing,3,90.0,70.4894917011261
+000347.avi,0,3,0,0,0,a group of persons playing,a group of persons playing,3,78.44,61.991262435913086
+000342.avi,0,0,0,0,0,a group of persons playing,a group of persons playing,0,40.0,30.00202250480652
+000244.avi,0,50,0,0,0,a group of persons playing,a group of persons playing,50,16.2,76.75161790847778
+000327.avi,0,0,0,0,0,a group of persons playing,a group of persons playing,0,39.76,30.17288303375244
+000265.avi,0,45,0,0,0,a group of persons playing,a group of persons playing,45,50.48,85.69697976112366
+000267.avi,0,60,1,0,0,a group of persons playing,a group of persons playing,61,31.32,104.31499648094177
+000297.avi,0,67,16,0,0,a person running,a person running,83,14.28,87.28441262245178
+000317.avi,0,65,172,0,0,a person running,a person running,237,38.88,244.31706261634827
+000261.avi,0,41,33,0,0,a person running,a person running,74,12.8,78.56533908843994
+000337.avi,0,28,93,0,1,a person running,a person running,122,20.6,121.68685340881348
+D068_09.avi,0,1,16,0,6,a person running,a person running,23,40.04,48.68669080734253
+000227.avi,0,66,30,0,0,a person running,a person running,96,16.44,114.42213082313538
+D001_03.avi,0,52,52,0,0,a person running,a person running,104,18.04,100.54293870925903
+D014_02.avi,0,39,2,0,0,a person running,a person running,41,14.04,43.87457036972046
+000304.avi,0,50,113,0,0,a person running,a person running,163,27.12,187.89934825897217
+000288.avi,0,89,161,0,5,a person running,a person running,255,42.68,267.8739106655121
+000228.avi,0,38,62,0,0,a person running,a person running,100,17.0,116.45627236366272
+D158_02.avi,0,29,68,0,0,a person running,a person running,97,18.84,95.34087061882019
+000234.avi,0,42,83,0,0,a person running,a person running,125,21.04,140.51610898971558
+D001_04.avi,0,64,55,0,0,a person running,a person running,119,20.04,112.14244413375854
+D031_09.avi,0,35,51,3,4,a person running,a person running,93,32.04,108.15956664085388
+000260.avi,0,47,45,0,0,a person running,a person running,92,15.8,96.14886403083801
+D014_01.avi,0,59,72,0,0,a person running,a person running,131,22.04,123.3614273071289
+000224.avi,0,29,122,0,0,a person running,a person running,151,25.52,167.95870971679688
+000282.avi,0,44,62,0,0,a person running,a person running,106,17.92,107.20111680030823
+000259.avi,0,85,63,0,0,a person running,a person running,148,24.76,156.1928358078003
+000262.avi,0,50,228,0,0,a person running,a person running,278,45.52,328.3170073032379
+000250.avi,0,26,176,0,0,a person running,a person running,202,33.32,210.16078734397888
+000214.avi,0,2,0,0,0,a person chasing other person,a person chasing other person,2,15.32,13.724016427993774
+000312.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,21.08,15.768825054168701
+000235.avi,0,2,0,0,0,a person chasing other person,a person chasing other person,2,8.04,7.6994757652282715
+000307.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,23.84,17.84936785697937
+000264.avi,0,1,0,0,0,a person chasing other person,a person chasing other person,1,22.64,18.037155389785767
+000351.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,16.56,12.434523105621338
+000311.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,11.72,8.991425275802612
+D076_03.avi,0,11,0,0,0,a person chasing other person,a person chasing other person,11,70.04,62.61610174179077
+000305.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,17.04,13.102440595626831
+000316.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,16.32,12.414628982543945
+000212.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,18.0,13.755962371826172
+000231.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,21.64,16.509708881378174
+000356.avi,0,0,6,0,0,a person chasing other person,a person chasing other person,6,26.12,25.465086221694946
+000257.avi,0,0,0,0,0,a person chasing other person,a person chasing other person,0,36.32,28.090888500213623
+000281.avi,0,0,1,0,0,a person chasing other person,a person chasing other person,1,21.52,17.753029108047485
+D036_07.avi,0,0,107,0,0,a person jumping,a person jumping,107,100.04,174.4882218837738
+21.avi,0,0,1,0,0,a person jumping,a person jumping,1,3.04,3.0931315422058105
+07.avi,0,0,0,0,0,a person jumping,a person jumping,0,24.2,17.784064769744873
+08.avi,0,0,0,0,0,a person jumping,a person jumping,0,1.44,1.0501999855041504
+D158_17.avi,0,131,0,0,0,a person guiding other person,a person guiding other person,131,54.28,224.36833786964417
+D077_01.avi,0,2,0,0,0,a person stealing other person,a person stealing other person,2,58.04,46.43667435646057
+D068_10.avi,0,0,0,0,0,a person stealing other person,a person stealing other person,0,33.04,25.19862699508667
+D158_01.avi,0,0,3,0,0,a person stealing other person,a person stealing other person,3,61.04,51.51643204689026
+D077_03.avi,0,19,3,0,0,a person stealing other person,a person stealing other person,22,68.04,79.76720261573792
+20.avi,0,33,23,0,0,a person throwing trash in the floor,a person throwing trash in the floor,56,10.92,52.654428005218506
+13.avi,0,14,25,0,0,a person throwing trash in the floor,a person throwing trash in the floor,39,21.96,46.93126940727234
+14.avi,0,17,87,0,0,a person throwing trash in the floor,a person throwing trash in the floor,104,20.28,97.57203125953674
+D031_07.avi,0,16,15,2,0,a person throwing trash in the floor,a person throwing trash in the floor,33,29.04,57.792165756225586
+D148_04.avi,0,2,135,0,1,a person stealing other person's pocket,a person stealing other person's pocket,138,77.04,214.1117434501648
+D149_05.avi,0,7,0,0,0,a person stealing other person's pocket,a person stealing other person's pocket,7,30.04,30.730884075164795
+D158_13.avi,0,4,0,0,0,a person stealing other person's pocket,a person stealing other person's pocket,4,40.84,37.41661524772644
+D149_07.avi,0,8,5,0,0,a person stealing other person's pocket,a person stealing other person's pocket,13,41.04,47.48919081687927
+D149_03.avi,0,14,4,0,2,a person stealing other person's pocket,a person stealing other person's pocket,20,69.04,80.35268831253052
+000350.avi,1,40,2,76,58,a person riding a bicycle,a person riding a bicycle,176,29.16,151.86199855804443
+000289.avi,1,98,98,34,76,a person riding a bicycle,a person riding a bicycle,306,49.96,262.60956931114197
+000326.avi,1,21,15,47,115,a person riding a bicycle,a person riding a bicycle,198,32.68,164.96233773231506
+000313.avi,1,37,26,91,105,a person riding a bicycle,a person riding a bicycle,259,42.44,215.69319653511047
+000325.avi,1,30,4,31,112,a person riding a bicycle,a person riding a bicycle,177,29.36,147.547438621521
+000345.avi,1,7,9,64,98,a person riding a bicycle,a person riding a bicycle,178,29.44,148.2413136959076
+D013_03.avi,1,226,11,128,41,a person riding a bicycle,a person riding a bicycle,406,66.04,345.6563673019409
+000296.avi,1,80,0,139,14,a person riding a bicycle,a person riding a bicycle,233,38.24,201.4643943309784
+D047_05.avi,1,17,2,14,36,a person riding a bicycle,a person riding a bicycle,69,12.04,60.03738832473755
+000253.avi,1,26,17,47,85,a person riding a bicycle,a person riding a bicycle,175,29.04,150.84545397758484

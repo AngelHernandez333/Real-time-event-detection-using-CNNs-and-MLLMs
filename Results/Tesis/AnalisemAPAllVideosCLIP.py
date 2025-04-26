@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
 
 #df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
+df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB.csv")
 #MLLM 0.431
 #ONLY CLIP 0.42813
 

@@ -315,6 +315,7 @@ class EventTester(VideoTester):
         if self.__mode in [0, 3, 4]:
             dmc = decision_maker(self.__event)
         # Charge time
+        gap= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
@@ -333,7 +334,7 @@ class EventTester(VideoTester):
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
-                        5,
+                        gap,
                         classes,
                         detections,
                         results,
@@ -346,7 +347,7 @@ class EventTester(VideoTester):
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
-                        5,
+                        gap,
                         detections,
                         results,
                     )
@@ -357,7 +358,7 @@ class EventTester(VideoTester):
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
-                        5,
+                        gap,
                         detections,
                         results,
                     )
@@ -368,7 +369,7 @@ class EventTester(VideoTester):
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
-                        5,
+                        gap,
                         classes,
                         detections,
                         results,
@@ -381,7 +382,7 @@ class EventTester(VideoTester):
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                         frames,
-                        5,
+                        gap,
                         classes,
                         detections,
                         results,
@@ -602,7 +603,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingNWPUIITB.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingNWPUIITB_4.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -614,7 +615,7 @@ if __name__ == "__main__":
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
-    tester.show_video(True)
+    tester.show_video(False)
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])

@@ -38,8 +38,11 @@ def calculate_ap(precision, recall):
     return ap
 
 
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
-df =pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
+#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+#df =pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
+df=pd.read_csv('/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/TestingJanusPrompts.csv')
+df1= pd.read_csv("/home/ubuntu/Tesis/Results/TestingNWPUIITB.csv")
+df=pd.concat([df, df1], ignore_index=True)
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -162,3 +165,7 @@ plt.show()
 print(df)
 print(len(df["Name"].unique()))
 print(len(df["True Event"].unique()))
+
+check=df[df["Mode"] == 0 ]
+ward=check[check['True Positive']==0].reset_index()
+print(ward[['Name','True Event']])

@@ -16,9 +16,9 @@ from CLIPS import CLIP_Model
 from DMC_OPP import ALL_Rules
 
 classes_focus = {
-    "a person riding a bicycle": ["person", "bicycle"],
+    "a person riding a bicycle on the street": ["person", "bicycle"],
     "multiple people engaged in a physical fight": ["person"],
-    "a group of persons playing": [
+    "a group of people playing a sport together": [
         "person",
         "frisbee",
         "sports ball",
@@ -26,8 +26,8 @@ classes_focus = {
         "tennis racket",
     ],
     "a person running": ["person"],
-    "a person lying in the floor": ["person"],
-    "a person chasing other person": ["person"],
+    "a person lying motionless on the ground": ["person"],
+    "a person aggressively chasing another person": ["person"],
     "everything is normal": [
         "person",
         "bicycle",
@@ -36,13 +36,13 @@ classes_focus = {
         "baseball glove",
         "tennis racket",
     ],
-    "a person jumping in the air with both feet off the ground": ["person"],
-    "a person falling": ["person"],
-    "a person guiding other person": ["person"],
-    "a person being tripped by another person": ["person"],
+    "a person jumping high in the air with both feet": ["person"],
+    "a person accidentally falling to the ground": ["person"],
+    "a person gently guiding another person by the arm": ["person"],
+    "a person tripping over an obstacle": ["person"],
     "a person deliberately throwing garbage on the ground": ["person"],
-    "a person running toward another person to steal something from them": ["person"],
-    "a person sneaking their hand into another person's pocket to pickpocket": ["person"],
+    "a person stealing other person": ["person"],
+    "a person pickpocketing a wallet from someone's pocket": ["person"],
 }  
 
 
@@ -119,6 +119,7 @@ class EventTesterCLIP(VideoTester):
         # True negative Prediction and Reality are false
         # False negative Prediction is false and Reality is true
         # False positive Prediction is true and Reality is false
+        print(video_name)
         normal_class = PREFIX + "a normal view (persons walking or standing)"
         all_classes = [normal_class] + anomaly_classes
         name = video_name.split(".")[0]
@@ -288,6 +289,7 @@ class EventTesterCLIP(VideoTester):
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
+        separation= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()

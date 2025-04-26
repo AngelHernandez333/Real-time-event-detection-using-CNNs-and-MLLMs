@@ -8,13 +8,14 @@ import numpy as np
 
 frame1 = np.load("../Database/NWPU_IITB/GT/gt_IITB.npz")
 frames2 = np.load("../Database/NWPU_IITB/GT/NWPU_Campus_gt.npz")
-frames3 = np.load("../Database/NWPU_IITB/GT/gt_Avenue.npz")
+
+frames3 = np.load("../Database/NWPU_IITB/GT/gt_newavenue.npz")
 
 # Combine the two dictionaries of arrays
 combined_frames = {**frame1, **frames2, **frames3}
 
 # Save the combined arrays into a new .npz file
 np.savez("../Database/NWPU_IITB/GT/gt.npz", **combined_frames)
-frame1 = np.load("../Database/NWPU_IITB/GT/gt.npz")
+frame1 = dict(np.load("../Database/NWPU_IITB/GT/gt.npz"))  # Convert NpzFile to a dictionary
 for key in frame1.keys():
     print(key)
