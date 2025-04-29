@@ -801,5 +801,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [ 4])
+    tester.simple_autotesting(events, description, [ 0,1,2,3,4])
     # tester.autotesting(events, description, [0,1,2,3,4])

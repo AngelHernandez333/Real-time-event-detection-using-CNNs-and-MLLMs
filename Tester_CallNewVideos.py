@@ -289,7 +289,7 @@ class EventTesterCLIP(VideoTester):
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
-        separation= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
+        gap= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
@@ -303,11 +303,11 @@ class EventTesterCLIP(VideoTester):
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                 frames,
-                5,
+                gap,
                 detections,
                 results,
             )
-            if  int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5 == 0:
+            if  int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
                 descriptions, to_recort =dmc.process(classes, detections, results, frames, False)
                 print(descriptions)
                 #if len(descriptions) > 0 and True:
@@ -480,7 +480,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB_4.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
