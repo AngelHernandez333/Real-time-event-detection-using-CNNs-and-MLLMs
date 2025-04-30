@@ -2,9 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-df_NWPU = pd.read_csv("/home/ubuntu/Tesis/Selected_VideosNWPU.csv")
-df_IITB = pd.read_csv("/home/ubuntu/Tesis/selected_videosIITB.csv")
-df_IITB.rename(columns={"True Event": "Event"}, inplace=True)
 columns = [
                 "Name",
                 "Event",
@@ -42,6 +39,12 @@ description = [
         "Pickpockering",
     ]
 
+columns = [
+                "Name",
+                "Event",
+            ]
+df_newvideos= pd.DataFrame(columns=columns)
+
 rute = "../Database/CHAD DATABASE/"
 for video_kind in range(len(events)):
         actual_rute = f"{rute}/{events[video_kind]}/"
@@ -57,28 +60,47 @@ for video_kind in range(len(events)):
                 ignore_index=True,
             )
 print(df_CHAD)
-df_IITB.loc[df_IITB['Event'] == 'Fight', 'Event'] = 'Fighting'
-df_IITB.loc[df_IITB['Event'] == 'Ridijng', 'Event'] = 'Riding'
-print('Events', df_IITB['Event'].unique())
-df_NWPU.loc[df_NWPU['Event']=='Trash','Event']= 'Littering'
-print(df_NWPU['Event'].unique())
+events = [
+        "Riding",
+        "Fighting",
+        "Playing",
+        "Running",
+        'Lying',
+        "Chasing",
+        "Jumping",
+        "Falling",
+        "Guiding",
+        "Stealing",
+        "Littering",
+        "Tripping",
+        "Pickpockering",
+    ]
+rute = "../Database/NWPU_IITB/Videos"
+for video_kind in range(len(events)):
+        actual_rute = f"{rute}/{events[video_kind]}/"
+        files = os.listdir(actual_rute)
+        for j in range(len(files)):  # Pasar por todos los videos de la carpeta
+            df_newvideos= pd.concat(
+                [
+                    df_newvideos,
+                    pd.DataFrame(
+                        [[files[j], description[video_kind]]], columns=columns
+                    ),
+                ],
+                ignore_index=True,
+            )
+print(df_newvideos)
 
-df= pd.concat([df_IITB, df_NWPU, df_CHAD], ignore_index=True)
 
-df_IITB.to_csv(
-    "/home/ubuntu/Tesis/videosIITBtouse.csv", index=False
-)
-df_NWPU.to_csv(
-    "/home/ubuntu/Tesis/videosNWPUtouse.csv", index=False
-)
+df= pd.concat([df_newvideos, df_CHAD], ignore_index=True)
 df1=df_CHAD.groupby('Event').size().reset_index(name='Count')
-df2=df_IITB.groupby('Event').size().reset_index(name='Count')
-df3=df_NWPU.groupby('Event').size().reset_index(name='Count')
-df4=df.groupby('Event').size().reset_index(name='Count')
-print(df1, df2,df3,df4)
-dfs=[df1,df2,df3,df4]
-titles=['CHAD','IITB','NWPU','All']
-all_events = set(df1['Event']).union(df2['Event']).union(df3['Event']).union(df4['Event'])
+df2=df_newvideos.groupby('Event').size().reset_index(name='Count')
+df3=df.groupby('Event').size().reset_index(name='Count')
+
+print(df1, df2,df3)
+dfs=[df1,df2,df3]
+titles=['CHAD','IITB, NWPU and Avenue','All']
+all_events = set(df1['Event']).union(df2['Event']).union(df3['Event'])
 
 for df in dfs:
     for event in all_events:
@@ -112,4 +134,6 @@ for j in range(len(dfs)):
     plt.tight_layout()
     plt.ylim(bottom=0, top=60)
     plt.grid()
+    plt.savefig(f"/home/ubuntu/Tesis/Results/Tesis/DistribucionOfTheVideos/Distribution_{titles[j]}.png", dpi=300, bbox_inches='tight')
+    #plt.gca().set_axisbelow(True)d
 plt.show()

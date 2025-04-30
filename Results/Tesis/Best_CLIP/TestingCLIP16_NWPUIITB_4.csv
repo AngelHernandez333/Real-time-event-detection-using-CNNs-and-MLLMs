@@ -6,12 +6,12 @@ Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,C
 000325.avi,0,3,0,58,116,a video of a person riding a bicycle on the street,,177,29.36,37.98457479476929
 000345.avi,0,0,0,71,106,a video of a person riding a bicycle on the street,,177,29.44,38.25434613227844
 D013_03.avi,0,13,0,69,0,a video of a person riding a bicycle on the street,,82,66.04,56.65842247009277
-000296.avi,0,13,0,203,0,a video of a person riding a bicycle on the street,,216,38.24,47.505228757858276
+000296.avi,0,13,0,203,0,a video of a person riding a bicycle on the street,,216,38.24,47.50522875785828
 D047_05.avi,0,8,0,13,0,a video of a person riding a bicycle on the street,,21,12.04,10.646624326705933
 000253.avi,0,0,0,73,102,a video of a person riding a bicycle on the street,,175,29.04,38.24432015419006
 D235_01.avi,0,44,0,15,4,a video of a person riding a bicycle on the street,,63,64.04,53.65027046203613
 D013_02.avi,0,26,0,68,1,a video of a person riding a bicycle on the street,,95,100.04,83.79175043106079
-000324.avi,0,5,0,79,124,a video of a person riding a bicycle on the street,,208,34.24,44.625242471694946
+000324.avi,0,5,0,79,124,a video of a person riding a bicycle on the street,,208,34.24,44.62524247169495
 000270.avi,0,0,0,93,62,a video of a person riding a bicycle on the street,,155,25.8,33.513458251953125
 D235_07.avi,0,52,0,32,0,a video of a person riding a bicycle on the street,,84,98.04,81.37146377563477
 000318.avi,0,0,0,139,13,a video of a person riding a bicycle on the street,,152,25.36,32.94377326965332
@@ -35,24 +35,24 @@ D029_01.avi,0,0,0,37,432,a video of multiple people engaged in a physical fight,
 000336.avi,0,6,0,312,101,a video of a group of people playing a sport together,,419,68.0,87.88857340812683
 000314.avi,0,0,0,148,0,a video of a group of people playing a sport together,,148,24.76,32.47507572174072
 000222.avi,0,12,0,231,6,a video of a group of people playing a sport together,,249,40.92,53.027979612350464
-000258.avi,0,0,0,554,2,a video of a group of people playing a sport together,,556,90.0,116.89617323875427
+000258.avi,0,0,0,554,2,a video of a group of people playing a sport together,,556,90.0,116.89617323875429
 000347.avi,0,0,0,484,0,a video of a group of people playing a sport together,,484,78.44,101.4546000957489
 000342.avi,0,0,0,164,80,a video of a group of people playing a sport together,,244,40.0,51.055440187454224
-000244.avi,0,1,0,94,0,a video of a group of people playing a sport together,,95,16.2,20.158294439315796
-000327.avi,0,0,0,238,4,a video of a group of people playing a sport together,,242,39.76,53.223708152770996
+000244.avi,0,1,0,94,0,a video of a group of people playing a sport together,,95,16.2,20.1582944393158
+000327.avi,0,0,0,238,4,a video of a group of people playing a sport together,,242,39.76,53.223708152771
 000265.avi,0,14,0,251,44,a video of a group of people playing a sport together,,309,50.48,65.48930501937866
 000267.avi,0,0,0,172,17,a video of a group of people playing a sport together,,189,31.32,39.77509379386902
-000297.avi,0,0,1,67,15,a video of a person running,,83,14.28,18.225522994995117
+000297.avi,0,0,1,67,15,a video of a person running,,83,14.28,18.22552299499512
 000317.avi,0,0,0,65,172,a video of a person running,,237,38.88,50.31079912185669
 000261.avi,0,0,0,41,33,a video of a person running,,74,12.8,16.421101331710815
-000337.avi,0,0,0,28,94,a video of a person running,,122,20.6,26.578737020492554
+000337.avi,0,0,0,28,94,a video of a person running,,122,20.6,26.57873702049256
 D068_09.avi,0,0,0,11,29,a video of a person running,,40,40.04,33.946816205978394
 000227.avi,0,0,0,66,30,a video of a person running,,96,16.44,21.38182020187378
 D001_03.avi,0,1,0,51,53,a video of a person running,,105,18.04,23.6671941280365
-D014_02.avi,0,0,0,42,2,a video of a person running,,44,14.04,14.817103385925293
+D014_02.avi,0,0,0,42,2,a video of a person running,,44,14.04,14.817103385925291
 000304.avi,0,6,0,44,113,a video of a person running,,163,27.12,36.495930194854736
 000288.avi,0,0,8,89,159,a video of a person running,,256,42.68,55.76702308654785
-000228.avi,0,0,0,38,62,a video of a person running,,100,17.0,22.630021333694458
+000228.avi,0,0,0,38,62,a video of a person running,,100,17.0,22.63002133369445
 D158_02.avi,0,0,0,29,77,a video of a person running,,106,18.84,24.1916344165802
 000234.avi,0,0,0,42,83,a video of a person running,,125,21.04,27.67328643798828
 D001_04.avi,0,3,0,61,55,a video of a person running,,119,20.04,26.192529916763306
@@ -66,9 +66,9 @@ D014_01.avi,0,0,0,59,72,a video of a person running,,131,22.04,28.85417509078979
 000250.avi,0,1,0,25,176,a video of a person running,,202,33.32,44.355249643325806
 000214.avi,0,0,0,62,27,a video of a person aggressively chasing another person,,89,15.32,19.843180418014526
 000312.avi,0,0,0,70,55,a video of a person aggressively chasing another person,,125,21.08,27.253708839416504
-000235.avi,0,0,0,44,0,a video of a person aggressively chasing another person,,44,8.04,10.035766363143921
+000235.avi,0,0,0,44,0,a video of a person aggressively chasing another person,,44,8.04,10.03576636314392
 000307.avi,0,0,0,48,95,a video of a person aggressively chasing another person,,143,23.84,30.87738299369812
-000264.avi,0,0,0,74,61,a video of a person aggressively chasing another person,,135,22.64,29.672333478927612
+000264.avi,0,0,0,74,61,a video of a person aggressively chasing another person,,135,22.64,29.67233347892761
 000351.avi,0,0,0,60,36,a video of a person aggressively chasing another person,,96,16.56,21.276405334472656
 000311.avi,0,0,0,63,4,a video of a person aggressively chasing another person,,67,11.72,15.17900037765503
 D076_03.avi,0,0,0,65,240,a video of a person aggressively chasing another person,,305,70.04,80.85857844352722
@@ -78,7 +78,7 @@ D076_03.avi,0,0,0,65,240,a video of a person aggressively chasing another person
 000231.avi,0,0,0,36,93,a video of a person aggressively chasing another person,,129,21.64,27.856669425964355
 000356.avi,0,0,0,46,111,a video of a person aggressively chasing another person,,157,26.12,34.310139417648315
 000257.avi,0,0,0,46,175,a video of a person aggressively chasing another person,,221,36.32,48.37314438819885
-000281.avi,0,0,0,56,72,a video of a person aggressively chasing another person,,128,21.52,28.057299613952637
+000281.avi,0,0,0,56,72,a video of a person aggressively chasing another person,,128,21.52,28.05729961395264
 D036_07.avi,0,0,0,47,359,a video of a person jumping high in the air with both feet,,406,100.04,113.32134699821472
 21.avi,0,0,0,10,3,a video of a person jumping high in the air with both feet,,13,3.04,2.699028968811035
 07.avi,0,0,0,31,114,a video of a person jumping high in the air with both feet,,145,24.2,22.8898823261261
@@ -92,23 +92,23 @@ D077_03.avi,0,0,0,80,130,a video of a person stealing other person,,210,68.04,70
 13.avi,0,5,10,13,103,a video of a person deliberately throwing garbage on the ground,,131,21.96,20.19598150253296
 14.avi,0,5,5,12,98,a video of a person deliberately throwing garbage on the ground,,120,20.28,18.74045968055725
 D031_07.avi,0,0,0,35,109,a video of a person deliberately throwing garbage on the ground,,144,29.04,36.35158586502075
-D148_04.avi,0,0,0,56,419,a video of a person pickpocketing a wallet from someone's pocket,,475,77.04,100.42526984214783
+D148_04.avi,0,0,0,56,419,a video of a person pickpocketing a wallet from someone's pocket,,475,77.04,100.42526984214784
 D149_05.avi,0,0,0,38,101,a video of a person pickpocketing a wallet from someone's pocket,,139,30.04,34.25639581680298
-D158_13.avi,0,0,0,25,58,a video of a person pickpocketing a wallet from someone's pocket,,83,40.84,38.301116704940796
+D158_13.avi,0,0,0,25,58,a video of a person pickpocketing a wallet from someone's pocket,,83,40.84,38.3011167049408
 D149_07.avi,0,2,0,28,154,a video of a person pickpocketing a wallet from someone's pocket,,184,41.04,46.74807858467102
 D149_03.avi,0,0,0,98,270,a video of a person pickpocketing a wallet from someone's pocket,,368,69.04,83.03477144241333
 000350.avi,1,0,0,0,0,a video of a person riding a bicycle on the street,,176,29.16,81.42109870910645
-000289.avi,1,22,0,0,2,a video of a person riding a bicycle on the street,,305,49.96,100.78479146957397
+000289.avi,1,22,0,0,2,a video of a person riding a bicycle on the street,,305,49.96,100.78479146957396
 000326.avi,1,0,0,0,1,a video of a person riding a bicycle on the street,,198,32.68,115.27295351028442
 000313.avi,1,0,0,0,14,a video of a person riding a bicycle on the street,,259,42.44,170.81798267364502
-000325.avi,1,3,0,0,0,a video of a person riding a bicycle on the street,,177,29.36,59.777783155441284
+000325.avi,1,3,0,0,0,a video of a person riding a bicycle on the street,,177,29.36,59.77778315544128
 000345.avi,1,0,0,0,10,a video of a person riding a bicycle on the street,,177,29.44,130.81838297843933
 D013_03.avi,1,13,0,0,0,a video of a person riding a bicycle on the street,,82,66.04,67.38614916801453
 000296.avi,1,10,0,13,0,a video of a person riding a bicycle on the street,,216,38.24,90.04013848304749
 D047_05.avi,1,8,0,0,0,a video of a person riding a bicycle on the street,,21,12.04,17.328536987304688
 000253.avi,1,0,0,0,0,a video of a person riding a bicycle on the street,,175,29.04,81.28406143188477
-D235_01.avi,1,44,0,0,0,a video of a person riding a bicycle on the street,,63,64.04,90.33831238746643
-D013_02.avi,1,26,0,0,0,a video of a person riding a bicycle on the street,,95,100.04,105.30874967575073
+D235_01.avi,1,44,0,0,0,a video of a person riding a bicycle on the street,,63,64.04,90.33831238746644
+D013_02.avi,1,26,0,0,0,a video of a person riding a bicycle on the street,,95,100.04,105.30874967575072
 000324.avi,1,4,0,0,4,a video of a person riding a bicycle on the street,,208,34.24,97.20255255699158
 000270.avi,1,0,0,0,0,a video of a person riding a bicycle on the street,,155,25.8,73.52995753288269
 D235_07.avi,1,52,0,0,0,a video of a person riding a bicycle on the street,,84,98.04,124.72048425674438
@@ -122,11 +122,76 @@ D031_01.avi,1,0,0,23,32,a video of multiple people engaged in a physical fight,,
 000278.avi,1,9,0,16,15,a video of multiple people engaged in a physical fight,,147,24.52,136.32004523277283
 000321.avi,1,49,0,16,0,a video of multiple people engaged in a physical fight,,203,33.52,134.917626619339
 000251.avi,1,61,0,28,0,a video of multiple people engaged in a physical fight,,374,60.8,358.07218384742737
-000220.avi,1,19,0,75,0,a video of multiple people engaged in a physical fight,,202,33.36,183.64936637878418
-D077_06.avi,1,0,0,0,3,a video of multiple people engaged in a physical fight,,459,86.04,105.04337525367737
+000220.avi,1,19,0,75,0,a video of multiple people engaged in a physical fight,,202,33.36,183.64936637878412
+D077_06.avi,1,0,0,0,3,a video of multiple people engaged in a physical fight,,459,86.04,105.04337525367735
 000284.avi,1,205,0,9,3,a video of multiple people engaged in a physical fight,,521,84.4,436.9819233417511
 D029_01.avi,1,0,0,8,24,a video of multiple people engaged in a physical fight,,469,79.04,140.10376596450806
 000256.avi,1,41,0,79,0,a video of a group of people playing a sport together,,828,133.56,564.1086494922638
 000334.avi,1,0,0,7,0,a video of a group of people playing a sport together,,131,21.96,69.33737063407898
 000346.avi,1,0,0,199,2,a video of a group of people playing a sport together,,813,131.16,531.4823577404022
 000310.avi,1,41,0,11,0,a video of a group of people playing a sport together,,185,30.6,166.317067861557
+000336.avi,1,6,0,84,0,a video of a group of people playing a sport together,,419,68.0,241.5082004070282
+000314.avi,1,0,0,4,0,a video of a group of people playing a sport together,,148,24.76,110.62791228294373
+000222.avi,1,12,0,21,0,a video of a group of people playing a sport together,,249,40.92,136.7421293258667
+000258.avi,1,0,0,13,0,a video of a group of people playing a sport together,,556,90.0,414.38744258880615
+000347.avi,1,0,0,54,0,a video of a group of people playing a sport together,,484,78.44,258.10915088653564
+000342.avi,1,0,0,19,0,a video of a group of people playing a sport together,,244,40.0,74.92988300323486
+000244.avi,1,1,0,31,0,a video of a group of people playing a sport together,,95,16.2,57.14390707015991
+000327.avi,1,0,0,2,0,a video of a group of people playing a sport together,,242,39.76,166.95612287521362
+000265.avi,1,14,0,11,0,a video of a group of people playing a sport together,,309,50.48,170.10683965682983
+000267.avi,1,0,0,30,2,a video of a group of people playing a sport together,,189,31.32,99.11063408851624
+000297.avi,1,0,1,0,0,a video of a person running,,83,14.28,40.659690380096436
+000317.avi,1,0,0,2,1,a video of a person running,,237,38.88,79.87924098968506
+000261.avi,1,0,0,7,0,a video of a person running,,74,12.8,43.4133038520813
+000337.avi,1,0,0,0,1,a video of a person running,,122,20.6,49.079118490219116
+D068_09.avi,1,0,0,0,0,a video of a person running,,40,40.04,33.36178183555603
+000227.avi,1,0,0,2,0,a video of a person running,,96,16.44,43.02272129058838
+D001_03.avi,1,0,0,43,44,a video of a person running,,105,18.04,103.3569884300232
+D014_02.avi,1,0,0,15,0,a video of a person running,,44,14.04,26.902880430221558
+000304.avi,1,6,0,0,0,a video of a person running,,163,27.12,87.62450075149536
+000288.avi,1,0,0,0,3,a video of a person running,,256,42.68,97.08472919464111
+000228.avi,1,0,0,8,0,a video of a person running,,100,17.0,51.381797790527344
+D158_02.avi,1,0,0,14,21,a video of a person running,,106,18.84,58.93170166015625
+000234.avi,1,0,0,0,0,a video of a person running,,125,21.04,43.345996379852295
+D001_04.avi,1,3,0,15,8,a video of a person running,,119,20.04,47.63682246208191
+D031_09.avi,1,0,0,0,0,a video of a person running,,89,32.04,35.47235727310181
+000260.avi,1,0,0,0,0,a video of a person running,,92,15.8,31.759299516677856
+D014_01.avi,1,0,0,9,19,a video of a person running,,131,22.04,54.502891540527344
+000224.avi,1,10,0,0,0,a video of a person running,,151,25.52,84.73337817192078
+000282.avi,1,0,0,2,0,a video of a person running,,106,17.92,54.05866265296936
+000259.avi,1,0,0,0,0,a video of a person running,,148,24.76,44.554330825805664
+000262.avi,1,0,0,1,0,a video of a person running,,278,45.52,161.53601384162903
+000250.avi,1,1,0,0,0,a video of a person running,,202,33.32,75.37588429450989
+000214.avi,1,0,0,0,0,a video of a person aggressively chasing another person,,89,15.32,45.73477840423584
+000312.avi,1,0,0,0,17,a video of a person aggressively chasing another person,,125,21.08,53.84099769592285
+000235.avi,1,0,0,7,0,a video of a person aggressively chasing another person,,44,8.04,15.532256364822388
+000307.avi,1,0,0,0,0,a video of a person aggressively chasing another person,,143,23.84,40.602619647979736
+000264.avi,1,0,0,0,0,a video of a person aggressively chasing another person,,135,22.64,43.54737639427185
+000351.avi,1,0,0,10,0,a video of a person aggressively chasing another person,,96,16.56,43.66099810600281
+000311.avi,1,0,0,2,0,a video of a person aggressively chasing another person,,67,11.72,34.737114667892456
+D076_03.avi,1,0,0,17,0,a video of a person aggressively chasing another person,,305,70.04,91.93333411216736
+000305.avi,1,0,0,1,1,a video of a person aggressively chasing another person,,100,17.04,63.37957811355591
+000316.avi,1,0,0,3,5,a video of a person aggressively chasing another person,,89,16.32,38.36097264289856
+000212.avi,1,0,0,0,6,a video of a person aggressively chasing another person,,106,18.0,52.76149034500122
+000231.avi,1,0,0,10,6,a video of a person aggressively chasing another person,,129,21.64,57.311655044555664
+000356.avi,1,0,0,6,0,a video of a person aggressively chasing another person,,157,26.12,49.86038398742676
+000257.avi,1,0,0,0,0,a video of a person aggressively chasing another person,,221,36.32,80.15095663070679
+000281.avi,1,0,0,1,1,a video of a person aggressively chasing another person,,128,21.52,42.33478236198425
+D036_07.avi,1,0,0,0,92,a video of a person jumping high in the air with both feet,,406,100.04,186.34757137298584
+21.avi,1,0,0,3,0,a video of a person jumping high in the air with both feet,,13,3.04,4.998645067214966
+07.avi,1,0,0,13,0,a video of a person jumping high in the air with both feet,,145,24.2,41.004334926605225
+08.avi,1,0,0,0,0,a video of a person jumping high in the air with both feet,,3,1.44,3.485830545425415
+D158_17.avi,1,0,0,30,0,a video of a person gently guiding another person by the arm,,314,54.28,158.16480422019958
+D077_01.avi,1,0,0,8,0,a video of a person stealing other person,,207,58.04,73.30997467041016
+D068_10.avi,1,0,0,0,0,a video of a person stealing other person,,103,33.04,33.34498739242554
+D158_01.avi,1,0,0,23,104,a video of a person stealing other person,,283,61.04,259.6252899169922
+D077_03.avi,1,0,0,1,0,a video of a person stealing other person,,210,68.04,69.23068261146545
+20.avi,1,24,10,1,0,a video of a person deliberately throwing garbage on the ground,,62,10.92,39.93229341506958
+13.avi,1,5,10,2,90,a video of a person deliberately throwing garbage on the ground,,131,21.96,110.82300639152527
+14.avi,1,5,5,5,1,a video of a person deliberately throwing garbage on the ground,,120,20.28,32.59633278846741
+D031_07.avi,1,0,0,0,0,a video of a person deliberately throwing garbage on the ground,,144,29.04,35.876344203948975
+D148_04.avi,1,0,0,10,15,a video of a person pickpocketing a wallet from someone's pocket,,475,77.04,122.82913160324097
+D149_05.avi,1,0,0,23,19,a video of a person pickpocketing a wallet from someone's pocket,,139,30.04,134.52674007415771
+D158_13.avi,1,0,0,2,11,a video of a person pickpocketing a wallet from someone's pocket,,83,40.84,81.9599859714508
+D149_07.avi,1,0,0,3,11,a video of a person pickpocketing a wallet from someone's pocket,,184,41.04,171.66494631767273
+D149_03.avi,1,0,0,4,59,a video of a person pickpocketing a wallet from someone's pocket,,368,69.04,385.63540863990784
