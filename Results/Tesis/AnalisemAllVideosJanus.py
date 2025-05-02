@@ -37,9 +37,15 @@ def calculate_ap(precision, recall):
 
     return ap
 
+#For the old prompt
+rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/'
+file='TestingJanusAllOnlyTrue.csv'
+#New prompt
+rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
+file='TestJanusAll5.csv'
+storing_file = file.split(".")[0] + "_mAP.png"
+df = pd.read_csv(f"{rute}{file}")
 
-df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
-df =pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -77,11 +83,11 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "Detector + Rules + MLLM + Information",
-        1: "MLLM",
-        2: "Detector + MLLM + Information ",
-        3: "Detector + Rules + MLLM",
-        4: "Detector + Rules",
+        0: "Detector con reglas, MLLM e información",
+        1: "MMLM Solo",
+        2: "Detector, MLLM e informacion",
+        3: "Detector con reglas y MLLM",
+        4: "Detector con reglas ",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -104,9 +110,10 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Performance evaluation", fontsize=16, fontweight="bold")
+fig.suptitle("Evaluacion de desempeño: Todos los metodos", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
+
 for i, bar in enumerate(axes[0].patches):
     height = bar.get_height()
     axes[0].text(
@@ -120,12 +127,16 @@ for i, bar in enumerate(axes[0].patches):
         color="black",
     )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
-axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
-axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
+axes[0].set_ylabel("AP", fontsize=16, fontweight="bold")
+axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=10)
 axes[0].legend().set_visible(False)
 axes[0].grid()
 axes[0].set_ylim(bottom=0.0, top=1.0)
 axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
+axes[0].set_yticklabels(
+    ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
+)
+
 # axes[0].set_yticklabels(
 # ["{:.1f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
 # )
@@ -156,8 +167,9 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-# plt.savefig("Results/Meeting/mAPLLava.png")
+
 plt.tight_layout()
+plt.savefig(f'{rute}{storing_file}', dpi=300, bbox_inches='tight')
 plt.show()
 print(df)
 print(len(df["Name"].unique()))

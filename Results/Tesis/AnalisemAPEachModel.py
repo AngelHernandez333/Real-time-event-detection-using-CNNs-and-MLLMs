@@ -70,15 +70,27 @@ mAP_combined.reset_index(inplace=True)
 mAP_combined.drop(columns="Mode", inplace=True)
 print(mAP_combined)
 
-
+mAP_combined['Process time'] = 30.0 /mAP_combined['Process time']
 mAP_combined.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_combined.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Performance evaluation: Only MLLMs", fontsize=16, fontweight="bold")
+fig.suptitle("Evaluacion de desempeño: Método MLLM Solo", fontsize=16, fontweight="bold")
 
 mAP_combined[["mAP"]].plot(kind="bar", ax=axes[0])
+for i, bar in enumerate(axes[0].patches):
+    height = bar.get_height()
+    axes[0].text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        fontweight="bold",
+        color="black",
+    )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
 axes[0].set_ylabel("AP", fontsize=16, fontweight="bold")
 axes[0].set_xticklabels(
@@ -91,10 +103,22 @@ axes[0].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(
 axes[0].set_yticklabels(
     ["{:.2f}".format(x) for x in axes[0].get_yticks()], fontsize=10, fontweight="bold"
 )
-
+#mAP_combined['Process time'] = 30.0 /mAP_values['Process time'] 
 mAP_combined[["Processing time ratio"]].plot(kind="bar", ax=axes[1], color="#ff7f0e")
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
-axes[1].set_ylabel("Processing time per duration ratio", fontsize=16, fontweight="bold")
+for i, bar in enumerate(axes[1].patches):
+    height = bar.get_height()
+    axes[1].text(
+        bar.get_x() + bar.get_width() / 2.0,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        fontweight="bold",
+        color="black",
+    )
+axes[1].set_ylabel("FPS", fontsize=16, fontweight="bold")
 axes[1].set_xticklabels(
     mAP_combined["Model"], rotation=0, color="black", fontweight="bold"
 )
@@ -107,6 +131,6 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-# plt.savefig("Results/mAP_ProcessingTime.png")
+plt.savefig("/home/ubuntu/Tesis/Results/Tesis/SelectionOfModel/AP_PerModel.png")
 plt.tight_layout()
 plt.show()

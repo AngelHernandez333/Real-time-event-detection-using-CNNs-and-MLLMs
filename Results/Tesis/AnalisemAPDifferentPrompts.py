@@ -100,20 +100,25 @@ if __name__ == "__main__":
                 fontweight="bold",
             )
 
-    plt.xlabel("File").set_visible(False)
-    plt.ylabel("mAP", fontsize=10, fontweight="bold")
+    plt.xlabel("Prompt").set_visible(False)
+    plt.ylabel("AP", fontsize=13, fontweight="bold")
     plt.title(
-        "Mean Average Precision (mAP) for prompts", fontsize=16, fontweight="bold"
+        "AP de cada prompt", fontsize=16, fontweight="bold"
     )
     plt.xticks(
         index + bar_width / 2,
         final_results["File"].unique(),
         rotation=45,
         color="black",
-        fontweight="bold",
+        fontweight="bold",fontsize=11,
+    )
+    plt.yticks(
+        fontsize=10, fontweight="bold"
     )
     plt.legend().set_visible(False)
     plt.grid(True)
-    plt.tight_layout()
+    plt.tight_layout(pad=4.0)
+    plt.ylim(bottom=0.6, top=0.8)
     print(final_results)
+    plt.savefig('/home/ubuntu/Tesis/Results/Tesis/PromptSelection/AP_PerPrompt.png')
     plt.show()

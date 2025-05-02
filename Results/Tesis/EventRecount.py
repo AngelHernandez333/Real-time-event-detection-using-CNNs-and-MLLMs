@@ -24,19 +24,19 @@ events = [
     "13-Pickpockering",
 ]
 description = [
-        "Riding",
-        "Fighting",
-        "Playing",
-        "Running",
-        "Lying",
-        "Chasing",
-        "Jumping",
-        "Falling",
-        "Guiding",
-        "Stealing",
-        "Littering",
-        "Tripping",
-        "Pickpockering",
+        "Andar en bicicleta",
+        "Pelear",
+        "Jugar",
+        "Correr",
+        "Estar acostado",
+        "Perseguir otra persona",
+        "Saltar",
+        "Caerse",
+        "Guiar a otra persona",
+        "Robar a otra persona",
+        "Tirar basura",
+        "Tropezar con otra persona",
+        "Carterismo",
     ]
 
 columns = [
@@ -99,7 +99,7 @@ df3=df.groupby('Event').size().reset_index(name='Count')
 
 print(df1, df2,df3)
 dfs=[df1,df2,df3]
-titles=['CHAD','IITB, NWPU and Avenue','All']
+titles=['CHAD','IITB, NWPU y Avenue','completa']
 all_events = set(df1['Event']).union(df2['Event']).union(df3['Event'])
 
 for df in dfs:
@@ -120,19 +120,19 @@ for j in range(len(dfs)):
             f"{height:.0f}",
             ha="center",
             va="bottom",
-            fontsize=10,
+            fontsize=12,
             
             fontweight="bold",
             color="black",
         )
-    plt.xlabel('Event').set_visible(False)
-    plt.ylabel('Number of videos', fontsize=12, fontweight='bold')
+    plt.xlabel('Evento').set_visible(False)
+    plt.ylabel('Num. de videos', fontsize=12, fontweight='bold')
     number=dfs[j]['Count'].sum()
-    plt.title(f'Event Distribution in {titles[j]} Dataset with {number} videos.', fontsize=16, fontweight='bold')
-    plt.xticks(rotation=45, ha='right', fontsize=10, fontweight='bold')
-    plt.yticks(fontsize=10, fontweight='bold')
+    plt.title(f'Distribucion de videos en la dataset {titles[j]} con {number} videos.', fontsize=16, fontweight='bold')
+    plt.xticks(rotation=45, ha='right', fontsize=12, fontweight='bold')
+    plt.yticks(fontsize=12, fontweight='bold')
     plt.tight_layout()
-    plt.ylim(bottom=0, top=60)
+    plt.ylim(bottom=0, top=62)
     plt.grid()
     plt.savefig(f"/home/ubuntu/Tesis/Results/Tesis/DistribucionOfTheVideos/Distribution_{titles[j]}.png", dpi=300, bbox_inches='tight')
     #plt.gca().set_axisbelow(True)d
