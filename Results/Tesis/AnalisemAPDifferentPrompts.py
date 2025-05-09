@@ -25,6 +25,7 @@ def calculate_ap(precision, recall):
 def calculate_map(name, rute):
     df = pd.read_csv(f"{rute}/{name}")
     df = df[df["Mode"] == 1]
+    print(df)
     categories = df["True Event"].unique()
     # Separate rows by category
     df["Precision"] = df["True Positive"] / (df["True Positive"] + df["False Positive"])
@@ -70,7 +71,6 @@ if __name__ == "__main__":
         result = results[i]
         result["File"] = files[i].split(".")[0].split("TestingJanus")[-1]
         final_results = pd.concat([final_results, result])
-    print(final_results)
     # Plot the AP values for each file
     file_names = {
         "Is": "is 'event' in the video?",

@@ -1,9 +1,12 @@
-import pandas as pd
+import cv2
+video_path = "/home/ubuntu/Database/NWPU_IITB/Videos/Jumping/07.avi"  # Replace with your video file path
+cap = cv2.VideoCapture(video_path)
 
-rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
-file='TestingCLIP16_NWPUIITB_4.csv'
-df1= pd.read_csv(f"{rute}TestingCLIP_RULES16_MLLMNewPrompts.csv")
-df2= pd.read_csv(f"{rute}{file}")
-df= pd.concat([df1, df2], ignore_index=True)
-print(df)
-df.to_csv(f"{rute}TestCLIPAll4.csv", index=False)
+if not cap.isOpened():
+    print("Error: Cannot open video.")
+else:
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    print(f"Video Width: {width}, Video Height: {height}")
+
+cap.release()
