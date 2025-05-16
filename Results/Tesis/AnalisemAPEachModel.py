@@ -44,6 +44,7 @@ for i in range(len(lists)):
         df1 = category_dfs[categories[i]]
         #
         df1["Process time"] = df1["Process time"] / df1["Duration"]
+        df1['Process time'] = 30.0 /df1['Process time']
         grouped = df1.groupby("Mode")
         # ----------------------------------------------------------------------
         # Ejecución del código
@@ -70,7 +71,6 @@ mAP_combined.reset_index(inplace=True)
 mAP_combined.drop(columns="Mode", inplace=True)
 print(mAP_combined)
 
-mAP_combined['Process time'] = 30.0 /mAP_combined['Process time']
 mAP_combined.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_combined.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 

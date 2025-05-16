@@ -508,7 +508,8 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion4.csv")
+        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion4.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

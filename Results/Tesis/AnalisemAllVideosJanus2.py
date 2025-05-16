@@ -36,26 +36,28 @@ def calculate_ap(precision, recall):
         ap += delta_recall * precision[i]
 
     return ap
-
-#For the old prompt
+'''#For the old prompt
 rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/'
 file='TestingJanusAllOnlyTrue.csv'
+storing_file = file.split(".")[0] + "_mAP02.png"'''
 #New prompt
 rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
 file='TestingNWPUIITB.csv'
-storing_file = file.split(".")[0] + "ALLwithRespectedFPS.png"
-df = pd.read_csv(f"{rute}{file}")
-file='TestingJanusPrompts.csv'
 storing_file = file.split(".")[0] + "_mAP.png"
+df = pd.read_csv(f"{rute}{file}")
+#file='TestingJanusPrompts.csv'
+file='TestingJanusPrompts.csv'
 df2 = pd.read_csv(f"{rute}{file}")
+storing_file = file.split(".")[0] + "_mAP.png"
 df["Process time"] = df["Process time"] / df["Duration"]
 df2["Process time"] = df2["Process time"] / df2["Duration"]
 df['Process time'] = 25.0 /df['Process time'] 
 df2['Process time'] = 30.0 /df2['Process time'] 
 df= pd.concat([df, df2], ignore_index=True)
-storing_file ="ALLwithRespectedFPS.png"
 
 #df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
+storing_file ="ALLwithRespectedFPS.png"
+
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()

@@ -51,6 +51,8 @@ df2["Process time"] = df2["Process time"] / df2["Duration"]
 df['Process time'] = 25.0 /df['Process time'] 
 df2['Process time'] = 30.0 /df2['Process time'] 
 df= pd.concat([df, df2], ignore_index=True)
+#file='TestingCLIP16_NWPUIITB.csv'
+#storing_file = file.split(".")[0] + "_mAP.png"
 
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
@@ -188,7 +190,6 @@ fig.set_size_inches(16, 10)
 plt.tight_layout()
 plt.savefig(f'{rute}{storing_file}', dpi=300, bbox_inches='tight')
 plt.show()
-print(df)
 print(mAP_values)
 #mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
 '''print(df[df["True Positive"]==0]['True Event'])
