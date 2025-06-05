@@ -30,7 +30,7 @@ def rate_changes(initial, final):
         return increase_rate(initial, final)
 if __name__ == "__main__":
     # Example usage
-    initial_value = 0.6
-    final_value = 0.79
+    initial_value = 6.22
+    final_value = 19
     ratio= rate_changes(initial_value, final_value)
     print(f"Rate change: {ratio:.2f}%")

@@ -41,7 +41,7 @@ import numpy as np
 
 #For the old prompt
 rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
-file='TestingCLIP16_NWPUIITB.csv'
+file='TestCLIPAll5.csv'
 storing_file = file.split(".")[0] + "_mAP.png"
 df = pd.read_csv(f"{rute}{file}")
 def calculate_ap(precision, recall):

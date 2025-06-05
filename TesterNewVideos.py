@@ -206,6 +206,7 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
+        self._storagefolder = '/home/ubuntu/Tesis/Storage'
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -242,9 +243,11 @@ class EventTester(VideoTester):
         tn = 0
         prompts = [prompt.lower() for prompt in prompts]
         name = video_name.split(".")[0]
-        frames = np.load("../Database/NWPU_IITB/GT/gt.npz")
+        frames = np.load("../Database/ALL/GT/gt_ALL.npz")
         frames= frames[name]
         frames = np.append(frames, frames[-1])
+        output_data = np.array([frames_number, prompts], dtype=object)
+        np.save(f"{self._storagefolder}/{name}_Architecture_{self.__mode}.npy", output_data)
         for i in range(len(prompts)):
             print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
             if prompts[i] == "yes" and frames[frames_number[i] - 1] == 1:
@@ -436,66 +439,7 @@ class EventTester(VideoTester):
         return frames_number, fps_list, prompts, duration, time_video, finished
 
     def autotesting(self, folders, descriptions, modes):
-        for k in modes:
-            for video_kind in range(len(folders)):
-                rute = f"{self.__rute}/{folders[video_kind]}/"
-                files = os.listdir(rute)
-                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
-                    for i in range(len(descriptions)):
-                        finished = False
-                        count = self.__df[
-                            (self.__df["Name"] == files[j])
-                            & (self.__df["Check event"] == descriptions[i])
-                            & (self.__df["Mode"] == k)
-                        ].shape[0]
-                        if count == 0:
-                            self.set_event(descriptions[i])
-                            self.set_mode(k)
-                            (
-                                frames_number,
-                                fps_list,
-                                prompts,
-                                duration,
-                                time_video,
-                                finished,
-                            ) = self.testing_video(
-                                f"../Database/NWPU_IITB/Videos/{folders[video_kind]}/{files[j]}",
-                                files[j],
-                            )
-                            if finished:
-                                frames_number = frames_number[1::]
-                                prompts = prompts[1::]
-                                print("Prompts:", prompts)
-                                tp, fp, fn, tn = self.check_precision(
-                                    prompts, frames_number, files[j]
-                                )
-                                # Save the results
-                                row = {
-                                    "Name": files[j],
-                                    "Mode": k,
-                                    "True Positive": tp,
-                                    "False Positive": fp,
-                                    "False Negative": fn,
-                                    "True Negative": tn,
-                                    "True Event": description[video_kind],
-                                    "Check event": description[i],
-                                    "Validations Number": len(prompts),
-                                    "Duration": duration,
-                                    "Process time": time_video,
-                                }
-                                tester.append_dataframe(row)
-                                self.save_dataframe()
-                            else:
-                                break
-                    else:
-                        continue
-                    break
-                else:
-                    continue
-                break
-            else:
-                continue
-            break
+        pass
 
     def simple_autotesting(self, folders, descriptions, modes):
         for k in modes:
@@ -524,7 +468,7 @@ class EventTester(VideoTester):
                             time_video,
                             finished,
                         ) = self.testing_video(
-                            f"../Database/NWPU_IITB/Videos/{folders[video_kind]}/{files[j]}",
+                            f"../Database/ALL/Videos/{folders[video_kind]}/{files[j]}",
                             files[j],
                         )
                         if finished:
@@ -571,11 +515,14 @@ if __name__ == "__main__":
         "Fighting",
         "Playing",
         "Running",
+        'Lying',
         "Chasing",
         "Jumping",
+        "Falling",
         "Guiding",
         "Stealing",
         "Littering",
+        "Tripping",
         "Pickpockering",
     ]
     description = [
@@ -583,13 +530,17 @@ if __name__ == "__main__":
         "a certain number of persons fighting",
         "a group of persons playing",
         "a person running",
+        "a person lying in the floor",
         "a person chasing other person",
         "a person jumping",
+        "a person falling",
         "a person guiding other person",
         "a person stealing other person",
         "a person throwing trash in the floor",
+        "a person tripping",
         "a person stealing other person's pocket",
     ]
+
     # Prepare the tester
     tester = EventTester()
     test = 1
@@ -603,7 +554,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingNWPUIITB_4.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevStorageArch.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -611,7 +562,7 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereQwen.csv")
         tester.set_MLLM(qwen2vl)
-    tester.set_rute("../Database/NWPU_IITB/Videos")
+    tester.set_rute("../Database/ALL/Videos")
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)

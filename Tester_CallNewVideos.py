@@ -89,6 +89,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
+        self._storagefolder = '/home/ubuntu/Tesis/Storage'
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -119,11 +120,10 @@ class EventTesterCLIP(VideoTester):
         # True negative Prediction and Reality are false
         # False negative Prediction is false and Reality is true
         # False positive Prediction is true and Reality is false
-        print(video_name)
         normal_class = PREFIX + "a normal view (persons walking or standing)"
         all_classes = [normal_class] + anomaly_classes
         name = video_name.split(".")[0]
-        frames = np.load("../Database/NWPU_IITB/GT/gt.npz")
+        frames = np.load("..//Database/ALL/GT/gt_ALL.npz")
         frames= frames[name]
         frames = np.append(frames, frames[-1])
         # Create a dictionary to convert class names to numeric indices
@@ -132,6 +132,9 @@ class EventTesterCLIP(VideoTester):
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
         prompts = [prompt.lower().split('.')[0] for prompt in prompts]
+        # Save frames_number, predicted_events, and prompts into a numpy array
+        output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
+        np.save(f"{self._storagefolder}/{name}_CLIP_{mode}.npy", output_data)
         print(prompts, predicted_events)
         for i in range(len(predicted_events)):
             # Get ground truth
@@ -202,66 +205,7 @@ class EventTesterCLIP(VideoTester):
         self.__df.to_csv(self.__dfname, index=False)
 
     def autotesting(self, folders, descriptions, modes):
-        for k in modes:
-            for video_kind in range(len(folders)):
-                rute = f"{self.__rute}/{folders[video_kind]}/"
-                files = os.listdir(rute)
-                for j in range(len(files)):  # Pasar por todos los videos de la carpeta
-                    for i in range(len(descriptions)):
-                        finished = False
-                        count = self.__df[
-                            (self.__df["Name"] == files[j])
-                            & (self.__df["Check event"] == descriptions[i])
-                            & (self.__df["Mode"] == k)
-                        ].shape[0]
-                        if count == 0:
-                            self.set_event(descriptions[i])
-                            self.set_mode(k)
-                            (
-                                frames_number,
-                                fps_list,
-                                prompts,
-                                duration,
-                                time_video,
-                                finished,
-                            ) = self.testing_video(
-                                f"{self.__rute}/{folders[video_kind]}/{files[j]}",
-                                files[j],
-                            )
-                            if finished:
-                                frames_number = frames_number[1::]
-                                prompts = prompts[1::]
-                                print("Prompts:", prompts)
-                                tp, fp, fn, tn = self.check_precision(
-                                    prompts, frames_number, files[j]
-                                )
-                                # Save the results
-                                row = {
-                                    "Name": files[j],
-                                    "Mode": k,
-                                    "True Positive": tp,
-                                    "False Positive": fp,
-                                    "False Negative": fn,
-                                    "True Negative": tn,
-                                    "True Event": description[video_kind],
-                                    "Check event": description[i],
-                                    "Validations Number": len(prompts),
-                                    "Duration": duration,
-                                    "Process time": time_video,
-                                }
-                                tester.append_dataframe(row)
-                                self.save_dataframe()
-                            else:
-                                break
-                    else:
-                        continue
-                    break
-                else:
-                    continue
-                break
-            else:
-                continue
-            break
+        pass
 
     def testing_video(self, video_path, dmc):
         # Contador de las detecciones
@@ -479,8 +423,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32MLLM_OLDPROMPT.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB_4.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevStorage.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -488,46 +431,18 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing.csv")
         tester.set_MLLM(qwen2vl)
-    # tester.set_MLLM(llava)
     tester.show_video(False)
     CLIP_encoder = CLIP_Model()
-    
-    #CLIP_encoder.set_model("openai/clip-vit-base-patch32")
-    #CLIP_encoder.set_processor("openai/clip-vit-base-patch32")
-    #openai/clip-vit-large-patch14
-    
-    #CLIP_encoder.set_model("openai/clip-vit-large-patch14-336")
-    #CLIP_encoder.set_processor("openai/clip-vit-large-patch14-336")
-
-    #openai/clip-vit-large-patch14-336
     CLIP_encoder.set_model("openai/clip-vit-base-patch16")
     CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
-    # Add a prefix to each description
-    
-    #prefix="an image of a "
-    #This image shows
-    #This is an image of a
-    #
-
-    #prefix = "a photo of "
     descriptions = [PREFIX + des for des in description]
     CLIP_encoder.set_descriptions(descriptions)
     tester.set_image_encoder(CLIP_encoder)
-    # Start the autotesting
-    # tester.autotesting(events, description, [0,1,2,3])
-    # tester.simple_autotesting(events, description, [0,1,2,3])
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
     ov_qmodel.set_labels(detection_labels)
     tester.set_detector(ov_qmodel)
-    tester.set_rute("../Database/NWPU_IITB/Videos")
+    tester.set_rute("../Database/ALL/Videos")
     tester.show_video(False)
     tester.show_detections(False)
     tester.simple_autotesting(events, descriptions, [0, 1])
-    # TODO: Verify the events and prompts and test the events
-
-    # ALL IMAGES ✅
-    #One image ✅
-    #14-336
-    #News prompts
-    #MLLM

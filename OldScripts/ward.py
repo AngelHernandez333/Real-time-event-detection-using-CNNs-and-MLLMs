@@ -1,41 +1,21 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import os
+'''import pandas as pd
+df1 = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+df1=df1[df1['Mode']==0]
+print(df1['Process time'].sum()/(60*60))
 
+print(df1[df1['True Positive']==0])'''
+import numpy as np 
 
-"""df = pd.read_csv('/home/ubuntu/Tesis/Results/resultsLLavaAV_SameVideosDifVal3.csv')
-# Sum the 'Duration' column and convert to hours
-total_duration_seconds = df['Process time'].sum()
-total_duration_hours = total_duration_seconds / 3600
-print(f"Total Duration in hours: {total_duration_hours/6}")"""
-"""df.rename(columns={
-    'True Positive': 'True Negative',
-    'False Positive': 'False Negative',
-    'False Negative': 'False Positive',
-    'True Negative': 'True Positive'
-}, inplace=True)"""
-"""df.rename(columns={
-    'True Positive': 'False Positive',
-    'False Positive': 'True Positive',
-    'False Negative': 'True Negative',
-    'True Negative': 'False Negative'
-}, inplace=True)"""
+frame1 = np.load("../Database/NWPU_IITB/GT/gt_IITB.npz")
+frames2 = np.load("../Database/NWPU_IITB/GT/NWPU_Campus_gt.npz")
 
+frames3 = np.load("../Database/NWPU_IITB/GT/gt_newavenue.npz")
 
-"""df.drop(['Mode','Validations Number','Duration', 'Process time'], axis=1, inplace=True)
-df.rename(columns={
-    'True Positive': 'True Negative',
-    'False Positive': 'False Negative',
-    'False Negative': 'False Positive',
-    'True Negative': 'True Positive'
-}, inplace=True)
-df['Recall'] = df['True Positive'] / (df['True Positive'] + df['False Negative'])
-df.drop([ 'True Positive','True Negative',
-    'False Positive','False Negative'], axis=1, inplace=True)"""
-for k in range(1, 5):  # Pasar por todos los modos
-    print(f"Mode {k}")
+# Combine the two dictionaries of arrays
+combined_frames = {**frame1, **frames2, **frames3}
 
-df_normal = pd.read_csv("/home/ubuntu/Tesis/Results/resultsLLavaAV_NormalVideos.csv")
-df_normal["True Event"] = "everything is normal"
-df_normal.to_csv("Results/resultsMode0Samevideos_Normals.csv", index=False)
+# Save the combined arrays into a new .npz file
+np.savez("../Database/NWPU_IITB/GT/gt.npz", **combined_frames)
+frame1 = dict(np.load("../Database/NWPU_IITB/GT/gt.npz"))  # Convert NpzFile to a dictionary
+for key in frame1.keys():
+    print(key)
