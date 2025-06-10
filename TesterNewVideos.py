@@ -247,7 +247,7 @@ class EventTester(VideoTester):
         frames= frames[name]
         frames = np.append(frames, frames[-1])
         output_data = np.array([frames_number, prompts], dtype=object)
-        np.save(f"{self._storagefolder}/{name}_Architecture_{self.__mode}.npy", output_data)
+        np.save(f"{self._storagefolder}/{name}_Architecture_{self.__mode}_{self.__event}.npy", output_data)
         for i in range(len(prompts)):
             print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
             if prompts[i] == "yes" and frames[frames_number[i] - 1] == 1:
@@ -318,7 +318,7 @@ class EventTester(VideoTester):
         if self.__mode in [0, 3, 4]:
             dmc = decision_maker(self.__event)
         # Charge time
-        gap= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
+        gap= 5
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
@@ -570,5 +570,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0,1,2,3, 4])
+    tester.simple_autotesting(events, description, [0,3, 4,1,2])
     # tester.autotesting(events, description, [0,1,2,3,4])

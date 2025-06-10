@@ -134,7 +134,7 @@ class EventTesterCLIP(VideoTester):
         prompts = [prompt.lower().split('.')[0] for prompt in prompts]
         # Save frames_number, predicted_events, and prompts into a numpy array
         output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
-        np.save(f"{self._storagefolder}/{name}_CLIP_{mode}.npy", output_data)
+        np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
         print(prompts, predicted_events)
         for i in range(len(predicted_events)):
             # Get ground truth
@@ -233,7 +233,7 @@ class EventTesterCLIP(VideoTester):
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
-        gap= float(round(cap.get(cv2.CAP_PROP_FPS)))//6
+        gap= 5
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
