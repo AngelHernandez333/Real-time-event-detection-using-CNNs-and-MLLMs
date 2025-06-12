@@ -1090,6 +1090,8 @@ class ALL_Rules():
     
     def set_descriptions(self, descriptions):
         self.__descriptions=descriptions
+    def get_descriptions(self):
+        return self.__descriptions
 
     def area_torecort(self, rois):
         area_dict = {"x1": None, "y1": None, "x2": None, "y2": None}

@@ -41,7 +41,7 @@ import numpy as np
 
 #For the old prompt
 rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
-storing_file = "ALLwithRespectedFPSCLIP.png"
+storing_file = "ALLwithRespectedFPSCLIPEnglish.png"
 file='TestingCLIP16_NWPUIITB.csv'
 df = pd.read_csv(f"{rute}{file}")
 file='TestingCLIP_RULES16_MLLMNewPrompts.csv'
@@ -51,9 +51,6 @@ df2["Process time"] = df2["Process time"] / df2["Duration"]
 df['Process time'] = 25.0 /df['Process time'] 
 df2['Process time'] = 30.0 /df2['Process time'] 
 df= pd.concat([df, df2], ignore_index=True)
-#file='TestingCLIP16_NWPUIITB.csv'
-#storing_file = file.split(".")[0] + "_mAP.png"
-
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -109,7 +106,7 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "CLIP con reglas",1: "CLIP con reglas y MLLM",
+        0: "CLIP & Rules",1: "CLIP, Rules & and MLLM", 2: "Only CLIP"
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -132,7 +129,7 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Evaluacion de desempeño: Metodos de CLIP", fontsize=16, fontweight="bold")
+fig.suptitle("Performance Evaluation: CLIP Configurations", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 for i, bar in enumerate(axes[0].patches):

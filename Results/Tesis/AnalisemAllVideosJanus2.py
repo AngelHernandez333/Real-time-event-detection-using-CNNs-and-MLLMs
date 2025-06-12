@@ -95,7 +95,7 @@ for i in range(len(categories)):
     # Plot the results
     mode_names = {
         0: "Detector con reglas, MLLM e información",
-        1: "MMLM Solo",
+        1: "MLLM Solo",
         2: "Detector, MLLM e informacion",
         3: "Detector con reglas y MLLM",
         4: "Detector con reglas ",

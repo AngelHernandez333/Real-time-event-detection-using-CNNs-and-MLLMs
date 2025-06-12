@@ -144,7 +144,7 @@ class EventTesterCLIP(VideoTester):
             true_class = event if is_anomaly == 1 else normal_class
             print((frames_number[i] - 1), is_anomaly, true_class, predicted_events[i], prompts[i])
 
-            if prompts[i] == "" and mode==0:
+            if prompts[i] == "" and (mode==0 or mode==2):
                 pass
             elif prompts[i] == "yes":
                 pass
@@ -242,7 +242,10 @@ class EventTesterCLIP(VideoTester):
                 finished = True
                 break
             # Only Detector with rules and CLIP
-            detections, classes = self.__detector.detection(frame, classes)
+            if self.__mode != 2:
+                detections, classes = self.__detector.detection(frame, classes)
+            else:
+                detections=[]
             VideoTester.take_frame(
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -252,19 +255,18 @@ class EventTesterCLIP(VideoTester):
                 results,
             )
             if  int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
-                descriptions, to_recort =dmc.process(classes, detections, results, frames, False)
+                if self.__mode != 2:
+                    descriptions, to_recort =dmc.process(classes, detections, results, frames, False)
+                else:
+                    descriptions = dmc.get_descriptions()
                 print(descriptions)
-                #if len(descriptions) > 0 and True:
-                '''x1, y1, x2, y2 = to_recort['x1'], to_recort['y1'], to_recort['x2'], to_recort['y2']
-                    cropped_frame = frame[y1:y2, x1:x2]
-                    frames[-1] = cropped_frame'''
-                    #cv2.imshow("Cropped", cropped_frame)
             if len(frames) > 6:
                 frames.pop(0)
                 results.pop(0)
                 if len(descriptions)>0:
                     normal_prompt= PREFIX+'a normal view (persons walking or standing)'
-                    descriptions.append(normal_prompt)
+                    if normal_prompt not in descriptions:
+                        descriptions.append(normal_prompt)
                     self.__image_encoder.set_descriptions(descriptions)
                     event, avg_prob = self.__image_encoder.outputs(frames)
                     events.append(event)
@@ -274,14 +276,6 @@ class EventTesterCLIP(VideoTester):
                             event.split(PREFIX)[1],
                             self.__mode,
                             classes_focus,)
-                        '''text = VideoTester.prompt_text(
-                            classes,
-                            event.split("a photo of ")[1],
-                            self.__mode,
-                            classes_focus,
-                            detections,
-                            video_information,
-                        )'''
                         prompt = self.__MLLM.event_validation(
                             frames, event.split(PREFIX)[1], text, verbose=True
                         )
@@ -423,7 +417,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevStorage.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevOnlyCLIP.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -445,4 +439,4 @@ if __name__ == "__main__":
     tester.set_rute("../Database/ALL/Videos")
     tester.show_video(False)
     tester.show_detections(False)
-    tester.simple_autotesting(events, descriptions, [0, 1])
+    tester.simple_autotesting(events, descriptions, [2])
