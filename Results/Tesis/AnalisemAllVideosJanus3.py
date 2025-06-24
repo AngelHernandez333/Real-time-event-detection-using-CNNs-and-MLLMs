@@ -3,22 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-'''def calculate_ap(precision, recall):
-    # Ordena recall de manera ascendente
-    sorted_indices = np.argsort(recall)
-    precision = np.array(precision)[sorted_indices]
-    recall = np.array(recall)[sorted_indices]
-
-    # Asegúrate de que recall y precision comiencen y terminen en 0 y 1
-    precision = np.concatenate(([0], precision, [0]))
-    recall = np.concatenate(([0], recall, [1]))
-    # Interpola la precisión para eliminar caídas bruscas
-    precision = np.maximum(precision, np.roll(precision, -1))
-    # Encuentra puntos donde el recall cambia y calcula el área bajo la curva
-    indices = np.where(recall[1:] != recall[:-1])[0] + 1
-    ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
-
-    return ap'''
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -94,11 +78,11 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "Detector, Rules, MLLM & information",
-        1: "Only MLLM",
-        2: "Detector, MLLM & information",
-        3: "Detector, Rules & MLLM",
-        4: "Detector & Rules",
+        0: "M5: Detector, Rules, MLLM & information",
+        1: "M1: Only MLLM",
+        2: "M3: Detector, MLLM & information",
+        3: "M4: Detector, Rules & MLLM",
+        4: "M2: Detector & Rules",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")

@@ -54,7 +54,7 @@ df2["Process time"] = df2["Process time"] / df2["Duration"]
 df['Process time'] = 25.0 /df['Process time'] 
 df2['Process time'] = 30.0 /df2['Process time'] 
 df= pd.concat([df, df2], ignore_index=True)
-
+df=df2
 #df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
 storing_file ="ALLwithRespectedFPS.png"
 

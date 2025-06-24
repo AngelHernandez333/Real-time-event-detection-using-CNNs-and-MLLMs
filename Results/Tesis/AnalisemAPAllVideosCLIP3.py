@@ -56,6 +56,7 @@ df= pd.concat([df, df2, df3], ignore_index=True)
 df["Process time"] = df["Process time"] / df["Duration"]
 df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
 df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
+df = df[(df['Mode'] == 1) | (df['Mode'] == 0)]
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -111,7 +112,7 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "CLIP & Rules",1: "CLIP, Rules & and MLLM", 2: "Only CLIP"
+        0: "M6: CLIP & Rules",1: "M7: CLIP, Rules & and MLLM", 2: "Only CLIP"
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
