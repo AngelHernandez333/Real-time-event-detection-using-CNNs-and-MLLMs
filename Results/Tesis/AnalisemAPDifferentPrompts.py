@@ -40,6 +40,8 @@ def calculate_map(name, rute):
         df1 = category_dfs[categories[i]]
         #
         df1["Process time"] = df1["Process time"] / df1["Duration"]
+        df1['F1']= 2 * (df1['Precision'] * df1['Recall']) / (df1['Precision'] + df1['Recall'])
+        df1.fillna(0, inplace=True)
         grouped = df1.groupby("Mode")
         # ----------------------------------------------------------------------
         # Ejecución del código
@@ -50,9 +52,9 @@ def calculate_map(name, rute):
             # Comenta la siguiente línea para verificar si el error es aquí
             ap = calculate_ap(precision, recall)
             ap_values[mode] = ap
-        mean_values = grouped[["Precision", "Recall", "Process time"]].mean()
+        mean_values = grouped[["Precision", "Recall", "Process time", 'F1']].mean()
         mean_values["AP"] = [ap_values[mode] for mode in mean_values.index]
-        mean_values = mean_values[["AP", "Process time"]]
+        mean_values = mean_values[["AP", "Process time", 'F1']]
         mAP_process.append(mean_values)
     # Calculate the mean Average Precision (mAP) for each mode
     mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
@@ -81,7 +83,7 @@ if __name__ == "__main__":
         "Confirm": "confirm if the video contain 'event'",
     }
     final_results["File"] = final_results["File"].map(file_names)
-
+    
     plt.figure(figsize=(12, 8))
     bar_width = 0.35
     index = np.arange(len(final_results["File"].unique()))

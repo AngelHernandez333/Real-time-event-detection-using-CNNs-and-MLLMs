@@ -40,23 +40,52 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #For the old prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
-storing_file = "ALLwithRespectedFPSCLIPEnglishwithONLYCLIP.png"
-file='TestingCLIP16_NWPUIITB.csv'
-df = pd.read_csv(f"{rute}{file}")
-file='TestingCLIP_RULES16_MLLMNewPrompts.csv'
-df2 = pd.read_csv(f"{rute}{file}")
-#df["Process time"] = df["Process time"] / df["Duration"]
-#df2["Process time"] = df2["Process time"] / df2["Duration"]
-#df['Process time'] = 25.0 /df['Process time'] 
-#df2['Process time'] = 30.0 /df2['Process time'] 
-file='TestingOnlyCLIP.csv'
-df3 = pd.read_csv(f"{rute}{file}")
-df= pd.concat([df, df2, df3], ignore_index=True)
-df["Process time"] = df["Process time"] / df["Duration"]
-df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
-df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
-df = df[(df['Mode'] == 1) | (df['Mode'] == 0)]
+status='ALL'
+
+
+if status =='ALL':
+    rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
+    storing_file = "ALLwithRespectedFPSCLIPEnglishwithONLYCLIP.png"
+    file='TestingCLIP16_NWPUIITB.csv'
+    df = pd.read_csv(f"{rute}{file}")
+    file='TestingCLIP_RULES16_MLLMNewPrompts.csv'
+    df2 = pd.read_csv(f"{rute}{file}")
+    #df["Process time"] = df["Process time"] / df["Duration"]
+    #df2["Process time"] = df2["Process time"] / df2["Duration"]
+    #df['Process time'] = 25.0 /df['Process time'] 
+    #df2['Process time'] = 30.0 /df2['Process time'] 
+    file='TestingOnlyCLIP.csv'
+    df3 = pd.read_csv(f"{rute}{file}")
+    df= pd.concat([df, df2, df3], ignore_index=True)
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
+    df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
+    df = df[(df['Mode'] == 1) | (df['Mode'] == 0)]
+elif status =='chad':
+    rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
+    file='TestingCLIP_RULES16_MLLMNewPrompts.csv'
+    df2 = pd.read_csv(f"{rute}{file}")
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df=df2
+    #df["Process time"] = df["Process time"] / df["Duration"]
+    #df2["Process time"] = df2["Process time"] / df2["Duration"]
+    #df['Process time'] = 25.0 /df['Process time'] 
+    #df2['Process time'] = 30.0 /df2['Process time'] 
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
+    df = df[(df['Mode'] == 1) | (df['Mode'] == 0)]
+elif status =='else':
+    rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
+    file='TestingCLIP16_NWPUIITB.csv'
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df = pd.read_csv(f"{rute}{file}")
+    #df["Process time"] = df["Process time"] / df["Duration"]
+    #df2["Process time"] = df2["Process time"] / df2["Duration"]
+    #df['Process time'] = 25.0 /df['Process time'] 
+    #df2['Process time'] = 30.0 /df2['Process time'] 
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
+    df = df[(df['Mode'] == 1) | (df['Mode'] == 0)]
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -111,8 +140,11 @@ for i in range(len(categories)):
     mean_values = mean_values[["AP", "Process time"]]
     mAP_process.append(mean_values)
     # Plot the results
-    mode_names = {
+    '''mode_names = {
         0: "M6: CLIP & Rules",1: "M7: CLIP, Rules & and MLLM", 2: "Only CLIP"
+    }'''
+    mode_names = {
+        0: "M6: CLIP con reglas",1: "M7: CLIP con reglas y MLLM",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -135,7 +167,7 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Performance Evaluation: CLIP Configurations", fontsize=16, fontweight="bold")
+fig.suptitle("Evaluacion de desempeño: Métodos de CLIP", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 for i, bar in enumerate(axes[0].patches):
@@ -151,7 +183,7 @@ for i, bar in enumerate(axes[0].patches):
         color="black",
     )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
-axes[0].set_ylabel("AP", fontsize=16, fontweight="bold")
+axes[0].set_ylabel("mAP", fontsize=16, fontweight="bold")
 axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
 axes[0].legend().set_visible(False)
 axes[0].grid()

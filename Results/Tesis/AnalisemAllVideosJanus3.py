@@ -20,27 +20,60 @@ def calculate_ap(precision, recall):
         ap += delta_recall * precision[i]
 
     return ap
-'''#For the old prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/'
-file='TestingJanusAllOnlyTrue.csv'
-storing_file = file.split(".")[0] + "_mAP02.png"'''
+status='prompt_extra'
+if status == 'ALL':
+    rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
+    file='TestingNWPUIITB.csv'
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df = pd.read_csv(f"{rute}{file}")
+    #file='TestingJanusPrompts.csv'
+    file='TestingJanusPrompts.csv'
+    df2 = pd.read_csv(f"{rute}{file}")
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df2["Process time"] = df2["Process time"] / df2["Duration"]
+    df['Process time'] = 25.0 /df['Process time'] 
+    df2['Process time'] = 30.0 /df2['Process time'] 
+    df= pd.concat([df, df2], ignore_index=True)
+    storing_file ="ALLwithRespectedFPS.png"
+elif status == 'prompt_simple':
+    rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/'
+    file='TestingJanusAllOnlyTrue.csv'
+    storing_file = file.split(".")[0] + "_mAP02.png"
+    df = pd.read_csv(f"{rute}{file}")
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df['Process time'] = 30.0 /df['Process time']
+    df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
+elif status =='prompt_extra':
+    rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
+    file='TestingJanusPrompts.csv'
+    df2 = pd.read_csv(f"{rute}{file}")
+    storing_file = file.split(".")[0] + "_mAP02.png"
+    df2["Process time"] = df2["Process time"] / df2["Duration"]
+    df2['Process time'] = 30.0 /df2['Process time']
+    df2 = df2[(df2['Mode'] == 0) | (df2['Mode'] == 2)] 
+    df=df2
+elif status =='chad':
+    rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
+    file='TestingJanusPrompts.csv'
+    df2 = pd.read_csv(f"{rute}{file}")
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df2["Process time"] = df2["Process time"] / df2["Duration"]
+    df2['Process time'] = 30.0 /df2['Process time'] 
+    df=df2
+elif status =='else':
+    rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
+    file='TestingNWPUIITB.csv'
+    storing_file = file.split(".")[0] + "_mAP.png"
+    df = pd.read_csv(f"{rute}{file}")
+    #file='TestingJanusPrompts.csv'
+    df["Process time"] = df["Process time"] / df["Duration"]
+    df['Process time'] = 25.0 /df['Process time'] 
 #New prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
-file='TestingNWPUIITB.csv'
-storing_file = file.split(".")[0] + "_mAP.png"
-df = pd.read_csv(f"{rute}{file}")
-#file='TestingJanusPrompts.csv'
-file='TestingJanusPrompts.csv'
-df2 = pd.read_csv(f"{rute}{file}")
-storing_file = file.split(".")[0] + "_mAP.png"
-df["Process time"] = df["Process time"] / df["Duration"]
-df2["Process time"] = df2["Process time"] / df2["Duration"]
-df['Process time'] = 25.0 /df['Process time'] 
-df2['Process time'] = 30.0 /df2['Process time'] 
-df= pd.concat([df, df2], ignore_index=True)
+
 
 #df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
-storing_file ="ALLwithRespectedFPSEnglish.png"
+
 
 #  Get unique categories
 print(df)
@@ -58,6 +91,8 @@ for i in range(len(categories)):
     #
     print(df1)
     grouped = df1.groupby("Mode")
+    df1['F1']= 2 * (df1['Precision'] * df1['Recall']) / (df1['Precision'] + df1['Recall'])
+    df1.fillna(0, inplace=True)
     # ----------------------------------------------------------------------
     # Ejecución del código
     ap_values = {}
@@ -69,20 +104,27 @@ for i in range(len(categories)):
         # Comenta la siguiente línea para verificar si el error es aquí
         ap = calculate_ap(precision, recall)
         ap_values[mode] = ap
-    mean_values = grouped[["Precision", "Recall", "Process time"]].mean()
+    mean_values = grouped[["Precision", "Recall", "Process time", 'F1']].mean()
     print("Average Precision (AP) for each mode:")
     for mode, ap in ap_values.items():
         print(f"Mode {mode}: {ap:.4f}")
     mean_values["AP"] = [ap_values[mode] for mode in mean_values.index]
-    mean_values = mean_values[["AP", "Process time"]]
+    mean_values = mean_values[["AP", "Process time", 'F1']]
     mAP_process.append(mean_values)
     # Plot the results
-    mode_names = {
+    '''mode_names = {
         0: "M5: Detector, Rules, MLLM & information",
         1: "M1: Only MLLM",
         2: "M3: Detector, MLLM & information",
         3: "M4: Detector, Rules & MLLM",
         4: "M2: Detector & Rules",
+    }'''
+    mode_names = {
+        0: "M5: Detector con reglas, MLLM e información",
+        1: "M1: MLLM Solo",
+        2: "M3: Detector, MLLM e información",
+        3: "M4: Detector con reglas y MLLM",
+        4: "M2: Detector con reglas",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -104,7 +146,7 @@ mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=Tru
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Performance Evaluation: ALL Configurations", fontsize=16, fontweight="bold")
+fig.suptitle("Evaluacion de desempeño: Todos los metodos", fontsize=16, fontweight="bold")
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 
@@ -122,7 +164,7 @@ for i, bar in enumerate(axes[0].patches):
     )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
 axes[0].set_ylabel("AP", fontsize=16, fontweight="bold")
-axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=10)
+axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=9)
 axes[0].legend().set_visible(False)
 axes[0].grid()
 axes[0].set_ylim(bottom=0.0, top=1.0)
@@ -151,7 +193,7 @@ for i, bar in enumerate(axes[1].patches):
     )
 # axes[1].set_title('Processing time ratio', fontsize=14, fontweight='bold')
 axes[1].set_ylabel("FPS", fontsize=16, fontweight="bold")
-axes[1].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold")
+axes[1].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=9)
 axes[1].legend().set_visible(False)
 axes[1].set_xlabel("Configuration", fontsize=16, fontweight="bold").set_visible(False)
 axes[1].grid()
@@ -165,6 +207,3 @@ fig.set_size_inches(16, 10)
 plt.tight_layout()
 plt.savefig(f'{rute}{storing_file}', dpi=300, bbox_inches='tight')
 plt.show()
-print(df)
-print(len(df["Name"].unique()))
-print(len(df["True Event"].unique()))
