@@ -78,6 +78,7 @@ class VideoTester(ABC):
     @abstractmethod
     def set_numpy_array(self, numpy_array):
         pass
+
     @abstractmethod
     def save_numpy_array(self):
         np.savez(self.__numpyrute, **self.__numpy_array)
@@ -234,9 +235,11 @@ class EventTester(VideoTester):
 
     def show_video(self, showvideo):
         self.__showvideo = showvideo
+
     def set_image_encoder(self, image_encoder):
         self.__image_encoder = image_encoder
-    def set_numpy_array(self, numpy_rute):   
+
+    def set_numpy_array(self, numpy_rute):
         self.__numpyrute = numpy_rute
         try:
             self.__numpy_array = dict(np.load(self.__numpyrute))
@@ -260,23 +263,23 @@ class EventTester(VideoTester):
         frames = np.load(
             f"../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/{name}.npy"
         )
-        print('Prompts', prompts)
-        
-        gt_array=[]
+        print("Prompts", prompts)
+
+        gt_array = []
 
         for i in range(len(prompts)):
             if prompts[i][-1] == "%":
                 prompts[i] = prompts[i][:-1]
-                prompts[i]= f'0.{prompts[i]}'
-            prompts[i]=float(prompts[i])
-            gt=frames[frames_number[i] - 1]
-            print('GT', gt, 'Prompt', prompts[i])
+                prompts[i] = f"0.{prompts[i]}"
+            prompts[i] = float(prompts[i])
+            gt = frames[frames_number[i] - 1]
+            print("GT", gt, "Prompt", prompts[i])
             gt_array.append(gt)
-        np_array=np.array(prompts)
-        gt_array=np.array(gt_array)
-        self.__numpy_array[f'{name}_{self.__mode}'] = np_array
-        if f'{name}_{self.__mode}_gt' not in self.__numpy_array:
-            self.__numpy_array[f'{name}_{self.__mode}_gt'] = gt_array
+        np_array = np.array(prompts)
+        gt_array = np.array(gt_array)
+        self.__numpy_array[f"{name}_{self.__mode}"] = np_array
+        if f"{name}_{self.__mode}_gt" not in self.__numpy_array:
+            self.__numpy_array[f"{name}_{self.__mode}_gt"] = gt_array
         return 0, 0, 0, 0
 
     def set_dataframe(self, df):
@@ -690,5 +693,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [ 0,1,2,3])
+    tester.simple_autotesting(events, description, [0, 1, 2, 3])
     # tester.autotesting(events, description, [0,1,2,3,4])

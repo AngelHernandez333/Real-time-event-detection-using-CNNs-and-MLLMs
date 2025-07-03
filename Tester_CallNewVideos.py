@@ -5,7 +5,7 @@ from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
 from Functions3 import (
-    detection_labels,
+    detection_labels,classes_focus
 )
 import numpy as np
 from MLLMs import *
@@ -15,7 +15,7 @@ import numpy as np
 from CLIPS import CLIP_Model
 from DMC_OPP import ALL_Rules
 
-classes_focus = {
+'''classes_focus = {
     "a person riding a bicycle on the street": ["person", "bicycle"],
     "multiple people engaged in a physical fight": ["person"],
     "a group of people playing a sport together": [
@@ -43,10 +43,12 @@ classes_focus = {
     "a person deliberately throwing garbage on the ground": ["person"],
     "a person stealing other person": ["person"],
     "a person pickpocketing a wallet from someone's pocket": ["person"],
-}  
+}'''
 
 
-PREFIX='a video of '
+PREFIX = "a video of "
+
+
 def prompt_text(classes, event, detector_usage, classes_focus):
     if detector_usage > 2:
         return "Watch the video."
@@ -78,6 +80,7 @@ def prompt_text(classes, event, detector_usage, classes_focus):
         text = f"{initial}{objects} in the video."
     return text
 
+
 class EventTesterCLIP(VideoTester):
     def __init__(self):
         self.__event = None
@@ -89,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = '/home/ubuntu/Tesis/Storage'
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/CLIPOneClassOld"
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -115,7 +118,16 @@ class EventTesterCLIP(VideoTester):
     def show_video(self, showvideo):
         self.__showvideo = showvideo
 
-    def check_precision(self, frames_number, video_name, predicted_events, event, anomaly_classes, prompts, mode):
+    def check_precision(
+        self,
+        frames_number,
+        video_name,
+        predicted_events,
+        event,
+        anomaly_classes,
+        prompts,
+        mode,
+    ):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
         # False negative Prediction is false and Reality is true
@@ -124,14 +136,14 @@ class EventTesterCLIP(VideoTester):
         all_classes = [normal_class] + anomaly_classes
         name = video_name.split(".")[0]
         frames = np.load("..//Database/ALL/GT/gt_ALL.npz")
-        frames= frames[name]
+        frames = frames[name]
         frames = np.append(frames, frames[-1])
         # Create a dictionary to convert class names to numeric indices
         class_to_idx = {cls: idx for idx, cls in enumerate(all_classes)}
         # Example: {"a normal view...": 0, "a person riding...": 1, ...}
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
-        prompts = [prompt.lower().split('.')[0] for prompt in prompts]
+        prompts = [prompt.lower().split(".")[0] for prompt in prompts]
         # Save frames_number, predicted_events, and prompts into a numpy array
         output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
         np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
@@ -139,12 +151,18 @@ class EventTesterCLIP(VideoTester):
         for i in range(len(predicted_events)):
             # Get ground truth
             is_anomaly = frames[frames_number[i] - 1]  # 0 or 1
-            
+
             # Determine true class using EVENT when anomaly exists
             true_class = event if is_anomaly == 1 else normal_class
-            print((frames_number[i] - 1), is_anomaly, true_class, predicted_events[i], prompts[i])
+            print(
+                (frames_number[i] - 1),
+                is_anomaly,
+                true_class,
+                predicted_events[i],
+                prompts[i],
+            )
 
-            if prompts[i] == "" and (mode==0 or mode==2):
+            if prompts[i] == "" and (mode == 0 or mode == 2):
                 pass
             elif prompts[i] == "yes":
                 pass
@@ -152,28 +170,31 @@ class EventTesterCLIP(VideoTester):
                 continue
             else:
                 continue
-            print('Check')
+            print("Check")
             # Get predicted class
             pred_class = predicted_events[i]
-            
+
             # Convert to indices (skip if class not recognized)
             true_idx = class_to_idx.get(true_class, -1)
             pred_idx = class_to_idx.get(pred_class, -1)
-            
+
             if true_idx != -1 and pred_idx != -1:
                 cm[true_idx, pred_idx] += 1
         # Get the index of your event class
         event_idx = class_to_idx[event]
-        
 
         # Calculate metrics ONLY for your event class
         tp = cm[event_idx, event_idx]  # True positives for event
-        fp = np.sum(cm[:, event_idx]) - tp  # False positives (other classes predicted as event)
-        fn = np.sum(cm[event_idx, :]) - tp  # False negatives (event misclassified as others)
+        fp = (
+            np.sum(cm[:, event_idx]) - tp
+        )  # False positives (other classes predicted as event)
+        fn = (
+            np.sum(cm[event_idx, :]) - tp
+        )  # False negatives (event misclassified as others)
         tn = np.sum(cm) - tp - fp - fn  # True negatives
         return tp, fp, fn, tn
 
-# Rows = true classes, Columns = predicted classes
+    # Rows = true classes, Columns = predicted classes
     def set_dataframe(self, df):
         self.__dfname = df
         try:
@@ -233,7 +254,7 @@ class EventTesterCLIP(VideoTester):
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
-        gap= 5
+        gap = 5
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
@@ -241,11 +262,7 @@ class EventTesterCLIP(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            # Only Detector with rules and CLIP
-            if self.__mode != 2:
-                detections, classes = self.__detector.detection(frame, classes)
-            else:
-                detections=[]
+            detections, classes = self.__detector.detection(frame, classes)
             VideoTester.take_frame(
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -254,35 +271,47 @@ class EventTesterCLIP(VideoTester):
                 detections,
                 results,
             )
-            if  int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
-                if self.__mode != 2:
-                    descriptions, to_recort =dmc.process(classes, detections, results, frames, False)
-                else:
-                    descriptions = dmc.get_descriptions()
-                print(descriptions)
+            if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
+                descriptions = dmc.process(
+                        classes, detections, results, frames, False
+                    )
             if len(frames) > 6:
                 frames.pop(0)
                 results.pop(0)
-                if len(descriptions)>0:
-                    normal_prompt= PREFIX+'a normal view (persons walking or standing)'
+                if self.__event in descriptions and self.__mode == 2:
+                    descriptions=[self.__event]
+                else:
+                    descriptions=[]
+                if len(descriptions) > 0:
+                    normal_prompt = (
+                        PREFIX + "a normal view (persons walking or standing)"
+                    )
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                     self.__image_encoder.set_descriptions(descriptions)
                     event, avg_prob = self.__image_encoder.outputs(frames)
                     events.append(event)
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
+                    print( descriptions, self.__event,event,  '\n')
                     if self.__mode == 1 and event != normal_prompt:
-                        text=prompt_text(classes,
+                        text = prompt_text(
+                            classes,
                             event.split(PREFIX)[1],
                             self.__mode,
-                            classes_focus,)
+                            classes_focus,
+                        )
                         prompt = self.__MLLM.event_validation(
                             frames, event.split(PREFIX)[1], text, verbose=True
                         )
                         prompts.append(prompt)
+                    elif self.__mode == 2 and event != normal_prompt:
+                        prompt = self.__MLLM.event_validation(
+                            frames, event.split(PREFIX)[1], verbose=True
+                        )
+                        prompts.append(prompt)
                     else:
                         prompt = ""
-                        prompts.append(prompt)  
+                        prompts.append(prompt)
             # -------------------------------------
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 finished = False
@@ -320,7 +349,8 @@ class EventTesterCLIP(VideoTester):
                     finished = False
                     count = self.__df[
                         (self.__df["Name"] == files[j])
-                        & (self.__df["Mode"] == k) & (self.__df["True Event"] == descriptions[video_kind])
+                        & (self.__df["Mode"] == k)
+                        & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
                     if count == 0:
                         self.set_event(descriptions[video_kind])
@@ -335,16 +365,22 @@ class EventTesterCLIP(VideoTester):
                             finished,
                             predicted_events,
                         ) = self.testing_video(
-                            f"{self.__rute}/{folders[video_kind]}/{files[j]}", dmc)
+                            f"{self.__rute}/{folders[video_kind]}/{files[j]}", dmc
+                        )
                         if finished:
                             frames_number = frames_number[1::]
                             predicted_events = predicted_events[1::]
                             prompts = prompts[1::]
                             print("Prompts:", prompts)
 
-                            tp, fp, fn, tn= self.check_precision(frames_number,
-                            files[j], predicted_events, descriptions[video_kind],
-                            descriptions,prompts, k
+                            tp, fp, fn, tn = self.check_precision(
+                                frames_number,
+                                files[j],
+                                predicted_events,
+                                descriptions[video_kind],
+                                descriptions,
+                                prompts,
+                                k,
                             )
                             # Save the results
                             row = {
@@ -355,7 +391,7 @@ class EventTesterCLIP(VideoTester):
                                 "False Negative": fn,
                                 "True Negative": tn,
                                 "True Event": descriptions[video_kind],
-                                "Check event": '',
+                                "Check event": "",
                                 "Validations Number": len(prompts),
                                 "Duration": duration,
                                 "Process time": time_video,
@@ -373,13 +409,14 @@ class EventTesterCLIP(VideoTester):
             break
         self.save_dataframe()
 
+
 if __name__ == "__main__":
     events = [
         "Riding",
         "Fighting",
         "Playing",
         "Running",
-        'Lying',
+        "Lying",
         "Chasing",
         "Jumping",
         "Falling",
@@ -404,6 +441,21 @@ if __name__ == "__main__":
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
     ]
+    description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+        "a person jumping",
+        "a person falling",
+        "a person guiding other person",
+        "a person stealing other person",
+        "a person throwing trash in the floor",
+        "a person tripping",
+        "a person stealing other person's pocket",
+    ]
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -417,7 +469,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevOnlyCLIP.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevCLIPOneClassOldDescriptions.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

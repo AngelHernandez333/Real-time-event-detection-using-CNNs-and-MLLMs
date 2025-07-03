@@ -3,8 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
 df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
 
 
@@ -24,6 +23,7 @@ def calculate_ap(precision, recall):
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
     return ap
+
 
 #  Get unique categories
 print(df)
@@ -82,7 +82,7 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 

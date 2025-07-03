@@ -1,5 +1,7 @@
 def factor_x(slowest, fastest):
     return fastest / slowest
+
+
 if __name__ == "__main__":
     # Example usage
     slowest = 6.22

@@ -1,4 +1,4 @@
-import cv2 
+import cv2
 import os
 
 descriptions = [
@@ -23,11 +23,11 @@ images = []
 for i in range(7):
     image_path = f"/home/ubuntu/Tesis/Temp/{files[i]}"
 
-    image=cv2.imread(image_path)
+    image = cv2.imread(image_path)
 
     frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    cv2.imshow('Test', frame)
+    cv2.imshow("Test", frame)
     cv2.waitKey(0)
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    cv2.imshow('Test 2', frame)
+    cv2.imshow("Test 2", frame)
     cv2.waitKey(0)

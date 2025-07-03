@@ -40,7 +40,9 @@ def calculate_map(name, rute):
         df1 = category_dfs[categories[i]]
         #
         df1["Process time"] = df1["Process time"] / df1["Duration"]
-        df1['F1']= 2 * (df1['Precision'] * df1['Recall']) / (df1['Precision'] + df1['Recall'])
+        df1["F1"] = (
+            2 * (df1["Precision"] * df1["Recall"]) / (df1["Precision"] + df1["Recall"])
+        )
         df1.fillna(0, inplace=True)
         grouped = df1.groupby("Mode")
         # ----------------------------------------------------------------------
@@ -52,9 +54,9 @@ def calculate_map(name, rute):
             # Comenta la siguiente línea para verificar si el error es aquí
             ap = calculate_ap(precision, recall)
             ap_values[mode] = ap
-        mean_values = grouped[["Precision", "Recall", "Process time", 'F1']].mean()
+        mean_values = grouped[["Precision", "Recall", "Process time", "F1"]].mean()
         mean_values["AP"] = [ap_values[mode] for mode in mean_values.index]
-        mean_values = mean_values[["AP", "Process time", 'F1']]
+        mean_values = mean_values[["AP", "Process time", "F1"]]
         mAP_process.append(mean_values)
     # Calculate the mean Average Precision (mAP) for each mode
     mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
@@ -83,7 +85,7 @@ if __name__ == "__main__":
         "Confirm": "confirm if the video contain 'event'",
     }
     final_results["File"] = final_results["File"].map(file_names)
-    
+
     plt.figure(figsize=(12, 8))
     bar_width = 0.35
     index = np.arange(len(final_results["File"].unique()))
@@ -104,23 +106,20 @@ if __name__ == "__main__":
 
     plt.xlabel("Prompt").set_visible(False)
     plt.ylabel("AP", fontsize=13, fontweight="bold")
-    plt.title(
-        "AP de cada prompt", fontsize=16, fontweight="bold"
-    )
+    plt.title("AP de cada prompt", fontsize=16, fontweight="bold")
     plt.xticks(
         index + bar_width / 2,
         final_results["File"].unique(),
         rotation=45,
         color="black",
-        fontweight="bold",fontsize=11,
+        fontweight="bold",
+        fontsize=11,
     )
-    plt.yticks(
-        fontsize=10, fontweight="bold"
-    )
+    plt.yticks(fontsize=10, fontweight="bold")
     plt.legend().set_visible(False)
     plt.grid(True)
     plt.tight_layout(pad=4.0)
     plt.ylim(bottom=0.6, top=0.8)
     print(final_results)
-    plt.savefig('/home/ubuntu/Tesis/Results/Tesis/PromptSelection/AP_PerPrompt.png')
+    plt.savefig("/home/ubuntu/Tesis/Results/Tesis/PromptSelection/AP_PerPrompt.png")
     plt.show()

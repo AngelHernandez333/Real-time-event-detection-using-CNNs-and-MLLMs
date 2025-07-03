@@ -36,7 +36,7 @@ class MLLMs(ABC):
 
     @staticmethod
     def cv2_to_pil(cv_image):
-        #cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+        # cv_image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(cv_image)
         return pil_image
 
@@ -118,7 +118,7 @@ class JanusPro(MLLMs):
         self.__processor: VLChatProcessor = VLChatProcessor.from_pretrained(processor)
         self.__tokenizer = self.__processor.tokenizer
 
-    def event_validation(self, frames, event, text="Watch the video,", verbose=False):
+    def event_validation(self, frames, event, text="Watch the video.", verbose=False):
         number_of_frames = 4
         assert (
             len(frames) >= number_of_frames
@@ -127,59 +127,6 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
-        """
-        conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} tell me if in the video is there {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]
-        """
-        """
-        conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} is there {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]"""
-        """
-        conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} is {event} in the video? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]
-
-        conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} tell me if is {event} in the video? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]"""
-        """conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} does the video contain {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]"""
-        """conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} confirm if the video contain {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]"""
         conversation = [
             {
                 "role": "<|User|>",
@@ -188,15 +135,7 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        '''conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} is there {event}? Just yes or no",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]'''
-        # Load images with PIL and convert to RGB
+
 
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
@@ -231,6 +170,7 @@ class JanusPro(MLLMs):
             print(f"{prepare_inputs['sft_format'][0]}", answer)
 
         return answer.split(".")[0]
+
     def event_score(self, frames, event, text="Watch the video,", verbose=False):
         number_of_frames = 4
         assert (
@@ -240,7 +180,7 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
-        
+
         conversation = [
             {
                 "role": "<|User|>",
@@ -248,13 +188,12 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ] #Just answer with a numerical score on a scale of 0.0 and 1.0.
-                
-        
+        ]  # Just answer with a numerical score on a scale of 0.0 and 1.0.
+
         conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} How would you rate the likely that the video contains {event} on a scale 0.0 to 1.0? Without any explanation or words.",                
+                "content": f"{images_number} This is a video \n{text} How would you rate the likely that the video contains {event} on a scale 0.0 to 1.0? Without any explanation or words.",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
@@ -262,7 +201,7 @@ class JanusPro(MLLMs):
         conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} How would you rate the likely that the video contains {event} on a scale 0.0 to 1.0? Without any further explanation or previous words, just the score.",                
+                "content": f"{images_number} This is a video \n{text} How would you rate the likely that the video contains {event} on a scale 0.0 to 1.0? Without any further explanation or previous words, just the score.",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
@@ -306,8 +245,8 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]        
-        #Between 0.5 and 0.8
+        ]
+        # Between 0.5 and 0.8
         conversation = [
             {
                 "role": "<|User|>",
@@ -340,7 +279,7 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        #Work but gets someimes and explanations
+        # Work but gets someimes and explanations
         conversation = [
             {
                 "role": "<|User|>",
@@ -365,7 +304,7 @@ class JanusPro(MLLMs):
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        #Almost perfect
+        # Almost perfect
         conversation = [
             {
                 "role": "<|User|>",
@@ -414,9 +353,9 @@ class JanusPro(MLLMs):
         if verbose:
             print(f"{prepare_inputs['sft_format'][0]}", answer)
             print(answer)
-        #return answer[-4:-1]  # Extract the score from the answer
+        # return answer[-4:-1]  # Extract the score from the answer
         if answer[-1] == ".":
-            answer=answer[-4:-1]
+            answer = answer[-4:-1]
         return answer
 
 
@@ -485,7 +424,6 @@ class Qwen2_VL(MLLMs):
             clean_up_tokenization_spaces=False,
         )
         return output_text[0].split(".")[0]
-
 
 
 if __name__ == "__main__":

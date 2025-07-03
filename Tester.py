@@ -227,9 +227,9 @@ class EventTester(VideoTester):
 
     def show_video(self, showvideo):
         self.__showvideo = showvideo
+
     def set_image_encoder(self, image_encoder):
         self.__image_encoder = image_encoder
-
 
     def check_precision(self, prompts, frames_number, video_name):
         # True positive Prediction and Reality are true
@@ -801,5 +801,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [ 0,1,2,3,4])
+    tester.simple_autotesting(events, description, [0, 1, 2, 3, 4])
     # tester.autotesting(events, description, [0,1,2,3,4])

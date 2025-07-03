@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-'''def calculate_ap(precision, recall):
+"""def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -18,7 +18,9 @@ import matplotlib.pyplot as plt
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
-    return ap'''
+    return ap"""
+
+
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -32,17 +34,19 @@ def calculate_ap(precision, recall):
     # Compute AP as the area under the raw curve (no interpolation)
     ap = 0.0
     for i in range(1, len(recall)):
-        delta_recall = recall[i] - recall[i-1]
+        delta_recall = recall[i] - recall[i - 1]
         ap += delta_recall * precision[i]
 
     return ap
 
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
-#df =pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
-df=pd.read_csv('/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/TestingJanusPrompts.csv')
-df1= pd.read_csv("/home/ubuntu/Tesis/Results/TestingNWPUIITB.csv")
-df=pd.concat([df, df1], ignore_index=True)
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+# df =pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusPrompts.csv")
+df = pd.read_csv(
+    "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/TestingJanusPrompts.csv"
+)
+df1 = pd.read_csv("/home/ubuntu/Tesis/Results/TestingNWPUIITB.csv")
+df = pd.concat([df, df1], ignore_index=True)
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -100,7 +104,7 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-mAP_values['Process time'] = 30.0 /mAP_values['Process time'] 
+mAP_values["Process time"] = 30.0 / mAP_values["Process time"]
 mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
@@ -166,6 +170,6 @@ print(df)
 print(len(df["Name"].unique()))
 print(len(df["True Event"].unique()))
 
-check=df[df["Mode"] == 0 ]
-ward=check[check['True Positive']==0].reset_index()
-print(ward[['Name','True Event']])
+check = df[df["Mode"] == 0]
+ward = check[check["True Positive"] == 0].reset_index()
+print(ward[["Name", "True Event"]])

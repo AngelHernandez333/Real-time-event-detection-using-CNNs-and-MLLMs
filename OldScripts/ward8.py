@@ -1,19 +1,20 @@
 import pandas as pd
-#New prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
-file='TestingNWPUIITB.csv'
+
+# New prompt
+rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
+file = "TestingNWPUIITB.csv"
 df1 = pd.read_csv(f"{rute}{file}")
-file='TestingJanusPrompts.csv'
+file = "TestingJanusPrompts.csv"
 df2 = pd.read_csv(f"{rute}{file}")
 df1["Process time"] = df1["Process time"] / df1["Duration"]
 df2["Process time"] = df2["Process time"] / df2["Duration"]
-df1['Process time'] = 25.0 /df1['Process time'] 
-df2['Process time'] = 30.0 /df2['Process time'] 
-df= pd.concat([df1, df2], ignore_index=True)
-df=df2
-storing_file ="ALLwithRespectedFPS.png"
+df1["Process time"] = 25.0 / df1["Process time"]
+df2["Process time"] = 30.0 / df2["Process time"]
+df = pd.concat([df1, df2], ignore_index=True)
+df = df2
+storing_file = "ALLwithRespectedFPS.png"
 
-#df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
+# df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
 #  Get unique categories
 categories = df["True Event"].unique()
 # Separate rows by category
@@ -40,4 +41,4 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     print(mean_values)
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
-print('Final\n\n ',mAP_values['Process time'])
+print("Final\n\n ", mAP_values["Process time"])

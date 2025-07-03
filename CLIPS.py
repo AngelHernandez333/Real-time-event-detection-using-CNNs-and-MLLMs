@@ -5,6 +5,7 @@ import torch
 from PIL import Image
 import cv2
 
+
 class CLIP(ABC):
     @abstractmethod
     def set_model(self, model):
@@ -26,7 +27,6 @@ class CLIP(ABC):
         pass
 
 
-
 class CLIP_Model(CLIP):
     def __init__(self):
         self.__model = None
@@ -37,14 +37,19 @@ class CLIP_Model(CLIP):
         device = "cuda"
         torch_dtype = torch.float16
 
-        self.__model = CLIPModel.from_pretrained(model,  attn_implementation="sdpa",
-                                            device_map=device, torch_dtype=torch_dtype,)
+        self.__model = CLIPModel.from_pretrained(
+            model,
+            attn_implementation="sdpa",
+            device_map=device,
+            torch_dtype=torch_dtype,
+        )
 
     def set_processor(self, processor):
         self.__processor = CLIPProcessor.from_pretrained(processor)
 
     def set_descriptions(self, descriptions):
         self.__descriptions = descriptions
+
     def get_descriptions(self):
         return self.__descriptions
 
@@ -52,12 +57,12 @@ class CLIP_Model(CLIP):
         device = "cuda"
         torch_dtype = torch.float16
         start = time.time()
-        #pil_images = [
+        # pil_images = [
         #    cv2_to_pil(frame) for frame in images]
         inputs = self.__processor(
-        text=self.__descriptions, images=images, return_tensors="pt", padding=True
+            text=self.__descriptions, images=images, return_tensors="pt", padding=True
         ).to(device)
-        
+
         with torch.no_grad():
 
             with torch.autocast(device):
@@ -72,7 +77,7 @@ class CLIP_Model(CLIP):
             dim=1
         )  # we can take the softmax to get the label probabilities
         max_probs, max_indices = probs.max(dim=1)
-                # Print the max probability and corresponding description for each image
+        # Print the max probability and corresponding description for each image
         for i in range(len(max_probs)):
             print(
                 f"Image {i}: Max probability: {max_probs[i].item()}, Description: {self.__descriptions[max_indices[i].item()]}"

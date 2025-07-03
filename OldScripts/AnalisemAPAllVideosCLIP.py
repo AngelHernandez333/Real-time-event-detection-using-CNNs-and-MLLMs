@@ -3,25 +3,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
-
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
 df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
-#MLLM 0.431
-#ONLY CLIP 0.42813
+# MLLM 0.431
+# ONLY CLIP 0.42813
 
-#df = df[df["Mode"] == 0]
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
+# df = df[df["Mode"] == 0]
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
 
-'''def calculate_ap(precision, recall):
+"""def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -36,8 +35,9 @@ df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
-    return ap'''
+    return ap"""
 import numpy as np
+
 
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
@@ -52,7 +52,7 @@ def calculate_ap(precision, recall):
     # Compute AP as the area under the raw curve (no interpolation)
     ap = 0.0
     for i in range(1, len(recall)):
-        delta_recall = recall[i] - recall[i-1]
+        delta_recall = recall[i] - recall[i - 1]
         ap += delta_recall * precision[i]
 
     return ap
@@ -95,7 +95,8 @@ for i in range(len(categories)):
     mAP_process.append(mean_values)
     # Plot the results
     mode_names = {
-        0: "CLIP",1: "CLIP-MLLM",
+        0: "CLIP",
+        1: "CLIP-MLLM",
     }
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
@@ -110,9 +111,9 @@ for i in range(len(categories)):
     # plt.xlim(0.4)
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
-print('\n\n',mAP_values)
-mAP_values['Process time'] = 30.0 /mAP_values['Process time'] 
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
+print("\n\n", mAP_values)
+mAP_values["Process time"] = 30.0 / mAP_values["Process time"]
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
@@ -169,13 +170,13 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/Meeting/mAP.png")
+# plt.savefig("Results/Meeting/mAP.png")
 plt.tight_layout()
 plt.show()
 print(df)
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
-'''print(df[df["True Positive"]==0]['True Event'])
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
+"""print(df[df["True Positive"]==0]['True Event'])
 print(df[df["True Positive"]>0]['True Event'])
 print(df[df["True Positive"]==0])
-print(df[df["True Positive"]>0])'''
+print(df[df["True Positive"]>0])"""

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-'''def calculate_ap(precision, recall):
+"""def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -18,7 +18,9 @@ import matplotlib.pyplot as plt
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
-    return ap'''
+    return ap"""
+
+
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -32,21 +34,22 @@ def calculate_ap(precision, recall):
     # Compute AP as the area under the raw curve (no interpolation)
     ap = 0.0
     for i in range(1, len(recall)):
-        delta_recall = recall[i] - recall[i-1]
+        delta_recall = recall[i] - recall[i - 1]
         ap += delta_recall * precision[i]
 
     return ap
 
-#For the old prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/'
-file='TestingJanusAllOnlyTrue.csv'
-#New prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/'
-file='TestingNWPUIITB.csv'
-file='TestingJanusPrompts.csv'
+
+# For the old prompt
+rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/"
+file = "TestingJanusAllOnlyTrue.csv"
+# New prompt
+rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
+file = "TestingNWPUIITB.csv"
+file = "TestingJanusPrompts.csv"
 storing_file = file.split(".")[0] + "_mAP.png"
 df = pd.read_csv(f"{rute}{file}")
-#df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
+# df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -104,14 +107,16 @@ for i in range(len(categories)):
 # Calculate the mean Average Precision (mAP) for each mode
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
 print(mAP_values)
-mAP_values['Process time'] = 30.0 /mAP_values['Process time'] 
+mAP_values["Process time"] = 30.0 / mAP_values["Process time"]
 mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Evaluacion de desempeño: Todos los metodos", fontsize=16, fontweight="bold")
+fig.suptitle(
+    "Evaluacion de desempeño: Todos los metodos", fontsize=16, fontweight="bold"
+)
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 
@@ -129,7 +134,9 @@ for i, bar in enumerate(axes[0].patches):
     )
 # axes[0].set_title('mAP', fontsize=14, fontweight='bold')
 axes[0].set_ylabel("AP", fontsize=16, fontweight="bold")
-axes[0].set_xticklabels(mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=10)
+axes[0].set_xticklabels(
+    mAP_values.index, rotation=0, color="black", fontweight="bold", fontsize=10
+)
 axes[0].legend().set_visible(False)
 axes[0].grid()
 axes[0].set_ylim(bottom=0.0, top=1.0)
@@ -170,7 +177,7 @@ fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
 
 plt.tight_layout()
-plt.savefig(f'{rute}{storing_file}', dpi=300, bbox_inches='tight')
+plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
 plt.show()
 print(df)
 print(len(df["Name"].unique()))

@@ -206,7 +206,7 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = '/home/ubuntu/Tesis/Storage'
+        self._storagefolder = "/home/ubuntu/Tesis/Storage"
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -228,9 +228,9 @@ class EventTester(VideoTester):
 
     def show_video(self, showvideo):
         self.__showvideo = showvideo
+
     def set_image_encoder(self, image_encoder):
         self.__image_encoder = image_encoder
-
 
     def check_precision(self, prompts, frames_number, video_name):
         # True positive Prediction and Reality are true
@@ -244,10 +244,13 @@ class EventTester(VideoTester):
         prompts = [prompt.lower() for prompt in prompts]
         name = video_name.split(".")[0]
         frames = np.load("../Database/ALL/GT/gt_ALL.npz")
-        frames= frames[name]
+        frames = frames[name]
         frames = np.append(frames, frames[-1])
         output_data = np.array([frames_number, prompts], dtype=object)
-        np.save(f"{self._storagefolder}/{name}_Architecture_{self.__mode}_{self.__event}.npy", output_data)
+        np.save(
+            f"{self._storagefolder}/{name}_Architecture_{self.__mode}_{self.__event}.npy",
+            output_data,
+        )
         for i in range(len(prompts)):
             print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
             if prompts[i] == "yes" and frames[frames_number[i] - 1] == 1:
@@ -318,7 +321,7 @@ class EventTester(VideoTester):
         if self.__mode in [0, 3, 4]:
             dmc = decision_maker(self.__event)
         # Charge time
-        gap= 5
+        gap = 5
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
@@ -515,7 +518,7 @@ if __name__ == "__main__":
         "Fighting",
         "Playing",
         "Running",
-        'Lying',
+        "Lying",
         "Chasing",
         "Jumping",
         "Falling",
@@ -570,5 +573,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0,3, 4,1,2])
+    tester.simple_autotesting(events, description, [0, 3, 4, 1, 2])
     # tester.autotesting(events, description, [0,1,2,3,4])

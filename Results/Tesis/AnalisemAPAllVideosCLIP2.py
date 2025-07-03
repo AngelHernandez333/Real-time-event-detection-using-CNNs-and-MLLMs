@@ -3,25 +3,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusAllOnlyTrue.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingJanusCLIP.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_ALLIMAGES.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32_videoMLLM.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_videoMLLM.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPrompts.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB.csv")
+# MLLM 0.431
+# ONLY CLIP 0.42813
 
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES16_MLLMNewPromptsFusion.csv")
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP16_NWPUIITB.csv")
-#MLLM 0.431
-#ONLY CLIP 0.42813
+# df = df[df["Mode"] == 0]
+# df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
 
-#df = df[df["Mode"] == 0]
-#df = pd.read_csv("/home/ubuntu/Tesis/Results/TestingCLIP_RULES32Cropped.csv")
-
-'''def calculate_ap(precision, recall):
+"""def calculate_ap(precision, recall):
     # Ordena recall de manera ascendente
     sorted_indices = np.argsort(recall)
     precision = np.array(precision)[sorted_indices]
@@ -36,21 +35,23 @@ import matplotlib.pyplot as plt
     indices = np.where(recall[1:] != recall[:-1])[0] + 1
     ap = np.sum((recall[indices] - recall[indices - 1]) * precision[indices])
 
-    return ap'''
+    return ap"""
 import numpy as np
 
-#For the old prompt
-rute='/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/'
+# For the old prompt
+rute = "/home/ubuntu/Tesis/Results/Tesis/Best_CLIP/"
 storing_file = "ALLwithRespectedFPSCLIPEnglish.png"
-file='TestingCLIP16_NWPUIITB.csv'
+file = "TestingCLIP16_NWPUIITB.csv"
 df = pd.read_csv(f"{rute}{file}")
-file='TestingCLIP_RULES16_MLLMNewPrompts.csv'
+file = "TestingCLIP_RULES16_MLLMNewPrompts.csv"
 df2 = pd.read_csv(f"{rute}{file}")
 df["Process time"] = df["Process time"] / df["Duration"]
 df2["Process time"] = df2["Process time"] / df2["Duration"]
-df['Process time'] = 25.0 /df['Process time'] 
-df2['Process time'] = 30.0 /df2['Process time'] 
-df= pd.concat([df, df2], ignore_index=True)
+df["Process time"] = 25.0 / df["Process time"]
+df2["Process time"] = 30.0 / df2["Process time"]
+df = pd.concat([df, df2], ignore_index=True)
+
+
 def calculate_ap(precision, recall):
     # Sort by recall (ascending)
     sorted_indices = np.argsort(recall)
@@ -64,7 +65,7 @@ def calculate_ap(precision, recall):
     # Compute AP as the area under the raw curve (no interpolation)
     ap = 0.0
     for i in range(1, len(recall)):
-        delta_recall = recall[i] - recall[i-1]
+        delta_recall = recall[i] - recall[i - 1]
         ap += delta_recall * precision[i]
 
     return ap
@@ -105,9 +106,7 @@ for i in range(len(categories)):
     mean_values = mean_values[["AP", "Process time"]]
     mAP_process.append(mean_values)
     # Plot the results
-    mode_names = {
-        0: "CLIP & Rules",1: "CLIP, Rules & and MLLM", 2: "Only CLIP"
-    }
+    mode_names = {0: "CLIP & Rules", 1: "CLIP, Rules & and MLLM", 2: "Only CLIP"}
     mean_values.rename(index=mode_names, inplace=True)
     mean_values[["AP"]].plot(kind="bar")
     plt.title(f"{categories[i]}")
@@ -120,16 +119,18 @@ for i in range(len(categories)):
     plt.ylim(bottom=0)
     # plt.xlim(0.4)
 # Calculate the mean Average Precision (mAP) for each mode
-print('\n\n',mAP_process)
+print("\n\n", mAP_process)
 mAP_values = pd.concat(mAP_process).groupby(level=0).mean()
-print('\n\n',mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
+print("\n\n", mAP_values)
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPJanus.csv")
 mAP_values.rename(columns={"AP": "mAP"}, inplace=True)
 mAP_values.rename(columns={"Process time": "Processing time ratio"}, inplace=True)
 
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 12))
 
-fig.suptitle("Performance Evaluation: CLIP Configurations", fontsize=16, fontweight="bold")
+fig.suptitle(
+    "Performance Evaluation: CLIP Configurations", fontsize=16, fontweight="bold"
+)
 
 mAP_values[["mAP"]].plot(kind="bar", ax=axes[0])
 for i, bar in enumerate(axes[0].patches):
@@ -183,13 +184,13 @@ axes[1].set_yticklabels(
 
 fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
-#plt.savefig("Results/Meeting/mAP.png")
+# plt.savefig("Results/Meeting/mAP.png")
 plt.tight_layout()
-plt.savefig(f'{rute}{storing_file}', dpi=300, bbox_inches='tight')
+plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
 plt.show()
 print(mAP_values)
-#mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
-'''print(df[df["True Positive"]==0]['True Event'])
+# mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")
+"""print(df[df["True Positive"]==0]['True Event'])
 print(df[df["True Positive"]>0]['True Event'])
 print(df[df["True Positive"]==0])
-print(df[df["True Positive"]>0])'''
+print(df[df["True Positive"]>0])"""
