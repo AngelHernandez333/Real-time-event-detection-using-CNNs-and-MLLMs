@@ -1,0 +1,253 @@
+Name,Event,Mode,TP,FP,FN,TN
+000350,a video of a person riding a bicycle on the street,2,0,0,34,0
+000289,a video of a person riding a bicycle on the street,2,20,0,34,0
+4_076_1,a video of a person riding a bicycle on the street,2,8,0,14,0
+000326,a video of a person riding a bicycle on the street,2,0,0,24,0
+000313,a video of a person riding a bicycle on the street,2,0,0,15,0
+000325,a video of a person riding a bicycle on the street,2,0,0,24,0
+000345,a video of a person riding a bicycle on the street,2,0,0,1,0
+3_106_1,a video of a person riding a bicycle on the street,2,24,0,1,0
+D013_03,a video of a person riding a bicycle on the street,2,10,0,20,0
+000296,a video of a person riding a bicycle on the street,2,10,0,2,0
+1_067_1,a video of a person riding a bicycle on the street,2,14,0,7,0
+D047_05,a video of a person riding a bicycle on the street,2,6,0,0,0
+1_066_1,a video of a person riding a bicycle on the street,2,14,0,8,0
+000253,a video of a person riding a bicycle on the street,2,0,0,30,0
+D235_01,a video of a person riding a bicycle on the street,2,34,0,0,0
+D013_02,a video of a person riding a bicycle on the street,2,16,0,38,1
+000324,a video of a person riding a bicycle on the street,2,3,0,20,0
+2_096_1,a video of a person riding a bicycle on the street,2,22,0,13,0
+4_077_1,a video of a person riding a bicycle on the street,2,17,0,9,0
+000270,a video of a person riding a bicycle on the street,2,0,0,34,0
+D235_07,a video of a person riding a bicycle on the street,2,39,0,0,0
+3_105_1,a video of a person riding a bicycle on the street,2,24,0,0,0
+000318,a video of a person riding a bicycle on the street,2,0,0,44,0
+2_067_1,a video of multiple people engaged in a physical fight,2,0,0,24,58
+4_082_1,a video of multiple people engaged in a physical fight,2,2,0,79,0
+000211,a video of multiple people engaged in a physical fight,2,4,0,140,93
+3_079_1,a video of multiple people engaged in a physical fight,2,0,0,87,51
+2_065_1,a video of multiple people engaged in a physical fight,2,0,0,50,10
+1_081_1,a video of multiple people engaged in a physical fight,2,0,0,26,0
+3_089_1,a video of multiple people engaged in a physical fight,2,0,0,56,1
+D076_05,a video of multiple people engaged in a physical fight,2,0,0,82,110
+D043_01,a video of multiple people engaged in a physical fight,2,0,0,59,57
+1_088_1,a video of multiple people engaged in a physical fight,2,0,0,88,47
+2_068_1,a video of multiple people engaged in a physical fight,2,0,0,39,9
+000213,a video of multiple people engaged in a physical fight,2,147,0,43,41
+000266,a video of multiple people engaged in a physical fight,2,68,0,38,74
+1_071_1,a video of multiple people engaged in a physical fight,2,0,0,28,14
+D031_01,a video of multiple people engaged in a physical fight,2,0,0,128,84
+4_079_1,a video of multiple people engaged in a physical fight,2,0,0,63,51
+3_076_1,a video of multiple people engaged in a physical fight,2,22,0,76,16
+2_081_1,a video of multiple people engaged in a physical fight,2,0,0,5,2
+000278,a video of multiple people engaged in a physical fight,2,37,0,31,23
+1_072_1,a video of multiple people engaged in a physical fight,2,0,0,77,12
+2_077_1,a video of multiple people engaged in a physical fight,2,4,0,18,23
+4_096_1,a video of multiple people engaged in a physical fight,2,0,0,46,6
+000321,a video of multiple people engaged in a physical fight,2,43,0,28,73
+2_076_1,a video of multiple people engaged in a physical fight,2,0,0,15,7
+4_103_1,a video of multiple people engaged in a physical fight,2,0,0,61,27
+000251,a video of multiple people engaged in a physical fight,2,58,0,97,46
+1_083_1,a video of multiple people engaged in a physical fight,2,0,0,18,0
+4_105_1,a video of multiple people engaged in a physical fight,2,0,0,37,0
+000220,a video of multiple people engaged in a physical fight,2,53,0,63,0
+2_086_1,a video of multiple people engaged in a physical fight,2,7,0,78,47
+3_078_1,a video of multiple people engaged in a physical fight,2,0,0,44,154
+4_081_1,a video of multiple people engaged in a physical fight,2,0,0,32,47
+3_095_1,a video of multiple people engaged in a physical fight,2,0,0,34,69
+D077_06,a video of multiple people engaged in a physical fight,2,0,0,18,81
+1_069_1,a video of multiple people engaged in a physical fight,2,0,0,109,0
+2_084_1,a video of multiple people engaged in a physical fight,2,0,0,38,19
+1_086_1,a video of multiple people engaged in a physical fight,2,0,0,36,38
+000284,a video of multiple people engaged in a physical fight,2,142,0,42,119
+2_079_1,a video of multiple people engaged in a physical fight,2,7,0,43,4
+4_093_1,a video of multiple people engaged in a physical fight,2,0,0,73,25
+D029_01,a video of multiple people engaged in a physical fight,2,0,0,24,99
+000256,a video of a group of people playing a sport together,2,24,0,270,0
+000334,a video of a group of people playing a sport together,2,0,0,1,0
+1_094_1,a video of a group of people playing a sport together,2,86,18,48,28
+000346,a video of a group of people playing a sport together,2,0,0,249,0
+3_101_1,a video of a group of people playing a sport together,2,21,0,15,0
+000310,a video of a group of people playing a sport together,2,26,0,32,0
+000336,a video of a group of people playing a sport together,2,5,0,132,0
+000314,a video of a group of people playing a sport together,2,0,0,5,0
+000222,a video of a group of people playing a sport together,2,6,0,60,0
+4_111_1,a video of a group of people playing a sport together,2,0,0,19,3
+3_102_1,a video of a group of people playing a sport together,2,90,0,109,91
+2_090_1,a video of a group of people playing a sport together,2,0,0,2,0
+000258,a video of a group of people playing a sport together,2,0,0,5,0
+000347,a video of a group of people playing a sport together,2,0,0,5,0
+000342,a video of a group of people playing a sport together,2,0,0,2,0
+000244,a video of a group of people playing a sport together,2,0,0,48,0
+1_093_1,a video of a group of people playing a sport together,2,17,18,106,14
+000327,a video of a group of people playing a sport together,2,0,0,0,0
+000265,a video of a group of people playing a sport together,2,5,0,27,0
+000267,a video of a group of people playing a sport together,2,0,0,45,1
+2_093_1,a video of a group of people playing a sport together,2,0,0,21,4
+4_109_1,a video of a group of people playing a sport together,2,0,0,4,0
+000297,a video of a person running,2,0,0,53,12
+4_110_1,a video of a person running,2,0,0,30,77
+3_090_1,a video of a person running,2,0,7,0,0
+000317,a video of a person running,2,0,0,51,137
+3_093_1,a video of a person running,2,45,35,4,8
+4_092_1,a video of a person running,2,2,0,32,19
+2_066_1,a video of a person running,2,18,0,61,24
+4_101_1,a video of a person running,2,0,6,75,55
+2_094_1,a video of a person running,2,19,183,14,261
+1_068_1,a video of a person running,2,0,0,31,40
+000261,a video of a person running,2,0,0,33,25
+000337,a video of a person running,2,3,0,20,74
+3_104_1,a video of a person running,2,38,9,0,0
+3_094_1,a video of a person running,2,30,30,4,55
+D068_09,a video of a person running,2,0,0,5,20
+000227,a video of a person running,2,0,0,54,22
+1_077_1,a video of a person running,2,4,6,14,52
+4_087_1,a video of a person running,2,0,0,53,36
+2_075_1,a video of a person running,2,0,0,17,0
+D001_03,a video of a person running,2,12,4,30,27
+4_090_1,a video of a person running,2,0,0,23,29
+2_085_1,a video of a person running,2,4,5,14,31
+3_085_1,a video of a person running,2,6,18,19,55
+4_088_1,a video of a person running,2,10,16,17,31
+1_096_1,a video of a person running,2,5,5,4,8
+4_080_1,a video of a person running,2,18,2,56,49
+D014_02,a video of a person running,2,0,0,35,0
+1_070_1,a video of a person running,2,20,0,14,21
+4_078_1,a video of a person running,2,10,0,17,25
+000304,a video of a person running,2,4,0,36,89
+000288,a video of a person running,2,0,4,69,130
+4_104_1,a video of a person running,2,0,0,16,13
+000228,a video of a person running,2,0,0,30,49
+D158_02,a video of a person running,2,0,0,23,60
+2_073_1,a video of a person running,2,7,54,21,127
+000234,a video of a person running,2,0,0,34,65
+4_112_1,a video of a person running,2,0,0,27,38
+2_095_1,a video of a person running,2,36,1,4,16
+D001_04,a video of a person running,2,0,0,51,43
+3_077_1,a video of a person running,2,53,53,17,16
+D031_09,a video of a person running,2,0,0,30,40
+2_064_1,a video of a person running,2,5,3,33,43
+000260,a video of a person running,2,0,0,38,35
+1_079_1,a video of a person running,2,0,0,27,0
+4_102_1,a video of a person running,2,0,0,20,28
+D014_01,a video of a person running,2,0,0,47,57
+3_103_1,a video of a person running,2,22,0,0,0
+000224,a video of a person running,2,11,0,11,97
+3_097_1,a video of a person running,2,16,34,12,32
+000282,a video of a person running,2,0,0,34,49
+000259,a video of a person running,2,0,0,68,49
+1_095_1,a video of a person running,2,0,0,27,13
+3_087_1,a video of a person running,2,23,2,0,0
+4_113_1,a video of a person running,2,0,0,55,40
+000262,a video of a person running,2,0,0,40,181
+000250,a video of a person running,2,0,0,21,139
+3_075_1,a video of a person running,2,18,8,14,99
+4_100_1,a video of a person running,2,0,0,25,21
+4_089_1,a video of a person lying motionless on the ground,2,0,0,148,294
+2_080_1,a video of a person lying motionless on the ground,2,0,0,202,134
+3_092_1,a video of a person lying motionless on the ground,2,0,0,157,61
+1_091_1,a video of a person lying motionless on the ground,2,193,0,7,42
+3_099_1,a video of a person lying motionless on the ground,2,41,0,83,55
+1_078_1,a video of a person lying motionless on the ground,2,121,0,6,103
+4_094_1,a video of a person lying motionless on the ground,2,0,0,252,45
+3_086_1,a video of a person lying motionless on the ground,2,114,10,12,73
+1_084_1,a video of a person lying motionless on the ground,2,0,0,130,36
+2_069_1,a video of a person aggressively chasing another person,2,0,0,5,0
+000214,a video of a person aggressively chasing another person,2,0,0,0,0
+1_082_1,a video of a person aggressively chasing another person,2,0,0,1,0
+3_093_1,a video of a person aggressively chasing another person,2,0,0,0,0
+2_071_1,a video of a person aggressively chasing another person,2,0,0,0,0
+3_080_1,a video of a person aggressively chasing another person,2,1,0,0,0
+4_101_1,a video of a person aggressively chasing another person,2,0,0,0,0
+4_108_1,a video of a person aggressively chasing another person,2,0,0,0,0
+4_107_1,a video of a person aggressively chasing another person,2,0,0,0,0
+000312,a video of a person aggressively chasing another person,2,0,0,0,0
+4_114_1,a video of a person aggressively chasing another person,2,0,0,11,0
+000235,a video of a person aggressively chasing another person,2,0,0,0,0
+3_096_1,a video of a person aggressively chasing another person,2,0,0,0,0
+1_073_1,a video of a person aggressively chasing another person,2,2,0,0,0
+000307,a video of a person aggressively chasing another person,2,0,0,0,0
+3_091_1,a video of a person aggressively chasing another person,2,0,0,0,0
+000264,a video of a person aggressively chasing another person,2,0,0,0,0
+4_083_1,a video of a person aggressively chasing another person,2,0,0,0,0
+2_078_1,a video of a person aggressively chasing another person,2,0,0,0,0
+2_077_1,a video of a person aggressively chasing another person,2,5,0,4,0
+1_087_1,a video of a person aggressively chasing another person,2,0,0,0,0
+000351,a video of a person aggressively chasing another person,2,0,0,0,0
+000311,a video of a person aggressively chasing another person,2,0,0,0,0
+D076_03,a video of a person aggressively chasing another person,2,0,0,2,0
+000305,a video of a person aggressively chasing another person,2,0,0,1,0
+000316,a video of a person aggressively chasing another person,2,0,0,0,0
+2_088_1,a video of a person aggressively chasing another person,2,0,0,0,0
+000212,a video of a person aggressively chasing another person,2,0,0,0,0
+000231,a video of a person aggressively chasing another person,2,0,0,0,0
+000356,a video of a person aggressively chasing another person,2,0,0,0,0
+000257,a video of a person aggressively chasing another person,2,0,0,0,0
+1_085_1,a video of a person aggressively chasing another person,2,7,0,6,0
+2_083_1,a video of a person aggressively chasing another person,2,0,0,3,0
+000281,a video of a person aggressively chasing another person,2,0,0,0,0
+D036_07,a video of a person jumping high in the air with both feet,2,0,0,0,0
+21,a video of a person jumping high in the air with both feet,2,0,0,0,0
+1_092_1,a video of a person jumping high in the air with both feet,2,0,0,0,0
+2_089_1,a video of a person jumping high in the air with both feet,2,0,0,0,0
+07,a video of a person jumping high in the air with both feet,2,0,0,0,0
+3_100_1,a video of a person jumping high in the air with both feet,2,0,0,0,0
+08,a video of a person jumping high in the air with both feet,2,0,0,0,0
+4_089_1,a video of a person accidentally falling to the ground,2,0,0,18,20
+2_080_1,a video of a person accidentally falling to the ground,2,0,0,31,39
+1_090_1,a video of a person accidentally falling to the ground,2,0,0,1,0
+1_078_1,a video of a person accidentally falling to the ground,2,8,0,1,21
+3_086_1,a video of a person accidentally falling to the ground,2,24,0,2,62
+2_074_1,a video of a person accidentally falling to the ground,2,0,0,34,13
+1_084_1,a video of a person accidentally falling to the ground,2,0,0,11,0
+4_106_1,a video of a person gently guiding another person by the arm,2,0,0,46,7
+D158_17,a video of a person gently guiding another person by the arm,2,0,0,116,0
+3_098_1,a video of a person gently guiding another person by the arm,2,0,0,22,14
+4_097_1,a video of a person gently guiding another person by the arm,2,0,0,42,1
+1_089_1,a video of a person gently guiding another person by the arm,2,21,0,80,0
+2_087_1,a video of a person gently guiding another person by the arm,2,0,0,20,11
+4_095_1,a video of a person stealing other person,2,0,0,0,0
+1_082_1,a video of a person stealing other person,2,0,0,0,0
+4_084_1,a video of a person stealing other person,2,0,0,0,0
+2_071_1,a video of a person stealing other person,2,0,0,0,0
+3_080_1,a video of a person stealing other person,2,0,0,0,0
+4_108_1,a video of a person stealing other person,2,0,0,0,0
+3_081_1,a video of a person stealing other person,2,0,0,0,0
+D077_01,a video of a person stealing other person,2,0,0,0,0
+3_091_1,a video of a person stealing other person,2,0,0,0,0
+4_083_1,a video of a person stealing other person,2,0,0,0,0
+2_078_1,a video of a person stealing other person,2,0,0,0,0
+D068_10,a video of a person stealing other person,2,0,0,0,0
+D158_01,a video of a person stealing other person,2,0,0,0,0
+2_070_1,a video of a person stealing other person,2,0,0,0,0
+D077_03,a video of a person stealing other person,2,0,0,12,0
+3_088_1,a video of a person deliberately throwing garbage on the ground,2,1,0,0,0
+20,a video of a person deliberately throwing garbage on the ground,2,18,9,8,7
+13,a video of a person deliberately throwing garbage on the ground,2,4,7,7,8
+1_080_1,a video of a person deliberately throwing garbage on the ground,2,0,0,0,3
+1_076_1,a video of a person deliberately throwing garbage on the ground,2,0,0,20,23
+2_072_1,a video of a person deliberately throwing garbage on the ground,2,2,0,3,24
+3_074_1,a video of a person deliberately throwing garbage on the ground,2,0,0,0,10
+4_103_1,a video of a person deliberately throwing garbage on the ground,2,0,0,29,9
+3_082_1,a video of a person deliberately throwing garbage on the ground,2,16,0,6,24
+14,a video of a person deliberately throwing garbage on the ground,2,7,4,9,64
+D031_07,a video of a person deliberately throwing garbage on the ground,2,0,0,16,9
+2_092_1,a video of a person deliberately throwing garbage on the ground,2,0,7,10,17
+1_074_1,a video of a person deliberately throwing garbage on the ground,2,0,0,21,38
+3_095_1,a video of a person deliberately throwing garbage on the ground,2,18,27,0,15
+3_084_1,a video of a person deliberately throwing garbage on the ground,2,0,0,0,0
+1_086_1,a video of a person deliberately throwing garbage on the ground,2,3,0,10,47
+4_099_1,a video of a person tripping over an obstacle,2,0,0,3,1
+4_087_1,a video of a person tripping over an obstacle,2,0,0,6,0
+2_081_1,a video of a person tripping over an obstacle,2,0,0,1,0
+2_082_1,a video of a person tripping over an obstacle,2,0,0,0,3
+4_098_1,a video of a person tripping over an obstacle,2,0,0,21,0
+D148_04,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,0,111
+4_085_1,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,9,6
+3_083_1,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,2,0
+D149_05,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,12,1
+1_075_1,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,4,0
+4_086_1,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,17,11
+D158_13,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,4,0
+D149_07,a video of a person pickpocketing a wallet from someone's pocket,2,1,0,0,3
+D149_03,a video of a person pickpocketing a wallet from someone's pocket,2,0,0,1,5

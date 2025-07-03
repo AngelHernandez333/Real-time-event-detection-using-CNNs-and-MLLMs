@@ -92,7 +92,22 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/CLIPOneClassOld"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4Multiclass"
+        self.__order= [
+        "Riding",
+        "Playing", #Finish specific class events
+        "Pickpockering",
+        "Stealing",
+        "Tripping",
+        "Chasing",
+        "Guiding",
+        "Jumping",
+        "Falling",
+        "Littering",
+        "Running",
+        "Lying",
+        "Fighting",
+    ]
 
     def set_detector(self, detector):
         self.__detector = detector
@@ -288,11 +303,12 @@ class EventTesterCLIP(VideoTester):
                     )
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
-                    self.__image_encoder.set_descriptions(descriptions)
-                    event, avg_prob = self.__image_encoder.outputs(frames)
-                    events.append(event)
+                    if self.__mode != 3:
+                        self.__image_encoder.set_descriptions(descriptions)
+                        event, avg_prob = self.__image_encoder.outputs(frames)
+                        events.append(event)
+                        print( descriptions, self.__event,event,  '\n')
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-                    print( descriptions, self.__event,event,  '\n')
                     if self.__mode == 1 and event != normal_prompt:
                         text = prompt_text(
                             classes,
@@ -426,7 +442,11 @@ if __name__ == "__main__":
         "Tripping",
         "Pickpockering",
     ]
-    description = [
+    #First, presence of a specific class
+    #Second, groupal events
+    #Last, specific events
+
+    '''description = [
         "a person riding a bicycle on the street",  # Added context
         "multiple people engaged in a physical fight",  # More specific than "fighting"
         "a group of people playing a sport together",  # Added "sport" for visual clarity
@@ -440,7 +460,7 @@ if __name__ == "__main__":
         "a person deliberately throwing garbage on the ground",  # "Deliberately" adds clarity
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
-    ]
+    ]'''
     description = [
         "a person riding a bicycle",
         "a certain number of persons fighting",
@@ -469,7 +489,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevCLIPOneClassOldDescriptions.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -491,4 +511,4 @@ if __name__ == "__main__":
     tester.set_rute("../Database/ALL/Videos")
     tester.show_video(False)
     tester.show_detections(False)
-    tester.simple_autotesting(events, descriptions, [2])
+    tester.simple_autotesting(events, descriptions, [3])
