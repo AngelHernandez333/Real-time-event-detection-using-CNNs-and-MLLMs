@@ -112,8 +112,16 @@ def calculate_ap(precision, recall):
         ap += delta_recall * precision[i]
 
     return ap
-
-
+rute='/home/ubuntu/Tesis/Results/'
+file = "TestingDevCLIPOneClassOldDescriptions.csv"
+df = pd.read_csv(f"{rute}{file}")
+df["Process time"] = df["Process time"] / df["Duration"]
+df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = (
+    30.0 / df["Process time"]
+)
+df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = (
+    25.0 / df["Process time"]
+)
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
