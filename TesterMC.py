@@ -333,22 +333,11 @@ class EventTesterCLIP(VideoTester):
                         )
                         prompts.append(prompt)
                     if self.__mode == 3:
-                        prompts_responses=[]
-                        events_detected = []
-                        for i in range(len(self.__order)):
-                            print(self.__order_dict[self.__order[i]])
-                            if self.__order_dict[self.__order[i]] in descriptions:
-                                event = self.__order_dict[self.__order[i]]
-                                prompt = self.__MLLM.event_validation(
-                                    frames, event.split(PREFIX)[1], verbose=True
-                                )
-                                events_detected.append(event)
-                                prompts_responses.append(prompt)
-                                if prompt.lower().split(".")[0] == "yes":
-                                    print("Event detected:", event)
-                                    break
-                        prompts.append(prompts_responses)
-                        events.append(events_detected)
+                        prompt = self.__MLLM.event_selection(
+                        frames, descriptions, verbose=True
+                        )
+                        prompts.append(prompt)
+                        events.append(prompt)
                     else:
                         prompt = ""
                         prompts.append(prompt)
@@ -388,6 +377,13 @@ class EventTesterCLIP(VideoTester):
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     finished = False
+                    count = self.__df[(self.__df["Mode"] == k)
+                        & (self.__df["True Event"] == descriptions[video_kind])
+                    ].shape[0]
+                    '''if count< 7:
+                        pass
+                    else:
+                        continue'''
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)

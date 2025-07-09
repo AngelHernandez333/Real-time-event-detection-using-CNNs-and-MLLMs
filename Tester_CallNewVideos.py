@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4Multiclass"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MulticlassNMS"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -333,22 +333,22 @@ class EventTesterCLIP(VideoTester):
                         )
                         prompts.append(prompt)
                     if self.__mode == 3:
-                        prompts_responses=[]
+                        prompt = self.__MLLM.event_score(
+                        frames, descriptions, verbose=True
+                        )
+                        prompts.append(prompt)
+                        events.append(descriptions)
+                        '''prompts_responses=[]
                         events_detected = []
-                        for i in range(len(self.__order)):
-                            print(self.__order_dict[self.__order[i]])
-                            if self.__order_dict[self.__order[i]] in descriptions:
-                                event = self.__order_dict[self.__order[i]]
-                                prompt = self.__MLLM.event_validation(
-                                    frames, event.split(PREFIX)[1], verbose=True
-                                )
-                                events_detected.append(event)
-                                prompts_responses.append(prompt)
-                                if prompt.lower().split(".")[0] == "yes":
-                                    print("Event detected:", event)
-                                    break
+                        for i in range(len(descriptions)):
+                            event = descriptions[i]
+                            prompt = self.__MLLM.event_score(
+                                frames, event.split(PREFIX)[1], verbose=True
+                            )
+                            events_detected.append(event)
+                            prompts_responses.append(prompt)
                         prompts.append(prompts_responses)
-                        events.append(events_detected)
+                        events.append(events_detected)'''
                     else:
                         prompt = ""
                         prompts.append(prompt)
@@ -514,7 +514,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC_Score.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
