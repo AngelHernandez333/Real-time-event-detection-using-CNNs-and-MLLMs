@@ -333,6 +333,7 @@ class EventTesterCLIP(VideoTester):
                         )
                         prompts.append(prompt)
                     if self.__mode == 3:
+                        
                         prompt = self.__MLLM.event_score(
                         frames, descriptions, verbose=True
                         )
@@ -393,6 +394,10 @@ class EventTesterCLIP(VideoTester):
                         & (self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
+                    if files[j].endswith("_1.mp4"):
+                        pass
+                    else:
+                        continue
                     if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
@@ -534,6 +539,6 @@ if __name__ == "__main__":
     ov_qmodel.set_labels(detection_labels)
     tester.set_detector(ov_qmodel)
     tester.set_rute("../Database/ALL/Videos")
-    tester.show_video(False)
+    tester.show_video(True)
     tester.show_detections(False)
     tester.simple_autotesting(events, descriptions, [3])

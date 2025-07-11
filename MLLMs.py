@@ -19,6 +19,7 @@ from math import sqrt
 # Añade la ruta de janus al sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "janus"))
 from lib.janus.janus.models import MultiModalityCausalLM, VLChatProcessor
+import random
 
 
 class MLLMs(ABC):
@@ -190,11 +191,59 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
+        ]        
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
+{text} select the description that best describes the video from the following descriptions:
+{descriptions_text}\nJust the number of the selected description.""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
         ]
+        # Shuffle the descriptions list randomly
+        '''random.shuffle(descriptions)
+        descriptions_text = "\n".join(f"- {desc}" for i, desc in enumerate(descriptions))
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
+{text} select the description that best describes the video from the following descriptions:
+{descriptions_text}\n
+Return the selected description without any explanation or extra text in the following format:
+The selected description is: [selected_description].""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
+{text} select the description that best describes the video from the following descriptions:
+{descriptions_text}\n
+The selecting MUST not be based on the order of the descriptions, only in the content of the description and the video.
+
+Return the selected description without any explanation or extra text in the following format:
+The selected description is: [selected_description].""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]'''
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
-
+        '''conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
+{text} select the one of the following descriptions:
+{descriptions_text}\nJust the number of the selected description.""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]    '''
         # load images and prepare for inputs
         # pil_images = load_pil_images(conversation)
         prepare_inputs = self.__processor(
@@ -222,7 +271,6 @@ class JanusPro(MLLMs):
         # rint(f"{prepare_inputs['sft_format'][0]}", answer)
         if verbose:
             print(f"{prepare_inputs['sft_format'][0]}", answer)
-            print(answer)
         # return answer[-4:-1]  # Extract the score from the answer
         return answer
     
@@ -237,54 +285,123 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         ) 
-        conversation = [
-            {
-                "role": "<|User|>",
-                "content": f"""{images_number} This is a video.\n
-{text} answer, how would you rate the description '{event}' match with the video? Return a score in the range (0-100). 
-                \nJust the numerical score, without any additional text.""",
-                "images": [],
-            },
-            {"role": "<|Assistant|>", "content": ""},
-        ]  
+        
+        #-----------------------------------------
         descriptions_text = "\n".join(f"{i+1}. {desc}" for i, desc in enumerate(event))  
-        '''conversation = [
+            
+        conversation = [
     {
         "role": "<|User|>",
-        "content": f"""{images_number} This is a video consisting of {number_of_frames} frames.
-Your task is to assign a confidence score between 0 and 100 to each of the following descriptions, based on how well each one matches the video.
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a score from 0 to 100 for each.
+{descriptions_text}. Ensure there are a score for each of the {len(event)} descriptions, the exact number.
+Think that each score must be independent of the others, only matters the description and the video.
 
-Each description starts with a base score of 0. Increase the score if the description accurately represents what happens in the video.
-
-Return your answer in the following format:
-1. <score>
-2. <score>
-...
-
-Descriptions:
-{descriptions_text}""",
-
-        "images": [],  # Add your actual image frames here
+Respond in the following format:
+Scores:
+1. [score1]
+2. [score2]
+...""",
+        "images": [],
     },
     {"role": "<|Assistant|>", "content": ""},
-]'''
+]
+        random.shuffle(event)
+        descriptions_text = "\n".join(f"- {desc}" for i, desc in enumerate(event))  
+        descriptions_score = "\n".join(f"- {desc} Score: [score]" for i, desc in enumerate(event)) 
+        descriptions_score = "\n".join(f"- {desc} Score: [selected score]" for i, desc in enumerate(event)) 
+            
         conversation = [
     {
         "role": "<|User|>",
-        "content": f"""{images_number} This is a video consisting of {number_of_frames} frames.
-Your task is to assign a confidence score between 0 and 100 to each of the following descriptions, based on how well each one matches the video.
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
+{descriptions_text}\n 
+Ensure there are a score for each of the {len(event)} descriptions, the exact number and follow the order.
+Think that each score must be independent of the others, only matters the description and the video.
 
-Each description starts with a base score of 0. Modify the score if the description accurately describe what happens in the video.
-
-Return your answer in the following format:
-1. <score>
-2. <score>
+Respond in the following format:
+Scores:
+- [description][score1]
+- [description][score2]
 ...
 
-Descriptions:
-{descriptions_text}""",
+Until you finish the score for each description, MUST be the exact number of scores.""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
+{descriptions_text}\n 
+Ensure there are a score for each of the {len(event)} descriptions, the exact number.
+Think that each score must be independent of the others, only matters the description and the video.
 
-        "images": [],  # Add your actual image frames here
+Respond in the following format:
+Scores:
+- [description][score1]
+- [description][score2]
+...
+Return the score for each description, MUST be the exact number of descriptions.""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
+{descriptions_text}\n 
+Ensure there are a score for each of the {len(event)} descriptions, the exact number.
+Think that the score of each descriptions MUST be independent of the others, determine it only analizing the description and the video.
+
+Respond in the following format:
+Scores:
+- [description][score1]
+- [description][score2]
+...
+Return the score for each description, MUST be the exact number of descriptions.""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
+{descriptions_text}\n 
+Ensure there are a score for each of the {len(event)} descriptions, the exact number.
+Think that the score of each descriptions MUST be independent of the others, determine it only analizing the description and the video.
+
+Respond in the following format:
+Scores:
+{descriptions_score}
+...
+Return the score for each description, MUST be the exact number of descriptions.""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video.
+{text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
+{descriptions_text}\n 
+Ensure there are a score for each of the {len(event)} descriptions, the exact number.
+Think that the score of each descriptions MUST be independent of the others and of the order,  determine it only analizing the description and the video.
+
+Respond in the following format:
+Scores:
+{descriptions_score}
+...
+Return the score for each description, MUST be the exact number of descriptions.""",
+        "images": [],
     },
     {"role": "<|Assistant|>", "content": ""},
 ]

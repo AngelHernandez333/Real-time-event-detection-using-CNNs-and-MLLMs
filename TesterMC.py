@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4Multiclass"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MulticlassALLDescriptions"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -160,7 +160,7 @@ class EventTesterCLIP(VideoTester):
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
         # Save frames_number, predicted_events, and prompts into a numpy array
-        if self.__mode!=3:
+        if self.__mode!=3 or self.__mode!=4:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
             output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
             np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)            
@@ -283,7 +283,10 @@ class EventTesterCLIP(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            detections, classes = self.__detector.detection(frame, classes)
+            if self.__mode!= 4:
+                detections, classes = self.__detector.detection(frame, classes)
+            else:
+                detections=[]
             VideoTester.take_frame(
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -292,10 +295,12 @@ class EventTesterCLIP(VideoTester):
                 detections,
                 results,
             )
-            if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
+            if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0 and self.__mode != 4:
                 descriptions = dmc.process(
                         classes, detections, results, frames, False
                     )
+            if self.__mode== 4:
+                descriptions= dmc.get_descriptions()   
             if len(frames) > 6:
                 frames.pop(0)
                 results.pop(0)
@@ -304,13 +309,13 @@ class EventTesterCLIP(VideoTester):
                 elif self.__mode == 2:
                     descriptions=[]
                 print('Descripciones:',descriptions, '\n')
-                if len(descriptions) > 0:
-                    normal_prompt = (
+                normal_prompt = (
                         PREFIX + "a normal view (persons walking or standing)"
                     )
+                if len(descriptions) > 0:
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
-                    if self.__mode != 3:
+                    if self.__mode != 3 and self.__mode != 4:
                         self.__image_encoder.set_descriptions(descriptions)
                         event, avg_prob = self.__image_encoder.outputs(frames)
                         events.append(event)
@@ -332,15 +337,19 @@ class EventTesterCLIP(VideoTester):
                             frames, event.split(PREFIX)[1], verbose=True
                         )
                         prompts.append(prompt)
-                    if self.__mode == 3:
+                    if self.__mode == 3 or self.__mode == 4:
                         prompt = self.__MLLM.event_selection(
                         frames, descriptions, verbose=True
                         )
                         prompts.append(prompt)
-                        events.append(prompt)
+                        events.append(descriptions)
                     else:
                         prompt = ""
                         prompts.append(prompt)
+                else:
+                    frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
+                    events.append(normal_prompt)
+                    prompts.append("")
             # -------------------------------------
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 finished = False
@@ -510,7 +519,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC_ALLDescriptions.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
