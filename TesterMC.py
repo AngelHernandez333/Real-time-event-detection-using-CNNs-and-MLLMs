@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MulticlassALLDescriptions"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MC_Prompts/SolveFirstOption"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -519,7 +519,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC_ALLDescriptions.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC_ALL.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

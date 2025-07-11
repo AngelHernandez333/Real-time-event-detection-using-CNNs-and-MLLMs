@@ -333,23 +333,23 @@ class EventTesterCLIP(VideoTester):
                         )
                         prompts.append(prompt)
                     if self.__mode == 3:
-                        
+                        '''
                         prompt = self.__MLLM.event_score(
                         frames, descriptions, verbose=True
                         )
                         prompts.append(prompt)
-                        events.append(descriptions)
-                        '''prompts_responses=[]
+                        events.append(descriptions)'''
+                        prompts_responses=[]
                         events_detected = []
                         for i in range(len(descriptions)):
                             event = descriptions[i]
-                            prompt = self.__MLLM.event_score(
+                            prompt = self.__MLLM.event_validation_score(
                                 frames, event.split(PREFIX)[1], verbose=True
                             )
                             events_detected.append(event)
                             prompts_responses.append(prompt)
                         prompts.append(prompts_responses)
-                        events.append(events_detected)'''
+                        events.append(events_detected)
                     else:
                         prompt = ""
                         prompts.append(prompt)

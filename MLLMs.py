@@ -181,7 +181,9 @@ class JanusPro(MLLMs):
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
+        random.shuffle(descriptions)
         descriptions_text = "\n".join(f"{i+1}. {desc}" for i, desc in enumerate(descriptions))
+        
         conversation = [
             {
                 "role": "<|User|>",
@@ -440,6 +442,66 @@ Return the score for each description, MUST be the exact number of descriptions.
         # return answer[-4:-1]  # Extract the score from the answer
         return answer
 
+    def event_validation_score(self, frames, event, text="Watch the video.", verbose=False):
+        number_of_frames = 4
+        assert (
+            len(frames) >= number_of_frames
+        ), f"Please provide at least {number_of_frames} frames."
+        # 5
+        images_number = (
+            len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
+        )
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no, and add a confident score from 0 to 100.",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+                conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no, and add a confident score from 0 to 100.",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+
+
+        pil_images = [
+            MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
+        ]
+
+        # load images and prepare for inputs
+        # pil_images = load_pil_images(conversation)
+        prepare_inputs = self.__processor(
+            conversations=conversation, images=pil_images, force_batchify=True
+        ).to(self.__model.device)
+
+        # # run image encoder to get the image embeddings
+        inputs_embeds = self.__model.prepare_inputs_embeds(**prepare_inputs)
+
+        # # run the model to get the response
+        outputs = self.__model.language_model.generate(
+            inputs_embeds=inputs_embeds,
+            attention_mask=prepare_inputs.attention_mask,
+            pad_token_id=self.__tokenizer.eos_token_id,
+            bos_token_id=self.__tokenizer.bos_token_id,
+            eos_token_id=self.__tokenizer.eos_token_id,
+            max_new_tokens=512,
+            do_sample=False,
+            use_cache=True,
+        )
+
+        answer = self.__tokenizer.decode(
+            outputs[0].cpu().tolist(), skip_special_tokens=True
+        )
+        # rint(f"{prepare_inputs['sft_format'][0]}", answer)
+        if verbose:
+            print(f"{prepare_inputs['sft_format'][0]}", answer)
+
+        return answer
 
 class Qwen2_VL(MLLMs):
     def __init__(self):
