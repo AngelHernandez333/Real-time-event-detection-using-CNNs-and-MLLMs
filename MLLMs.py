@@ -454,21 +454,225 @@ Return the score for each description, MUST be the exact number of descriptions.
         conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no, and add a confident score from 0 to 100.",
+                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no.",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-                conversation = [
+        conversation = [
             {
                 "role": "<|User|>",
-                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no, and add a confident score from 0 to 100.",
+                "content": f"{images_number} This is a video \n{text} Does the video contain {event}? Just yes or no with a confident score from 0 to 100.",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
+        #Scores muy binarios 0 or 100
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?. Just yes or no.
+                Support your answer with a confident score from 0 to 100.
+                Return the answer in the following format:
+                Answer: [answer]
+                Score: [score]""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        #Seems ok, need test it, the No answer just give 0
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?. Just yes or no.
+                Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes, intermediate values are allowed.
+                Return the answer in the following format:
+                Answer: [answer]
+                Score: [score]""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?. Just yes or no.
+                Support your answer with a confident score from 0 to 100 (intermediate values are allowed), where from 0 to 50 is for No, and from 50 to 100 is for Yes.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        conversation = [
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?. Just yes or no.
+Support your answer with a confident score from 0 to 100 (intermediate values are allowed, with increments of 5), where from 0 to 50 is for No, and from 50 to 100 is for Yes.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]       #Repeats the answer a several number of times, seems ok the answers but some answers have brackets
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a surveillance video.\n{text}
+Does the video contain {event}? Just yes or no.
 
+Look closely at all parts of the video, including the edges and background.
 
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]       #Repeats the answer a several number of times, seems ok the answers but some answers have brackets
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        #The best until now
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]       
+        # **Best until now**
+        
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        #Test
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score from 0 to 100, where 0 to 50 indicates No (lower values for higher confidence in No), and 50 to 100 indicates Yes (higher values for higher confidence in Yes). Intermediate values are allowed.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score from 0 to 100, where 0 to 50 indicates No (lower values for higher confidence in No), and 50 to 100 indicates Yes (higher values for higher confidence in Yes). Intermediate values are allowed.
+Return a single answer in the following format (without brackets):
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        #OK in format, but the scores are still just some of them, not all the range,
+        #Also, sometimes dont see the event present
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a surveillance video.\n{text}
+Does the video contain {event}? Just yes or no.
+- Provide only one answer.
+- The answer must be either 'Yes' or 'No' without brackets or other variations.
+- The score must be a number between 0 and 100, reflecting the confidence in your answer. Use 0 to 50 for No (lower values indicate higher confidence in No) and 50 to 100 for Yes (higher values indicate higher confidence in Yes).
+- Choose a precise score based on the evidence in the video. Avoid defaulting to extreme values (0, 50, 100) unless the evidence is absolutely conclusive. Intermediate values are strongly preferred to reflect partial confidence.
+- Do not include any additional text, explanations, or repeated answers.
+- Examine all parts of the video, including edges and background, before answering.
+Respond with exactly one answer in the following format:
+Answer: [Yes or No]
+Score: [score]
+""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""}
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Choose a precise score based on the evidence in the video. Avoid defaulting to extreme values (0, 50, 100) unless the evidence is absolutely conclusive. Intermediate values are strongly preferred to reflect partial confidence.
+Do not include any additional text, explanations, or repeated answers.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
+        conversation = [
+    {
+        "role": "<|User|>",
+        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+Just yes or no.
+Look closely at all parts of the video, including the edges and background.
+Support your answer with a confident score on a scale from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
+Choose a precise score based on the video. Avoid defaulting to extreme values (0, 50, 100) unless the evidence is absolutely conclusive. Intermediate values are strongly preferred to reflect partial confidence.
+Do NOT include any additional text, explanations, or repeated answers.
+Return the answer in the following format:
+Answer: [answer]
+Score: [score]""",
+        "images": [],
+    },
+    {"role": "<|Assistant|>", "content": ""},
+]
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
@@ -489,7 +693,7 @@ Return the score for each description, MUST be the exact number of descriptions.
             pad_token_id=self.__tokenizer.eos_token_id,
             bos_token_id=self.__tokenizer.bos_token_id,
             eos_token_id=self.__tokenizer.eos_token_id,
-            max_new_tokens=512,
+            max_new_tokens=30,
             do_sample=False,
             use_cache=True,
         )

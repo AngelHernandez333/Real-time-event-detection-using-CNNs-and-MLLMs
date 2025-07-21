@@ -304,10 +304,10 @@ class EventTesterCLIP(VideoTester):
                 elif self.__mode == 2:
                     descriptions=[]
                 print('Descripciones:',descriptions, '\n')
-                if len(descriptions) > 0:
-                    normal_prompt = (
+                normal_prompt = (
                         PREFIX + "a normal view (persons walking or standing)"
                     )
+                if len(descriptions) > 0:
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                     if self.__mode != 3:
@@ -353,6 +353,10 @@ class EventTesterCLIP(VideoTester):
                     else:
                         prompt = ""
                         prompts.append(prompt)
+                else:
+                    frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
+                    events.append(normal_prompt)
+                    prompts.append("")
             # -------------------------------------
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 finished = False
@@ -389,15 +393,22 @@ class EventTesterCLIP(VideoTester):
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     finished = False
+                    '''count = self.__df[(self.__df["Mode"] == k)
+                        & (self.__df["True Event"] == descriptions[video_kind])
+                    ].shape[0]
+                    if count< 7:
+                        pass
+                    else:
+                        continue'''
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    if files[j].endswith("_1.mp4"):
+                    '''if files[j].endswith("_1.mp4"):
                         pass
                     else:
-                        continue
+                        continue'''
                     if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
@@ -539,6 +550,6 @@ if __name__ == "__main__":
     ov_qmodel.set_labels(detection_labels)
     tester.set_detector(ov_qmodel)
     tester.set_rute("../Database/ALL/Videos")
-    tester.show_video(True)
+    tester.show_video(False)
     tester.show_detections(False)
     tester.simple_autotesting(events, descriptions, [3])
