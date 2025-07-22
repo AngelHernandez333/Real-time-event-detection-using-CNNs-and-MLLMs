@@ -3,18 +3,21 @@ import numpy as np
 from transformers import AutoProcessor, AutoModel
 from huggingface_hub import hf_hub_download
 import cv2
-
+from CLIPS import XCLIP_Model
 def read_video_opencv(path):
     cap = cv2.VideoCapture(path)
     frames = []
-
     while True:
         ret, frame = cap.read()
         if not ret:
             break
         # Convert BGR (OpenCV default) to RGB
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frames.append(frame_rgb)
+        if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 30 == 0:
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(frame_rgb)
+        if len(frames)==8:
+            break
+    return frames
 
     cap.release()
     return frames  # list of np.ndarrays
@@ -42,30 +45,37 @@ def sample_frame_indices(clip_len, frame_sample_rate, total_frames):
 # Supón que ya tienes tus frames:
 rute='/home/ubuntu/Database/ALL/Videos/Riding'
 file='3_105_1.mp4'
-frames = read_video_opencv(f"{rute}/{file}")
-indices = sample_frame_indices(clip_len=16, frame_sample_rate=4, total_frames=len(frames))
 
-# Selecciona los frames requeridos
-sampled_frames = [frames[i] for i in indices]
+sampled_frames = read_video_opencv(f"{rute}/{file}")
+CLIP_encoder = XCLIP_Model()
+CLIP_encoder.set_model("microsoft/xclip-base-patch32")
+CLIP_encoder.set_processor("microsoft/xclip-base-patch32")
+descriptions = ["a video of a person riding a bicycle", "a video of a normal view (persons walking and standing)"]
+CLIP_encoder.set_descriptions(descriptions)
+event, avg_prob, logits = CLIP_encoder.outputs_without_softmax(sampled_frames[2:], sampled_frames[0:2])
+logits_np = logits.to(dtype=torch.float32, device='cpu').numpy()[0]
+print(event, avg_prob, logits_np)  # Imprime el evento y la probabilidad promedio
+'''print(len(sampled_frames), sampled_frames[0].shape)  # Verifica la cantidad de frames y su forma
 
 # Convierte a np.ndarray final
 result = np.stack(sampled_frames)  # shape (clip_len, H, W, 3)
-
+device = "cuda"
+torch_dtype = torch.float16
 processor = AutoProcessor.from_pretrained("microsoft/xclip-base-patch32")
-model = AutoModel.from_pretrained("microsoft/xclip-base-patch32")
+model = AutoModel.from_pretrained("microsoft/xclip-base-patch32", torch_dtype=torch_dtype, device_map=device)
+import time
+
+start_time= time.time()
 inputs = processor(
-    text=["playing sports", "eating spaghetti", "go shopping"],
-    videos=list(frames),
+    text=["riding a bicycle", "normal view (persons walking and standing)"],
+    videos=list(result),
     return_tensors="pt",
     padding=True,
-)
-msg_token = msg_token.view(batch_size, self.num_frames, hidden_size)
-
-# forward pass
+).to(device)
 with torch.no_grad():
-    outputs = model(**inputs)
-
+    with torch.autocast(device):
+        outputs = model(**inputs)
 logits_per_video = outputs.logits_per_video  # this is the video-text similarity score
+print(logits_per_video)
 probs = logits_per_video.softmax(dim=1)  # we can take the softmax to get the label probabilities
-print(probs)
-
+print(probs, time.time() - start_time)'''

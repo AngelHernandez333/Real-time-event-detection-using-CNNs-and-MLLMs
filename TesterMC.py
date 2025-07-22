@@ -12,10 +12,10 @@ from MLLMs import *
 from Tester import VideoTester
 import pandas as pd
 import numpy as np
-from CLIPS import CLIP_Model
+from CLIPS import CLIP_Model, XCLIP_Model
 from DMC_OPP import ALL_Rules
 
-'''classes_focus = {
+classes_focus = {
     "a person riding a bicycle on the street": ["person", "bicycle"],
     "multiple people engaged in a physical fight": ["person"],
     "a group of people playing a sport together": [
@@ -43,7 +43,7 @@ from DMC_OPP import ALL_Rules
     "a person deliberately throwing garbage on the ground": ["person"],
     "a person stealing other person": ["person"],
     "a person pickpocketing a wallet from someone's pocket": ["person"],
-}'''
+}
 
 
 PREFIX = "a video of "
@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MC_Prompts/SolveFirstOption"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/XCLIP"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -142,7 +142,7 @@ class EventTesterCLIP(VideoTester):
         event,
         anomaly_classes,
         prompts,
-        mode,
+        mode,probabilities
     ):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
@@ -162,7 +162,7 @@ class EventTesterCLIP(VideoTester):
         # Save frames_number, predicted_events, and prompts into a numpy array
         if self.__mode!=3 or self.__mode!=4:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
-            output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
+            output_data = np.array([frames_number, predicted_events, prompts, probabilities], dtype=object)
             np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)            
             for i in range(len(predicted_events)):
                 # Get ground truth
@@ -271,11 +271,13 @@ class EventTesterCLIP(VideoTester):
         fps_list = []
         prompts = ["Loading..."]
         events = ["Loading..."]
+        probabilities= []
         # Charge time
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
         gap = 5
+        padding=[]
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
@@ -302,6 +304,9 @@ class EventTesterCLIP(VideoTester):
             if self.__mode== 4:
                 descriptions= dmc.get_descriptions()   
             if len(frames) > 6:
+                padding.append(frames[0])
+                if len(padding)>2:
+                    padding.pop(0)
                 frames.pop(0)
                 results.pop(0)
                 if self.__event in descriptions and self.__mode == 2:
@@ -317,7 +322,8 @@ class EventTesterCLIP(VideoTester):
                         descriptions.append(normal_prompt)
                     if self.__mode != 3 and self.__mode != 4:
                         self.__image_encoder.set_descriptions(descriptions)
-                        event, avg_prob = self.__image_encoder.outputs(frames)
+                        event, avg_prob, logits = self.__image_encoder.outputs(frames, padding)
+                        probabilities.append(logits)
                         events.append(event)
                         print( descriptions, self.__event,event,  '\n')
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
@@ -349,6 +355,7 @@ class EventTesterCLIP(VideoTester):
                 else:
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     events.append(normal_prompt)
+                    probabilities.append(0)
                     prompts.append("")
             # -------------------------------------
             if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -374,7 +381,7 @@ class EventTesterCLIP(VideoTester):
         cap.release()
         time_video = time.time() - start_video
         cv2.destroyAllWindows()
-        return frames_number, fps_list, prompts, duration, time_video, finished, events
+        return frames_number, fps_list, prompts, duration, time_video, finished, events, probabilities
 
     def simple_autotesting(self, folders, descriptions, modes):
         dmc = ALL_Rules()
@@ -409,7 +416,7 @@ class EventTesterCLIP(VideoTester):
                             duration,
                             time_video,
                             finished,
-                            predicted_events,
+                            predicted_events,probabilities
                         ) = self.testing_video(
                             f"{self.__rute}/{folders[video_kind]}/{files[j]}", dmc
                         )
@@ -426,7 +433,7 @@ class EventTesterCLIP(VideoTester):
                                 descriptions[video_kind],
                                 descriptions,
                                 prompts,
-                                k,
+                                k, probabilities
                             )
                             # Save the results
                             row = {
@@ -476,7 +483,7 @@ if __name__ == "__main__":
     #Second, groupal events
     #Last, specific events
 
-    '''description = [
+    description = [
         "a person riding a bicycle on the street",  # Added context
         "multiple people engaged in a physical fight",  # More specific than "fighting"
         "a group of people playing a sport together",  # Added "sport" for visual clarity
@@ -490,7 +497,8 @@ if __name__ == "__main__":
         "a person deliberately throwing garbage on the ground",  # "Deliberately" adds clarity
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
-    ]'''
+    ]
+    '''
     description = [
         "a person riding a bicycle",
         "a certain number of persons fighting",
@@ -505,7 +513,7 @@ if __name__ == "__main__":
         "a person throwing trash in the floor",
         "a person tripping",
         "a person stealing other person's pocket",
-    ]
+    ]'''
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -519,7 +527,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevM4MC_ALL.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevXCLIP.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -527,10 +535,17 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing.csv")
         tester.set_MLLM(qwen2vl)
-    tester.show_video(False)
+    '''tester.show_video(False)
     CLIP_encoder = CLIP_Model()
     CLIP_encoder.set_model("openai/clip-vit-base-patch16")
     CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
+    descriptions = [PREFIX + des for des in description]
+    CLIP_encoder.set_descriptions(descriptions)
+    tester.set_image_encoder(CLIP_encoder)'''
+    tester.show_video(False)
+    CLIP_encoder = XCLIP_Model()
+    CLIP_encoder.set_model("microsoft/xclip-base-patch32")
+    CLIP_encoder.set_processor("microsoft/xclip-base-patch32")
     descriptions = [PREFIX + des for des in description]
     CLIP_encoder.set_descriptions(descriptions)
     tester.set_image_encoder(CLIP_encoder)
@@ -541,4 +556,4 @@ if __name__ == "__main__":
     tester.set_rute("../Database/ALL/Videos")
     tester.show_video(False)
     tester.show_detections(False)
-    tester.simple_autotesting(events, descriptions, [3])
+    tester.simple_autotesting(events, descriptions, [0])
