@@ -161,7 +161,7 @@ def decision_makerComplex(
     prompts=[],
 ):
     if frame_number % gap == 0:
-        condition, prompt, _ = dcm.decision_maker(
+        condition, prompt, _, score = dcm.decision_maker(
             classes, detections, results, frames, MLLM
         )
         if condition and MLLM:

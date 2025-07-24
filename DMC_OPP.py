@@ -417,7 +417,7 @@ class EventRunning(DecisionMakerPerEvent):
         stored = []
         for i in range(len(persons_index)):
             stored.append(persons[persons_index[i]][-1])
-        return len(persons) > 0, stored
+        return len(persons_index) > 0, stored
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         if False:
@@ -501,7 +501,7 @@ class EventLying(DecisionMakerPerEvent):
         stored = []
         for i in range(len(persons_index)):
             stored.append(persons[persons_index[i]][-1])
-        return len(persons) > 0, stored
+        return len(persons_index) > 0, stored
 
 
 class EventChasing(DecisionMakerPerEvent):

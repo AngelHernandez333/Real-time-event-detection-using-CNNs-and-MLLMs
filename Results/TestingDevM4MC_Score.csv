@@ -154,7 +154,7 @@ Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,C
 3_084_1.mp4,3,0,0,0,0,a video of a person throwing trash in the floor,,140,24.391033333333333,476.6860196590424
 1_086_1.mp4,3,0,0,0,0,a video of a person throwing trash in the floor,,143,24.991633333333333,956.6416931152344
 000350.avi,3,0,0,0,0,a video of a person riding a bicycle,,139,29.16,1028.2749485969543
-000289.avi,3,0,0,0,0,a video of a person riding a bicycle,,243,49.96,1014.0927426815033
+000289.avi,3,0,0,0,0,a video of a person riding a bicycle,,243,49.96,1014.0927426815032
 000326.avi,3,0,0,0,0,a video of a person riding a bicycle,,157,32.68,1008.1030793190002
 000313.avi,3,0,0,0,0,a video of a person riding a bicycle,,206,42.44,1309.6504654884338
 000325.avi,3,0,0,0,0,a video of a person riding a bicycle,,140,29.36,954.6710877418518
@@ -162,7 +162,7 @@ Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,C
 D013_03.avi,3,0,0,0,0,a video of a person riding a bicycle,,324,66.04,272.1936945915222
 000296.avi,3,0,0,0,0,a video of a person riding a bicycle,,185,38.24,795.7992107868195
 D047_05.avi,3,0,0,0,0,a video of a person riding a bicycle,,54,12.04,73.3423011302948
-000253.avi,3,0,0,0,0,a video of a person riding a bicycle,,139,29.04,913.8704195022583
+000253.avi,3,0,0,0,0,a video of a person riding a bicycle,,139,29.04,913.8704195022584
 D235_01.avi,3,0,0,0,0,a video of a person riding a bicycle,,314,64.04,244.29542756080627
 D013_02.avi,3,0,0,0,0,a video of a person riding a bicycle,,494,100.04,328.85421776771545
 000324.avi,3,0,0,0,0,a video of a person riding a bicycle,,165,34.24,973.9864084720612
@@ -171,4 +171,22 @@ D235_07.avi,3,0,0,0,0,a video of a person riding a bicycle,,484,98.04,320.409724
 000318.avi,3,0,0,0,0,a video of a person riding a bicycle,,120,25.36,880.1562144756317
 000211.avi,3,0,0,0,0,a video of a certain number of persons fighting,,279,57.08,1687.8950943946838
 D076_05.avi,3,0,0,0,0,a video of a certain number of persons fighting,,344,70.04,1591.6841616630554
-D043_01.avi,3,0,0,0,0,a video of a certain number of persons fighting,,424,86.04,1874.6431124210358
+D043_01.avi,3,0,0,0,0,a video of a certain number of persons fighting,,424,86.04,1874.643112421036
+000213.avi,3,0,0,0,0,a video of a certain number of persons fighting,,307,62.72,1869.610870361328
+000266.avi,3,0,0,0,0,a video of a certain number of persons fighting,,265,54.32,1856.497197389603
+D031_01.avi,3,0,0,0,0,a video of a certain number of persons fighting,,399,81.04,2168.2876756191254
+000278.avi,3,0,0,0,0,a video of a certain number of persons fighting,,116,24.52,753.4363191127777
+000321.avi,3,0,0,0,0,a video of a certain number of persons fighting,,161,33.52,1098.2736756801603
+000251.avi,3,0,0,0,0,a video of a certain number of persons fighting,,298,60.8,2110.7039608955383
+000220.avi,3,0,0,0,0,a video of a certain number of persons fighting,,160,33.36,935.0906674861908
+D077_06.avi,3,0,0,0,0,a video of a certain number of persons fighting,,424,86.04,1674.4961650371552
+000284.avi,3,0,0,0,0,a video of a certain number of persons fighting,,416,84.4,2599.818671941757
+D029_01.avi,3,0,0,0,0,a video of a certain number of persons fighting,,389,79.04,1789.3877680301666
+000256.avi,3,0,0,0,0,a video of a group of persons playing,,661,133.56,4372.232408046722
+000334.avi,3,0,0,0,0,a video of a group of persons playing,,103,21.96,609.7541744709015
+000346.avi,3,0,0,0,0,a video of a group of persons playing,,649,131.16,3906.932808160782
+000310.avi,3,0,0,0,0,a video of a group of persons playing,,147,30.6,1068.145991563797
+000336.avi,3,0,0,0,0,a video of a group of persons playing,,334,68.0,1510.389475107193
+000314.avi,3,0,0,0,0,a video of a group of persons playing,,117,24.76,576.0581004619598
+000222.avi,3,0,0,0,0,a video of a group of persons playing,,198,40.92,935.5350573062897
+000258.avi,3,0,0,0,0,a video of a group of persons playing,,444,90.0,2022.054183959961

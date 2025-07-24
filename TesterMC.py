@@ -163,8 +163,9 @@ class EventTesterCLIP(VideoTester):
         if self.__mode!=3 or self.__mode!=4:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
             output_data = np.array([frames_number, predicted_events, prompts, probabilities], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)            
-            for i in range(len(predicted_events)):
+            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)      
+            return 0,0,0,0
+            '''for i in range(len(predicted_events)):
                 # Get ground truth
 
                 is_anomaly = frames[frames_number[i] - 1]  # 0 or 1
@@ -209,7 +210,7 @@ class EventTesterCLIP(VideoTester):
                 np.sum(cm[event_idx, :]) - tp
             )  # False negatives (event misclassified as others)
             tn = np.sum(cm) - tp - fp - fn  # True negatives
-            return tp, fp, fn, tn
+            return tp, fp, fn, tn'''
         else:
             output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
             np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
@@ -322,9 +323,9 @@ class EventTesterCLIP(VideoTester):
                         descriptions.append(normal_prompt)
                     if self.__mode != 3 and self.__mode != 4:
                         self.__image_encoder.set_descriptions(descriptions)
-                        event, avg_prob, logits = self.__image_encoder.outputs(frames, padding)
+                        event, avg_prob, logits = self.__image_encoder.outputs_without_softmax(frames, padding)
                         probabilities.append(logits)
-                        events.append(event)
+                        events.append(descriptions)
                         print( descriptions, self.__event,event,  '\n')
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     if self.__mode == 1 and event != normal_prompt:

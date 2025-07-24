@@ -5,7 +5,7 @@ import os
 from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import (
+from Functions4 import (
     decision_maker,
     decision_makerComplex,
     classes_focus,
@@ -242,9 +242,9 @@ class EventTester(VideoTester):
         tn = 0
         prompts = [prompt.lower() for prompt in prompts]
         name = video_name.split(".")[0]
-        frames = np.load(
-            f"../Database/CHAD DATABASE/CHAD_Meta/anomaly_labels/{name}.npy"
-        )
+        frames = np.load("..//Database/ALL/GT/gt_ALL.npz")
+        frames = frames[name]
+        frames = np.append(frames, frames[-1])
         for i in range(len(prompts)):
             print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
             if prompts[i] == "yes" and frames[frames_number[i] - 1] == 1:
@@ -303,6 +303,8 @@ class EventTester(VideoTester):
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         video_information = (width, height)
         fps = cap.get(cv2.CAP_PROP_FPS)
+        print(video_path)
+        print(int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) ,cap.get(cv2.CAP_PROP_FPS))
         duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
         prev_frame_time = 0
         new_frame_time = 0
@@ -442,6 +444,10 @@ class EventTester(VideoTester):
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     for i in range(len(descriptions)):
                         finished = False
+                        if files[j].endswith("_1.mp4"):
+                            pass
+                        else:
+                            continue
                         count = self.__df[
                             (self.__df["Name"] == files[j])
                             & (self.__df["Check event"] == descriptions[i])
@@ -458,7 +464,7 @@ class EventTester(VideoTester):
                                 time_video,
                                 finished,
                             ) = self.testing_video(
-                                f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",
+                                f"{self.__rute}/{folders[video_kind]}/{files[j]}",
                                 files[j],
                             )
                             if finished:
@@ -512,6 +518,10 @@ class EventTester(VideoTester):
                         (self.__df["Check event"] == descriptions[video_kind])
                         & (self.__df["Mode"] == k)
                     ].shape[0]
+                    if files[j].endswith("_1.mp4"):
+                        pass
+                    else:
+                        continue
                     if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
@@ -523,7 +533,7 @@ class EventTester(VideoTester):
                             time_video,
                             finished,
                         ) = self.testing_video(
-                            f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",
+                            f"{self.__rute}/{folders[video_kind]}/{files[j]}",
                             files[j],
                         )
                         if finished:
@@ -562,39 +572,6 @@ class EventTester(VideoTester):
 
 
 if __name__ == "__main__":
-    """events = [
-        "1-Riding a bicycle",
-        "2-Fight",
-        "3-Playing",
-        "4-Running away",
-        "5-Person lying in the floor",
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        '9-guide',
-        '11-Littering',
-        "12-Tripping",
-        '10-thief',
-    ]
-    description = [
-        "a person riding a bicycle",
-        "a certain number of persons fighting",
-        "a group of persons playing",
-        "a person running",
-        "a person lying in the floor",
-        "a person chasing other person",
-        "a person jumping",
-        "a person falling",
-        "a person guiding other person",
-        "a person throwing trash in the floor",
-        "a person tripping by other person",
-        "a person stealing other person",
-    ]
-    tester = EventTester()
-    tester.set_dataframe("/home/ubuntu/Tesis/Results/resultsOOP.csv")
-    tester.set_rute("../Database/CHAD DATABASE")
-    tester.show_detections(False)
-    tester.autotesting(events, description, [0])"""
     # Define the folder of the videos and the descriptions of the events
     # TODO: Verify the events and prompts and test the events
 
@@ -612,94 +589,6 @@ if __name__ == "__main__":
     # Tripping 🔨Check the prompt
     # Thief 🔨 In process
     # PickPocketing 🔨 In process
-    """events = [
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        '9-guide',
-        '11-Littering',
-        '10-thief',
-        "99-Normal",
-    ]
-    description = [
-        
-        "a person chasing other person",
-        "a person jumping",
-        "a person falling",
-        "a person guiding other person",
-        "a person stealing other person",
-        "a person throwing trash in the floor",
-        "everything is normal",
-    ]"""
-
-    """events = [
-        "6-Chasing","7-Jumping",
-        "8-Falling",'9-guide'
-        ,'11-Littering',]
-    description = [ "a person chasing other person","a person jumping",
-        "a person falling", "a person guiding other person", 
-        "a person throwing trash in the floor"
-    ]  """
-    """events = ["12-Tripping",]
-    description = ["a person tripping",]
-    events = ["10-thief",]
-    description = ["a person stealing other person",]
-        events = ["13-Pickpockering",]
-    description = ["a person attempting to steal the other person's wallet",]  """
-    """events = [
-        "1-Riding a bicycle",
-        "2-Fight",
-        "3-Playing",
-        "4-Running away",
-        "5-Person lying in the floor",
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        '9-guide',
-        '11-Littering',
-    ]
-    description = [
-        "a person riding a bicycle",
-        "a certain number of persons fighting",
-        "a group of persons playing",
-        "a person running",
-        "a person lying in the floor",
-        "a person chasing other person",
-        "a person jumping",
-        "a person falling",
-        "a person guiding other person",
-        "a person throwing trash in the floor",
-    ]"""
-    """events = [
-        "1-Riding a bicycle",
-        "2-Fight",
-        "3-Playing",
-        "4-Running away",
-        "5-Person lying in the floor",
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        '9-guide',
-        '10-thief',
-        '11-Littering',
-        "12-Tripping",
-        '13-Pickpockering',
-    ]
-    description = [
-        "a person riding a bicycle",
-        "a certain number of persons fighting",
-        "a group of persons playing",
-        "a person running",
-        "a person lying in the floor",
-        "a person chasing other person",
-        "a person jumping",
-        "a person falling",
-        "a person guiding other person",
-        "a person stealing other person",
-        "a person throwing trash in the floor",
-        'a person tripping',
-        "a person stealing other person's pocket",
-    ]"""
     # "a person tripping by other person",
     ov_qmodel = YOLOv10Detector()
     ov_qmodel.set_model("/home/ubuntu/yolov10/yolov10x.pt")
@@ -743,19 +632,19 @@ if __name__ == "__main__":
         "ALL",
     ]"""
     events = [
-        "1-Riding a bicycle",
-        "2-Fight",
-        "3-Playing",
-        "4-Running away",
-        "5-Person lying in the floor",
-        "6-Chasing",
-        "7-Jumping",
-        "8-Falling",
-        "9-guide",
-        "10-thief",
-        "11-Littering",
-        "12-Tripping",
-        "13-Pickpockering",
+        "Riding",
+        "Fighting",
+        "Playing",
+        "Running",
+        "Lying",
+        "Chasing",
+        "Jumping",
+        "Falling",
+        "Guiding",
+        "Stealing",
+        "Littering",
+        "Tripping",
+        "Pickpockering",
     ]
     description = [
         "a person riding a bicycle",
@@ -772,6 +661,12 @@ if __name__ == "__main__":
         "a person tripping",
         "a person stealing other person's pocket",
     ]
+    events = [
+        "Pickpockering",
+    ]
+    description = [
+        "a person stealing other person's pocket",
+    ]
     # Prepare the tester
     tester = EventTester()
     test = 1
@@ -785,7 +680,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevcsv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingScoreDMC.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -793,13 +688,14 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereQwen.csv")
         tester.set_MLLM(qwen2vl)
-    tester.set_rute("../Database/CHAD DATABASE")
+    tester.set_rute("/home/ubuntu/Database/ALL/Videos")
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
     tester.show_video(True)
+    
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0, 1, 2, 3, 4])
+    tester.simple_autotesting(events, description, [4])
     # tester.autotesting(events, description, [0,1,2,3,4])

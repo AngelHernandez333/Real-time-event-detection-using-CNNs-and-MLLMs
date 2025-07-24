@@ -195,8 +195,10 @@ class DecisionMakerPerEvent(ABC):
                 area_array = np.append(area_array, area)
             if verbose:
                 print(area_array, area_array.mean())
+            print(area_array, area_array.mean())
             if area_array.mean() < 0.5:
                 persons_index.append(i)
+        print(f"Persons running: {persons_index}")
         return persons_index
 
     @staticmethod
@@ -226,6 +228,7 @@ class DecisionMakerPerEvent(ABC):
     def verify_falling(persons, verbose=False):
         persons_index = []
         counter = 0
+        scores=[]
         for person in persons:
             width_per_height_ratio = np.array([])
             for i in range(len(person)):
@@ -252,8 +255,14 @@ class DecisionMakerPerEvent(ABC):
             ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
             if ratio_increasing:
                 persons_index.append(counter)
+                scores.append(
+                    np.abs(np.diff(width_per_height_ratio)).mean()
+                    * width_per_height_ratio[0])
+                print('Score ', np.abs(np.diff(width_per_height_ratio)).mean()
+                    * width_per_height_ratio[0], np.diff(width_per_height_ratio)
+                    , width_per_height_ratio[0])
             counter += 1
-        return persons_index
+        return persons_index, scores
 
     @staticmethod
     def verify_shaking(persons, verbose=False):
@@ -314,17 +323,33 @@ class EventBicycle(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, *args):
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             correct = self.detections_treatment(detections)
             stored = DecisionMakerPerEvent.boxes_touching(correct)
             decision = len(stored) > 0
             if decision:
+                for i in range(0,len(stored),2):
+                    if (stored[i][0] == "bicycle" and stored[i+1][0] == "person") or ((stored[i+1][0] == "bicycle" and stored[i][0] == "person") ):
+                        iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
+                        print(stored[i] , stored[i+1], iou)
+                        if iou > 0.2:
+                            score=(stored[i][1] * stored[i+1][1])
+                        else:
+                            score=0
+                        if score> score_actual:
+                            score_actual=score
+                        
+            else:
+                score=0
+            print(f'Score: {score_actual}\n\n')
+            if decision:
                 text = "yes"
             else:
                 text = "no"
-            return decision, text, stored
+            return decision, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
 
 class EventFight(DecisionMakerPerEvent):
@@ -346,17 +371,29 @@ class EventFight(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, *args):
         stored = []
+        score_actual = 0
         if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
             correct = self.detections_treatment(detections)
             stored = DecisionMakerPerEvent.boxes_touching(correct)
             decision = len(stored) > 0
             if decision:
+                for i in range(0,len(stored),2):
+                    iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
+                    print(stored[i] , stored[i+1], iou)
+                    if iou > 0.3:
+                        score=(stored[i][1] * stored[i+1][1]*iou)
+                    else:
+                        score=0
+                    if score> score_actual:
+                        score_actual=score
+            print(f'Score: {score_actual}\n\n')
+            if decision:
                 text = "yes"
             else:
                 text = "no"
-            return decision, text, stored
+            return decision, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
 
 class EventPlaying(DecisionMakerPerEvent):
@@ -370,11 +407,14 @@ class EventPlaying(DecisionMakerPerEvent):
 
     def detections_treatment(self, detections):
         correct = []
+        persons=[]
         for detection in detections:
             if detection[0] in self.__classes_of_interest and detection[1] > 0.5:
                 correct.append(detection)
+            if detection[0] == 'person' and detection[1] > 0.5:
+                persons.append(detection)
 
-        return correct
+        return correct, persons
 
     def process_detections(self):
         pass
@@ -384,14 +424,34 @@ class EventPlaying(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, *args):
         stored = []
+        score_actual = 0
         if (
             any([classes[class_] > 0 for class_ in self.__classes_of_interest])
             and classes["person"] > 1
         ):
-            stored = self.detections_treatment(detections)
-            return True, "yes", stored
+            stored, persons = self.detections_treatment(detections)
+            for i in range(len(stored)):
+                index=None
+                distance_min=None
+                score=0
+                for j in range(len(persons)):
+                    x,y=DecisionMakerPerEvent.distance_direction(stored[i], persons[j])
+                    distance= (x**2 + y**2)**0.5
+                    if distance_min is None or distance < distance_min:
+                        index=j
+                        distance_min=distance
+                print(f'Person {index} {persons[index]} is the closest to the object {stored[i]} with distance {distance_min} \n')
+                print(persons[index][4] - persons[index][2])
+                if distance_min<(persons[index][4] - persons[index][2])*5:
+                    score = stored[i][1] * persons[index][1]
+                else:
+                    score = 0
+                if score > score_actual:
+                    score_actual = score
+            print(f'Score: {score_actual}\n\n')
+            return True, "yes", stored, score_actual
         else:
-            return False, "no", stored
+            return False, "no", stored, score_actual
 
 
 class EventRunning(DecisionMakerPerEvent):
@@ -409,6 +469,7 @@ class EventRunning(DecisionMakerPerEvent):
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         persons_index = DecisionMakerPerEvent.verify_running(persons)
+        print('Here       ', persons_index)
         if verbose:
             print(
                 len(persons) > 0,
@@ -416,8 +477,8 @@ class EventRunning(DecisionMakerPerEvent):
             )
         stored = []
         for i in range(len(persons_index)):
-            stored.append(persons[persons_index[i]][-1])
-        return len(persons) > 0, stored
+            stored.append(persons[persons_index[i]])
+        return len(persons_index) > 0, stored
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         if False:
@@ -428,9 +489,10 @@ class EventRunning(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
@@ -443,9 +505,20 @@ class EventRunning(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            print(len(stored), stored, condition)
+            for person in stored:
+                score=0
+                for i in range( len(person)-1):
+                    iou = DecisionMakerPerEvent.calculate_shared_area(
+                        person[i], person[i + 1]
+                    )
+                    score+= ((1-iou) * person[i][1] * person[i + 1][1])/(len(person)-1)
+                if score > score_actual:
+                    score_actual = score
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored,score_actual
         else:
-            return False, "", stored
+            return False, "", stored,score_actual
 
 
 class EventLying(DecisionMakerPerEvent):
@@ -469,14 +542,16 @@ class EventLying(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored,score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
             condition, stored = self.process_detections(corrects)
+            print('Guardados ', stored, condition,'\n\n\n\n')
             if False:
                 print(
                     condition,
@@ -485,9 +560,19 @@ class EventLying(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            for person in stored:
+                score=0
+                for i in range( len(person)-1):
+                    iou = DecisionMakerPerEvent.calculate_shared_area(
+                        person[i], person[i + 1]
+                    )
+                    score+= ((iou) * person[i + 1][1])/(len(person)-1)
+                if score > score_actual:
+                    score_actual = score
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
@@ -500,8 +585,8 @@ class EventLying(DecisionMakerPerEvent):
             )
         stored = []
         for i in range(len(persons_index)):
-            stored.append(persons[persons_index[i]][-1])
-        return len(persons) > 0, stored
+            stored.append(persons[persons_index[i]])
+        return len(persons_index) > 0, stored
 
 
 class EventChasing(DecisionMakerPerEvent):
@@ -525,9 +610,10 @@ class EventChasing(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
         stored = []
+        score_actual=0
         if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
@@ -541,9 +627,18 @@ class EventChasing(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            for i in range(0,len(stored),2):
+                distance_ref,_ = DecisionMakerPerEvent.distance_between(stored[i][0], stored[i+1][0])
+                score=0
+                for j in range(0, len(stored[i])):
+                    distance,_ = DecisionMakerPerEvent.distance_between(stored[i][j], stored[i+1][j])
+                    score+= (distance_ref - distance)/ distance_ref * stored[i+1][j][1]* stored[i][j][1]
+                if score> score_actual:
+                    score_actual=score
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
@@ -592,13 +687,14 @@ class EventJumping(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
-            condition, stored = self.process_detections(corrects)
+            condition, stored, scores = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -607,14 +703,18 @@ class EventJumping(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            if len(scores) > 0:
+                score_actual = max(scores)
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
+        scores=[]
         if len(persons) < 1:
             return False, stored
         else:
@@ -630,8 +730,9 @@ class EventJumping(DecisionMakerPerEvent):
                 if False:
                     print(diferences, incresing, decresing, height)
                 if incresing or decresing:
-                    stored.append(person[-1])
-        return len(stored) > 0, stored
+                    stored.append(person)
+                    scores.append(person[-1][1]*np.abs(np.diff(diferences)).sum()/(height*0.5))
+        return len(stored) > 0, stored, scores
 
 
 class EventFalling(DecisionMakerPerEvent):
@@ -648,13 +749,17 @@ class EventFalling(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
+            print(stored)
+            if len(score) > 0:
+                score_actual = max(score)
             if False:
                 print(
                     condition,
@@ -663,17 +768,18 @@ class EventFalling(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         stored = []
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        person_index = DecisionMakerPerEvent.verify_falling(persons, False)
+        person_index, scores = DecisionMakerPerEvent.verify_falling(persons, False)
         for i in person_index:
-            stored.append(persons[i][-1])
-        return len(person_index) > 0, stored
+            stored.append(persons[i])
+        return len(person_index) > 0, stored, scores
 
 
 class EventGuiding(DecisionMakerPerEvent):
@@ -690,14 +796,15 @@ class EventGuiding(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
-            condition, stored = self.process_detections(corrects)
+            condition, stored, scores = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -706,16 +813,20 @@ class EventGuiding(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            if len(scores) > 0:
+                score_actual = max(scores)
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
+        scores=[]
         if len(persons) < 2:
-            return False, stored
+            return False, stored, scores
         else:
             # First check the couple of persons that are together
             check = []
@@ -764,8 +875,10 @@ class EventGuiding(DecisionMakerPerEvent):
                 if distancey.sum() < height * 1 and distancex.sum() < widht * 1:
                     stored.append(duo[0])
                     stored.append(duo[1])
-                    return True, stored
-        return False, stored
+                    scores.append(
+                        (distancey.sum()/height + distancex.sum()/widht)*duo[0][-1][1]*duo[1][-1][1])
+                    return True, stored, scores
+        return False, stored, scores
 
 
 class EventGarbage(DecisionMakerPerEvent):
@@ -782,6 +895,7 @@ class EventGarbage(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         stored = []
+        score_actual=0
         if False:
             print(
                 len(results),
@@ -791,13 +905,13 @@ class EventGarbage(DecisionMakerPerEvent):
             )
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
             if False:
                 print("Correcs:", corrects)
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -806,16 +920,20 @@ class EventGarbage(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            if score!=0:
+                score_actual = score
+            print(f'Scores: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
+        score= 0
         if len(persons) < 1:
-            return False, stored
+            return False, stored, score
         else:
             for person in persons:
                 if False:
@@ -830,9 +948,10 @@ class EventGarbage(DecisionMakerPerEvent):
                 if False:
                     print(temp.mean(), np.abs(np.diff(temp)).mean(), temp[0] * 0.15)
                 if np.abs(np.diff(temp)).mean() > temp[0] * 0.15:
-                    stored.append(person[-1])
-                    return True, stored
-        return False, stored
+                    stored.append(person)
+                    score=np.abs(np.diff(temp)).sum()*person[-1][1]
+                    return True, stored, score
+        return False, stored, score
 
 
 class EventTripping(DecisionMakerPerEvent):
@@ -849,13 +968,14 @@ class EventTripping(DecisionMakerPerEvent):
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         stored = []
+        score_actual=0
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -864,18 +984,22 @@ class EventTripping(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            if score != 0:
+                score_actual = score
+            print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         person_index = DecisionMakerPerEvent.verify_shaking(persons, verbose)
         stored = []
+        score=0
         if verbose:
             print("The persons shaking are", person_index, len(persons))
         if len(person_index) < 1 or len(persons) < 2:
-            return False, stored
+            return False, stored, score
         for i in person_index:
             for j in [x for x in range(len(persons)) if x != i]:
                 tripping = np.array([])
@@ -889,9 +1013,10 @@ class EventTripping(DecisionMakerPerEvent):
                     else:
                         tripping = np.append(tripping, 0)
                 if tripping.sum() > len(tripping) // 2:
-                    stored.append(persons[i][-1])
-                    stored.append(persons[j][-1])
-        return len(stored) > 0, stored
+                    stored.append(persons[i])
+                    stored.append(persons[j])
+                    score=tripping.sum() / len(tripping) * persons[i][-1][1] * persons[j][-1][1]
+        return len(stored) > 0, stored, score
 
 
 class EventStealing(DecisionMakerPerEvent):
@@ -934,14 +1059,15 @@ class EventStealing(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
         stored = []
+        score_actual=0
         if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored,score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -950,17 +1076,21 @@ class EventStealing(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            if score!= 0:
+                score_actual = score
+                print(f'Score: {score_actual}\n\n')
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         persons_index = DecisionMakerPerEvent.verify_running(persons)
         #print("este", persons_index)
         stored = []
+        score=0
         if len(persons_index) < 1 or len(persons) < 2:
-            return False, stored
+            return False, stored, score
         if verbose:
             print("Checking persons", persons_index)
         for i in persons_index:
@@ -990,10 +1120,11 @@ class EventStealing(DecisionMakerPerEvent):
                             persons[i][k], persons[j][k]
                         )
                         if touching:
-                            stored.append(persons[i][-1])
-                            stored.append(persons[j][-1])
-                            return True, stored
-        return False, stored
+                            stored.append(persons[i])
+                            stored.append(persons[j])
+                            score+= ((distance_array[0]-distance_array[-1] )/ distance_array[0]) * persons[i][k][1]* persons[j][k][1]
+                            return True, stored, score
+        return False, stored, score
 
 
 class EventPickPockering(DecisionMakerPerEvent):
@@ -1017,14 +1148,18 @@ class EventPickPockering(DecisionMakerPerEvent):
                 "\n---------------------------------------------------------------------\n",
             )
         stored = []
+        score_actual= 0
         if all([classes[class_] > 1 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
-                return True, "", stored
+                return True, "", stored, score_actual
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
+            if score != 0:
+                score_actual = score
+            print(f'Score {score_actual}\n\n')
             if False:
                 print(
                     condition,
@@ -1033,16 +1168,17 @@ class EventPickPockering(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            return condition, text, stored
+            return condition, text, stored, score_actual
         else:
-            return False, "", stored
+            return False, "", stored, score_actual
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         stored = []
+        score=0
         # Evaluate the persons
         if len(persons) < 2:
-            return False, stored
+            return False, stored,score
         else:
             # First check the couple of persons that are together
             check = []
@@ -1070,14 +1206,21 @@ class EventPickPockering(DecisionMakerPerEvent):
             if verbose:
                 print("Status ", len(check) > 0)
             if len(check) == 0:
-                return False, stored
+                return False, stored, score
             for duo in check:
                 shaking = DecisionMakerPerEvent.verify_shaking(duo)
                 if len(shaking) > 0:
-                    stored.append(duo[0][-1])
-                    stored.append(duo[1][-1])
-                    return True, stored
-        return False, stored
+                    stored.append(duo[0])
+                    stored.append(duo[1])
+                    iou_max = 0
+                    for i in range(len(duo[0])):
+                        iou = DecisionMakerPerEvent.calculate_shared_area(
+                            duo[0][-1], duo[1][-1])
+                        if iou > iou_max:
+                            iou_max = iou
+                    score=duo[0][-1][1] * duo[1][-1][1]*iou_max
+                    return True, stored, score
+        return False, stored, score
 
 
 class ALL_Rules:
