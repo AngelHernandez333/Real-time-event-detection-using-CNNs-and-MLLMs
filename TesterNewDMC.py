@@ -661,12 +661,6 @@ if __name__ == "__main__":
         "a person tripping",
         "a person stealing other person's pocket",
     ]
-    events = [
-        "Pickpockering",
-    ]
-    description = [
-        "a person stealing other person's pocket",
-    ]
     # Prepare the tester
     tester = EventTester()
     test = 1

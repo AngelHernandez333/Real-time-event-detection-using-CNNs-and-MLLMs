@@ -1267,18 +1267,16 @@ class ALL_Rules:
 
     def process(self, classes, detections, results, frames, MLLM):
         prompts = []
-        rois = []
+        scores = []
         print(len(self.__descriptions), len(self.__rules))
         for i in range(len(self.__rules)):
-            condition, text, objects = self.__rules[i].decision_maker(
+            condition, text, objects , score= self.__rules[i].decision_maker(
                 classes, detections, results, frames, MLLM
             )
-            if condition and "" != text:
-                #print("Test: ", self.__descriptions[i], objects)
-                prompts.append(self.__descriptions[i])
-                rois.append(objects)
+            prompts.append(self.__descriptions[i])
+            scores.append(score)
         #to_recort = self.area_torecort(rois)
-        return prompts
+        return prompts, scores
 
 
 if __name__ == "__main__":
