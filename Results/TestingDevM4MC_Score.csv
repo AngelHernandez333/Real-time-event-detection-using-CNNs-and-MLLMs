@@ -192,9 +192,9 @@ D029_01.avi,3,0,0,0,0,a video of a certain number of persons fighting,,389,79.04
 000258.avi,3,0,0,0,0,a video of a group of persons playing,,444,90.0,2022.054183959961
 000347.avi,3,0,0,0,0,a video of a group of persons playing,,386,78.44,1279.7693026065826
 000342.avi,3,0,0,0,0,a video of a group of persons playing,,194,40.0,170.05717039108276
-000244.avi,3,0,0,0,0,a video of a group of persons playing,,75,16.2,214.05934715270996
-000327.avi,3,0,0,0,0,a video of a group of persons playing,,192,39.76,943.9500393867493
-000265.avi,3,0,0,0,0,a video of a group of persons playing,,246,50.48,1085.9325151443481
+000244.avi,3,0,0,0,0,a video of a group of persons playing,,75,16.2,214.05934715271
+000327.avi,3,0,0,0,0,a video of a group of persons playing,,192,39.76,943.9500393867492
+000265.avi,3,0,0,0,0,a video of a group of persons playing,,246,50.48,1085.932515144348
 000267.avi,3,0,0,0,0,a video of a group of persons playing,,150,31.32,371.8624687194824
 000297.avi,3,0,0,0,0,a video of a person running,,65,14.28,293.67143034935
 000317.avi,3,0,0,0,0,a video of a person running,,188,38.88,615.4157221317291
@@ -216,3 +216,36 @@ D014_01.avi,3,0,0,0,0,a video of a person running,,104,22.04,193.1562852859497
 000224.avi,3,0,0,0,0,a video of a person running,,121,25.52,569.574782371521
 000282.avi,3,0,0,0,0,a video of a person running,,83,17.92,405.0614285469055
 000259.avi,3,0,0,0,0,a video of a person running,,117,24.76,419.3956575393677
+000262.avi,3,0,0,0,0,a video of a person running,,221,45.52,899.764475107193
+000250.avi,3,0,0,0,0,a video of a person running,,160,33.32,692.2384595870972
+000214.avi,3,0,0,0,0,a video of a person chasing other person,,70,15.32,227.0702121257782
+000312.avi,3,0,0,0,0,a video of a person chasing other person,,99,21.08,306.0383880138397
+000235.avi,3,0,0,0,0,a video of a person chasing other person,,34,8.04,100.14444351196288
+000307.avi,3,0,0,0,0,a video of a person chasing other person,,113,23.84,242.21517252922055
+000264.avi,3,0,0,0,0,a video of a person chasing other person,,107,22.64,267.10301518440247
+000351.avi,3,0,0,0,0,a video of a person chasing other person,,76,16.56,188.25640439987183
+000311.avi,3,0,0,0,0,a video of a person chasing other person,,52,11.72,197.71994924545288
+D076_03.avi,3,0,0,0,0,a video of a person chasing other person,,344,70.04,654.7638375759125
+000305.avi,3,0,0,0,0,a video of a person chasing other person,,79,17.04,378.4616079330444
+000316.avi,3,0,0,0,0,a video of a person chasing other person,,75,16.32,142.60473370552063
+000212.avi,3,0,0,0,0,a video of a person chasing other person,,84,18.0,307.07546877861023
+000231.avi,3,0,0,0,0,a video of a person chasing other person,,102,21.64,158.07423949241638
+000356.avi,3,0,0,0,0,a video of a person chasing other person,,124,26.12,404.8188934326172
+000257.avi,3,0,0,0,0,a video of a person chasing other person,,175,36.32,595.4667546749115
+000281.avi,3,0,0,0,0,a video of a person chasing other person,,101,21.52,358.2824399471283
+D036_07.avi,3,0,0,0,0,a video of a person jumping,,494,100.04,641.9803020954132
+21.avi,3,0,0,0,0,a video of a person jumping,,9,3.04,51.73369574546814
+07.avi,3,0,0,0,0,a video of a person jumping,,115,24.2,629.0311744213104
+08.avi,3,0,0,0,0,a video of a person jumping,,1,1.44,6.539222955703735
+D158_17.avi,3,0,0,0,0,a video of a person guiding other person,,265,54.28,1076.3510661125183
+D077_01.avi,3,0,0,0,0,a video of a person stealing other person,,284,58.04,162.851735830307
+D068_10.avi,3,0,0,0,0,a video of a person stealing other person,,159,33.04,139.5592005252838
+D158_01.avi,3,0,0,0,0,a video of a person stealing other person,,299,61.04,818.490745306015
+D077_03.avi,3,0,0,0,0,a video of a person stealing other person,,334,68.04,356.739248752594
+20.avi,3,0,0,0,0,a video of a person throwing trash in the floor,,48,10.92,245.80014204978943
+13.avi,3,0,0,0,0,a video of a person throwing trash in the floor,,103,21.96,167.2231125831604
+14.avi,3,0,0,0,0,a video of a person throwing trash in the floor,,95,20.28,518.5733599662781
+D031_07.avi,3,0,0,0,0,a video of a person throwing trash in the floor,,139,29.04,387.18649435043335
+D148_04.avi,3,0,0,0,0,a video of a person stealing other person's pocket,,379,77.04,1564.1465644836426
+D149_05.avi,3,0,0,0,0,a video of a person stealing other person's pocket,,144,30.04,381.3686685562134
+D158_13.avi,3,0,0,0,0,a video of a person stealing other person's pocket,,198,40.84,206.77606415748596

@@ -50,12 +50,12 @@ class DecisionMakerPerEvent(ABC):
         corrects = []
         for det_per_frame in results:
             for det in det_per_frame:
-                if det[0] == classes_of_interest[0] and det[1] > 0.7:
+                if det[0] == classes_of_interest[0] and det[1] > 0.2:
                     correct.append(det)
             corrects.append(correct)
             correct = []
         for detection in detections:
-            if detection[0] == classes_of_interest[0] and detection[1] > 0.7:
+            if detection[0] == classes_of_interest[0] and detection[1] > 0.2:
                 correct.append(detection)
         corrects.append(correct)
         return corrects
@@ -311,7 +311,7 @@ class EventBicycle(DecisionMakerPerEvent):
     def detections_treatment(self, detections):
         correct = []
         for detection in detections:
-            if detection[0] in self.__classes_of_interest and detection[1] > 0.5:
+            if detection[0] in self.__classes_of_interest and detection[1] > 0.2:
                 correct.append(detection)
         return correct
 
@@ -331,12 +331,17 @@ class EventBicycle(DecisionMakerPerEvent):
             if decision:
                 for i in range(0,len(stored),2):
                     if (stored[i][0] == "bicycle" and stored[i+1][0] == "person") or ((stored[i+1][0] == "bicycle" and stored[i][0] == "person") ):
+                        rute_stored='/home/ubuntu/Tesis'
+                        file='IOUS_Bicycles.npy'
+                        try:
+                            ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                        except:
+                            ious = np.array([], dtype=object)
                         iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
                         print(stored[i] , stored[i+1], iou)
-                        if iou > 0.2:
-                            score=(stored[i][1] * stored[i+1][1])
-                        else:
-                            score=0
+                        score=(stored[i][1] * stored[i+1][1])*(2*iou)
+                        ious=np.append(ious, iou)
+                        np.save(f"{rute_stored}/{file}", ious)
                         if score> score_actual:
                             score_actual=score
                         
@@ -359,7 +364,7 @@ class EventFight(DecisionMakerPerEvent):
     def detections_treatment(self, detections):
         correct = []
         for detection in detections:
-            if detection[0] in self.__classes_of_interest and detection[1] > 0.5:
+            if detection[0] in self.__classes_of_interest and detection[1] > 0.2:
                 correct.append(detection)
         return correct
 
@@ -378,12 +383,17 @@ class EventFight(DecisionMakerPerEvent):
             decision = len(stored) > 0
             if decision:
                 for i in range(0,len(stored),2):
+                    rute_stored='/home/ubuntu/Tesis'
+                    file='IOUS_Fight.npy'
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.array([], dtype=object)
                     iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
                     print(stored[i] , stored[i+1], iou)
-                    if iou > 0.3:
-                        score=(stored[i][1] * stored[i+1][1]*iou)
-                    else:
-                        score=0
+                    score=(stored[i][1] * stored[i+1][1]*iou)
+                    ious=np.append(ious, iou)
+                    np.save(f"{rute_stored}/{file}", ious)
                     if score> score_actual:
                         score_actual=score
             print(f'Score: {score_actual}\n\n')
@@ -409,9 +419,9 @@ class EventPlaying(DecisionMakerPerEvent):
         correct = []
         persons=[]
         for detection in detections:
-            if detection[0] in self.__classes_of_interest and detection[1] > 0.5:
+            if detection[0] in self.__classes_of_interest and detection[1] > 0.2:
                 correct.append(detection)
-            if detection[0] == 'person' and detection[1] > 0.5:
+            if detection[0] == 'person' and detection[1] > 0.2:
                 persons.append(detection)
 
         return correct, persons
@@ -433,6 +443,7 @@ class EventPlaying(DecisionMakerPerEvent):
             for i in range(len(stored)):
                 index=None
                 distance_min=None
+                width=None
                 score=0
                 for j in range(len(persons)):
                     x,y=DecisionMakerPerEvent.distance_direction(stored[i], persons[j])
@@ -440,14 +451,25 @@ class EventPlaying(DecisionMakerPerEvent):
                     if distance_min is None or distance < distance_min:
                         index=j
                         distance_min=distance
-                print(f'Person {index} {persons[index]} is the closest to the object {stored[i]} with distance {distance_min} \n')
-                print(persons[index][4] - persons[index][2])
-                if distance_min<(persons[index][4] - persons[index][2])*5:
+                        width = persons[j][4] - persons[j][2]
+                if index is None:
+                    continue
+                rute_stored='/home/ubuntu/Tesis'
+                file='IOUS_Playing.npy'
+                try:
+                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                except:
+                    ious = np.empty((0, 3), dtype=np.float32) 
+                    #ious = np.array([], dtype=object)
+                if distance_min> width:
                     score = stored[i][1] * persons[index][1]
                 else:
-                    score = 0
+                    score = stored[i][1] * persons[index][1]*((width)/distance_min)
                 if score > score_actual:
                     score_actual = score
+                new_row = np.array([[distance_min, width, score_actual]], dtype=ious.dtype)
+                ious = np.vstack((ious, new_row))
+                np.save(f"{rute_stored}/{file}", ious)
             print(f'Score: {score_actual}\n\n')
             return True, "yes", stored, score_actual
         else:
@@ -716,7 +738,7 @@ class EventJumping(DecisionMakerPerEvent):
         stored = []
         scores=[]
         if len(persons) < 1:
-            return False, stored
+            return False, stored, [0]
         else:
             for person in persons:
                 diferences = np.array([])

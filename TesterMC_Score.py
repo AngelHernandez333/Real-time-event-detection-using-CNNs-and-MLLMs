@@ -323,39 +323,10 @@ class EventTesterCLIP(VideoTester):
                         descriptions.append(normal_prompt)
                         scores.append(0)
                         
-                    if self.__mode != 3 and self.__mode != 4:
-                        '''self.__image_encoder.set_descriptions(descriptions)
-                        event, avg_prob, logits = self.__image_encoder.outputs_without_softmax(frames, padding)'''
-                        probabilities.append(scores)
-                        events.append(descriptions)
-                        print(descriptions, scores)
-                        #print( descriptions, self.__event,event,  '\n')
+                    probabilities.append(scores)
+                    events.append(descriptions)
+                    print('Descripcion y scores ',descriptions, scores)
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-                    if self.__mode == 1 and event != normal_prompt:
-                        text = prompt_text(
-                            classes,
-                            event.split(PREFIX)[1],
-                            self.__mode,
-                            classes_focus,
-                        )
-                        prompt = self.__MLLM.event_validation(
-                            frames, event.split(PREFIX)[1], text, verbose=True
-                        )
-                        prompts.append(prompt)
-                    elif self.__mode == 2 and event != normal_prompt:
-                        prompt = self.__MLLM.event_validation(
-                            frames, event.split(PREFIX)[1], verbose=True
-                        )
-                        prompts.append(prompt)
-                    if self.__mode == 3 or self.__mode == 4:
-                        prompt = self.__MLLM.event_selection(
-                        frames, descriptions, verbose=True
-                        )
-                        prompts.append(prompt)
-                        events.append(descriptions)
-                    else:
-                        prompt = ""
-                        prompts.append(prompt)
                 else:
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     events.append(normal_prompt)
@@ -531,7 +502,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevScoreRuless.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCScoreRules.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

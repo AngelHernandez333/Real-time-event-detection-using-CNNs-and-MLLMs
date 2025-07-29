@@ -169,11 +169,8 @@ def decision_makerComplex(
             frames.append(frame)
             results.append(detections)
         if MLLM == False:
-            if prompt == "":
-                pass
-            else:
-                frames_number.append(frame_number)
-                prompts.append(prompt)
+            frames_number.append(frame_number)
+            prompts.append(score)
             results.append(detections)
             if len(results) > 6:
                 results.pop(0)

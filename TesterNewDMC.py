@@ -206,7 +206,7 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-
+        self._storagefolder='/home/ubuntu/Tesis/Storage/Score_RulesNewScores'
     def set_detector(self, detector):
         self.__detector = detector
 
@@ -231,7 +231,7 @@ class EventTester(VideoTester):
     def set_image_encoder(self, image_encoder):
         self.__image_encoder = image_encoder
 
-    def check_precision(self, prompts, frames_number, video_name):
+    def check_precision(self, prompts, frames_number, video_name, mode, event):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
         # False negative Prediction is false and Reality is true
@@ -240,22 +240,16 @@ class EventTester(VideoTester):
         fp = 0
         fn = 0
         tn = 0
-        prompts = [prompt.lower() for prompt in prompts]
+        #prompts = [prompt.lower() for prompt in prompts]
         name = video_name.split(".")[0]
         frames = np.load("..//Database/ALL/GT/gt_ALL.npz")
         frames = frames[name]
         frames = np.append(frames, frames[-1])
+        gt=[]
         for i in range(len(prompts)):
-            print(prompts[i], frames[frames_number[i] - 1], frames_number[i])
-            if prompts[i] == "yes" and frames[frames_number[i] - 1] == 1:
-                tp += 1
-            elif prompts[i] == "yes" and frames[frames_number[i] - 1] == 0:
-                fp += 1
-            elif prompts[i] == "no" and frames[frames_number[i] - 1] == 1:
-                fn += 1
-            else:
-                tn += 1
-        print(tp, fp, fn, tn)
+            gt.append(frames[frames_number[i] - 1])
+        output_data = np.array([frames_number, prompts, gt], dtype=object)
+        np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
         try:
             return tp, fp, fn, tn
         except:
@@ -472,7 +466,7 @@ class EventTester(VideoTester):
                                 prompts = prompts[1::]
                                 print("Prompts:", prompts)
                                 tp, fp, fn, tn = self.check_precision(
-                                    prompts, frames_number, files[j]
+                                    prompts, frames_number, files[j], k, description[i]
                                 )
                                 # Save the results
                                 row = {
@@ -518,10 +512,6 @@ class EventTester(VideoTester):
                         (self.__df["Check event"] == descriptions[video_kind])
                         & (self.__df["Mode"] == k)
                     ].shape[0]
-                    if files[j].endswith("_1.mp4"):
-                        pass
-                    else:
-                        continue
                     if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
@@ -541,7 +531,7 @@ class EventTester(VideoTester):
                             prompts = prompts[1::]
                             print("Prompts:", prompts)
                             tp, fp, fn, tn = self.check_precision(
-                                prompts, frames_number, files[j]
+                                prompts, frames_number, files[j], k, descriptions[video_kind]
                             )
                             # Save the results
                             row = {
@@ -661,6 +651,12 @@ if __name__ == "__main__":
         "a person tripping",
         "a person stealing other person's pocket",
     ]
+    events = [
+        "Littering",
+    ]
+    description = [
+        "a person tripping",
+    ]
     # Prepare the tester
     tester = EventTester()
     test = 1
@@ -671,11 +667,11 @@ if __name__ == "__main__":
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(llava)
     elif test == 1:
-        janus = JanusPro()
+        '''janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingScoreDMC.csv")
-        tester.set_MLLM(janus)
+        tester.set_MLLM(janus)'''
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingScoreDMC_NewScores.csv")
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
@@ -686,7 +682,7 @@ if __name__ == "__main__":
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
-    tester.show_video(True)
+    tester.show_video(False)
     
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
