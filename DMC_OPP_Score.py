@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import time
-
+from scipy.stats import linregress
 
 class DecisionMakerPerEvent(ABC):
     @abstractmethod
@@ -184,6 +184,8 @@ class DecisionMakerPerEvent(ABC):
     @staticmethod
     def verify_running(loaded_data, verbose=False):
         persons_index = []
+        score_actual=0
+        scores = []
         for i in range(len(loaded_data)):
             area_array = np.array([])
             for j in range(len(loaded_data[i]) - 1):
@@ -195,11 +197,25 @@ class DecisionMakerPerEvent(ABC):
                 area_array = np.append(area_array, area)
             if verbose:
                 print(area_array, area_array.mean())
-            print(area_array, area_array.mean())
-            if area_array.mean() < 0.5:
+            #print(area_array, area_array.mean())
+            if area_array.mean() < 0.9:
                 persons_index.append(i)
-        print(f"Persons running: {persons_index}")
-        return persons_index
+                score= ((1-area_array.mean()) * loaded_data[i][-1][1])
+                scores.append(score)
+                if score > score_actual:
+                    score_actual = score
+                    rute_stored='/home/ubuntu/Tesis'
+                    file='IOUS_Running.npy'
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 3), dtype=np.float32) 
+                    new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], 1]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
+
+        #print(f"Persons running: {persons_index}")
+        return persons_index, score_actual, scores
 
     @staticmethod
     def verify_lying(loaded_data, verbose=False):
@@ -207,10 +223,18 @@ class DecisionMakerPerEvent(ABC):
             for person in loaded_data:
                 print("Lenght-", len(person), person, "\n")
         persons_index = []
+        score_actual = 0
         for i in range(len(loaded_data)):
+            score=0
+            rute_stored='/home/ubuntu/Tesis'
+            file='IOUS_Lying.npy'
+            try:
+                ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+            except:
+                ious = np.empty((0, 3), dtype=np.float32) 
             area_array = np.array([])
-            width = loaded_data[i][0][4] - loaded_data[i][0][2]
-            height = loaded_data[i][0][5] - loaded_data[i][0][3]
+            width = loaded_data[i][-1][4] - loaded_data[i][-1][2]
+            height = loaded_data[i][-1][5] - loaded_data[i][-1][3]
             for j in range(len(loaded_data[i]) - 1):
                 if verbose:
                     print(i, loaded_data[i][j], loaded_data[i][j + 1], "\n")
@@ -219,16 +243,27 @@ class DecisionMakerPerEvent(ABC):
                 )
                 area_array = np.append(area_array, area)
             if verbose:
+            
                 print(area_array, area_array.mean(), width / height)
-            if area_array.mean() > 0.93 and width / height > 1:
-                persons_index.append(i)
-        return persons_index
-
+            if width/height > 1:
+                score=area_array.mean() *loaded_data[i][-1][1]
+            else:
+                score=area_array.mean() *loaded_data[i][-1][1]*( width / height)
+            persons_index.append(i)
+            if score > score_actual:
+                score_actual = score
+                new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], width / height]], dtype=ious.dtype)
+                ious = np.vstack((ious, new_row))
+                np.save(f"{rute_stored}/{file}", ious)
+        return persons_index, score_actual
+    
     @staticmethod
     def verify_falling(persons, verbose=False):
         persons_index = []
         counter = 0
-        scores=[]
+        scores=[0]
+        rute_stored='/home/ubuntu/Tesis'
+        file='IOUS_Falling.npy'
         for person in persons:
             width_per_height_ratio = np.array([])
             for i in range(len(person)):
@@ -254,13 +289,16 @@ class DecisionMakerPerEvent(ABC):
                 )
             ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
             if ratio_increasing:
+                try:
+                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                except:
+                    ious = np.empty((0, 3), dtype=np.float32) 
                 persons_index.append(counter)
                 scores.append(
-                    np.abs(np.diff(width_per_height_ratio)).mean()
-                    * width_per_height_ratio[0])
-                print('Score ', np.abs(np.diff(width_per_height_ratio)).mean()
-                    * width_per_height_ratio[0], np.diff(width_per_height_ratio)
-                    , width_per_height_ratio[0])
+                4*np.abs(np.diff(width_per_height_ratio)).mean()*person[-1][1])
+                new_row = np.array([[np.abs(np.diff(width_per_height_ratio)).mean(), np.abs(np.diff(width_per_height_ratio)).sum(), person[-1][1]]], dtype=ious.dtype)
+                ious = np.vstack((ious, new_row))
+                np.save(f"{rute_stored}/{file}", ious)
             counter += 1
         return persons_index, scores
 
@@ -293,7 +331,6 @@ class DecisionMakerPerEvent(ABC):
                     np.abs(np.diff(width_per_height_ratio)).mean(),
                     width_per_height_ratio[0] * 0.10,
                 )
-
             ratio_changing = (
                 np.abs(np.diff(width_per_height_ratio)).mean()
                 > width_per_height_ratio[0] * 0.10
@@ -338,8 +375,9 @@ class EventBicycle(DecisionMakerPerEvent):
                         except:
                             ious = np.array([], dtype=object)
                         iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
-                        print(stored[i] , stored[i+1], iou)
-                        score=(stored[i][1] * stored[i+1][1])*(2*iou)
+                        #print(stored[i] , stored[i+1], iou)
+
+                        score=min(1, (stored[i][1] * stored[i+1][1])*(2*iou))
                         ious=np.append(ious, iou)
                         np.save(f"{rute_stored}/{file}", ious)
                         if score> score_actual:
@@ -347,7 +385,7 @@ class EventBicycle(DecisionMakerPerEvent):
                         
             else:
                 score=0
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             if decision:
                 text = "yes"
             else:
@@ -390,13 +428,13 @@ class EventFight(DecisionMakerPerEvent):
                     except:
                         ious = np.array([], dtype=object)
                     iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
-                    print(stored[i] , stored[i+1], iou)
+                    #print(stored[i] , stored[i+1], iou)
                     score=(stored[i][1] * stored[i+1][1]*iou)
                     ious=np.append(ious, iou)
                     np.save(f"{rute_stored}/{file}", ious)
                     if score> score_actual:
                         score_actual=score
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             if decision:
                 text = "yes"
             else:
@@ -461,16 +499,16 @@ class EventPlaying(DecisionMakerPerEvent):
                 except:
                     ious = np.empty((0, 3), dtype=np.float32) 
                     #ious = np.array([], dtype=object)
-                if distance_min> width:
+                if distance_min< width:
                     score = stored[i][1] * persons[index][1]
                 else:
-                    score = stored[i][1] * persons[index][1]*((width)/distance_min)
+                    score = stored[i][1] * persons[index][1]*(width/distance_min)
                 if score > score_actual:
                     score_actual = score
                 new_row = np.array([[distance_min, width, score_actual]], dtype=ious.dtype)
                 ious = np.vstack((ious, new_row))
                 np.save(f"{rute_stored}/{file}", ious)
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             return True, "yes", stored, score_actual
         else:
             return False, "no", stored, score_actual
@@ -490,8 +528,7 @@ class EventRunning(DecisionMakerPerEvent):
 
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        persons_index = DecisionMakerPerEvent.verify_running(persons)
-        print('Here       ', persons_index)
+        persons_index, score, scores = DecisionMakerPerEvent.verify_running(persons)
         if verbose:
             print(
                 len(persons) > 0,
@@ -500,7 +537,7 @@ class EventRunning(DecisionMakerPerEvent):
         stored = []
         for i in range(len(persons_index)):
             stored.append(persons[persons_index[i]])
-        return len(persons_index) > 0, stored
+        return len(persons_index) > 0, stored, score
 
     def decision_maker(self, classes, detections, results, frames, MLLM, *args):
         if False:
@@ -518,7 +555,8 @@ class EventRunning(DecisionMakerPerEvent):
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
+
             if False:
                 print(
                     condition,
@@ -527,17 +565,9 @@ class EventRunning(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            print(len(stored), stored, condition)
-            for person in stored:
-                score=0
-                for i in range( len(person)-1):
-                    iou = DecisionMakerPerEvent.calculate_shared_area(
-                        person[i], person[i + 1]
-                    )
-                    score+= ((1-iou) * person[i][1] * person[i + 1][1])/(len(person)-1)
-                if score > score_actual:
-                    score_actual = score
-            print(f'Score: {score_actual}\n\n')
+            if score > score_actual:
+                score_actual = score
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored,score_actual
         else:
             return False, "", stored,score_actual
@@ -572,8 +602,7 @@ class EventLying(DecisionMakerPerEvent):
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
-            condition, stored = self.process_detections(corrects)
-            print('Guardados ', stored, condition,'\n\n\n\n')
+            condition, stored, score = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -582,23 +611,16 @@ class EventLying(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            for person in stored:
-                score=0
-                for i in range( len(person)-1):
-                    iou = DecisionMakerPerEvent.calculate_shared_area(
-                        person[i], person[i + 1]
-                    )
-                    score+= ((iou) * person[i + 1][1])/(len(person)-1)
-                if score > score_actual:
-                    score_actual = score
-            print(f'Score: {score_actual}\n\n')
+            if score > score_actual:
+                score_actual = score
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        persons_index = DecisionMakerPerEvent.verify_lying(persons)
+        persons_index, score_actual = DecisionMakerPerEvent.verify_lying(persons)
         if False:
             print(
                 persons,
@@ -608,7 +630,7 @@ class EventLying(DecisionMakerPerEvent):
         stored = []
         for i in range(len(persons_index)):
             stored.append(persons[persons_index[i]])
-        return len(persons_index) > 0, stored
+        return len(persons_index) > 0, stored, score_actual
 
 
 class EventChasing(DecisionMakerPerEvent):
@@ -640,7 +662,7 @@ class EventChasing(DecisionMakerPerEvent):
                 self.__classes_of_interest, detections, results
             )
             # Save the list to a file
-            condition, stored = self.process_detections(corrects)
+            condition, stored, score = self.process_detections(corrects)
             if False:
                 print(
                     condition,
@@ -649,30 +671,57 @@ class EventChasing(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            for i in range(0,len(stored),2):
-                distance_ref,_ = DecisionMakerPerEvent.distance_between(stored[i][0], stored[i+1][0])
-                score=0
-                for j in range(0, len(stored[i])):
-                    distance,_ = DecisionMakerPerEvent.distance_between(stored[i][j], stored[i+1][j])
-                    score+= (distance_ref - distance)/ distance_ref * stored[i+1][j][1]* stored[i][j][1]
-                if score> score_actual:
-                    score_actual=score
-            print(f'Score: {score_actual}\n\n')
+            score_actual=max(score, score_actual)
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
 
     def process_detections(self, loaded_data):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        persons_index = DecisionMakerPerEvent.verify_running(persons)
+        persons_index, _, scores = DecisionMakerPerEvent.verify_running(persons)
         stored = []
+        score_actual = 0
+
+
+        def confidence_chasing_score(distance_array, running_score, width_person, weights=[0.4, 0.3, 0.3]):
+            """
+            Calcula el score de confianza (0-1) de que una persona esté persiguiendo a otra.
+            
+            Args:
+                distance_array (list/array): Array de distancias entre ambas personas.
+                running_score (float): Score de correr (0-1) de la persona perseguidora.
+                width_person (float): Ancho estimado de la persona (para normalizar std).
+                weights (list): Pesos [weight_trend, weight_std, weight_running].
+                
+            Returns:
+                float: Score de confianza (0-1).
+            """
+            # 1. Score de tendencia decreciente (linregress)
+            x = np.arange(len(distance_array))
+            slope, _, _, _, _ = linregress(x, distance_array)
+            trend_score = max(0, -slope * 0.5)  # Slope negativo -> tendencia decreciente
+            trend_score = min(1, trend_score)   # Asegurar [0, 1]
+            
+            # 2. Score de desviación estándar (normalizada con el ancho de la persona)
+            std = np.std(distance_array)
+            std_score = 1 - min(1, std / width_person)  # std pequeña -> score alto
+            
+            # 3. Score de correr (ya definido)
+            running_score = running_score  # Asumimos que ya está en [0, 1]
+            
+            # Combinación ponderada
+            score = (weights[0] * trend_score) + (weights[1] * std_score) + (weights[2] * running_score)
+            
+            return score
         if len(persons_index) < 1 or len(persons) < 2:
-            return False, []
+            return False, [], score_actual
         if False:
             print("Checking persons", persons_index)
+        index_score = 0
         for i in persons_index:
             for j in [x for x in range(len(persons)) if x != i]:
-                print(f"Testing the person {i} with the person {j}\n")
+                #print(f"Testing the person {i} with the person {j}\n")
                 distance_array = np.array([])
                 width = persons[i][0][4] - persons[i][0][2]
                 for k in range(len(persons[i])):
@@ -692,7 +741,20 @@ class EventChasing(DecisionMakerPerEvent):
                 if decresing or np.std(distance_array) < width:
                     stored.append(persons[i])
                     stored.append(persons[j])
-        return len(stored) > 0, stored
+                    score=confidence_chasing_score(distance_array, scores[index_score], width, weights=[0.4, 0.3, 0.3])
+                    rute_stored='/home/ubuntu/Tesis'
+                    file='IOUS_Chasing.npy'
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 4), dtype=np.float32)
+                    # Use score instead of scores[i] to avoid IndexError
+                    new_row = np.array([[np.abs(np.diff(distance_array).mean()), (distance_array-distance_array[0]).mean(), width, score]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
+                    score_actual = max(score, score_actual)
+            index_score += 1
+        return len(stored) > 0, stored, score_actual
 
 
 class EventJumping(DecisionMakerPerEvent):
@@ -727,7 +789,7 @@ class EventJumping(DecisionMakerPerEvent):
             )
             if len(scores) > 0:
                 score_actual = max(scores)
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -736,7 +798,9 @@ class EventJumping(DecisionMakerPerEvent):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
-        scores=[]
+        scores=[0]
+        rute_stored='/home/ubuntu/Tesis'
+        file='IOUS_Jumping.npy'
         if len(persons) < 1:
             return False, stored, [0]
         else:
@@ -753,7 +817,14 @@ class EventJumping(DecisionMakerPerEvent):
                     print(diferences, incresing, decresing, height)
                 if incresing or decresing:
                     stored.append(person)
-                    scores.append(person[-1][1]*np.abs(np.diff(diferences)).sum()/(height*0.5))
+                    scores.append(person[-1][1]*min(np.abs(np.diff(diferences)).sum()/(height*0.5), 1))
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 3), dtype=np.float32) 
+                    new_row = np.array([[np.abs(np.diff(diferences)).sum(), height, person[-1][1]]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
         return len(stored) > 0, stored, scores
 
 
@@ -779,7 +850,7 @@ class EventFalling(DecisionMakerPerEvent):
                 self.__classes_of_interest, detections, results
             )
             condition, stored, score = self.process_detections(corrects)
-            print(stored)
+            #print(stored)
             if len(score) > 0:
                 score_actual = max(score)
             if False:
@@ -790,7 +861,7 @@ class EventFalling(DecisionMakerPerEvent):
             condition, text = DecisionMakerPerEvent.output_decision(
                 condition, results, frames, MLLM
             )
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -837,7 +908,7 @@ class EventGuiding(DecisionMakerPerEvent):
             )
             if len(scores) > 0:
                 score_actual = max(scores)
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -846,7 +917,7 @@ class EventGuiding(DecisionMakerPerEvent):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
-        scores=[]
+        scores=[0]
         if len(persons) < 2:
             return False, stored, scores
         else:
@@ -897,8 +968,18 @@ class EventGuiding(DecisionMakerPerEvent):
                 if distancey.sum() < height * 1 and distancex.sum() < widht * 1:
                     stored.append(duo[0])
                     stored.append(duo[1])
-                    scores.append(
-                        (distancey.sum()/height + distancex.sum()/widht)*duo[0][-1][1]*duo[1][-1][1])
+                    score=min(1,
+                        (distancey.sum()/height + distancex.sum()/widht)*duo[0][-1][1]*duo[1][-1][1] )
+                    scores.append(score)
+                    rute_stored='/home/ubuntu/Tesis'
+                    file='IOUS_Guiding.npy'
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 3), dtype=np.float32) 
+                    new_row = np.array([[distancey.sum()/height,distancex.sum()/widht, duo[0][-1][1]*duo[1][-1][1]]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
                     return True, stored, scores
         return False, stored, scores
 
@@ -944,7 +1025,7 @@ class EventGarbage(DecisionMakerPerEvent):
             )
             if score!=0:
                 score_actual = score
-            print(f'Scores: {score_actual}\n\n')
+            #print(f'Scores: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -953,14 +1034,17 @@ class EventGarbage(DecisionMakerPerEvent):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         # Evaluate the persons
         stored = []
-        score= 0
+        score_actual= 0
         if len(persons) < 1:
-            return False, stored, score
+            return False, stored, score_actual
         else:
+            rute_stored='/home/ubuntu/Tesis'
+            file='IOUS_Littering.npy'
             for person in persons:
                 if False:
                     print("Lenght-", person)
                 temp = np.array([])
+                score=0
                 for time_frame in person:
                     width = time_frame[4] - time_frame[2]
                     height = time_frame[5] - time_frame[3]
@@ -969,11 +1053,21 @@ class EventGarbage(DecisionMakerPerEvent):
                     temp = np.append(temp, width / height)
                 if False:
                     print(temp.mean(), np.abs(np.diff(temp)).mean(), temp[0] * 0.15)
-                if np.abs(np.diff(temp)).mean() > temp[0] * 0.15:
-                    stored.append(person)
-                    score=np.abs(np.diff(temp)).sum()*person[-1][1]
-                    return True, stored, score
-        return False, stored, score
+                
+                #if np.abs(np.diff(temp)).mean() > temp[0] * 0.15:
+                stored.append(person)
+                try:
+                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                except:
+                    ious = np.empty((0, 3), dtype=np.float32) 
+                score=2*np.abs(np.diff(temp)).mean()*person[-1][1]
+                if score > score_actual:
+                    score_actual = score
+                    new_row = np.array([[np.abs(np.diff(temp)).mean(), np.abs(np.diff(temp)).sum(), person[-1][1]]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
+            return True, stored, score_actual
+        return False, stored, score_actual
 
 
 class EventTripping(DecisionMakerPerEvent):
@@ -1008,7 +1102,7 @@ class EventTripping(DecisionMakerPerEvent):
             )
             if score != 0:
                 score_actual = score
-            print(f'Score: {score_actual}\n\n')
+            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -1017,11 +1111,13 @@ class EventTripping(DecisionMakerPerEvent):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         person_index = DecisionMakerPerEvent.verify_shaking(persons, verbose)
         stored = []
-        score=0
+        score_actual=0
+        rute_stored='/home/ubuntu/Tesis'
+        file='IOUS_Tripping.npy'
         if verbose:
             print("The persons shaking are", person_index, len(persons))
         if len(person_index) < 1 or len(persons) < 2:
-            return False, stored, score
+            return False, stored, score_actual
         for i in person_index:
             for j in [x for x in range(len(persons)) if x != i]:
                 tripping = np.array([])
@@ -1034,11 +1130,22 @@ class EventTripping(DecisionMakerPerEvent):
                         tripping = np.append(tripping, 1)
                     else:
                         tripping = np.append(tripping, 0)
-                if tripping.sum() > len(tripping) // 2:
+                if tripping.sum() > 0:
                     stored.append(persons[i])
                     stored.append(persons[j])
-                    score=tripping.sum() / len(tripping) * persons[i][-1][1] * persons[j][-1][1]
-        return len(stored) > 0, stored, score
+                    distance=DecisionMakerPerEvent.distance_between(
+                        persons[i][-1], persons[j][-1]
+                    )[0]
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 3), dtype=np.float32) 
+                    score=tripping.mean()* persons[i][-1][1]
+                    score_actual = max(score, score_actual)
+                    new_row = np.array([[tripping.sum(), persons[i][-1][4]-persons[i][-1][2], persons[i][-1][1]]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
+        return len(stored) > 0, stored, score_actual
 
 
 class EventStealing(DecisionMakerPerEvent):
@@ -1100,19 +1207,79 @@ class EventStealing(DecisionMakerPerEvent):
             )
             if score!= 0:
                 score_actual = score
-                print(f'Score: {score_actual}\n\n')
+                #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
 
     def process_detections(self, loaded_data, verbose=False):
+        def confidence_stealing_score(
+            distance_array,
+            running_score,
+            width_person,
+            touch_array=None,
+            weights=[0.35, 0.25, 0.15, 0.25],
+        ):
+            """
+            Calcula el score de confianza (0-1) de que una persona esté persiguiendo a otra, incluyendo si la alcanza.
+            
+            Args:
+                distance_array (list/array): Distancias entre ambas personas a lo largo del tiempo.
+                running_score (float): Score de correr (0-1) de la persona perseguidora.
+                width_person (float): Ancho estimado de la persona (para normalizar std).
+                weights (list): Pesos [trend, std, running, touching].
+                touch_array (list[int] o None): Lista binaria (0 o 1) indicando si hubo contacto por frame.
+                
+            Returns:
+                float: Score de confianza (0-1).
+            """
+            rute_stored='/home/ubuntu/Tesis'
+            file='IOUS_Stealing.npy'
+            # 1. Score de tendencia decreciente (linregress)
+            x = np.arange(len(distance_array))
+            slope, _, _, _, _ = linregress(x, distance_array)
+            trend_score = max(0, -slope * 0.5)
+            trend_score = min(1, trend_score)
+
+            # 2. Score de desviación estándar (normalizada con el ancho de la persona)
+            std = np.std(distance_array)
+            std_score = 1 - min(1, std / width_person)
+
+            # 3. Score de correr (ya dado)
+            running_score = np.clip(running_score, 0, 1)
+
+            # 4. Score de contacto
+            if touch_array is not None and len(touch_array) == len(distance_array):
+                contact_ratio = sum(touch_array) / len(touch_array)
+                touch_score = min(1, contact_ratio / 0.5)  # 50% contacto = 1.0, menos = proporcional
+            else:
+                touch_score = 0  # No hay evidencia de contacto
+            try:
+                ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+            except:
+                ious = np.empty((0, 4), dtype=np.float32)
+            # Save the scores to a file
+            new_row = np.array([[trend_score, std_score,
+                                running_score, touch_score]], dtype=ious.dtype)
+            ious = np.vstack((ious, new_row))
+            np.save(f"{rute_stored}/{file}", ious)
+            # Score total
+            score = (
+                weights[0] * trend_score +
+                weights[1] * std_score +
+                weights[2] * running_score +
+                weights[3] * touch_score
+            )
+            
+            return score
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
-        persons_index = DecisionMakerPerEvent.verify_running(persons)
+        persons_index, _, scores = DecisionMakerPerEvent.verify_running(persons)
         #print("este", persons_index)
         stored = []
-        score=0
+        score_actual=0
+        index_score = 0
         if len(persons_index) < 1 or len(persons) < 2:
-            return False, stored, score
+            return False, stored, score_actual
         if verbose:
             print("Checking persons", persons_index)
         for i in persons_index:
@@ -1135,18 +1302,23 @@ class EventStealing(DecisionMakerPerEvent):
                     print(distance_array)
                     print(decresing, width, np.std(distance_array))
                 if decresing or np.std(distance_array) < width:
+                    touching_array = np.array([])
                     for k in range(len(persons[i])):
                         if verbose:
                             print(f"At frame {k} {persons[i][k]}, {persons[j][k]}\n")
                         touching = DecisionMakerPerEvent.do_rectangles_touch(
                             persons[i][k], persons[j][k]
                         )
-                        if touching:
-                            stored.append(persons[i])
-                            stored.append(persons[j])
-                            score+= ((distance_array[0]-distance_array[-1] )/ distance_array[0]) * persons[i][k][1]* persons[j][k][1]
-                            return True, stored, score
-        return False, stored, score
+                        touching_array = np.append(touching_array, touching)
+                    score= confidence_stealing_score(
+                                distance_array,
+                                scores[index_score],
+                                width,
+                                touch_array=touching_array,
+                            )
+                    score_actual = max(score, score_actual)
+            index_score += 1
+        return False, stored, score_actual
 
 
 class EventPickPockering(DecisionMakerPerEvent):
@@ -1181,7 +1353,7 @@ class EventPickPockering(DecisionMakerPerEvent):
             condition, stored, score = self.process_detections(corrects)
             if score != 0:
                 score_actual = score
-            print(f'Score {score_actual}\n\n')
+            #print(f'Score {score_actual}\n\n')
             if False:
                 print(
                     condition,
@@ -1197,10 +1369,10 @@ class EventPickPockering(DecisionMakerPerEvent):
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         stored = []
-        score=0
+        score_actual=0
         # Evaluate the persons
         if len(persons) < 2:
-            return False, stored,score
+            return False, stored,score_actual
         else:
             # First check the couple of persons that are together
             check = []
@@ -1228,7 +1400,7 @@ class EventPickPockering(DecisionMakerPerEvent):
             if verbose:
                 print("Status ", len(check) > 0)
             if len(check) == 0:
-                return False, stored, score
+                return False, stored, score_actual
             for duo in check:
                 shaking = DecisionMakerPerEvent.verify_shaking(duo)
                 if len(shaking) > 0:
@@ -1240,9 +1412,19 @@ class EventPickPockering(DecisionMakerPerEvent):
                             duo[0][-1], duo[1][-1])
                         if iou > iou_max:
                             iou_max = iou
+                    rute_stored='/home/ubuntu/Tesis'
+                    file='IOUS_PickPockering.npy'
                     score=duo[0][-1][1] * duo[1][-1][1]*iou_max
-                    return True, stored, score
-        return False, stored, score
+                    try:
+                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    except:
+                        ious = np.empty((0, 3), dtype=np.float32) 
+                    new_row = np.array([[0, iou_max, duo[0][-1][1] * duo[1][-1][1]]], dtype=ious.dtype)
+                    ious = np.vstack((ious, new_row))
+                    np.save(f"{rute_stored}/{file}", ious)
+                    score_actual=max(score, score_actual)
+                    return True, stored, score_actual
+        return False, stored, score_actual
 
 
 class ALL_Rules:

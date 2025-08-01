@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_Rules"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_New_Top3"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -314,7 +314,7 @@ class EventTesterCLIP(VideoTester):
                     descriptions=[self.__event]
                 elif self.__mode == 2:
                     descriptions=[]
-                print('Descripciones:',descriptions, '\n')
+                #print('Descripciones:',descriptions, '\n')
                 normal_prompt = (
                         PREFIX + "a normal view (persons walking or standing)"
                     )
@@ -322,10 +322,18 @@ class EventTesterCLIP(VideoTester):
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                         scores.append(0)
-                        
+                    scores= {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
+                    if not scores:
+                        prompts.append("")
+                    else:
+                        # Get the top three scores sorted from max to min
+                        top3 = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:5]
+                        top3_events = [event for event, _ in top3]
+                        answer=self.__MLLM.event_selection(frames, top3_events, text="Watch the video and", verbose=True)
+                        prompts.append(answer)
                     probabilities.append(scores)
                     events.append(descriptions)
-                    print('Descripcion y scores ',descriptions, scores)
+                    #print('Descripcion y scores ',descriptions, scores)
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 else:
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
@@ -371,10 +379,10 @@ class EventTesterCLIP(VideoTester):
                     count = self.__df[(self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    '''if count< 7:
+                    if count< 7:
                         pass
                     else:
-                        continue'''
+                        continue
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)
@@ -502,7 +510,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCScoreRules.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCNewScoreTOP3.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

@@ -652,10 +652,34 @@ if __name__ == "__main__":
         "a person stealing other person's pocket",
     ]
     events = [
+        "Riding",
+        "Fighting",
+        "Playing",
+        "Running",
+        "Lying",
+        "Chasing",
+        "Jumping",
+        "Falling",
+        "Guiding",
+        "Stealing",
         "Littering",
+        "Tripping",
+        "Pickpockering",
     ]
     description = [
+        "a person riding a bicycle",
+        "a certain number of persons fighting",
+        "a group of persons playing",
+        "a person running",
+        "a person lying in the floor",
+        "a person chasing other person",
+        "a person jumping",
+        "a person falling",
+        "a person guiding other person",
+        "a person stealing other person",
+        "a person throwing trash in the floor",
         "a person tripping",
+        "a person stealing other person's pocket",
     ]
     # Prepare the tester
     tester = EventTester()
