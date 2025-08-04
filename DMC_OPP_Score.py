@@ -908,6 +908,7 @@ class EventGuiding(DecisionMakerPerEvent):
             )
             if len(scores) > 0:
                 score_actual = max(scores)
+                score_actual = min(1, score_actual)
             #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
@@ -1025,6 +1026,7 @@ class EventGarbage(DecisionMakerPerEvent):
             )
             if score!=0:
                 score_actual = score
+                score_actual = min(1, score_actual)
             #print(f'Scores: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:

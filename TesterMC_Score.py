@@ -379,10 +379,10 @@ class EventTesterCLIP(VideoTester):
                     count = self.__df[(self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    if count< 7:
+                    '''if count< 7:
                         pass
                     else:
-                        continue
+                        continue'''
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)

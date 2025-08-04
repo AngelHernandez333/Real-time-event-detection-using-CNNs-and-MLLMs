@@ -9,7 +9,7 @@ Name,Mode,True Positive,False Positive,False Negative,True Negative,True Event,C
 3_106_1.mp4,0,0,0,0,0,a video of a person riding a bicycle on the street,,83,14.981633333333331,102.91961026191711
 D013_03.avi,0,0,0,0,0,a video of a person riding a bicycle on the street,,324,66.04,227.61087584495544
 000296.avi,0,0,0,0,0,a video of a person riding a bicycle on the street,,185,38.24,306.6590323448181
-1_067_1.mp4,0,0,0,0,0,a video of a person riding a bicycle on the street,,53,9.976633333333334,31.930670976638797
+1_067_1.mp4,0,0,0,0,0,a video of a person riding a bicycle on the street,,53,9.976633333333334,31.9306709766388
 D047_05.avi,0,0,0,0,0,a video of a person riding a bicycle on the street,,54,12.04,31.224571228027344
 1_066_1.mp4,0,0,0,0,0,a video of a person riding a bicycle on the street,,83,14.981633333333331,63.71295952796936
 000253.avi,0,0,0,0,0,a video of a person riding a bicycle on the street,,139,29.04,487.7390396595001
@@ -37,4 +37,20 @@ D043_01.avi,0,0,0,0,0,a video of multiple people engaged in a physical fight,,42
 000266.avi,0,0,0,0,0,a video of multiple people engaged in a physical fight,,265,54.32,1130.5523982048037
 1_071_1.mp4,0,0,0,0,0,a video of multiple people engaged in a physical fight,,113,19.986633333333334,160.06409978866577
 000256.avi,0,0,0,0,0,a video of a group of people playing a sport together,,661,133.56,1644.033554315567
-000334.avi,0,0,0,0,0,a video of a group of people playing a sport together,,103,21.96,243.82742524147034
+000334.avi,0,0,0,0,0,a video of a group of people playing a sport together,,103,21.96,243.82742524147037
+1_094_1.mp4,0,0,0,0,0,a video of a group of people playing a sport together,,383,65.03163333333333,1111.674174785614
+000346.avi,0,0,0,0,0,a video of a group of people playing a sport together,,649,131.16,1340.1037096977234
+3_101_1.mp4,0,0,0,0,0,a video of a group of people playing a sport together,,863,145.07826666666668,1571.7726635932922
+000310.avi,0,0,0,0,0,a video of a group of people playing a sport together,,147,30.6,377.58515787124634
+000336.avi,0,0,0,0,0,a video of a group of people playing a sport together,,334,68.0,745.29758644104
+000297.avi,0,0,0,0,0,a video of a person running,,65,14.28,246.0830192565918
+4_110_1.mp4,0,0,0,0,0,a video of a person running,,113,19.966666666666665,174.29463052749634
+3_090_1.mp4,0,0,0,0,0,a video of a person running,,113,19.986633333333334,176.76319885253906
+000317.avi,0,0,0,0,0,a video of a person running,,188,38.88,344.69052028656006
+3_093_1.mp4,0,0,0,0,0,a video of a person running,,203,35.00163333333333,334.93196296691895
+4_092_1.mp4,0,0,0,0,0,a video of a person running,,53,9.966666666666667,90.00313305854797
+2_066_1.mp4,0,0,0,0,0,a video of a person running,,114,20.0,231.53011178970337
+4_089_1.mp4,0,0,0,0,0,a video of a person lying motionless on the ground,,443,74.96666666666667,697.6041252613068
+2_080_1.mp4,0,0,0,0,0,a video of a person lying motionless on the ground,,354,60.0,678.347165107727
+3_092_1.mp4,0,0,0,0,0,a video of a person lying motionless on the ground,,413,70.03663333333334,603.5407519340515
+1_091_1.mp4,0,0,0,0,0,a video of a person lying motionless on the ground,,263,45.011633333333336,334.9893183708191
