@@ -11,6 +11,7 @@ from Functions4 import (
     classes_focus,
     detection_labels,
 )
+from DMC_OPP_Score import ALL_Rules
 import numpy as np
 
 
@@ -206,7 +207,7 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder='/home/ubuntu/Tesis/Storage/Score_RulesNewScores'
+        self._storagefolder='/home/ubuntu/Tesis/Storage/DEV'
     def set_detector(self, detector):
         self.__detector = detector
 
@@ -373,6 +374,28 @@ class EventTester(VideoTester):
                 case 4:
                     # Detector with rules only
                     detections, classes = self.__detector.detection(frame, classes)
+                    '''description = [
+                        "a person riding a bicycle",
+                        "a certain number of persons fighting",
+                        "a group of persons playing",
+                        "a person running",
+                        "a person lying in the floor",
+                        "a person chasing other person",
+                        "a person jumping",
+                        "a person falling",
+                        "a person guiding other person",
+                        "a person stealing other person",
+                        "a person throwing trash in the floor",
+                        "a person tripping",
+                        "a person stealing other person's pocket",
+                    ]
+                    mc= ALL_Rules()
+                    mc.set_descriptions(description)
+                    if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 5:
+                        descriptions, scores = mc.process(
+                        classes, detections, results, frames, False
+                    )
+                        prompts.append(scores[6])'''
                     decision_makerComplex(
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -652,34 +675,10 @@ if __name__ == "__main__":
         "a person stealing other person's pocket",
     ]
     events = [
-        "Riding",
-        "Fighting",
-        "Playing",
-        "Running",
-        "Lying",
-        "Chasing",
         "Jumping",
-        "Falling",
-        "Guiding",
-        "Stealing",
-        "Littering",
-        "Tripping",
-        "Pickpockering",
     ]
     description = [
-        "a person riding a bicycle",
-        "a certain number of persons fighting",
-        "a group of persons playing",
-        "a person running",
-        "a person lying in the floor",
-        "a person chasing other person",
         "a person jumping",
-        "a person falling",
-        "a person guiding other person",
-        "a person stealing other person",
-        "a person throwing trash in the floor",
-        "a person tripping",
-        "a person stealing other person's pocket",
     ]
     # Prepare the tester
     tester = EventTester()
@@ -695,7 +694,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         tester.set_MLLM(janus)'''
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingScoreDMC_NewScores.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
@@ -706,7 +705,7 @@ if __name__ == "__main__":
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
-    tester.show_video(False)
+    tester.show_video(True)
     
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])

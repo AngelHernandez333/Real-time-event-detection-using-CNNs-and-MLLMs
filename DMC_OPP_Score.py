@@ -204,15 +204,15 @@ class DecisionMakerPerEvent(ABC):
                 scores.append(score)
                 if score > score_actual:
                     score_actual = score
-                    rute_stored='/home/ubuntu/Tesis'
-                    file='IOUS_Running.npy'
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 3), dtype=np.float32) 
-                    new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], 1]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #rute_stored='/home/ubuntu/Tesis'
+                    #file='IOUS_Running.npy'
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 3), dtype=np.float32) 
+                    #new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], 1]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
 
         #print(f"Persons running: {persons_index}")
         return persons_index, score_actual, scores
@@ -226,12 +226,12 @@ class DecisionMakerPerEvent(ABC):
         score_actual = 0
         for i in range(len(loaded_data)):
             score=0
-            rute_stored='/home/ubuntu/Tesis'
-            file='IOUS_Lying.npy'
-            try:
-                ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-            except:
-                ious = np.empty((0, 3), dtype=np.float32) 
+            #rute_stored='/home/ubuntu/Tesis'
+            #file='IOUS_Lying.npy'
+            #try:
+            #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+            #except:
+            #    ious = np.empty((0, 3), dtype=np.float32) 
             area_array = np.array([])
             width = loaded_data[i][-1][4] - loaded_data[i][-1][2]
             height = loaded_data[i][-1][5] - loaded_data[i][-1][3]
@@ -252,9 +252,9 @@ class DecisionMakerPerEvent(ABC):
             persons_index.append(i)
             if score > score_actual:
                 score_actual = score
-                new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], width / height]], dtype=ious.dtype)
-                ious = np.vstack((ious, new_row))
-                np.save(f"{rute_stored}/{file}", ious)
+                #new_row = np.array([[area_array.mean(), loaded_data[i][-1][1], width / height]], dtype=ious.dtype)
+                #ious = np.vstack((ious, new_row))
+                #np.save(f"{rute_stored}/{file}", ious)
         return persons_index, score_actual
     
     @staticmethod
@@ -262,8 +262,8 @@ class DecisionMakerPerEvent(ABC):
         persons_index = []
         counter = 0
         scores=[0]
-        rute_stored='/home/ubuntu/Tesis'
-        file='IOUS_Falling.npy'
+        #rute_stored='/home/ubuntu/Tesis'
+        #file='IOUS_Falling.npy'
         for person in persons:
             width_per_height_ratio = np.array([])
             for i in range(len(person)):
@@ -289,16 +289,16 @@ class DecisionMakerPerEvent(ABC):
                 )
             ratio_increasing = np.all(np.diff(width_per_height_ratio) >= 0)
             if ratio_increasing:
-                try:
-                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                except:
-                    ious = np.empty((0, 3), dtype=np.float32) 
+                #try:
+                #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                #except:
+                #    ious = np.empty((0, 3), dtype=np.float32) 
                 persons_index.append(counter)
                 scores.append(
                 4*np.abs(np.diff(width_per_height_ratio)).mean()*person[-1][1])
-                new_row = np.array([[np.abs(np.diff(width_per_height_ratio)).mean(), np.abs(np.diff(width_per_height_ratio)).sum(), person[-1][1]]], dtype=ious.dtype)
-                ious = np.vstack((ious, new_row))
-                np.save(f"{rute_stored}/{file}", ious)
+                #new_row = np.array([[np.abs(np.diff(width_per_height_ratio)).mean(), np.abs(np.diff(width_per_height_ratio)).sum(), person[-1][1]]], dtype=ious.dtype)
+                #ious = np.vstack((ious, new_row))
+                #np.save(f"{rute_stored}/{file}", ious)
             counter += 1
         return persons_index, scores
 
@@ -368,18 +368,18 @@ class EventBicycle(DecisionMakerPerEvent):
             if decision:
                 for i in range(0,len(stored),2):
                     if (stored[i][0] == "bicycle" and stored[i+1][0] == "person") or ((stored[i+1][0] == "bicycle" and stored[i][0] == "person") ):
-                        rute_stored='/home/ubuntu/Tesis'
-                        file='IOUS_Bicycles.npy'
-                        try:
-                            ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                        except:
-                            ious = np.array([], dtype=object)
+                        #rute_stored='/home/ubuntu/Tesis'
+                        #file='IOUS_Bicycles.npy'
+                        #try:
+                        #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                        #except:
+                        #    ious = np.array([], dtype=object)
                         iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
                         #print(stored[i] , stored[i+1], iou)
 
                         score=min(1, (stored[i][1] * stored[i+1][1])*(2*iou))
-                        ious=np.append(ious, iou)
-                        np.save(f"{rute_stored}/{file}", ious)
+                        #ious=np.append(ious, iou)
+                        #np.save(f"{rute_stored}/{file}", ious)
                         if score> score_actual:
                             score_actual=score
                         
@@ -421,17 +421,17 @@ class EventFight(DecisionMakerPerEvent):
             decision = len(stored) > 0
             if decision:
                 for i in range(0,len(stored),2):
-                    rute_stored='/home/ubuntu/Tesis'
-                    file='IOUS_Fight.npy'
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.array([], dtype=object)
+                    #rute_stored='/home/ubuntu/Tesis'
+                    #file='IOUS_Fight.npy'
+                    #try:
+                    #   ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.array([], dtype=object)
                     iou = DecisionMakerPerEvent.calculate_shared_area(stored[i], stored[i+1])
                     #print(stored[i] , stored[i+1], iou)
                     score=(stored[i][1] * stored[i+1][1]*iou)
-                    ious=np.append(ious, iou)
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #ious=np.append(ious, iou)
+                    #np.save(f"{rute_stored}/{file}", ious)
                     if score> score_actual:
                         score_actual=score
             #print(f'Score: {score_actual}\n\n')
@@ -492,12 +492,12 @@ class EventPlaying(DecisionMakerPerEvent):
                         width = persons[j][4] - persons[j][2]
                 if index is None:
                     continue
-                rute_stored='/home/ubuntu/Tesis'
-                file='IOUS_Playing.npy'
-                try:
-                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                except:
-                    ious = np.empty((0, 3), dtype=np.float32) 
+                #rute_stored='/home/ubuntu/Tesis'
+                #file='IOUS_Playing.npy'
+                #try:
+                #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                #except:
+                #    ious = np.empty((0, 3), dtype=np.float32) 
                     #ious = np.array([], dtype=object)
                 if distance_min< width:
                     score = stored[i][1] * persons[index][1]
@@ -505,9 +505,9 @@ class EventPlaying(DecisionMakerPerEvent):
                     score = stored[i][1] * persons[index][1]*(width/distance_min)
                 if score > score_actual:
                     score_actual = score
-                new_row = np.array([[distance_min, width, score_actual]], dtype=ious.dtype)
-                ious = np.vstack((ious, new_row))
-                np.save(f"{rute_stored}/{file}", ious)
+                #new_row = np.array([[distance_min, width, score_actual]], dtype=ious.dtype)
+                #ious = np.vstack((ious, new_row))
+                #np.save(f"{rute_stored}/{file}", ious)
             #print(f'Score: {score_actual}\n\n')
             return True, "yes", stored, score_actual
         else:
@@ -742,16 +742,16 @@ class EventChasing(DecisionMakerPerEvent):
                     stored.append(persons[i])
                     stored.append(persons[j])
                     score=confidence_chasing_score(distance_array, scores[index_score], width, weights=[0.4, 0.3, 0.3])
-                    rute_stored='/home/ubuntu/Tesis'
-                    file='IOUS_Chasing.npy'
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 4), dtype=np.float32)
+                    #rute_stored='/home/ubuntu/Tesis'
+                    #file='IOUS_Chasing.npy'
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 4), dtype=np.float32)
                     # Use score instead of scores[i] to avoid IndexError
-                    new_row = np.array([[np.abs(np.diff(distance_array).mean()), (distance_array-distance_array[0]).mean(), width, score]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #new_row = np.array([[np.abs(np.diff(distance_array).mean()), (distance_array-distance_array[0]).mean(), width, score]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
                     score_actual = max(score, score_actual)
             index_score += 1
         return len(stored) > 0, stored, score_actual
@@ -775,6 +775,7 @@ class EventJumping(DecisionMakerPerEvent):
         if all([classes[class_] > 0 for class_ in self.__classes_of_interest]):
             if len(results) < 6:
                 return True, "", stored, score_actual
+            
             corrects = DecisionMakerPerEvent.check_detections(
                 self.__classes_of_interest, detections, results
             )
@@ -789,7 +790,6 @@ class EventJumping(DecisionMakerPerEvent):
             )
             if len(scores) > 0:
                 score_actual = max(scores)
-            #print(f'Score: {score_actual}\n\n')
             return condition, text, stored, score_actual
         else:
             return False, "", stored, score_actual
@@ -799,8 +799,8 @@ class EventJumping(DecisionMakerPerEvent):
         # Evaluate the persons
         stored = []
         scores=[0]
-        rute_stored='/home/ubuntu/Tesis'
-        file='IOUS_Jumping.npy'
+        #rute_stored='/home/ubuntu/Tesis'
+        #file='IOUS_Jumping.npy'
         if len(persons) < 1:
             return False, stored, [0]
         else:
@@ -818,13 +818,13 @@ class EventJumping(DecisionMakerPerEvent):
                 if incresing or decresing:
                     stored.append(person)
                     scores.append(person[-1][1]*min(np.abs(np.diff(diferences)).sum()/(height*0.5), 1))
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 3), dtype=np.float32) 
-                    new_row = np.array([[np.abs(np.diff(diferences)).sum(), height, person[-1][1]]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 3), dtype=np.float32) 
+                    #new_row = np.array([[np.abs(np.diff(diferences)).sum(), height, person[-1][1]]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
         return len(stored) > 0, stored, scores
 
 
@@ -972,15 +972,15 @@ class EventGuiding(DecisionMakerPerEvent):
                     score=min(1,
                         (distancey.sum()/height + distancex.sum()/widht)*duo[0][-1][1]*duo[1][-1][1] )
                     scores.append(score)
-                    rute_stored='/home/ubuntu/Tesis'
-                    file='IOUS_Guiding.npy'
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 3), dtype=np.float32) 
-                    new_row = np.array([[distancey.sum()/height,distancex.sum()/widht, duo[0][-1][1]*duo[1][-1][1]]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #rute_stored='/home/ubuntu/Tesis'
+                    #file='IOUS_Guiding.npy'
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 3), dtype=np.float32) 
+                    #new_row = np.array([[distancey.sum()/height,distancex.sum()/widht, duo[0][-1][1]*duo[1][-1][1]]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
                     return True, stored, scores
         return False, stored, scores
 
@@ -1040,8 +1040,8 @@ class EventGarbage(DecisionMakerPerEvent):
         if len(persons) < 1:
             return False, stored, score_actual
         else:
-            rute_stored='/home/ubuntu/Tesis'
-            file='IOUS_Littering.npy'
+            #rute_stored='/home/ubuntu/Tesis'
+            #file='IOUS_Littering.npy'
             for person in persons:
                 if False:
                     print("Lenght-", person)
@@ -1058,16 +1058,16 @@ class EventGarbage(DecisionMakerPerEvent):
                 
                 #if np.abs(np.diff(temp)).mean() > temp[0] * 0.15:
                 stored.append(person)
-                try:
-                    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                except:
-                    ious = np.empty((0, 3), dtype=np.float32) 
+                #try:
+                #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                #except:
+                #    ious = np.empty((0, 3), dtype=np.float32) 
                 score=2*np.abs(np.diff(temp)).mean()*person[-1][1]
                 if score > score_actual:
                     score_actual = score
-                    new_row = np.array([[np.abs(np.diff(temp)).mean(), np.abs(np.diff(temp)).sum(), person[-1][1]]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #new_row = np.array([[np.abs(np.diff(temp)).mean(), np.abs(np.diff(temp)).sum(), person[-1][1]]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
             return True, stored, score_actual
         return False, stored, score_actual
 
@@ -1114,8 +1114,8 @@ class EventTripping(DecisionMakerPerEvent):
         person_index = DecisionMakerPerEvent.verify_shaking(persons, verbose)
         stored = []
         score_actual=0
-        rute_stored='/home/ubuntu/Tesis'
-        file='IOUS_Tripping.npy'
+        #rute_stored='/home/ubuntu/Tesis'
+        #file='IOUS_Tripping.npy'
         if verbose:
             print("The persons shaking are", person_index, len(persons))
         if len(person_index) < 1 or len(persons) < 2:
@@ -1138,35 +1138,17 @@ class EventTripping(DecisionMakerPerEvent):
                     distance=DecisionMakerPerEvent.distance_between(
                         persons[i][-1], persons[j][-1]
                     )[0]
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 3), dtype=np.float32) 
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 3), dtype=np.float32) 
                     score=tripping.mean()* persons[i][-1][1]
                     score_actual = max(score, score_actual)
-                    new_row = np.array([[tripping.sum(), persons[i][-1][4]-persons[i][-1][2], persons[i][-1][1]]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #new_row = np.array([[tripping.sum(), persons[i][-1][4]-persons[i][-1][2], persons[i][-1][1]]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
         return len(stored) > 0, stored, score_actual
 
-
-class EventStealing(DecisionMakerPerEvent):
-    def __init__(self):
-        self.__classes_of_interest = [
-            "person",
-        ]
-
-    def detections_treatment(self):
-        pass
-
-    def get_classes_of_interest(self):
-        pass
-
-    def decision_maker(self, classes, detections, results, frames, MLLM, *args):
-        pass
-
-    def process_detections(self, loaded_data):
-        pass
 
 
 class EventStealing(DecisionMakerPerEvent):
@@ -1235,8 +1217,8 @@ class EventStealing(DecisionMakerPerEvent):
             Returns:
                 float: Score de confianza (0-1).
             """
-            rute_stored='/home/ubuntu/Tesis'
-            file='IOUS_Stealing.npy'
+            #rute_stored='/home/ubuntu/Tesis'
+            #file='IOUS_Stealing.npy'
             # 1. Score de tendencia decreciente (linregress)
             x = np.arange(len(distance_array))
             slope, _, _, _, _ = linregress(x, distance_array)
@@ -1256,15 +1238,15 @@ class EventStealing(DecisionMakerPerEvent):
                 touch_score = min(1, contact_ratio / 0.5)  # 50% contacto = 1.0, menos = proporcional
             else:
                 touch_score = 0  # No hay evidencia de contacto
-            try:
-                ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-            except:
-                ious = np.empty((0, 4), dtype=np.float32)
+            #try:
+            #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+            #except:
+            #    ious = np.empty((0, 4), dtype=np.float32)
             # Save the scores to a file
-            new_row = np.array([[trend_score, std_score,
-                                running_score, touch_score]], dtype=ious.dtype)
-            ious = np.vstack((ious, new_row))
-            np.save(f"{rute_stored}/{file}", ious)
+            #new_row = np.array([[trend_score, std_score,
+            #                    running_score, touch_score]], dtype=ious.dtype)
+            #ious = np.vstack((ious, new_row))
+            #np.save(f"{rute_stored}/{file}", ious)
             # Score total
             score = (
                 weights[0] * trend_score +
@@ -1414,16 +1396,16 @@ class EventPickPockering(DecisionMakerPerEvent):
                             duo[0][-1], duo[1][-1])
                         if iou > iou_max:
                             iou_max = iou
-                    rute_stored='/home/ubuntu/Tesis'
-                    file='IOUS_PickPockering.npy'
+                    #rute_stored='/home/ubuntu/Tesis'
+                    #file='IOUS_PickPockering.npy'
                     score=duo[0][-1][1] * duo[1][-1][1]*iou_max
-                    try:
-                        ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
-                    except:
-                        ious = np.empty((0, 3), dtype=np.float32) 
-                    new_row = np.array([[0, iou_max, duo[0][-1][1] * duo[1][-1][1]]], dtype=ious.dtype)
-                    ious = np.vstack((ious, new_row))
-                    np.save(f"{rute_stored}/{file}", ious)
+                    #try:
+                    #    ious=np.load(f"{rute_stored}/{file}", allow_pickle=True)
+                    #except:
+                    #    ious = np.empty((0, 3), dtype=np.float32) 
+                    #new_row = np.array([[0, iou_max, duo[0][-1][1] * duo[1][-1][1]]], dtype=ious.dtype)
+                    #ious = np.vstack((ious, new_row))
+                    #np.save(f"{rute_stored}/{file}", ious)
                     score_actual=max(score, score_actual)
                     return True, stored, score_actual
         return False, stored, score_actual
@@ -1454,23 +1436,6 @@ class ALL_Rules:
     def get_descriptions(self):
         return self.__descriptions
 
-    def area_torecort(self, rois):
-        area_dict = {"x1": None, "y1": None, "x2": None, "y2": None}
-        for roi in rois:
-            print(roi)
-            for i in range(1, len(roi)):
-                x1, y1, x2, y2 = roi[i][2], roi[i][3], roi[i][4], roi[i][5]
-                # print(x1, y1, x2, y2)
-                if area_dict["x1"] is None or x1 < area_dict["x1"]:
-                    area_dict["x1"] = x1
-                if area_dict["y1"] is None or y1 < area_dict["y1"]:
-                    area_dict["y1"] = y1
-                if area_dict["x2"] is None or x2 > area_dict["x2"]:
-                    area_dict["x2"] = x2
-                if area_dict["y2"] is None or y2 > area_dict["y2"]:
-                    area_dict["y2"] = y2
-        return area_dict
-
     def process(self, classes, detections, results, frames, MLLM):
         prompts = []
         scores = []
@@ -1481,7 +1446,6 @@ class ALL_Rules:
             )
             prompts.append(self.__descriptions[i])
             scores.append(score)
-        #to_recort = self.area_torecort(rois)
         return prompts, scores
 
 

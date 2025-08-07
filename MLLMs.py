@@ -218,7 +218,7 @@ The selected description is: [selected_description].""",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]
+        ]'''
         conversation = [
             {
                 "role": "<|User|>",
@@ -232,20 +232,24 @@ The selected description is: [selected_description].""",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]'''
-        pil_images = [
-            MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
-        '''conversation = [
+        conversation = [
             {
                 "role": "<|User|>",
                 "content": f"""{images_number} This is a video.
-{text} select the one of the following descriptions:
-{descriptions_text}\nJust the number of the selected description.""",
+{text} select the description that best describes the video from the following descriptions:
+{descriptions_text}\n
+The selecting MUST not be based on the order of the descriptions, only in the content of the description and the video.
+
+Return THE EXACT AND UNIQUE selected description without any explanation or extra text in the following format:
+The selected description is: [selected_description].""",
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]    '''
+        ]
+        pil_images = [
+            MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
+        ]
         # load images and prepare for inputs
         # pil_images = load_pil_images(conversation)
         prepare_inputs = self.__processor(

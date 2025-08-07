@@ -92,7 +92,7 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_New_Top3"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_NEWTOP3_Thresh"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -278,7 +278,6 @@ class EventTesterCLIP(VideoTester):
         results = []
         start_video = time.time()
         gap = 5
-        padding=[]
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
@@ -300,20 +299,13 @@ class EventTesterCLIP(VideoTester):
             )
             if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0 and self.__mode != 4:
                 descriptions, scores = dmc.process(
-                        classes, detections, results, frames, False
+                        classes, detections, results[:-1], frames, False
                     )
             if self.__mode== 4:
                 descriptions= dmc.get_descriptions()   
             if len(frames) > 6:
-                padding.append(frames[0])
-                if len(padding)>2:
-                    padding.pop(0)
                 frames.pop(0)
                 results.pop(0)
-                if self.__event in descriptions and self.__mode == 2:
-                    descriptions=[self.__event]
-                elif self.__mode == 2:
-                    descriptions=[]
                 #print('Descripciones:',descriptions, '\n')
                 normal_prompt = (
                         PREFIX + "a normal view (persons walking or standing)"
@@ -322,12 +314,34 @@ class EventTesterCLIP(VideoTester):
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                         scores.append(0)
-                    scores= {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
-                    if not scores:
+                    thresholds = {
+                    "a person riding a bicycle on the street":0.01,
+                    "multiple people engaged in a physical fight":0.01,
+                    "a group of people playing a sport together":0.01,
+                    "a person running":0.3,
+                    "a person lying motionless on the ground":0.7,
+                    "a person aggressively chasing another person":0.68,
+                    "a person jumping high in the air with both feet":0.65,
+                    "a person accidentally falling to the ground":0.01,
+                    "a person gently guiding another person by the arm":0.4,
+                    "a person stealing other person":0.78,
+                    "a person deliberately throwing garbage on the ground":0.2,
+                    "a person tripping over an obstacle":0.78,
+                    "a person pickpocketing a wallet from someone's pocket":0.01,
+                    'a normal view (persons walking or standing)':0.0
+                    } 
+                    scores_dict = {
+                        event: prob
+                        for event, prob in zip(descriptions,  scores)
+                        if prob > thresholds[event.split(PREFIX)[-1]]
+                    }
+                    #print(scores, scores_dict)
+                    #scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
+                    if not scores_dict:
                         prompts.append("")
                     else:
                         # Get the top three scores sorted from max to min
-                        top3 = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:5]
+                        top3 = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)[:3]
                         top3_events = [event for event, _ in top3]
                         answer=self.__MLLM.event_selection(frames, top3_events, text="Watch the video and", verbose=True)
                         prompts.append(answer)
@@ -352,7 +366,7 @@ class EventTesterCLIP(VideoTester):
             fps_list.append(fps)
             cv2.putText(
                 frame,
-                f"Time {time_per_frame:.2f} ms {events[-1]}-{len(events)-1}",
+                f"Time {time_per_frame:.2f} ms {prompts[-1]}-{len(prompts)-1}",
                 (50, 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 2.0,
@@ -510,7 +524,8 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCNewScoreTOP3.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCScoresTOP3MLLMThresholds.csv")
+
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
