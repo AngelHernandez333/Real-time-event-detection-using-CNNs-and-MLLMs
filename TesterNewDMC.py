@@ -694,7 +694,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         tester.set_MLLM(janus)'''
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnScoreFixed.csv")
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
@@ -705,7 +705,7 @@ if __name__ == "__main__":
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
-    tester.show_video(True)
+    tester.show_video(False)
     
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])

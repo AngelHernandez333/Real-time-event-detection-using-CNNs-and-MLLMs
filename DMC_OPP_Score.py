@@ -741,7 +741,7 @@ class EventChasing(DecisionMakerPerEvent):
                 if decresing or np.std(distance_array) < width:
                     stored.append(persons[i])
                     stored.append(persons[j])
-                    score=confidence_chasing_score(distance_array, scores[index_score], width, weights=[0.4, 0.3, 0.3])
+                    score=confidence_chasing_score(distance_array, scores[index_score], width, weights=[0.4, 0.3, 0.3])*persons[i][-1][1]
                     #rute_stored='/home/ubuntu/Tesis'
                     #file='IOUS_Chasing.npy'
                     #try:
@@ -1299,7 +1299,7 @@ class EventStealing(DecisionMakerPerEvent):
                                 scores[index_score],
                                 width,
                                 touch_array=touching_array,
-                            )
+                            )* persons[i][-1][1]
                     score_actual = max(score, score_actual)
             index_score += 1
         return False, stored, score_actual
