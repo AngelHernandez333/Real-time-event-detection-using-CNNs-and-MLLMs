@@ -92,7 +92,8 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_NEWTOP3_Thresh"
+        #self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_TideThresh"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThresh"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -330,21 +331,55 @@ class EventTesterCLIP(VideoTester):
                     "a person pickpocketing a wallet from someone's pocket":0.01,
                     'a normal view (persons walking or standing)':0.0
                     } 
+                    #Focus in top5
+                    thresholds = {
+                    "a person riding a bicycle on the street":0.01,
+                    "multiple people engaged in a physical fight":0.1,
+                    "a group of people playing a sport together":0.01,
+                    "a person running":0.01,
+                    "a person lying motionless on the ground":0.65,
+                    "a person aggressively chasing another person":0.48,
+                    "a person jumping high in the air with both feet":0.1,
+                    "a person accidentally falling to the ground":0.01,
+                    "a person gently guiding another person by the arm":0.01,
+                    "a person stealing other person":0.35,
+                    "a person deliberately throwing garbage on the ground":0.01,
+                    "a person tripping over an obstacle":0.86,
+                    "a person pickpocketing a wallet from someone's pocket":0.2,
+                    'a normal view (persons walking or standing)':0.0
+                    } 
+                    #New thresholds
+                    thresholds = {
+                    "a person riding a bicycle on the street":0.01,
+                    "multiple people engaged in a physical fight":0.1,
+                    "a group of people playing a sport together":0.01,
+                    "a person running":0.01,
+                    "a person lying motionless on the ground":0.73,
+                    "a person aggressively chasing another person":0.62,
+                    "a person jumping high in the air with both feet":0.3,
+                    "a person accidentally falling to the ground":0.01,
+                    "a person gently guiding another person by the arm":0.25,
+                    "a person stealing other person":0.40,
+                    "a person deliberately throwing garbage on the ground":0.17,
+                    "a person tripping over an obstacle":0.88,
+                    "a person pickpocketing a wallet from someone's pocket":0.2,
+                    'a normal view (persons walking or standing)':0.0
+                    } 
                     scores_dict = {
                         event: prob
                         for event, prob in zip(descriptions,  scores)
                         if prob > thresholds[event.split(PREFIX)[-1]]
                     }
-                    #print(scores, scores_dict)
-                    #scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
+                    scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
                     if not scores_dict:
                         prompts.append("")
                     else:
                         # Get the top three scores sorted from max to min
-                        top3 = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)[:3]
+                        top3 = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)[:5]
                         top3_events = [event for event, _ in top3]
                         answer=self.__MLLM.event_selection(frames, top3_events, text="Watch the video and", verbose=True)
                         prompts.append(answer)
+                    #prompts.append("")
                     probabilities.append(scores)
                     events.append(descriptions)
                     #print('Descripcion y scores ',descriptions, scores)
@@ -524,8 +559,8 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingMCScoresTOP3MLLMThresholds.csv")
-
+        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThresh.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

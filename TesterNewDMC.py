@@ -207,7 +207,7 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder='/home/ubuntu/Tesis/Storage/DEV'
+        self._storagefolder='/home/ubuntu/Tesis/Storage/Score_TideThresh'
     def set_detector(self, detector):
         self.__detector = detector
 
@@ -675,10 +675,12 @@ if __name__ == "__main__":
         "a person stealing other person's pocket",
     ]
     events = [
-        "Jumping",
+        "Chasing",
+        "Stealing",
     ]
     description = [
-        "a person jumping",
+        "a person chasing other person",
+        "a person stealing other person",
     ]
     # Prepare the tester
     tester = EventTester()
@@ -694,7 +696,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         tester.set_MLLM(janus)'''
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnScoreFixed.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_TiedThresholds.csv")
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
