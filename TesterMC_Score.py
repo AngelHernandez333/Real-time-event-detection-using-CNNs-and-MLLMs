@@ -93,7 +93,7 @@ class EventTesterCLIP(VideoTester):
         self.__MLLM = None
         self.__image_encoder = None
         #self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_TideThresh"
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThresh"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThreshLast"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -315,22 +315,6 @@ class EventTesterCLIP(VideoTester):
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                         scores.append(0)
-                    thresholds = {
-                    "a person riding a bicycle on the street":0.01,
-                    "multiple people engaged in a physical fight":0.01,
-                    "a group of people playing a sport together":0.01,
-                    "a person running":0.3,
-                    "a person lying motionless on the ground":0.7,
-                    "a person aggressively chasing another person":0.68,
-                    "a person jumping high in the air with both feet":0.65,
-                    "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.4,
-                    "a person stealing other person":0.78,
-                    "a person deliberately throwing garbage on the ground":0.2,
-                    "a person tripping over an obstacle":0.78,
-                    "a person pickpocketing a wallet from someone's pocket":0.01,
-                    'a normal view (persons walking or standing)':0.0
-                    } 
                     #Focus in top5
                     thresholds = {
                     "a person riding a bicycle on the street":0.01,
@@ -353,16 +337,49 @@ class EventTesterCLIP(VideoTester):
                     "a person riding a bicycle on the street":0.01,
                     "multiple people engaged in a physical fight":0.1,
                     "a group of people playing a sport together":0.01,
-                    "a person running":0.01,
-                    "a person lying motionless on the ground":0.73,
-                    "a person aggressively chasing another person":0.62,
+                    "a person running":0.15,
+                    "a person lying motionless on the ground":0.78,
+                    "a person aggressively chasing another person":0.68,
                     "a person jumping high in the air with both feet":0.3,
                     "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.25,
-                    "a person stealing other person":0.40,
-                    "a person deliberately throwing garbage on the ground":0.17,
-                    "a person tripping over an obstacle":0.88,
+                    "a person gently guiding another person by the arm":0.35,
+                    "a person stealing other person":0.55,
+                    "a person deliberately throwing garbage on the ground":0.25,
+                    "a person tripping over an obstacle":0.91,
                     "a person pickpocketing a wallet from someone's pocket":0.2,
+                    'a normal view (persons walking or standing)':0.0
+                    } 
+                    #Last try
+                    thresholds = {
+                    "a person riding a bicycle on the street":0.01,
+                    "multiple people engaged in a physical fight":0.1,
+                    "a group of people playing a sport together":0.01,
+                    "a person running":0.15,
+                    "a person lying motionless on the ground":0.85,
+                    "a person aggressively chasing another person":0.75,
+                    "a person jumping high in the air with both feet":0.3,
+                    "a person accidentally falling to the ground":0.01,
+                    "a person gently guiding another person by the arm":0.5,
+                    "a person stealing other person":0.55,
+                    "a person deliberately throwing garbage on the ground":0.5,
+                    "a person tripping over an obstacle":0.91,
+                    "a person pickpocketing a wallet from someone's pocket":0.2,
+                    'a normal view (persons walking or standing)':0.0
+                    } 
+                    thresholds = {
+                    "a person riding a bicycle on the street":0.01,
+                    "multiple people engaged in a physical fight":0.1,
+                    "a group of people playing a sport together":0.01,
+                    "a person running":0.25,
+                    "a person lying motionless on the ground":0.65,
+                    "a person aggressively chasing another person":0.75,
+                    "a person jumping high in the air with both feet":0.01,
+                    "a person accidentally falling to the ground":0.01,
+                    "a person gently guiding another person by the arm":0.15,
+                    "a person stealing other person":0.80,
+                    "a person deliberately throwing garbage on the ground":0.15,
+                    "a person tripping over an obstacle":0.85,
+                    "a person pickpocketing a wallet from someone's pocket":0.01,
                     'a normal view (persons walking or standing)':0.0
                     } 
                     scores_dict = {
@@ -560,7 +577,7 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThresh.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThreshLast.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
