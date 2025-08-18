@@ -92,8 +92,8 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        #self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_TideThresh"
-        self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThreshLast"
+        #self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThreshSame3"
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5Less"
         self.__order= [
         "Riding",
         "Playing", #Finish specific class events
@@ -286,9 +286,10 @@ class EventTesterCLIP(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            if self.__mode!= 4:
+            if self.__mode!= 4 and int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
                 detections, classes = self.__detector.detection(frame, classes)
             else:
+                continue
                 detections=[]
             VideoTester.take_frame(
                 frame,
@@ -350,44 +351,30 @@ class EventTesterCLIP(VideoTester):
                     'a normal view (persons walking or standing)':0.0
                     } 
                     #Last try
-                    thresholds = {
-                    "a person riding a bicycle on the street":0.01,
-                    "multiple people engaged in a physical fight":0.1,
-                    "a group of people playing a sport together":0.01,
-                    "a person running":0.15,
-                    "a person lying motionless on the ground":0.85,
-                    "a person aggressively chasing another person":0.75,
-                    "a person jumping high in the air with both feet":0.3,
-                    "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.5,
-                    "a person stealing other person":0.55,
-                    "a person deliberately throwing garbage on the ground":0.5,
-                    "a person tripping over an obstacle":0.91,
-                    "a person pickpocketing a wallet from someone's pocket":0.2,
-                    'a normal view (persons walking or standing)':0.0
-                    } 
+                    
                     thresholds = {
                     "a person riding a bicycle on the street":0.01,
                     "multiple people engaged in a physical fight":0.1,
                     "a group of people playing a sport together":0.01,
                     "a person running":0.25,
                     "a person lying motionless on the ground":0.65,
-                    "a person aggressively chasing another person":0.75,
-                    "a person jumping high in the air with both feet":0.01,
+                    "a person aggressively chasing another person":0.62,
+                    "a person jumping high in the air with both feet":0.3,
                     "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.15,
-                    "a person stealing other person":0.80,
-                    "a person deliberately throwing garbage on the ground":0.15,
+                    "a person gently guiding another person by the arm":0.38,
+                    "a person stealing other person":0.5,
+                    "a person deliberately throwing garbage on the ground":0.2,
                     "a person tripping over an obstacle":0.85,
-                    "a person pickpocketing a wallet from someone's pocket":0.01,
+                    "a person pickpocketing a wallet from someone's pocket":0.1,
                     'a normal view (persons walking or standing)':0.0
                     } 
+
                     scores_dict = {
                         event: prob
                         for event, prob in zip(descriptions,  scores)
                         if prob > thresholds[event.split(PREFIX)[-1]]
                     }
-                    scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
+                    #scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
                     if not scores_dict:
                         prompts.append("")
                     else:
@@ -577,7 +564,8 @@ if __name__ == "__main__":
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
         #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThreshLast.csv")
+        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThreshSame3.csv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5LessTide.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()

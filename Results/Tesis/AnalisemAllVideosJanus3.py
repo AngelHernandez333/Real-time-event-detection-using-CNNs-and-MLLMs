@@ -22,7 +22,7 @@ def calculate_ap(precision, recall):
     return ap
 
 
-status = "prompt_extra"
+status = "prompt_simple"
 if status == "ALL":
     rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
     file = "TestingNWPUIITB.csv"
@@ -43,8 +43,8 @@ elif status == "prompt_simple":
     file = "TestingJanusAllOnlyTrue.csv"
     storing_file = file.split(".")[0] + "_mAP02.png"
     df = pd.read_csv(f"{rute}{file}")
-    df["Process time"] = df["Process time"] / df["Duration"]
-    df["Process time"] = 30.0 / df["Process time"]
+    '''df["Process time"] = df["Process time"] / df["Duration"]
+    df["Process time"] = 30.0 / df["Process time"]'''
     df = df[(df["Mode"] == 0) | (df["Mode"] == 2)]
 elif status == "prompt_extra":
     rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
@@ -72,9 +72,9 @@ elif status == "else":
     df["Process time"] = df["Process time"] / df["Duration"]
     df["Process time"] = 25.0 / df["Process time"]
 # New prompt
-rute = "/home/ubuntu/Tesis/Results/"
-file = "TestingDevCLIPOneClassOldDescriptions.csv"
-df = pd.read_csv(f"{rute}{file}")
+'''rute = "/home/ubuntu/Tesis/Results/"
+file = "TestingDevCLIPOneClassOldDescriptions.csv"'''
+#df = pd.read_csv(f"{rute}{file}")
 df["Process time"] = df["Process time"] / df["Duration"]
 df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = (
     30.0 / df["Process time"]
