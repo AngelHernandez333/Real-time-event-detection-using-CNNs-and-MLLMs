@@ -523,7 +523,7 @@ class EventTester(VideoTester):
                             time_video,
                             finished,
                         ) = self.testing_video(
-                            f"../Database/CHAD DATABASE/{folders[video_kind]}/{files[j]}",
+                            f"/home/ubuntu/Database/ALL/Videos/{folders[video_kind]}/{files[j]}",
                             files[j],
                         )
                         if finished:
@@ -743,7 +743,7 @@ if __name__ == "__main__":
         "ALL",
     ]"""
     events = [
-        "1-Riding a bicycle",
+        "Riding",
         "2-Fight",
         "3-Playing",
         "4-Running away",
@@ -785,7 +785,7 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevcsv")
+        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDevv.csv")
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -793,7 +793,7 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingIsThereQwen.csv")
         tester.set_MLLM(qwen2vl)
-    tester.set_rute("../Database/CHAD DATABASE")
+    tester.set_rute("/home/ubuntu/Database/ALL/Videos")
     tester.set_detector(ov_qmodel)
     # tester.set_MLLM(llava)
     tester.show_detections(False)
@@ -801,5 +801,5 @@ if __name__ == "__main__":
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
-    tester.simple_autotesting(events, description, [0, 1, 2, 3, 4])
+    tester.simple_autotesting(events, description, [2])
     # tester.autotesting(events, description, [0,1,2,3,4])

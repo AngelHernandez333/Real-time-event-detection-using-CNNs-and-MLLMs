@@ -4,9 +4,7 @@ import os
 from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import (
-    detection_labels,classes_focus
-)
+from Functions3 import detection_labels, classes_focus
 import numpy as np
 from MLLMs import *
 from Tester import VideoTester
@@ -93,21 +91,21 @@ class EventTesterCLIP(VideoTester):
         self.__MLLM = None
         self.__image_encoder = None
         self._storagefolder = "/home/ubuntu/Tesis/Storage/XCLIP"
-        self.__order= [
-        "Riding",
-        "Playing", #Finish specific class events
-        "Pickpockering",
-        "Stealing",
-        "Tripping",
-        "Chasing",
-        "Guiding",
-        "Jumping",
-        "Falling",
-        "Littering",
-        "Running",
-        "Lying",
-        "Fighting",
-    ]
+        self.__order = [
+            "Riding",
+            "Playing",  # Finish specific class events
+            "Pickpockering",
+            "Stealing",
+            "Tripping",
+            "Chasing",
+            "Guiding",
+            "Jumping",
+            "Falling",
+            "Littering",
+            "Running",
+            "Lying",
+            "Fighting",
+        ]
         self.__order_dict = {}
 
     def set_detector(self, detector):
@@ -142,7 +140,8 @@ class EventTesterCLIP(VideoTester):
         event,
         anomaly_classes,
         prompts,
-        mode,probabilities
+        mode,
+        probabilities,
     ):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
@@ -160,12 +159,16 @@ class EventTesterCLIP(VideoTester):
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
         # Save frames_number, predicted_events, and prompts into a numpy array
-        if self.__mode!=3 or self.__mode!=4:
+        if self.__mode != 3 or self.__mode != 4:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
-            output_data = np.array([frames_number, predicted_events, prompts, probabilities], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)      
-            return 0,0,0,0
-            '''for i in range(len(predicted_events)):
+            output_data = np.array(
+                [frames_number, predicted_events, prompts, probabilities], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
+            return 0, 0, 0, 0
+            """for i in range(len(predicted_events)):
                 # Get ground truth
 
                 is_anomaly = frames[frames_number[i] - 1]  # 0 or 1
@@ -210,11 +213,15 @@ class EventTesterCLIP(VideoTester):
                 np.sum(cm[event_idx, :]) - tp
             )  # False negatives (event misclassified as others)
             tn = np.sum(cm) - tp - fp - fn  # True negatives
-            return tp, fp, fn, tn'''
+            return tp, fp, fn, tn"""
         else:
-            output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
-            return 0,0,0,0
+            output_data = np.array(
+                [frames_number, predicted_events, prompts], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
+            return 0, 0, 0, 0
 
     # Rows = true classes, Columns = predicted classes
     def set_dataframe(self, df):
@@ -272,13 +279,13 @@ class EventTesterCLIP(VideoTester):
         fps_list = []
         prompts = ["Loading..."]
         events = ["Loading..."]
-        probabilities= []
+        probabilities = []
         # Charge time
         prev_frame_time = time.time()
         results = []
         start_video = time.time()
         gap = 5
-        padding=[]
+        padding = []
         while True:
             # Leer el siguiente frame
             ret, frame = cap.read()
@@ -286,10 +293,10 @@ class EventTesterCLIP(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            if self.__mode!= 4:
+            if self.__mode != 4:
                 detections, classes = self.__detector.detection(frame, classes)
             else:
-                detections=[]
+                detections = []
             VideoTester.take_frame(
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -299,34 +306,34 @@ class EventTesterCLIP(VideoTester):
                 results,
             )
             if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0 and self.__mode != 4:
-                descriptions = dmc.process(
-                        classes, detections, results, frames, False
-                    )
-            if self.__mode== 4:
-                descriptions= dmc.get_descriptions()   
+                descriptions = dmc.process(classes, detections, results, frames, False)
+            if self.__mode == 4:
+                descriptions = dmc.get_descriptions()
             if len(frames) > 6:
                 padding.append(frames[0])
-                if len(padding)>2:
+                if len(padding) > 2:
                     padding.pop(0)
                 frames.pop(0)
                 results.pop(0)
                 if self.__event in descriptions and self.__mode == 2:
-                    descriptions=[self.__event]
+                    descriptions = [self.__event]
                 elif self.__mode == 2:
-                    descriptions=[]
-                print('Descripciones:',descriptions, '\n')
-                normal_prompt = (
-                        PREFIX + "a normal view (persons walking or standing)"
-                    )
+                    descriptions = []
+                print("Descripciones:", descriptions, "\n")
+                normal_prompt = PREFIX + "a normal view (persons walking or standing)"
                 if len(descriptions) > 0:
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                     if self.__mode != 3 and self.__mode != 4:
                         self.__image_encoder.set_descriptions(descriptions)
-                        event, avg_prob, logits = self.__image_encoder.outputs_without_softmax(frames, padding)
+                        event, avg_prob, logits = (
+                            self.__image_encoder.outputs_without_softmax(
+                                frames, padding
+                            )
+                        )
                         probabilities.append(logits)
                         events.append(descriptions)
-                        print( descriptions, self.__event,event,  '\n')
+                        print(descriptions, self.__event, event, "\n")
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     if self.__mode == 1 and event != normal_prompt:
                         text = prompt_text(
@@ -346,7 +353,7 @@ class EventTesterCLIP(VideoTester):
                         prompts.append(prompt)
                     if self.__mode == 3 or self.__mode == 4:
                         prompt = self.__MLLM.event_selection(
-                        frames, descriptions, verbose=True
+                            frames, descriptions, verbose=True
                         )
                         prompts.append(prompt)
                         events.append(descriptions)
@@ -382,25 +389,37 @@ class EventTesterCLIP(VideoTester):
         cap.release()
         time_video = time.time() - start_video
         cv2.destroyAllWindows()
-        return frames_number, fps_list, prompts, duration, time_video, finished, events, probabilities
+        return (
+            frames_number,
+            fps_list,
+            prompts,
+            duration,
+            time_video,
+            finished,
+            events,
+            probabilities,
+        )
 
     def simple_autotesting(self, folders, descriptions, modes):
         dmc = ALL_Rules()
         dmc.set_descriptions(self.__image_encoder.get_descriptions())
-        self.__order_dict= {event: PREFIX + desc for event, desc in zip(folders, description)}
+        self.__order_dict = {
+            event: PREFIX + desc for event, desc in zip(folders, description)
+        }
         for k in modes:
             for video_kind in range(len(folders)):
                 rute = f"{self.__rute}/{folders[video_kind]}/"
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     finished = False
-                    count = self.__df[(self.__df["Mode"] == k)
+                    count = self.__df[
+                        (self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    '''if count< 7:
+                    """if count< 7:
                         pass
                     else:
-                        continue'''
+                        continue"""
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)
@@ -417,7 +436,8 @@ class EventTesterCLIP(VideoTester):
                             duration,
                             time_video,
                             finished,
-                            predicted_events,probabilities
+                            predicted_events,
+                            probabilities,
                         ) = self.testing_video(
                             f"{self.__rute}/{folders[video_kind]}/{files[j]}", dmc
                         )
@@ -434,7 +454,8 @@ class EventTesterCLIP(VideoTester):
                                 descriptions[video_kind],
                                 descriptions,
                                 prompts,
-                                k, probabilities
+                                k,
+                                probabilities,
                             )
                             # Save the results
                             row = {
@@ -480,9 +501,9 @@ if __name__ == "__main__":
         "Tripping",
         "Pickpockering",
     ]
-    #First, presence of a specific class
-    #Second, groupal events
-    #Last, specific events
+    # First, presence of a specific class
+    # Second, groupal events
+    # Last, specific events
 
     description = [
         "a person riding a bicycle on the street",  # Added context
@@ -499,7 +520,7 @@ if __name__ == "__main__":
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
     ]
-    '''
+    """
     description = [
         "a person riding a bicycle",
         "a certain number of persons fighting",
@@ -514,7 +535,7 @@ if __name__ == "__main__":
         "a person throwing trash in the floor",
         "a person tripping",
         "a person stealing other person's pocket",
-    ]'''
+    ]"""
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -536,13 +557,13 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing.csv")
         tester.set_MLLM(qwen2vl)
-    '''tester.show_video(False)
+    """tester.show_video(False)
     CLIP_encoder = CLIP_Model()
     CLIP_encoder.set_model("openai/clip-vit-base-patch16")
     CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
     descriptions = [PREFIX + des for des in description]
     CLIP_encoder.set_descriptions(descriptions)
-    tester.set_image_encoder(CLIP_encoder)'''
+    tester.set_image_encoder(CLIP_encoder)"""
     tester.show_video(False)
     CLIP_encoder = XCLIP_Model()
     CLIP_encoder.set_model("microsoft/xclip-base-patch32")

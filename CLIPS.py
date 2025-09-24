@@ -92,7 +92,8 @@ class CLIP_Model(CLIP):
         )
         print(f"\nTime {time.time()-start} seconds")
         return self.__descriptions[max_avg_index.item()], max_avg_prob.item()
-    
+
+
 class XCLIP_Model(CLIP):
     def __init__(self):
         self.__model = None
@@ -102,12 +103,14 @@ class XCLIP_Model(CLIP):
     def set_model(self, model):
         device = "cuda"
         torch_dtype = torch.float16
-        self.__model = AutoModel.from_pretrained(model, torch_dtype=torch_dtype, device_map=device)
+        self.__model = AutoModel.from_pretrained(
+            model, torch_dtype=torch_dtype, device_map=device
+        )
 
     def set_processor(self, processor):
         device = "cuda"
         torch_dtype = torch.float16
-        self.__processor =AutoProcessor.from_pretrained(processor)
+        self.__processor = AutoProcessor.from_pretrained(processor)
 
     def set_descriptions(self, descriptions):
         self.__descriptions = descriptions
@@ -119,18 +122,19 @@ class XCLIP_Model(CLIP):
         device = "cuda"
         torch_dtype = torch.float16
         start = time.time()
-        if len(padding)==1:
-            frames=padding+padding+images
+        if len(padding) == 1:
+            frames = padding + padding + images
         else:
             frames = padding + images
-        print(f'Cantidad de frames {len(frames)}')
+        print(f"Cantidad de frames {len(frames)}")
         result = np.stack(frames)
-        print(f'Descripciones {self.__descriptions}')
+        print(f"Descripciones {self.__descriptions}")
         inputs = self.__processor(
-        text=self.__descriptions,
-        videos=list(result),
-        return_tensors="pt",
-        padding=True,).to(device)
+            text=self.__descriptions,
+            videos=list(result),
+            return_tensors="pt",
+            padding=True,
+        ).to(device)
         with torch.no_grad():
 
             with torch.autocast(device):
@@ -159,22 +163,24 @@ class XCLIP_Model(CLIP):
         )
         print(f"\nTime {time.time()-start} seconds")
         return self.__descriptions[max_avg_index.item()], max_avg_prob.item()
+
     def outputs_without_softmax(self, images, padding):
         device = "cuda"
         torch_dtype = torch.float16
         start = time.time()
-        if len(padding)==1:
-            frames=padding+padding+images
+        if len(padding) == 1:
+            frames = padding + padding + images
         else:
             frames = padding + images
-        print(f'Cantidad de frames {len(frames)}')
+        print(f"Cantidad de frames {len(frames)}")
         result = np.stack(frames)
-        print(f'Descripciones {self.__descriptions}')
+        print(f"Descripciones {self.__descriptions}")
         inputs = self.__processor(
-        text=self.__descriptions,
-        videos=list(result),
-        return_tensors="pt",
-        padding=True,).to(device)
+            text=self.__descriptions,
+            videos=list(result),
+            return_tensors="pt",
+            padding=True,
+        ).to(device)
         with torch.no_grad():
 
             with torch.autocast(device):
@@ -203,6 +209,8 @@ class XCLIP_Model(CLIP):
         )
         print(f"\nTime {time.time()-start} seconds")
         print(logits_per_video)
-        return self.__descriptions[max_avg_index.item()], max_avg_prob.item(), logits_per_video.to(dtype=torch.float32, device='cpu').numpy()[0]
-
-
+        return (
+            self.__descriptions[max_avg_index.item()],
+            max_avg_prob.item(),
+            logits_per_video.to(dtype=torch.float32, device="cpu").numpy()[0],
+        )

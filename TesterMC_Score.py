@@ -4,9 +4,7 @@ import os
 from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions4 import (
-    detection_labels,classes_focus
-)
+from Functions4 import detection_labels, classes_focus
 import numpy as np
 from MLLMs import *
 from Tester import VideoTester
@@ -92,23 +90,23 @@ class EventTesterCLIP(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        #self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThreshSame3"
+        # self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5TideThreshSame3"
         self._storagefolder = "/home/ubuntu/Tesis/Storage/ScoreTOP5Less"
-        self.__order= [
-        "Riding",
-        "Playing", #Finish specific class events
-        "Pickpockering",
-        "Stealing",
-        "Tripping",
-        "Chasing",
-        "Guiding",
-        "Jumping",
-        "Falling",
-        "Littering",
-        "Running",
-        "Lying",
-        "Fighting",
-    ]
+        self.__order = [
+            "Riding",
+            "Playing",  # Finish specific class events
+            "Pickpockering",
+            "Stealing",
+            "Tripping",
+            "Chasing",
+            "Guiding",
+            "Jumping",
+            "Falling",
+            "Littering",
+            "Running",
+            "Lying",
+            "Fighting",
+        ]
         self.__order_dict = {}
 
     def set_detector(self, detector):
@@ -143,7 +141,8 @@ class EventTesterCLIP(VideoTester):
         event,
         anomaly_classes,
         prompts,
-        mode,probabilities
+        mode,
+        probabilities,
     ):
         # True positive Prediction and Reality are true
         # True negative Prediction and Reality are false
@@ -161,12 +160,16 @@ class EventTesterCLIP(VideoTester):
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
         # Save frames_number, predicted_events, and prompts into a numpy array
-        if self.__mode!=3 or self.__mode!=4:
+        if self.__mode != 3 or self.__mode != 4:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
-            output_data = np.array([frames_number, predicted_events, prompts, probabilities], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)      
-            return 0,0,0,0
-            '''for i in range(len(predicted_events)):
+            output_data = np.array(
+                [frames_number, predicted_events, prompts, probabilities], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
+            return 0, 0, 0, 0
+            """for i in range(len(predicted_events)):
                 # Get ground truth
 
                 is_anomaly = frames[frames_number[i] - 1]  # 0 or 1
@@ -211,11 +214,15 @@ class EventTesterCLIP(VideoTester):
                 np.sum(cm[event_idx, :]) - tp
             )  # False negatives (event misclassified as others)
             tn = np.sum(cm) - tp - fp - fn  # True negatives
-            return tp, fp, fn, tn'''
+            return tp, fp, fn, tn"""
         else:
-            output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
-            return 0,0,0,0
+            output_data = np.array(
+                [frames_number, predicted_events, prompts], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
+            return 0, 0, 0, 0
 
     # Rows = true classes, Columns = predicted classes
     def set_dataframe(self, df):
@@ -273,7 +280,7 @@ class EventTesterCLIP(VideoTester):
         fps_list = []
         prompts = ["Loading..."]
         events = ["Loading..."]
-        probabilities= []
+        probabilities = []
         # Charge time
         prev_frame_time = time.time()
         results = []
@@ -286,11 +293,11 @@ class EventTesterCLIP(VideoTester):
                 print("No se pudo obtener el frame. Fin del video o error.")
                 finished = True
                 break
-            if self.__mode!= 4 and int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
+            if self.__mode != 4 and int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
                 detections, classes = self.__detector.detection(frame, classes)
             else:
                 continue
-                detections=[]
+                detections = []
             VideoTester.take_frame(
                 frame,
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -301,92 +308,97 @@ class EventTesterCLIP(VideoTester):
             )
             if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0 and self.__mode != 4:
                 descriptions, scores = dmc.process(
-                        classes, detections, results[:-1], frames, False
-                    )
-            if self.__mode== 4:
-                descriptions= dmc.get_descriptions()   
+                    classes, detections, results[:-1], frames, False
+                )
+            if self.__mode == 4:
+                descriptions = dmc.get_descriptions()
             if len(frames) > 6:
                 frames.pop(0)
                 results.pop(0)
-                #print('Descripciones:',descriptions, '\n')
-                normal_prompt = (
-                        PREFIX + "a normal view (persons walking or standing)"
-                    )
+                # print('Descripciones:',descriptions, '\n')
+                normal_prompt = PREFIX + "a normal view (persons walking or standing)"
                 if len(descriptions) > 0:
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
                         scores.append(0)
-                    #Focus in top5
+                    # Focus in top5
                     thresholds = {
-                    "a person riding a bicycle on the street":0.01,
-                    "multiple people engaged in a physical fight":0.1,
-                    "a group of people playing a sport together":0.01,
-                    "a person running":0.01,
-                    "a person lying motionless on the ground":0.65,
-                    "a person aggressively chasing another person":0.48,
-                    "a person jumping high in the air with both feet":0.1,
-                    "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.01,
-                    "a person stealing other person":0.35,
-                    "a person deliberately throwing garbage on the ground":0.01,
-                    "a person tripping over an obstacle":0.86,
-                    "a person pickpocketing a wallet from someone's pocket":0.2,
-                    'a normal view (persons walking or standing)':0.0
-                    } 
-                    #New thresholds
+                        "a person riding a bicycle on the street": 0.01,
+                        "multiple people engaged in a physical fight": 0.1,
+                        "a group of people playing a sport together": 0.01,
+                        "a person running": 0.01,
+                        "a person lying motionless on the ground": 0.65,
+                        "a person aggressively chasing another person": 0.48,
+                        "a person jumping high in the air with both feet": 0.1,
+                        "a person accidentally falling to the ground": 0.01,
+                        "a person gently guiding another person by the arm": 0.01,
+                        "a person stealing other person": 0.35,
+                        "a person deliberately throwing garbage on the ground": 0.01,
+                        "a person tripping over an obstacle": 0.86,
+                        "a person pickpocketing a wallet from someone's pocket": 0.2,
+                        "a normal view (persons walking or standing)": 0.0,
+                    }
+                    # New thresholds
                     thresholds = {
-                    "a person riding a bicycle on the street":0.01,
-                    "multiple people engaged in a physical fight":0.1,
-                    "a group of people playing a sport together":0.01,
-                    "a person running":0.15,
-                    "a person lying motionless on the ground":0.78,
-                    "a person aggressively chasing another person":0.68,
-                    "a person jumping high in the air with both feet":0.3,
-                    "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.35,
-                    "a person stealing other person":0.55,
-                    "a person deliberately throwing garbage on the ground":0.25,
-                    "a person tripping over an obstacle":0.91,
-                    "a person pickpocketing a wallet from someone's pocket":0.2,
-                    'a normal view (persons walking or standing)':0.0
-                    } 
-                    #Last try
-                    
+                        "a person riding a bicycle on the street": 0.01,
+                        "multiple people engaged in a physical fight": 0.1,
+                        "a group of people playing a sport together": 0.01,
+                        "a person running": 0.15,
+                        "a person lying motionless on the ground": 0.78,
+                        "a person aggressively chasing another person": 0.68,
+                        "a person jumping high in the air with both feet": 0.3,
+                        "a person accidentally falling to the ground": 0.01,
+                        "a person gently guiding another person by the arm": 0.35,
+                        "a person stealing other person": 0.55,
+                        "a person deliberately throwing garbage on the ground": 0.25,
+                        "a person tripping over an obstacle": 0.91,
+                        "a person pickpocketing a wallet from someone's pocket": 0.2,
+                        "a normal view (persons walking or standing)": 0.0,
+                    }
+                    # Last try
+
                     thresholds = {
-                    "a person riding a bicycle on the street":0.01,
-                    "multiple people engaged in a physical fight":0.1,
-                    "a group of people playing a sport together":0.01,
-                    "a person running":0.25,
-                    "a person lying motionless on the ground":0.65,
-                    "a person aggressively chasing another person":0.62,
-                    "a person jumping high in the air with both feet":0.3,
-                    "a person accidentally falling to the ground":0.01,
-                    "a person gently guiding another person by the arm":0.38,
-                    "a person stealing other person":0.5,
-                    "a person deliberately throwing garbage on the ground":0.2,
-                    "a person tripping over an obstacle":0.85,
-                    "a person pickpocketing a wallet from someone's pocket":0.1,
-                    'a normal view (persons walking or standing)':0.0
-                    } 
+                        "a person riding a bicycle on the street": 0.01,
+                        "multiple people engaged in a physical fight": 0.1,
+                        "a group of people playing a sport together": 0.01,
+                        "a person running": 0.25,
+                        "a person lying motionless on the ground": 0.65,
+                        "a person aggressively chasing another person": 0.62,
+                        "a person jumping high in the air with both feet": 0.3,
+                        "a person accidentally falling to the ground": 0.01,
+                        "a person gently guiding another person by the arm": 0.38,
+                        "a person stealing other person": 0.5,
+                        "a person deliberately throwing garbage on the ground": 0.2,
+                        "a person tripping over an obstacle": 0.85,
+                        "a person pickpocketing a wallet from someone's pocket": 0.1,
+                        "a normal view (persons walking or standing)": 0.0,
+                    }
 
                     scores_dict = {
                         event: prob
-                        for event, prob in zip(descriptions,  scores)
+                        for event, prob in zip(descriptions, scores)
                         if prob > thresholds[event.split(PREFIX)[-1]]
                     }
-                    #scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
+                    # scores_dict = {event: prob for event, prob in zip(descriptions,  scores) if prob > 0}
                     if not scores_dict:
                         prompts.append("")
                     else:
                         # Get the top three scores sorted from max to min
-                        top3 = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)[:5]
+                        top3 = sorted(
+                            scores_dict.items(), key=lambda x: x[1], reverse=True
+                        )[:5]
                         top3_events = [event for event, _ in top3]
-                        answer=self.__MLLM.event_selection(frames, top3_events, text="Watch the video and", verbose=True)
+                        answer = self.__MLLM.event_selection(
+                            frames,
+                            top3_events,
+                            text="Watch the video and",
+                            verbose=True,
+                        )
                         prompts.append(answer)
-                    #prompts.append("")
+                    # prompts.append("")
                     probabilities.append(scores)
                     events.append(descriptions)
-                    #print('Descripcion y scores ',descriptions, scores)
+                    # print('Descripcion y scores ',descriptions, scores)
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                 else:
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
@@ -417,25 +429,37 @@ class EventTesterCLIP(VideoTester):
         cap.release()
         time_video = time.time() - start_video
         cv2.destroyAllWindows()
-        return frames_number, fps_list, prompts, duration, time_video, finished, events, probabilities
+        return (
+            frames_number,
+            fps_list,
+            prompts,
+            duration,
+            time_video,
+            finished,
+            events,
+            probabilities,
+        )
 
     def simple_autotesting(self, folders, descriptions, modes):
         dmc = ALL_Rules()
         dmc.set_descriptions(self.__image_encoder.get_descriptions())
-        self.__order_dict= {event: PREFIX + desc for event, desc in zip(folders, description)}
+        self.__order_dict = {
+            event: PREFIX + desc for event, desc in zip(folders, description)
+        }
         for k in modes:
             for video_kind in range(len(folders)):
                 rute = f"{self.__rute}/{folders[video_kind]}/"
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     finished = False
-                    count = self.__df[(self.__df["Mode"] == k)
+                    count = self.__df[
+                        (self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    '''if count< 7:
+                    """if count< 7:
                         pass
                     else:
-                        continue'''
+                        continue"""
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)
@@ -452,7 +476,8 @@ class EventTesterCLIP(VideoTester):
                             duration,
                             time_video,
                             finished,
-                            predicted_events,probabilities
+                            predicted_events,
+                            probabilities,
                         ) = self.testing_video(
                             f"{self.__rute}/{folders[video_kind]}/{files[j]}", dmc
                         )
@@ -469,7 +494,8 @@ class EventTesterCLIP(VideoTester):
                                 descriptions[video_kind],
                                 descriptions,
                                 prompts,
-                                k, probabilities
+                                k,
+                                probabilities,
                             )
                             # Save the results
                             row = {
@@ -515,9 +541,9 @@ if __name__ == "__main__":
         "Tripping",
         "Pickpockering",
     ]
-    #First, presence of a specific class
-    #Second, groupal events
-    #Last, specific events
+    # First, presence of a specific class
+    # Second, groupal events
+    # Last, specific events
 
     description = [
         "a person riding a bicycle on the street",  # Added context
@@ -534,7 +560,7 @@ if __name__ == "__main__":
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
     ]
-    '''
+    """
     description = [
         "a person riding a bicycle",
         "a certain number of persons fighting",
@@ -549,7 +575,7 @@ if __name__ == "__main__":
         "a person throwing trash in the floor",
         "a person tripping",
         "a person stealing other person's pocket",
-    ]'''
+    ]"""
     # Prepare the tester
     tester = EventTesterCLIP()
     test = 1
@@ -563,9 +589,11 @@ if __name__ == "__main__":
         janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5.csv")
-        #tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThreshSame3.csv")
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5LessTide.csv")
+        # tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5.csv")
+        # tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5NewThreshSame3.csv")
+        tester.set_dataframe(
+            "/home/ubuntu/Tesis/Results/TestingnMCMLLM_Top5LessTide.csv"
+        )
         tester.set_MLLM(janus)
     elif test == 2:
         qwen2vl = Qwen2_VL()
@@ -573,13 +601,13 @@ if __name__ == "__main__":
         qwen2vl.set_processor("Qwen/Qwen2-VL-2B-Instruct")
         tester.set_dataframe("/home/ubuntu/Tesis/Results/Testing.csv")
         tester.set_MLLM(qwen2vl)
-    '''tester.show_video(False)
+    """tester.show_video(False)
     CLIP_encoder = CLIP_Model()
     CLIP_encoder.set_model("openai/clip-vit-base-patch16")
     CLIP_encoder.set_processor("openai/clip-vit-base-patch16")
     descriptions = [PREFIX + des for des in description]
     CLIP_encoder.set_descriptions(descriptions)
-    tester.set_image_encoder(CLIP_encoder)'''
+    tester.set_image_encoder(CLIP_encoder)"""
     tester.show_video(False)
     CLIP_encoder = XCLIP_Model()
     CLIP_encoder.set_model("microsoft/xclip-base-patch32")

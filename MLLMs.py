@@ -137,7 +137,6 @@ class JanusPro(MLLMs):
             {"role": "<|Assistant|>", "content": ""},
         ]
 
-
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
@@ -172,7 +171,9 @@ class JanusPro(MLLMs):
 
         return answer.split(".")[0]
 
-    def event_selection(self, frames, descriptions, text="Watch the video and", verbose=False):
+    def event_selection(
+        self, frames, descriptions, text="Watch the video and", verbose=False
+    ):
         number_of_frames = 4
         assert (
             len(frames) >= number_of_frames
@@ -182,8 +183,10 @@ class JanusPro(MLLMs):
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
         )
         random.shuffle(descriptions)
-        descriptions_text = "\n".join(f"{i+1}. {desc}" for i, desc in enumerate(descriptions))
-        
+        descriptions_text = "\n".join(
+            f"{i+1}. {desc}" for i, desc in enumerate(descriptions)
+        )
+
         conversation = [
             {
                 "role": "<|User|>",
@@ -193,7 +196,7 @@ class JanusPro(MLLMs):
                 "images": [],
             },
             {"role": "<|Assistant|>", "content": ""},
-        ]        
+        ]
         conversation = [
             {
                 "role": "<|User|>",
@@ -279,8 +282,6 @@ The selected description is: [selected_description].""",
             print(f"{prepare_inputs['sft_format'][0]}", answer)
         # return answer[-4:-1]  # Extract the score from the answer
         return answer
-    
-
 
     def event_score(self, frames, event, text="Watch the video and", verbose=False):
         number_of_frames = 4
@@ -290,15 +291,15 @@ The selected description is: [selected_description].""",
         # 5
         images_number = (
             len(frames[-(1 + number_of_frames) : -1]) * "<image_placeholder>"
-        ) 
-        
-        #-----------------------------------------
-        descriptions_text = "\n".join(f"{i+1}. {desc}" for i, desc in enumerate(event))  
-            
+        )
+
+        # -----------------------------------------
+        descriptions_text = "\n".join(f"{i+1}. {desc}" for i, desc in enumerate(event))
+
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a score from 0 to 100 for each.
 {descriptions_text}. Ensure there are a score for each of the {len(event)} descriptions, the exact number.
 Think that each score must be independent of the others, only matters the description and the video.
@@ -308,19 +309,23 @@ Scores:
 1. [score1]
 2. [score2]
 ...""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         random.shuffle(event)
-        descriptions_text = "\n".join(f"- {desc}" for i, desc in enumerate(event))  
-        descriptions_score = "\n".join(f"- {desc} Score: [score]" for i, desc in enumerate(event)) 
-        descriptions_score = "\n".join(f"- {desc} Score: [selected score]" for i, desc in enumerate(event)) 
-            
+        descriptions_text = "\n".join(f"- {desc}" for i, desc in enumerate(event))
+        descriptions_score = "\n".join(
+            f"- {desc} Score: [score]" for i, desc in enumerate(event)
+        )
+        descriptions_score = "\n".join(
+            f"- {desc} Score: [selected score]" for i, desc in enumerate(event)
+        )
+
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
 {descriptions_text}\n 
 Ensure there are a score for each of the {len(event)} descriptions, the exact number and follow the order.
@@ -333,14 +338,14 @@ Scores:
 ...
 
 Until you finish the score for each description, MUST be the exact number of scores.""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
 {descriptions_text}\n 
 Ensure there are a score for each of the {len(event)} descriptions, the exact number.
@@ -352,14 +357,14 @@ Scores:
 - [description][score2]
 ...
 Return the score for each description, MUST be the exact number of descriptions.""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
 {descriptions_text}\n 
 Ensure there are a score for each of the {len(event)} descriptions, the exact number.
@@ -371,14 +376,14 @@ Scores:
 - [description][score2]
 ...
 Return the score for each description, MUST be the exact number of descriptions.""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
 {descriptions_text}\n 
 Ensure there are a score for each of the {len(event)} descriptions, the exact number.
@@ -389,14 +394,14 @@ Scores:
 {descriptions_score}
 ...
 Return the score for each description, MUST be the exact number of descriptions.""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video.
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video.
 {text} evaluate how well each of the following descriptions matches the video by providing a confidence score from 0 to 100 for each.\n
 {descriptions_text}\n 
 Ensure there are a score for each of the {len(event)} descriptions, the exact number.
@@ -407,10 +412,10 @@ Scores:
 {descriptions_score}
 ...
 Return the score for each description, MUST be the exact number of descriptions.""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
@@ -442,11 +447,13 @@ Return the score for each description, MUST be the exact number of descriptions.
         # rint(f"{prepare_inputs['sft_format'][0]}", answer)
         if verbose:
             print(f"{prepare_inputs['sft_format'][0]}", answer)
-            #print(answer)
+            # print(answer)
         # return answer[-4:-1]  # Extract the score from the answer
         return answer
 
-    def event_validation_score(self, frames, event, text="Watch the video.", verbose=False):
+    def event_validation_score(
+        self, frames, event, text="Watch the video.", verbose=False
+    ):
         number_of_frames = 4
         assert (
             len(frames) >= number_of_frames
@@ -471,7 +478,7 @@ Return the score for each description, MUST be the exact number of descriptions.
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        #Scores muy binarios 0 or 100
+        # Scores muy binarios 0 or 100
         conversation = [
             {
                 "role": "<|User|>",
@@ -484,7 +491,7 @@ Return the score for each description, MUST be the exact number of descriptions.
             },
             {"role": "<|Assistant|>", "content": ""},
         ]
-        #Seems ok, need test it, the No answer just give 0
+        # Seems ok, need test it, the No answer just give 0
         conversation = [
             {
                 "role": "<|User|>",
@@ -522,22 +529,22 @@ Score: [score]""",
             {"role": "<|Assistant|>", "content": ""},
         ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]       #Repeats the answer a several number of times, seems ok the answers but some answers have brackets
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]  # Repeats the answer a several number of times, seems ok the answers but some answers have brackets
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a surveillance video.\n{text}
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a surveillance video.\n{text}
 Does the video contain {event}? Just yes or no.
 
 Look closely at all parts of the video, including the edges and background.
@@ -547,89 +554,89 @@ Support your answer with a confident score from 0 to 100, where from 0 to 50 is 
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]       #Repeats the answer a several number of times, seems ok the answers but some answers have brackets
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]  # Repeats the answer a several number of times, seems ok the answers but some answers have brackets
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
-        #The best until now
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        # The best until now
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]       
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         # **Best until now**
-        
+
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
-        #Test
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        # Test
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score from 0 to 100, where 0 to 50 indicates No (lower values for higher confidence in No), and 50 to 100 indicates Yes (higher values for higher confidence in Yes). Intermediate values are allowed.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score from 0 to 100, where 0 to 50 indicates No (lower values for higher confidence in No), and 50 to 100 indicates Yes (higher values for higher confidence in Yes). Intermediate values are allowed.
 Return a single answer in the following format (without brackets):
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
-        #OK in format, but the scores are still just some of them, not all the range,
-        #Also, sometimes dont see the event present
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
+        # OK in format, but the scores are still just some of them, not all the range,
+        # Also, sometimes dont see the event present
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a surveillance video.\n{text}
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a surveillance video.\n{text}
 Does the video contain {event}? Just yes or no.
 - Provide only one answer.
 - The answer must be either 'Yes' or 'No' without brackets or other variations.
@@ -641,14 +648,14 @@ Respond with exactly one answer in the following format:
 Answer: [Yes or No]
 Score: [score]
 """,
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""}
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
@@ -657,14 +664,14 @@ Do not include any additional text, explanations, or repeated answers.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         conversation = [
-    {
-        "role": "<|User|>",
-        "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
+            {
+                "role": "<|User|>",
+                "content": f"""{images_number} This is a video \n{text} Does the video contain {event}?.  
 Just yes or no.
 Look closely at all parts of the video, including the edges and background.
 Support your answer with a confident score on a scale from 0 to 100, where from 0 to 50 is for No, and from 50 to 100 is for Yes. Intermediate values are allowed.
@@ -673,10 +680,10 @@ Do NOT include any additional text, explanations, or repeated answers.
 Return the answer in the following format:
 Answer: [answer]
 Score: [score]""",
-        "images": [],
-    },
-    {"role": "<|Assistant|>", "content": ""},
-]
+                "images": [],
+            },
+            {"role": "<|Assistant|>", "content": ""},
+        ]
         pil_images = [
             MLLMs.cv2_to_pil(frame) for frame in frames[-(1 + number_of_frames) : -1]
         ]
@@ -710,6 +717,7 @@ Score: [score]""",
             print(f"{prepare_inputs['sft_format'][0]}", answer)
 
         return answer
+
 
 class Qwen2_VL(MLLMs):
     def __init__(self):

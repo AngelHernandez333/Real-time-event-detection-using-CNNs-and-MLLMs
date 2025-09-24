@@ -44,12 +44,12 @@ def calculate_ap(precision, recall):
 rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceOldPrompt/"
 file = "TestingJanusAllOnlyTrue.csv"
 # New prompt
-#rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
-#file = "TestingNWPUIITB.csv"
-#file = "TestingJanusPrompts.csv"
+# rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
+# file = "TestingNWPUIITB.csv"
+# file = "TestingJanusPrompts.csv"
 storing_file = file.split(".")[0] + "_mAP.png"
 df = pd.read_csv(f"{rute}{file}")
-df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
+df = df[(df["Mode"] == 0) | (df["Mode"] == 2)]
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()

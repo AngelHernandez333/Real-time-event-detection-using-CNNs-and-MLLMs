@@ -957,7 +957,7 @@ class EventStealing(DecisionMakerPerEvent):
     def process_detections(self, loaded_data, verbose=False):
         persons = DecisionMakerPerEvent.organize_persons(loaded_data)
         persons_index = DecisionMakerPerEvent.verify_running(persons)
-        #print("este", persons_index)
+        # print("este", persons_index)
         stored = []
         if len(persons_index) < 1 or len(persons) < 2:
             return False, stored
@@ -1131,10 +1131,10 @@ class ALL_Rules:
                 classes, detections, results, frames, MLLM
             )
             if condition and "" != text:
-                #print("Test: ", self.__descriptions[i], objects)
+                # print("Test: ", self.__descriptions[i], objects)
                 prompts.append(self.__descriptions[i])
                 rois.append(objects)
-        #to_recort = self.area_torecort(rois)
+        # to_recort = self.area_torecort(rois)
         return prompts
 
 

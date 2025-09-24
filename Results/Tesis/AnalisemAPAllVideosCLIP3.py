@@ -112,16 +112,14 @@ def calculate_ap(precision, recall):
         ap += delta_recall * precision[i]
 
     return ap
-rute='/home/ubuntu/Tesis/Results/'
+
+
+rute = "/home/ubuntu/Tesis/Results/"
 file = "TestingDevCLIPOneClassOldDescriptions.csv"
 df = pd.read_csv(f"{rute}{file}")
 df["Process time"] = df["Process time"] / df["Duration"]
-df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = (
-    30.0 / df["Process time"]
-)
-df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = (
-    25.0 / df["Process time"]
-)
+df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
+df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
 #  Get unique categories
 print(df)
 categories = df["True Event"].unique()
@@ -241,7 +239,7 @@ fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
 # plt.savefig("Results/Meeting/mAP.png")
 plt.tight_layout()
-#plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
+# plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
 plt.show()
 print(mAP_values)
 # mAP_values.to_csv("/home/ubuntu/Tesis/Results/Meeting/mAPCLIP.csv")

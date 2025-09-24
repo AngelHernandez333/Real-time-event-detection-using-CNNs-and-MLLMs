@@ -4,6 +4,8 @@ from transformers import AutoProcessor, AutoModel
 from huggingface_hub import hf_hub_download
 import cv2
 from CLIPS import XCLIP_Model
+
+
 def read_video_opencv(path):
     cap = cv2.VideoCapture(path)
     frames = []
@@ -15,12 +17,14 @@ def read_video_opencv(path):
         if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % 30 == 0:
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame_rgb)
-        if len(frames)==8:
+        if len(frames) == 8:
             break
     return frames
 
     cap.release()
     return frames  # list of np.ndarrays
+
+
 def sample_frame_indices(clip_len, frame_sample_rate, total_frames):
     """
     Same logic as original, but works with list of frames.
@@ -42,20 +46,27 @@ def sample_frame_indices(clip_len, frame_sample_rate, total_frames):
     indices = np.linspace(start_idx, end_idx, num=clip_len)
     indices = np.clip(indices, start_idx, end_idx - 1).astype(np.int64)
     return indices
+
+
 # Supón que ya tienes tus frames:
-rute='/home/ubuntu/Database/ALL/Videos/Riding'
-file='3_105_1.mp4'
+rute = "/home/ubuntu/Database/ALL/Videos/Riding"
+file = "3_105_1.mp4"
 
 sampled_frames = read_video_opencv(f"{rute}/{file}")
 CLIP_encoder = XCLIP_Model()
 CLIP_encoder.set_model("microsoft/xclip-base-patch32")
 CLIP_encoder.set_processor("microsoft/xclip-base-patch32")
-descriptions = ["a video of a person riding a bicycle", "a video of a normal view (persons walking and standing)"]
+descriptions = [
+    "a video of a person riding a bicycle",
+    "a video of a normal view (persons walking and standing)",
+]
 CLIP_encoder.set_descriptions(descriptions)
-event, avg_prob, logits = CLIP_encoder.outputs_without_softmax(sampled_frames[2:], sampled_frames[0:2])
-logits_np = logits.to(dtype=torch.float32, device='cpu').numpy()[0]
+event, avg_prob, logits = CLIP_encoder.outputs_without_softmax(
+    sampled_frames[2:], sampled_frames[0:2]
+)
+logits_np = logits.to(dtype=torch.float32, device="cpu").numpy()[0]
 print(event, avg_prob, logits_np)  # Imprime el evento y la probabilidad promedio
-'''print(len(sampled_frames), sampled_frames[0].shape)  # Verifica la cantidad de frames y su forma
+"""print(len(sampled_frames), sampled_frames[0].shape)  # Verifica la cantidad de frames y su forma
 
 # Convierte a np.ndarray final
 result = np.stack(sampled_frames)  # shape (clip_len, H, W, 3)
@@ -78,4 +89,4 @@ with torch.no_grad():
 logits_per_video = outputs.logits_per_video  # this is the video-text similarity score
 print(logits_per_video)
 probs = logits_per_video.softmax(dim=1)  # we can take the softmax to get the label probabilities
-print(probs, time.time() - start_time)'''
+print(probs, time.time() - start_time)"""

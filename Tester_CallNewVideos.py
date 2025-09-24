@@ -4,9 +4,7 @@ import os
 from MLLMs import *
 from Detectors import YOLOv10Detector
 import pandas as pd
-from Functions3 import (
-    detection_labels,classes_focus
-)
+from Functions3 import detection_labels, classes_focus
 import numpy as np
 from MLLMs import *
 from Tester import VideoTester
@@ -15,7 +13,7 @@ import numpy as np
 from CLIPS import CLIP_Model
 from DMC_OPP import ALL_Rules
 
-'''classes_focus = {
+"""classes_focus = {
     "a person riding a bicycle on the street": ["person", "bicycle"],
     "multiple people engaged in a physical fight": ["person"],
     "a group of people playing a sport together": [
@@ -43,7 +41,7 @@ from DMC_OPP import ALL_Rules
     "a person deliberately throwing garbage on the ground": ["person"],
     "a person stealing other person": ["person"],
     "a person pickpocketing a wallet from someone's pocket": ["person"],
-}'''
+}"""
 
 
 PREFIX = "a video of "
@@ -93,21 +91,21 @@ class EventTesterCLIP(VideoTester):
         self.__MLLM = None
         self.__image_encoder = None
         self._storagefolder = "/home/ubuntu/Tesis/Storage/M4MulticlassNMS"
-        self.__order= [
-        "Riding",
-        "Playing", #Finish specific class events
-        "Pickpockering",
-        "Stealing",
-        "Tripping",
-        "Chasing",
-        "Guiding",
-        "Jumping",
-        "Falling",
-        "Littering",
-        "Running",
-        "Lying",
-        "Fighting",
-    ]
+        self.__order = [
+            "Riding",
+            "Playing",  # Finish specific class events
+            "Pickpockering",
+            "Stealing",
+            "Tripping",
+            "Chasing",
+            "Guiding",
+            "Jumping",
+            "Falling",
+            "Littering",
+            "Running",
+            "Lying",
+            "Fighting",
+        ]
         self.__order_dict = {}
 
     def set_detector(self, detector):
@@ -160,10 +158,14 @@ class EventTesterCLIP(VideoTester):
         num_classes = len(all_classes)  # 14
         cm = np.zeros((num_classes, num_classes), dtype=int)
         # Save frames_number, predicted_events, and prompts into a numpy array
-        if self.__mode!=3:
+        if self.__mode != 3:
             prompts = [prompt.lower().split(".")[0] for prompt in prompts]
-            output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)            
+            output_data = np.array(
+                [frames_number, predicted_events, prompts], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
             for i in range(len(predicted_events)):
                 # Get ground truth
 
@@ -211,9 +213,13 @@ class EventTesterCLIP(VideoTester):
             tn = np.sum(cm) - tp - fp - fn  # True negatives
             return tp, fp, fn, tn
         else:
-            output_data = np.array([frames_number, predicted_events, prompts], dtype=object)
-            np.save(f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data)
-            return 0,0,0,0
+            output_data = np.array(
+                [frames_number, predicted_events, prompts], dtype=object
+            )
+            np.save(
+                f"{self._storagefolder}/{name}_CLIP_{mode}_{event}.npy", output_data
+            )
+            return 0, 0, 0, 0
 
     # Rows = true classes, Columns = predicted classes
     def set_dataframe(self, df):
@@ -293,20 +299,16 @@ class EventTesterCLIP(VideoTester):
                 results,
             )
             if int(cap.get(cv2.CAP_PROP_POS_FRAMES)) % gap == 0:
-                descriptions = dmc.process(
-                        classes, detections, results, frames, False
-                    )
+                descriptions = dmc.process(classes, detections, results, frames, False)
             if len(frames) > 6:
                 frames.pop(0)
                 results.pop(0)
                 if self.__event in descriptions and self.__mode == 2:
-                    descriptions=[self.__event]
+                    descriptions = [self.__event]
                 elif self.__mode == 2:
-                    descriptions=[]
-                print('Descripciones:',descriptions, '\n')
-                normal_prompt = (
-                        PREFIX + "a normal view (persons walking or standing)"
-                    )
+                    descriptions = []
+                print("Descripciones:", descriptions, "\n")
+                normal_prompt = PREFIX + "a normal view (persons walking or standing)"
                 if len(descriptions) > 0:
                     if normal_prompt not in descriptions:
                         descriptions.append(normal_prompt)
@@ -314,7 +316,7 @@ class EventTesterCLIP(VideoTester):
                         self.__image_encoder.set_descriptions(descriptions)
                         event, avg_prob = self.__image_encoder.outputs(frames)
                         events.append(event)
-                        print( descriptions, self.__event,event,  '\n')
+                        print(descriptions, self.__event, event, "\n")
                     frames_number.append(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
                     if self.__mode == 1 and event != normal_prompt:
                         text = prompt_text(
@@ -333,13 +335,13 @@ class EventTesterCLIP(VideoTester):
                         )
                         prompts.append(prompt)
                     if self.__mode == 3:
-                        '''
+                        """
                         prompt = self.__MLLM.event_score(
                         frames, descriptions, verbose=True
                         )
                         prompts.append(prompt)
-                        events.append(descriptions)'''
-                        prompts_responses=[]
+                        events.append(descriptions)"""
+                        prompts_responses = []
                         events_detected = []
                         for i in range(len(descriptions)):
                             event = descriptions[i]
@@ -386,29 +388,31 @@ class EventTesterCLIP(VideoTester):
     def simple_autotesting(self, folders, descriptions, modes):
         dmc = ALL_Rules()
         dmc.set_descriptions(self.__image_encoder.get_descriptions())
-        self.__order_dict= {event: PREFIX + desc for event, desc in zip(folders, description)}
+        self.__order_dict = {
+            event: PREFIX + desc for event, desc in zip(folders, description)
+        }
         for k in modes:
             for video_kind in range(len(folders)):
                 rute = f"{self.__rute}/{folders[video_kind]}/"
                 files = os.listdir(rute)
                 for j in range(len(files)):  # Pasar por todos los videos de la carpeta
                     finished = False
-                    '''count = self.__df[(self.__df["Mode"] == k)
+                    """count = self.__df[(self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
                     if count< 7:
                         pass
                     else:
-                        continue'''
+                        continue"""
                     count = self.__df[
                         (self.__df["Name"] == files[j])
                         & (self.__df["Mode"] == k)
                         & (self.__df["True Event"] == descriptions[video_kind])
                     ].shape[0]
-                    '''if files[j].endswith("_1.mp4"):
+                    """if files[j].endswith("_1.mp4"):
                         pass
                     else:
-                        continue'''
+                        continue"""
                     if count == 0:
                         self.set_event(descriptions[video_kind])
                         self.set_mode(k)
@@ -483,11 +487,11 @@ if __name__ == "__main__":
         "Tripping",
         "Pickpockering",
     ]
-    #First, presence of a specific class
-    #Second, groupal events
-    #Last, specific events
+    # First, presence of a specific class
+    # Second, groupal events
+    # Last, specific events
 
-    '''description = [
+    """description = [
         "a person riding a bicycle on the street",  # Added context
         "multiple people engaged in a physical fight",  # More specific than "fighting"
         "a group of people playing a sport together",  # Added "sport" for visual clarity
@@ -501,7 +505,7 @@ if __name__ == "__main__":
         "a person deliberately throwing garbage on the ground",  # "Deliberately" adds clarity
         "a person tripping over an obstacle",  # More descriptive
         "a person pickpocketing a wallet from someone's pocket",  # Very specific
-    ]'''
+    ]"""
     description = [
         "a person riding a bicycle",
         "a certain number of persons fighting",

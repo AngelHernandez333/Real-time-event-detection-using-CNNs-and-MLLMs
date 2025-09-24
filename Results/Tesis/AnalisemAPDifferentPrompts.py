@@ -77,12 +77,12 @@ if __name__ == "__main__":
         final_results = pd.concat([final_results, result])
     # Plot the AP values for each file
     file_names = {
-        "Is": "is 'event' in the video?",
-        "Tell_IsThere": "tell me if in the video is there 'event'?",
-        "Tell_Is": "tell me if is 'event' in the video? ",
-        "Does": "does the video contain 'event'?",
-        "IsThere": "is there 'event'?",
-        "Confirm": "confirm if the video contain 'event'",
+        "Is": "is {event}\nin the video?",
+        "Tell_IsThere": "tell me if\nin the video \nis there {event}?",
+        "Tell_Is": "tell me if \nin the video \nis {event}?",
+        "Does": "does the video \n contain {event}?",
+        "IsThere": "is there \n{event}?",
+        "Confirm": "confirm if the video \n contain {event}",
     }
     final_results["File"] = final_results["File"].map(file_names)
 
@@ -108,10 +108,11 @@ if __name__ == "__main__":
     plt.ylabel("AP", fontsize=13, fontweight="bold")
     plt.title("AP de cada prompt", fontsize=16, fontweight="bold")
     plt.xticks(
-        index + bar_width / 2,
+        index,
         final_results["File"].unique(),
-        rotation=45,
+        rotation=0,
         color="black",
+        ha="center",
         fontweight="bold",
         fontsize=11,
     )

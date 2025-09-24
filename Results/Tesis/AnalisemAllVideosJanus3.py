@@ -22,7 +22,7 @@ def calculate_ap(precision, recall):
     return ap
 
 
-status = "prompt_simple"
+status = "ALL"
 if status == "ALL":
     rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
     file = "TestingNWPUIITB.csv"
@@ -32,10 +32,10 @@ if status == "ALL":
     file = "TestingJanusPrompts.csv"
     df2 = pd.read_csv(f"{rute}{file}")
     storing_file = file.split(".")[0] + "_mAP.png"
-    df["Process time"] = df["Process time"] / df["Duration"]
+    """df["Process time"] = df["Process time"] / df["Duration"]
     df2["Process time"] = df2["Process time"] / df2["Duration"]
     df["Process time"] = 25.0 / df["Process time"]
-    df2["Process time"] = 30.0 / df2["Process time"]
+    df2["Process time"] = 30.0 / df2["Process time"]"""
     df = pd.concat([df, df2], ignore_index=True)
     storing_file = "ALLwithRespectedFPS.png"
 elif status == "prompt_simple":
@@ -43,8 +43,8 @@ elif status == "prompt_simple":
     file = "TestingJanusAllOnlyTrue.csv"
     storing_file = file.split(".")[0] + "_mAP02.png"
     df = pd.read_csv(f"{rute}{file}")
-    '''df["Process time"] = df["Process time"] / df["Duration"]
-    df["Process time"] = 30.0 / df["Process time"]'''
+    """df["Process time"] = df["Process time"] / df["Duration"]
+    df["Process time"] = 30.0 / df["Process time"]"""
     df = df[(df["Mode"] == 0) | (df["Mode"] == 2)]
 elif status == "prompt_extra":
     rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
@@ -66,22 +66,17 @@ elif status == "chad":
 elif status == "else":
     rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
     file = "TestingNWPUIITB.csv"
-    storing_file = file.split(".")[0] + "_mAP.png"
+    rute = "/home/ubuntu/Tesis/Results/Tesis/PerformanceNewPrompt/"
+    file = "TestingJanusPrompts.csv"
+    storing_file = file.split(".")[0] + "_DEV.png"
     df = pd.read_csv(f"{rute}{file}")
-    # file='TestingJanusPrompts.csv'
-    df["Process time"] = df["Process time"] / df["Duration"]
-    df["Process time"] = 25.0 / df["Process time"]
 # New prompt
 '''rute = "/home/ubuntu/Tesis/Results/"
 file = "TestingDevCLIPOneClassOldDescriptions.csv"'''
-#df = pd.read_csv(f"{rute}{file}")
+# df = pd.read_csv(f"{rute}{file}")
 df["Process time"] = df["Process time"] / df["Duration"]
-df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = (
-    30.0 / df["Process time"]
-)
-df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = (
-    25.0 / df["Process time"]
-)
+df.loc[df["Name"].str.contains("_1.mp4"), "Process time"] = 30.0 / df["Process time"]
+df.loc[~df["Name"].str.contains("_1.mp4"), "Process time"] = 25.0 / df["Process time"]
 
 # df = df[(df['Mode'] == 0) | (df['Mode'] == 2)]
 
@@ -224,5 +219,5 @@ fig.tight_layout(pad=3.0)
 fig.set_size_inches(16, 10)
 
 plt.tight_layout()
-#plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
+# plt.savefig(f"{rute}{storing_file}", dpi=300, bbox_inches="tight")
 plt.show()

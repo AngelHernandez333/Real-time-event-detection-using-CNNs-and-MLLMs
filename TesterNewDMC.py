@@ -207,7 +207,8 @@ class EventTester(VideoTester):
         self.__detector = None
         self.__MLLM = None
         self.__image_encoder = None
-        self._storagefolder='/home/ubuntu/Tesis/Storage/Score_TideThresh'
+        self._storagefolder = "/home/ubuntu/Tesis/Storage/Score_TideThresh"
+
     def set_detector(self, detector):
         self.__detector = detector
 
@@ -241,12 +242,12 @@ class EventTester(VideoTester):
         fp = 0
         fn = 0
         tn = 0
-        #prompts = [prompt.lower() for prompt in prompts]
+        # prompts = [prompt.lower() for prompt in prompts]
         name = video_name.split(".")[0]
         frames = np.load("..//Database/ALL/GT/gt_ALL.npz")
         frames = frames[name]
         frames = np.append(frames, frames[-1])
-        gt=[]
+        gt = []
         for i in range(len(prompts)):
             gt.append(frames[frames_number[i] - 1])
         output_data = np.array([frames_number, prompts, gt], dtype=object)
@@ -299,7 +300,7 @@ class EventTester(VideoTester):
         video_information = (width, height)
         fps = cap.get(cv2.CAP_PROP_FPS)
         print(video_path)
-        print(int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) ,cap.get(cv2.CAP_PROP_FPS))
+        print(int(cap.get(cv2.CAP_PROP_FRAME_COUNT)), cap.get(cv2.CAP_PROP_FPS))
         duration = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) / cap.get(cv2.CAP_PROP_FPS)
         prev_frame_time = 0
         new_frame_time = 0
@@ -374,7 +375,7 @@ class EventTester(VideoTester):
                 case 4:
                     # Detector with rules only
                     detections, classes = self.__detector.detection(frame, classes)
-                    '''description = [
+                    """description = [
                         "a person riding a bicycle",
                         "a certain number of persons fighting",
                         "a group of persons playing",
@@ -395,7 +396,7 @@ class EventTester(VideoTester):
                         descriptions, scores = mc.process(
                         classes, detections, results, frames, False
                     )
-                        prompts.append(scores[6])'''
+                        prompts.append(scores[6])"""
                     decision_makerComplex(
                         frame,
                         int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
@@ -554,7 +555,11 @@ class EventTester(VideoTester):
                             prompts = prompts[1::]
                             print("Prompts:", prompts)
                             tp, fp, fn, tn = self.check_precision(
-                                prompts, frames_number, files[j], k, descriptions[video_kind]
+                                prompts,
+                                frames_number,
+                                files[j],
+                                k,
+                                descriptions[video_kind],
                             )
                             # Save the results
                             row = {
@@ -692,11 +697,13 @@ if __name__ == "__main__":
         tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingDev.csv")
         tester.set_MLLM(llava)
     elif test == 1:
-        '''janus = JanusPro()
+        """janus = JanusPro()
         janus.set_model("deepseek-ai/Janus-Pro-1B")
         janus.set_processor("deepseek-ai/Janus-Pro-1B")
-        tester.set_MLLM(janus)'''
-        tester.set_dataframe("/home/ubuntu/Tesis/Results/TestingnMCMLLM_TiedThresholds.csv")
+        tester.set_MLLM(janus)"""
+        tester.set_dataframe(
+            "/home/ubuntu/Tesis/Results/TestingnMCMLLM_TiedThresholds.csv"
+        )
     elif test == 2:
         qwen2vl = Qwen2_VL()
         qwen2vl.set_model("Qwen/Qwen2-VL-2B-Instruct")
@@ -708,7 +715,7 @@ if __name__ == "__main__":
     # tester.set_MLLM(llava)
     tester.show_detections(False)
     tester.show_video(False)
-    
+
     # Start the autotesting
     # tester.autotesting(events, description, [0,1,2,3])
     # tester.simple_autotesting(events, description, [0,1,2,3])
